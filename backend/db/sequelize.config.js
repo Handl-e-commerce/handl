@@ -1,0 +1,34 @@
+module.exports = {
+  "local_dev": {
+    "username": process.env.SQL_USERNAME,
+    "password": process.env.SQL_PASSWORD,
+    "database": process.env.SQL_DATABASE_LOCAL_DEV,
+    "host": process.env.SQL_HOST_LOCAL,
+    "port": process.env.SQL_PORT,
+    "dialect": "postgres"
+  },
+  "local_test": {
+    "username": process.env.SQL_USERNAME,
+    "password": process.env.SQL_PASSWORD,
+    "database": process.env.SQL_DATABASE_LOCAL_TEST,
+    "host": "127.0.0.1",
+    "port": process.env.SQL_PORT,
+    "dialect": "postgres"
+  },
+  "development": {
+    "username": process.env.SQL_USERNAME,
+    "password": process.env.SQL_PASSWORD,
+    "database": process.env.SQL_DATABASE_DEV,
+    "host": process.env.SQL_HOST_DEV,
+    "port": process.env.SQL_PORT,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": process.env.SQL_USERNAME,
+    "password": process.env.SQL_PASSWORD,
+    "database": process.env.SQL_DATABASE_PROD,
+    "host": process.env.SQL_HOST_PROD,
+    "port": process.env.SQL_PORT,
+    "dialect": "postgres"
+  }
+}

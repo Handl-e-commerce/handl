@@ -1,0 +1,4 @@
+interface IVendorService {
+}
+
+export {IVendorService};
