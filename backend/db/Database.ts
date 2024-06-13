@@ -15,31 +15,27 @@ class Database implements IDatabase {
   private constructor() {
     // default will be local values
     let host: string = process.env.SQL_HOST_LOCAL as string;
-    let port: number = Number(process.env.SQL_PORT_LOCAL);
+    let port = Number(process.env.SQL_PORT_LOCAL);
     let logging: {
       (...data: any[]): void;
       (message?: any, ...optionalParams: any[]): void;
     } | boolean = false;
-    let database: string = process.env.SQL_DATABASE_LOCAL_DEV as string 
+    let database: string = process.env.SQL_DATABASE_LOCAL_DEV as string;
 
     if (process.env.NODE_ENV === "production") {
       host = `/cloudsql/${process.env.SQL_HOST}`;
       port = Number(process.env.SQL_PORT);
       logging = console.log;
       database = process.env.SQL_DATABASE_PROD as string;
-    }
-
-    else if (process.env.NODE_ENV === "development") {
+    } else if (process.env.NODE_ENV === "development") {
       host = `/cloudsql/${process.env.SQL_HOST_DEV}`;
       port = Number(process.env.SQL_PORT);
       logging = console.log;
       database = process.env.SQL_DATABASE_DEV as string;
-    }
-
-    else if (process.env.NODE_ENV === "test") {
+    } else if (process.env.NODE_ENV === "test") {
       database = process.env.SQL_DATABASE_LOCAL_TEST as string;
     }
-    
+
     this.sequelize = new Sequelize({
       host: host,
       username: process.env.SQL_USERNAME as string,
