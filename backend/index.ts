@@ -4,6 +4,8 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 import {Express, Request, Response, NextFunction} from "express";
 import {Database} from "./db/Database";
+import {userRouter} from "./routers/UserRouter";
+import {vendorRouter} from "./routers/VendorRouter";
 
 const PORT = process.env.PORT;
 
@@ -28,6 +30,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 // routers
+app.use("/users", userRouter);
+app.use("/vendors", vendorRouter);
 
 app.get( "/", async ( req: Request, res: Response, next: NextFunction ) => {
     try {
