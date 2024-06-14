@@ -1,0 +1,15 @@
+interface IUserDetails {
+    email: string;
+    firstName: string;
+    lastName: string;
+    businessName: string;
+    EIN: number;
+    phoneNumber: string;
+    address: string;
+    state: string;
+    zipcode: string;
+    categories: string[];
+    password: string;
+}
+
+export {IUserDetails};
