@@ -4,8 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --ext .js,.ts . --fix"
+    "lint": "eslint --ext .js,.ts . --fix",
+    "dev": "set NODE_ENV=local_dev&& npm run build && node build/index.js",
+    "dev:unix": "export NODE_ENV=development && npm run build && node build/index.js",
+    "build": "npm run lint && tsc",
+    "build:watch": "tsc --watch",
+    "test": "jest --collectCoverage=true",
+    "deploy": "gcloud run deploy --source ."
   },
   "keywords": [],
   "author": "",
