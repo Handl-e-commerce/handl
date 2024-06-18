@@ -1,4 +1,4 @@
-import {Model, InferAttributes, InferCreationAttributes, DataTypes, ForeignKey} from "sequelize";
+import {Model, InferAttributes, InferCreationAttributes, DataTypes} from "sequelize";
 import {Database} from "../Database";
 import {Vendor} from "./Vendor";
 import {Category} from "./Category";
@@ -8,9 +8,11 @@ import {Category} from "./Category";
  */
 class VendorCategories extends Model<InferAttributes<VendorCategories>, InferCreationAttributes<VendorCategories>> {
     declare id: number;
-    declare vendorId: ForeignKey<Vendor["uuid"]>;
-    declare category: ForeignKey<Category["subcategory"]>;
-}
+    declare vendor: string;
+    declare category: string;
+    // declare vendor: ForeignKey<Vendor["name"]>;
+    // declare category: ForeignKey<Category["subcategory"]>;
+};
 
 VendorCategories.init({
     id: {
@@ -19,11 +21,11 @@ VendorCategories.init({
         autoIncrement: true,
         allowNull: false,
     },
-    vendorId: {
+    vendor: {
         type: DataTypes.STRING,
         references: {
             model: Vendor,
-            key: "uuid",
+            key: "name",
         },
         allowNull: false
     },
