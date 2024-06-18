@@ -1,7 +1,7 @@
 import {DataTypes, QueryInterface} from "sequelize";
-import { Vendor } from "../models/Vendor";
-import { Category } from "../models/Category";
-import { VendorCategories } from "../models/VendorCategories";
+import {Vendor} from "../models/Vendor";
+import {Category} from "../models/Category";
+import {VendorCategories} from "../models/VendorCategories";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -76,12 +76,12 @@ module.exports = {
                 type: Sequelize.STRING,
                 primaryKey: true,
                 unique: true,
-                allowNull: false
+                allowNull: false,
             },
             parentcategory: {
                 type: Sequelize.STRING,
                 unique: false,
-                allowNull: false
+                allowNull: false,
             },
             createdAt: {
                 allowNull: false,
@@ -106,7 +106,7 @@ module.exports = {
                     model: "Vendors",
                     key: "name",
                 },
-                allowNull: false
+                allowNull: false,
             },
             category: {
                 type: Sequelize.STRING,
@@ -114,7 +114,7 @@ module.exports = {
                     model: "Categories",
                     key: "subcategory",
                 },
-                allowNull: false
+                allowNull: false,
             },
             createdAt: {
                 allowNull: false,
@@ -131,12 +131,12 @@ module.exports = {
         Vendor.hasMany(VendorCategories);
         VendorCategories.belongsTo(Vendor);
         Category.hasMany(VendorCategories);
-        VendorCategories.belongsTo(Category);        
+        VendorCategories.belongsTo(Category);
     },
     // eslint-disable-next-line
     async down(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
         await queryInterface.dropTable("VendorCategories", {force: true});
         await queryInterface.dropTable("Vendors", {force: true});
         await queryInterface.dropTable("Categories", {force: true});
-    }
+    },
 };

@@ -1,4 +1,4 @@
-import { VendorCategories } from "../db/models/VendorCategories";
+import {VendorCategories} from "../db/models/VendorCategories";
 
 interface IVendorService {
     GetVendors: (

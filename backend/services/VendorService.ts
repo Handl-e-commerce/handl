@@ -1,16 +1,15 @@
 import {IVendorService} from "../interfaces/IVendorService";
 import {Vendor} from "../db/models/Vendor";
 import {Op} from "sequelize";
-import { VendorCategories } from "../db/models/VendorCategories";
+import {VendorCategories} from "../db/models/VendorCategories";
 
 /** Class Vendor Service */
 class VendorService implements IVendorService {
-    
     /**
      * Returns the total number of items found using the query and the results fixed by limit and offset
      * @param {string | undefined} categoryParam
      * @param {string | undefined} searchParams
-     * @returns {VendorCategories[]}
+     * @return {VendorCategories[]}
      */
     public async GetVendors(
         categoryParam: string | undefined,
@@ -34,15 +33,15 @@ class VendorService implements IVendorService {
                         },
                     ],
                 };
-            };
+            }
 
             if (categoryParam) {
                 whereClause.category = categoryParam;
-            };
+            }
 
             const vendorResults: VendorCategories[] = await VendorCategories.findAll({
                 where: {
-                    category: categoryParam
+                    category: categoryParam,
                 },
                 include: [{
                     model: Vendor,
@@ -60,7 +59,7 @@ class VendorService implements IVendorService {
                             },
                         ],
                     },
-                }]
+                }],
             });
 
             return vendorResults;
@@ -68,7 +67,7 @@ class VendorService implements IVendorService {
             const error = err as Error;
             throw new Error(error.message);
         }
-    };
+    }
 }
 
 export {VendorService};

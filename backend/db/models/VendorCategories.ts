@@ -4,7 +4,8 @@ import {Vendor} from "./Vendor";
 import {Category} from "./Category";
 
 /**
- * VendorCategory model class which serves as a DTO via Sequelize and as a junction table for Vendors and Categories tables
+ * VendorCategory model class which serves as a DTO via Sequelize
+ * and as a junction table for Vendors and Categories tables
  */
 class VendorCategories extends Model<InferAttributes<VendorCategories>, InferCreationAttributes<VendorCategories>> {
     declare id: number;
@@ -12,7 +13,7 @@ class VendorCategories extends Model<InferAttributes<VendorCategories>, InferCre
     declare category: string;
     // declare vendor: ForeignKey<Vendor["name"]>;
     // declare category: ForeignKey<Category["subcategory"]>;
-};
+}
 
 VendorCategories.init({
     id: {
@@ -27,7 +28,7 @@ VendorCategories.init({
             model: Vendor,
             key: "name",
         },
-        allowNull: false
+        allowNull: false,
     },
     category: {
         type: DataTypes.STRING,
@@ -35,7 +36,7 @@ VendorCategories.init({
             model: Category,
             key: "subcategory",
         },
-        allowNull: false
+        allowNull: false,
     },
 }, {
     sequelize: Database.GetInstance().sequelize,
