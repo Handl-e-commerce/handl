@@ -1,13 +1,11 @@
-import { Vendor } from "../db/models/Vendor";
+import { VendorCategories } from "../db/models/VendorCategories";
 
 interface IVendorService {
     GetVendors: (
-        limit: number,
-        offset: number,
         categoryParam: string | undefined,
         searchParams: string | undefined,
         userId: string | undefined,
-    ) => Promise<{count: number, vendors: Vendor[]}>;
+    ) => Promise<VendorCategories[]>;
 }
 
 export {IVendorService};

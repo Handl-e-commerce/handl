@@ -1,5 +1,7 @@
 import {Model, InferAttributes, InferCreationAttributes, DataTypes} from "sequelize";
 import {Database} from "../Database";
+import {Category} from "./Category";
+import {VendorCategories} from "./VendorCategories";
 
 /**
  * Vendor model class which serves as a DTO via Sequelize
@@ -9,7 +11,6 @@ class Vendor extends Model<InferAttributes<Vendor>, InferCreationAttributes<Vend
     declare name: string;
     declare description: string;
     declare website: string;
-    declare categories: string;
     declare people: string;
     declare address: string;
     declare city: string;
@@ -37,10 +38,6 @@ Vendor.init({
     },
     website: {
         type: DataTypes.STRING,
-        allowNull: true,
-    },
-    categories: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: true,
     },
     people: {
@@ -75,5 +72,8 @@ Vendor.init({
     sequelize: Database.GetInstance().sequelize,
     modelName: "Vendors",
 });
+Vendor.belongsToMany(Category, {through: VendorCategories});
+Vendor.hasMany(VendorCategories);
+VendorCategories.belongsTo(Vendor);
 
 export {Vendor};
