@@ -24,6 +24,10 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: true,
             },
+            categories: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
             people: {
                 type: Sequelize.ARRAY(Sequelize.STRING),
                 allowNull: true,

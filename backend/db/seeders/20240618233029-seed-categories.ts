@@ -2,9 +2,9 @@ import {DataTypes, QueryInterface} from "sequelize";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-    // eslint-disable-next-line
+  // eslint-disable-next-line
   async up (queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
-        await queryInterface.bulkInsert("Categories", [{
+        return await queryInterface.bulkInsert("Categories", [{
             parentcategory: "Accessories",
             subcategory: "Fashion Jewelry / Watches",
             createdAt: new Date(Date.now()),
@@ -449,7 +449,7 @@ module.exports = {
             updatedAt: new Date(Date.now()),
         }], {});
     },
-    // eslint-disable-next-line
+  // eslint-disable-next-line
   async down (queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
         return await queryInterface.bulkDelete("Categories", {}, {});
     },
