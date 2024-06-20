@@ -1,5 +1,5 @@
 import {DataTypes, QueryInterface} from "sequelize";
-import { v4 as uuid } from "uuid";
+import {v4 as uuidv4} from "uuid";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -18,7 +18,9 @@ module.exports = {
         "state": "NY",
         "zipcode": "11378",
         "phoneNumber": "(212)868-5656",
-        "email": "info_1stlhsunglasses@yahoo.com"
+        "email": "info_1stlhsunglasses@yahoo.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -32,7 +34,9 @@ module.exports = {
         "state": "CA",
         "zipcode": "90058",
         "phoneNumber": "(323)588-3026",
-        "email": "cs@26cws.com"
+        "email": "cs@26cws.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -46,7 +50,9 @@ module.exports = {
         "state": "NY",
         "zipcode": "11801",
         "phoneNumber": "(631) 396-0877",
-        "email": ""
+        "email": "",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -60,7 +66,9 @@ module.exports = {
         "state": "N6E2S8, CA",
         "zipcode": "",
         "phoneNumber": "360-646-3360 ext 800",
-        "email": "info@306deep.com"
+        "email": "info@306deep.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -74,7 +82,9 @@ module.exports = {
         "state": "NY",
         "zipcode": "11385",
         "phoneNumber": "(718) 576-3369",
-        "email": "365fashions@gmail.com"
+        "email": "365fashions@gmail.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -88,7 +98,9 @@ module.exports = {
         "state": "TX",
         "zipcode": "75023",
         "phoneNumber": "(972) 612-1222",
-        "email": "www.globaladdistribution.com"
+        "email": "www.globaladdistribution.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -102,9 +114,12 @@ module.exports = {
         "state": "NY",
         "zipcode": "11385",
         "phoneNumber": "(347) 763-0627",
-        "email": "amylincollection@gmail.com"
+        "email": "amylincollection@gmail.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
+
         "uuid": "",
         "name": "7 STAR TRADING",
         "description": "Historically accurate chinese swords",
@@ -116,7 +131,9 @@ module.exports = {
         "state": "VA",
         "zipcode": "22003",
         "phoneNumber": "(703) 573-2939",
-        "email": "sevenstarstrading688@gmail.com"
+        "email": "sevenstarstrading688@gmail.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -130,7 +147,9 @@ module.exports = {
         "state": "NV",
         "zipcode": "89121",
         "phoneNumber": "702-358-3882",
-        "email": "N/A"
+        "email": "N/A",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -144,7 +163,9 @@ module.exports = {
         "state": "NY",
         "zipcode": "11563",
         "phoneNumber": "718) 389-6731",
-        "email": "sochinany@yahoo.com"
+        "email": "sochinany@yahoo.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -158,7 +179,9 @@ module.exports = {
         "state": "NY",
         "zipcode": "11378",
         "phoneNumber": "1-347-287-2517",
-        "email": "K19561130@gmail.com"
+        "email": "K19561130@gmail.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -172,7 +195,9 @@ module.exports = {
         "state": "KY",
         "zipcode": "42413",
         "phoneNumber": "(270) 821-7100",
-        "email": "sales@aandmwholesalegroup.com"
+        "email": "sales@aandmwholesalegroup.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -186,7 +211,9 @@ module.exports = {
         "state": "",
         "zipcode": "",
         "phoneNumber": "800 790 1280",
-        "email": "customerservice@ALineGreetings.com"
+        "email": "customerservice@ALineGreetings.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -200,7 +227,9 @@ module.exports = {
         "state": "NY",
         "zipcode": "11357",
         "phoneNumber": "(718) 767-9800",
-        "email": "A1WholesaleFence@gmail.com"
+        "email": "A1WholesaleFence@gmail.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -214,7 +243,9 @@ module.exports = {
         "state": "",
         "zipcode": "",
         "phoneNumber": "",
-        "email": ""
+        "email": "",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -228,7 +259,9 @@ module.exports = {
         "state": "FL",
         "zipcode": "33313",
         "phoneNumber": "(954)-327-4262",
-        "email": "info@aabstyle.com"
+        "email": "info@aabstyle.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -242,7 +275,9 @@ module.exports = {
         "state": "CA",
         "zipcode": "91754",
         "phoneNumber": "626-879-7272",
-        "email": "sales@usaaron.com"
+        "email": "sales@usaaron.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -256,7 +291,9 @@ module.exports = {
         "state": "FL",
         "zipcode": "32805",
         "phoneNumber": "(407) 226-7272",
-        "email": "abclowprices@gmail.com"
+        "email": "abclowprices@gmail.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -270,7 +307,9 @@ module.exports = {
         "state": "CA",
         "zipcode": "90058",
         "phoneNumber": "(323) 581-3688",
-        "email": "abctradingabc@gmail.com"
+        "email": "abctradingabc@gmail.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -284,7 +323,9 @@ module.exports = {
         "state": "RI",
         "zipcode": "02905",
         "phoneNumber": "(401) 461-1116",
-        "email": "Jacob@AbrahamLichaaCo.com"
+        "email": "Jacob@AbrahamLichaaCo.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -298,7 +339,9 @@ module.exports = {
         "state": "FL",
         "zipcode": "33018",
         "phoneNumber": "(305) 392-0178",
-        "email": "contact@abysse-america.com"
+        "email": "contact@abysse-america.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -312,7 +355,9 @@ module.exports = {
         "state": "",
         "zipcode": "",
         "phoneNumber": "",
-        "email": ""
+        "email": "",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -326,7 +371,9 @@ module.exports = {
         "state": "TX",
         "zipcode": "77042",
         "phoneNumber": "713-521-4444",
-        "email": ""
+        "email": "",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -340,7 +387,9 @@ module.exports = {
         "state": "NJ",
         "zipcode": "08901",
         "phoneNumber": "(718) 676-4677",
-        "email": ""
+        "email": "",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -354,7 +403,9 @@ module.exports = {
         "state": "NY",
         "zipcode": "11354",
         "phoneNumber": "1 (510) 651-9088",
-        "email": "service@drfuji.com"
+        "email": "service@drfuji.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -368,7 +419,9 @@ module.exports = {
         "state": "NY",
         "zipcode": "11208",
         "phoneNumber": "(718) 272-1722",
-        "email": "information@adorablepillows.com"
+        "email": "information@adorablepillows.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -382,7 +435,9 @@ module.exports = {
         "state": "NJ",
         "zipcode": "07606",
         "phoneNumber": "(212) 481-7246",
-        "email": "sales@advanceapparels.com"
+        "email": "sales@advanceapparels.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -396,7 +451,9 @@ module.exports = {
         "state": "CA",
         "zipcode": "91384",
         "phoneNumber": "(661) 424-1100",
-        "email": ""
+        "email": "",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -410,7 +467,9 @@ module.exports = {
         "state": "U.A.E.",
         "zipcode": "",
         "phoneNumber": "971 6 747 4441",
-        "email": ""
+        "email": "",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -424,7 +483,9 @@ module.exports = {
         "state": "",
         "zipcode": "",
         "phoneNumber": "1(951)777-6670",
-        "email": ""
+        "email": "",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -438,7 +499,9 @@ module.exports = {
         "state": "NY",
         "zipcode": "11729",
         "phoneNumber": "1-800-PARFUMS (727-3867)",
-        "email": ""
+        "email": "",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -452,7 +515,9 @@ module.exports = {
         "state": "",
         "zipcode": "",
         "phoneNumber": "",
-        "email": ""
+        "email": "",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -466,7 +531,9 @@ module.exports = {
         "state": "CA",
         "zipcode": "90015",
         "phoneNumber": "213.746.8696",
-        "email": "web@akzanwholesale.com"
+        "email": "web@akzanwholesale.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -480,7 +547,9 @@ module.exports = {
         "state": "MN",
         "zipcode": "",
         "phoneNumber": "1 (612) 824-4237",
-        "email": "Info@alhusseinperfumes.com"
+        "email": "Info@alhusseinperfumes.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -494,7 +563,9 @@ module.exports = {
         "state": "FL",
         "zipcode": "33172",
         "phoneNumber": "(305) 500-9838",
-        "email": "info@albaniperfumes.com"
+        "email": "info@albaniperfumes.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -508,7 +579,9 @@ module.exports = {
         "state": "PA",
         "zipcode": "19154",
         "phoneNumber": "(800) 322-2533, (215) 203-0200",
-        "email": "support@alefpackaging.com"
+        "email": "support@alefpackaging.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -522,7 +595,9 @@ module.exports = {
         "state": "",
         "zipcode": "",
         "phoneNumber": "1(626)941-3498  1(866)864-9299",
-        "email": ""
+        "email": "",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -536,7 +611,9 @@ module.exports = {
         "state": "CA",
         "zipcode": "91761",
         "phoneNumber": "(802) 689-2836",
-        "email": ""
+        "email": "",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -550,7 +627,9 @@ module.exports = {
         "state": "NJ",
         "zipcode": "07083",
         "phoneNumber": "800-253-1440",
-        "email": "allary@allarycorp.com  info@allarycorp.com"
+        "email": "allary@allarycorp.com  info@allarycorp.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -564,7 +643,9 @@ module.exports = {
         "state": "CO",
         "zipcode": "80027",
         "phoneNumber": "",
-        "email": "ConsumerService@allencompany.net"
+        "email": "ConsumerService@allencompany.net",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -578,7 +659,9 @@ module.exports = {
         "state": "",
         "zipcode": "",
         "phoneNumber": "212.594.6920 x 1340",
-        "email": "help@almarsales.com."
+        "email": "help@almarsales.com.",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       },
       {
         "uuid": "",
@@ -592,11 +675,13 @@ module.exports = {
         "state": "",
         "zipcode": "",
         "phoneNumber": "9 665 452 89354",
-        "email": "support@ghalati.com"
+        "email": "support@ghalati.com",
+        "createdAt": new Date(Date.now()),
+        "updatedAt": new Date(Date.now()),
       }
     ];
     data.forEach(item => {
-      item.uuid = uuid.toString();
+      item.uuid = uuidv4().toString();
     });
     return await queryInterface.bulkInsert("Vendors", data, {});
   },
