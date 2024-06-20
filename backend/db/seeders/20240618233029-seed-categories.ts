@@ -24,7 +24,7 @@ module.exports = {
         },
         {
             parentcategory: "Accessories",
-            subcategory: "Small Leather Goods (Belts, Wallets, etc)",
+            subcategory: "Small Leather Goods (Belts/Wallets/etc)",
             createdAt: new Date(Date.now()),
             updatedAt: new Date(Date.now()),
         },
@@ -306,7 +306,7 @@ module.exports = {
         },
         {
             parentcategory: "Home Accents",
-            subcategory: "Interior Décor (Curtains, Wall Art, etc.)",
+            subcategory: "Interior Décor (Curtains/Wall Art/etc.)",
             createdAt: new Date(Date.now()),
             updatedAt: new Date(Date.now()),
         },
@@ -336,7 +336,7 @@ module.exports = {
         },
         {
             parentcategory: "Jewelry",
-            subcategory: "Fine Jewelry / Watches (Diamonds, Gemstones, Gold)",
+            subcategory: "Fine Jewelry / Watches (Diamonds/Gemstones/Gold)",
             createdAt: new Date(Date.now()),
             updatedAt: new Date(Date.now()),
         },
@@ -432,7 +432,7 @@ module.exports = {
         },
         {
             parentcategory: "Toys & Novelties",
-            subcategory: "Novelties (Humor, Gags & Pranks, Drinking Accessories etc)",
+            subcategory: "Novelties (Humor/Gags & Pranks/Drinking Accessories/etc)",
             createdAt: new Date(Date.now()),
             updatedAt: new Date(Date.now()),
         },
