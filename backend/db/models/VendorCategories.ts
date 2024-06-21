@@ -1,4 +1,4 @@
-import {Model, InferAttributes, InferCreationAttributes, DataTypes} from "sequelize";
+import {Model, InferAttributes, InferCreationAttributes, DataTypes, ForeignKey} from "sequelize";
 import {Database} from "../Database";
 import {Vendor} from "./Vendor";
 import {Category} from "./Category";
@@ -9,10 +9,8 @@ import {Category} from "./Category";
  */
 class VendorCategories extends Model<InferAttributes<VendorCategories>, InferCreationAttributes<VendorCategories>> {
     declare id: number;
-    declare vendor: string;
-    declare category: string;
-    // declare vendor: ForeignKey<Vendor["name"]>;
-    // declare category: ForeignKey<Category["subcategory"]>;
+    declare vendors: ForeignKey<Vendor["name"]>;
+    declare categories: ForeignKey<Category["subcategory"]>;
 }
 
 VendorCategories.init({
@@ -22,29 +20,39 @@ VendorCategories.init({
         autoIncrement: true,
         allowNull: false,
     },
-    vendor: {
+    vendors: {
         type: DataTypes.STRING,
         references: {
             model: Vendor,
             key: "name",
         },
         allowNull: false,
+        unique: true
     },
-    category: {
+    categories: {
         type: DataTypes.STRING,
         references: {
             model: Category,
             key: "subcategory",
         },
         allowNull: false,
+        unique: true
     },
 }, {
     sequelize: Database.GetInstance().sequelize,
     modelName: "VendorCategories",
 });
 
-Vendor.belongsToMany(Category, {through: VendorCategories});
-Category.belongsToMany(Vendor, {through: VendorCategories});
+Vendor.belongsToMany(Category, {
+    through: VendorCategories,
+    foreignKey: "vendors",
+    otherKey: "categories" 
+});
+Category.belongsToMany(Vendor, {
+    through: VendorCategories,
+    foreignKey: "categories",
+    otherKey: "vendors"
+});
 Vendor.hasMany(VendorCategories);
 VendorCategories.belongsTo(Vendor);
 Category.hasMany(VendorCategories);
