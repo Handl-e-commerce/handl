@@ -10,7 +10,7 @@ module.exports = {
                 autoIncrement: true,
                 allowNull: false,
             },
-            vendors: {
+            VendorName: {
                 type: Sequelize.STRING,
                 references: {
                     model: "Vendors",
@@ -18,7 +18,7 @@ module.exports = {
                 },
                 allowNull: false,
             },
-            categories: {
+            CategorySubcategory: {
                 type: Sequelize.STRING,
                 references: {
                     model: "Categories",

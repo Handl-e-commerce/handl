@@ -9,8 +9,8 @@ import {Category} from "./Category";
  */
 class VendorCategories extends Model<InferAttributes<VendorCategories>, InferCreationAttributes<VendorCategories>> {
     declare id: number;
-    declare vendors: ForeignKey<Vendor["name"]>;
-    declare categories: ForeignKey<Category["subcategory"]>;
+    declare VendorName: ForeignKey<Vendor["name"]>;
+    declare CategorySubcategory: ForeignKey<Category["subcategory"]>;
 }
 
 VendorCategories.init({
@@ -20,7 +20,7 @@ VendorCategories.init({
         autoIncrement: true,
         allowNull: false,
     },
-    vendors: {
+    VendorName: {
         type: DataTypes.STRING,
         references: {
             model: Vendor,
@@ -29,7 +29,7 @@ VendorCategories.init({
         allowNull: false,
         unique: true
     },
-    categories: {
+    CategorySubcategory: {
         type: DataTypes.STRING,
         references: {
             model: Category,
@@ -43,19 +43,11 @@ VendorCategories.init({
     modelName: "VendorCategories",
 });
 
-Vendor.belongsToMany(Category, {
-    through: VendorCategories,
-    foreignKey: "vendors",
-    otherKey: "categories" 
-});
-Category.belongsToMany(Vendor, {
-    through: VendorCategories,
-    foreignKey: "categories",
-    otherKey: "vendors"
-});
+Vendor.belongsToMany(Category, {through: VendorCategories});
+Category.belongsToMany(Vendor, {through: VendorCategories});
 Vendor.hasMany(VendorCategories);
-VendorCategories.belongsTo(Vendor);
+VendorCategories.belongsTo(Vendor, {});
 Category.hasMany(VendorCategories);
-VendorCategories.belongsTo(Category);
+VendorCategories.belongsTo(Category, {});
 
 export {VendorCategories};
