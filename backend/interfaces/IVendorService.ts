@@ -2,9 +2,8 @@ import {VendorCategories} from "../db/models/VendorCategories";
 
 interface IVendorService {
     GetVendors: (
-        categoryParam: string | undefined,
-        searchParams: string | undefined,
-        userId: string | undefined,
+        categories: string[] | null | undefined,
+        searchVal: string | null | undefined,
     ) => Promise<VendorCategories[]>;
 }
 

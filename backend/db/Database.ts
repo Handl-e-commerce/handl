@@ -31,6 +31,7 @@ class Database implements IDatabase {
             database = process.env.SQL_DATABASE_DEV as string;
         } else if (process.env.NODE_ENV === "test") {
             database = process.env.SQL_DATABASE_LOCAL_TEST as string;
+            logging = console.log;
         }
 
         this.sequelize = new Sequelize({

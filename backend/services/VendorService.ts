@@ -1,5 +1,5 @@
 import {IVendorService} from "../interfaces/IVendorService";
-import {Vendor} from "../db/models/Vendor";
+// import {Vendor} from "../db/models/Vendor";
 import {Op} from "sequelize";
 import {VendorCategories} from "../db/models/VendorCategories";
 
@@ -7,59 +7,30 @@ import {VendorCategories} from "../db/models/VendorCategories";
 class VendorService implements IVendorService {
     /**
      * Returns the total number of items found using the query and the results fixed by limit and offset
-     * @param {string | undefined} categoryParam
-     * @param {string | undefined} searchParams
+     * @param {string[] | null | undefined} categories
+     * @param {string[] | null | undefined} searchVal
      * @return {VendorCategories[]}
      */
     public async GetVendors(
-        categoryParam?: string | undefined,
-        searchParams?: string | undefined
+        categories: string[] | null | undefined,
+        searchVal: string | null | undefined
     ): Promise<VendorCategories[]> {
         try {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            let whereClause: any = {};
-            if (searchParams) {
-                whereClause = {
-                    [Op.or]: [
-                        {
-                            name: {
-                                [Op.iLike]: `%${searchParams}%`,
-                            },
-                        },
-                        {
-                            description: {
-                                [Op.iLike]: `%${searchParams}%`,
-                            },
-                        },
-                    ],
-                };
-            }
+            const whereClause: any = {};
 
-            if (categoryParam) {
-                whereClause.category = categoryParam;
+            if (categories) {
+                whereClause.category = {[Op.or]: categories};
+            }
+            if (searchVal) {
+                whereClause.vendor = {[Op.iLike]: `%${searchVal}%`};
             }
 
             const vendorResults: VendorCategories[] = await VendorCategories.findAll({
-                where: {
-                    category: categoryParam,
-                },
-                include: [{
-                    model: Vendor,
-                    where: {
-                        [Op.or]: [
-                            {
-                                name: {
-                                    [Op.iLike]: `%${searchParams}%`,
-                                },
-                            },
-                            {
-                                description: {
-                                    [Op.iLike]: `%${searchParams}%`,
-                                },
-                            },
-                        ],
-                    },
-                }],
+                where: whereClause,
+                // include: [{
+                //     model: Vendor,
+                // }],
             });
 
             return vendorResults;
