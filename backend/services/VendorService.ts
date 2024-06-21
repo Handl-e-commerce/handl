@@ -1,5 +1,5 @@
 import {IVendorService} from "../interfaces/IVendorService";
-// import {Vendor} from "../db/models/Vendor";
+import {Vendor} from "../db/models/Vendor";
 import {Op} from "sequelize";
 import {VendorCategories} from "../db/models/VendorCategories";
 
@@ -28,9 +28,9 @@ class VendorService implements IVendorService {
 
             const vendorResults: VendorCategories[] = await VendorCategories.findAll({
                 where: whereClause,
-                // include: [{
-                //     model: Vendor,
-                // }],
+                include: [{
+                    model: Vendor,
+                }],
             });
 
             return vendorResults;
