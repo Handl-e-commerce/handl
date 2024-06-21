@@ -43,4 +43,11 @@ VendorCategories.init({
     modelName: "VendorCategories",
 });
 
+Vendor.belongsToMany(Category, {through: VendorCategories});
+Category.belongsToMany(Vendor, {through: VendorCategories});
+Vendor.hasMany(VendorCategories);
+VendorCategories.belongsTo(Vendor);
+Category.hasMany(VendorCategories);
+VendorCategories.belongsTo(Category);
+
 export {VendorCategories};

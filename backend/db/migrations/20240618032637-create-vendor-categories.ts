@@ -1,7 +1,4 @@
 import {DataTypes, QueryInterface} from "sequelize";
-import {Vendor} from "../models/Vendor";
-import {Category} from "../models/Category";
-import {VendorCategories} from "../models/VendorCategories";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -38,13 +35,6 @@ module.exports = {
                 type: Sequelize.DATE,
             },
         });
-
-        Vendor.belongsToMany(Category, {through: VendorCategories});
-        Category.belongsToMany(Vendor, {through: VendorCategories});
-        Vendor.hasMany(VendorCategories);
-        VendorCategories.belongsTo(Vendor);
-        Category.hasMany(VendorCategories);
-        VendorCategories.belongsTo(Category);
     },
     // eslint-disable-next-line
   async down (queryInterface: QueryInterface, Sequelize: typeof DataTypes) {

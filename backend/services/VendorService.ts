@@ -12,8 +12,8 @@ class VendorService implements IVendorService {
      * @return {VendorCategories[]}
      */
     public async GetVendors(
-        categoryParam: string | undefined,
-        searchParams: string | undefined
+        categoryParam?: string | undefined,
+        searchParams?: string | undefined
     ): Promise<VendorCategories[]> {
         try {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
