@@ -20,16 +20,21 @@ class VendorService implements IVendorService {
             const whereClause: any = {};
 
             if (categories) {
-                whereClause.category = {[Op.or]: categories};
+                whereClause.CategorySubcategory = {[Op.or]: categories};
             }
-            if (searchVal) {
-                whereClause.vendor = {[Op.iLike]: `%${searchVal}%`};
-            }
+            // if (searchVal) {
+            //     whereClause.VendorName = {[Op.iLike]: `%${searchVal}%`};
+            // }
 
             const vendorResults: VendorCategories[] = await VendorCategories.findAll({
                 where: whereClause,
                 include: [{
                     model: Vendor,
+                    where: searchVal ? {
+                        name: {
+                            [Op.iLike]: `%${searchVal}%`
+                        }
+                    } : {}
                 }],
             });
 
