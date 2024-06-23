@@ -9,34 +9,44 @@ class VendorService implements IVendorService {
      * Returns the total number of items found using the query and the results fixed by limit and offset
      * @param {string[] | null | undefined} categories
      * @param {string[] | null | undefined} searchVal
-     * @return {VendorCategories[]}
+     * @return {Vendor[]}
      */
     public async GetVendors(
         categories: string[] | null | undefined,
         searchVal: string | null | undefined
-    ): Promise<VendorCategories[]> {
+    ): Promise<Vendor[]> {
         try {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const whereClause: any = {};
-
-            if (categories) {
-                whereClause.CategorySubcategory = {[Op.or]: categories};
-            }
-            // if (searchVal) {
-            //     whereClause.VendorName = {[Op.iLike]: `%${searchVal}%`};
-            // }
-
-            const vendorResults: VendorCategories[] = await VendorCategories.findAll({
-                where: whereClause,
+            const vendorResults: Vendor[] = await Vendor.findAll({
+                where: searchVal ? {
+                    name: {
+                        [Op.iLike]: `%${searchVal}%`
+                    }
+                }: {},
                 include: [{
-                    model: Vendor,
-                    where: searchVal ? {
-                        name: {
-                            [Op.iLike]: `%${searchVal}%`
+                    model: VendorCategories,
+                    where: categories ? {
+                        CategorySubcategory: {
+                            [Op.or]: categories
                         }
                     } : {}
-                }],
+                }]
             });
+
+            // const vendorResults: VendorCategories[] = await VendorCategories.findAll({
+            //     where: categories ? {
+            //         CategorySubcategory: {
+            //             [Op.or]: categories
+            //         }
+            //     }: {},
+            //     include: [{
+            //         model: Vendor,
+            //         where: searchVal ? {
+            //             name: {
+            //                 [Op.iLike]: `%${searchVal}%`
+            //             }
+            //         } : {}
+            //     }],
+            // });
 
             return vendorResults;
         } catch (err) {

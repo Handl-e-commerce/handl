@@ -1,10 +1,10 @@
-import {VendorCategories} from "../db/models/VendorCategories";
+import { Vendor } from "../db/models/Vendor";
 
 interface IVendorService {
     GetVendors: (
         categories: string[] | null | undefined,
         searchVal: string | null | undefined,
-    ) => Promise<VendorCategories[]>;
+    ) => Promise<Vendor[]>;
 }
 
 export {IVendorService};

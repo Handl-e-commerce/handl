@@ -13,21 +13,20 @@ describe("VendorService tests", () => {
         let vendorService = new VendorService();
         let results = await vendorService.GetVendors(["Sunglasses / Eyewear"], undefined);
         expect(results).toBeDefined();
-        expect(results.length).toBeGreaterThan(0);
+        expect(results.length).toEqual(2);
     });
 
     it("Should return only rows that match the search param", async () => {
         let vendorService = new VendorService();
         let results = await vendorService.GetVendors(undefined, "365 Fashions Inc.");
-        console.log(results);
         expect(results).toBeDefined();
-        expect(results.length).toEqual(4);
+        expect(results.length).toEqual(1);
     });
 
     it("Should return only rows that match both search params and passed categories", async () => {
         let vendorService = new VendorService();
-        let results = await vendorService.GetVendors(undefined, undefined);
+        let results = await vendorService.GetVendors(["Sunglasses / Eyewear"], "365 Fashions Inc.");
         expect(results).toBeDefined();
-        expect(results.length).toBeGreaterThan(0);
+        expect(results.length).toEqual(1);
     });
 });
