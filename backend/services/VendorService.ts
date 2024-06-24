@@ -3,7 +3,7 @@ import {Vendor} from "../db/models/Vendor";
 import {Op} from "sequelize";
 import {VendorCategories} from "../db/models/VendorCategories";
 
-/** Class Vendor Service */
+/** Vendor Service Class */
 class VendorService implements IVendorService {
     /**
      * Returns the total number of items found using the query and the results fixed by limit and offset
