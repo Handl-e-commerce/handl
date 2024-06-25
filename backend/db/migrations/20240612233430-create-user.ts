@@ -30,7 +30,7 @@ module.exports = {
                 unique: true,
             },
             EIN: {
-                type: DataTypes.STRING(9),
+                type: DataTypes.STRING,
                 allowNull: false,
                 unique: true,
             },
@@ -44,6 +44,10 @@ module.exports = {
                 allowNull: false,
             },
             address: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            city: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
@@ -85,6 +89,10 @@ module.exports = {
             },
             updatedAt: {
                 allowNull: false,
+                type: DataTypes.DATE,
+            },
+            deletedAt: {
+                allowNull: true,
                 type: DataTypes.DATE,
             },
         });

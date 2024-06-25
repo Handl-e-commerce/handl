@@ -16,7 +16,7 @@ module.exports = {
             validator: {
                 type: Sequelize.STRING,
             },
-            userId: {
+            UserUuid: {
                 type: Sequelize.STRING,
             },
             expires: {

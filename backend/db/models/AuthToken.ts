@@ -16,7 +16,7 @@ class AuthToken extends Model<InferAttributes<AuthToken>, InferCreationAttribute
     declare id: CreationOptional<number>;
     declare selector: string;
     declare validator: string;
-    declare userId: ForeignKey<User["uuid"]>;
+    declare UserUuid: ForeignKey<User["uuid"]>;
     declare expires: Date;
 }
 
@@ -34,7 +34,7 @@ AuthToken.init({
         type: DataTypes.STRING,
         allowNull: false,
     },
-    userId: {
+    UserUuid: {
         type: DataTypes.STRING,
         allowNull: false,
     },

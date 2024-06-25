@@ -46,6 +46,7 @@ class UserService implements IUserService {
                     publicEIN: publicEIN,
                     phoneNumber: userDetails.phoneNumber,
                     address: userDetails.address,
+                    city: userDetails.city,
                     state: userDetails.state,
                     zipcode: userDetails.zipcode,
                     categories: userDetails.categories,
@@ -128,7 +129,7 @@ class UserService implements IUserService {
         }
     }
 
-    // TODO
+    // TODO: (HIGH) Implement password reset and fraud prevention logic and email
     /**
    * Updates user password
    * @param {string} userId
@@ -249,7 +250,7 @@ class UserService implements IUserService {
             await AuthToken.create({
                 selector: selector,
                 validator: hashedValidator,
-                userId: user.uuid,
+                UserUuid: user.uuid,
                 expires: new Date(expirationDate),
             });
 
@@ -310,7 +311,7 @@ class UserService implements IUserService {
                 return false;
             }
 
-            if (userId != auth.userId) {
+            if (userId != auth.UserUuid) {
                 return false;
             }
 
