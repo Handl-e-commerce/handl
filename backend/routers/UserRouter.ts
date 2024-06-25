@@ -48,28 +48,28 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
         const loginStatus = await userService.Login(userDetails.email, userDetails.password);
         if (loginStatus.result) {
             return res.status(201)
-            .cookie("selector", loginStatus.selector, {
-                expires: new Date(Date.now() + (1000*60*60*24*90)),
-                sameSite: "none",
-                secure: true,
-                httpOnly: true,
-              })
-              .cookie("validator", loginStatus.validator, {
-                expires: new Date(Date.now() + (1000*60*60*24*90)),
-                sameSite: "none",
-                secure: true,
-                httpOnly: true,
-              })
-              .json({
-                message: "Successfully authenticated user",
-                userId: loginStatus.userId,
-                loggedIn: "true",
-                expires: new Date(Date.now() + (1000*60*60*24*90)),
-              })
+                .cookie("selector", loginStatus.selector, {
+                    expires: new Date(Date.now() + (1000*60*60*24*90)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .cookie("validator", loginStatus.validator, {
+                    expires: new Date(Date.now() + (1000*60*60*24*90)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .json({
+                    message: "Successfully authenticated user",
+                    userId: loginStatus.userId,
+                    loggedIn: "true",
+                    expires: new Date(Date.now() + (1000*60*60*24*90)),
+                })
             ;
         } else {
             return res.status(401).json({
-              message: "Unable to authenticate user",
+                message: "Unable to authenticate user",
             });
         }
     } catch (err: unknown) {
@@ -108,56 +108,56 @@ userRouter.post("/login/verify", async (req: Request, res: Response, next: NextF
 
 userRouter.post("/logout", async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const cookies = req.cookies;
-      const userService: UserService = new UserService();
-      await userService.Logout(cookies.selector);
-      return res.status(201)
-        .cookie("selector", "", {
-          maxAge: Number(new Date(1)),
-          sameSite: "none",
-          secure: true,
-          httpOnly: true,
-        })
-        .cookie("validator", "", {
-          maxAge: Number(new Date(1)),
-          sameSite: "none",
-          secure: true,
-          httpOnly: true,
-        })
-        .send();
+        const cookies = req.cookies;
+        const userService: UserService = new UserService();
+        await userService.Logout(cookies.selector);
+        return res.status(201)
+            .cookie("selector", "", {
+                maxAge: Number(new Date(1)),
+                sameSite: "none",
+                secure: true,
+                httpOnly: true,
+            })
+            .cookie("validator", "", {
+                maxAge: Number(new Date(1)),
+                sameSite: "none",
+                secure: true,
+                httpOnly: true,
+            })
+            .send();
     } catch (err: unknown) {
-      return next(err as Error);
+        return next(err as Error);
     }
-  });
-  
-  userRouter.post("/registration/verify", async (req: Request, res: Response, next: NextFunction) => {
+});
+
+userRouter.post("/registration/verify", async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userId: string = req.body.userId;
-      const token: string = req.body.token;
-      const userService: UserService = new UserService();
-      const verificationResult = await userService.VerifyRegistrationToken(userId, token);
-      if (verificationResult.result) {
-        return res.status(201).json({
-          message: verificationResult.message,
-        });
-      } else {
-        return res.status(401).json({
-          message: verificationResult.message,
-        });
-      }
+        const userId: string = req.body.userId;
+        const token: string = req.body.token;
+        const userService: UserService = new UserService();
+        const verificationResult = await userService.VerifyRegistrationToken(userId, token);
+        if (verificationResult.result) {
+            return res.status(201).json({
+                message: verificationResult.message,
+            });
+        } else {
+            return res.status(401).json({
+                message: verificationResult.message,
+            });
+        }
     } catch (err: unknown) {
-      return next(err as Error);
+        return next(err as Error);
     }
-  });
-  
+});
+
 userRouter.post("/registration/verify/new-token", async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userId: string = req.body.userId;
-      const userService: UserService = new UserService();
-      await userService.SendNewVerificationToken(userId);
-      return res.status(201).send();
+        const userId: string = req.body.userId;
+        const userService: UserService = new UserService();
+        await userService.SendNewVerificationToken(userId);
+        return res.status(201).send();
     } catch (err: unknown) {
-      return next(err as Error);
+        return next(err as Error);
     }
 });
 

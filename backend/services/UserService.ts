@@ -3,7 +3,11 @@ import {User} from "../db/models/User";
 import {IUserDetails} from "../interfaces/IUserDetails";
 import {IUserService} from "../interfaces/IUserService";
 import * as argon2 from "argon2";
-import { Vendor } from "../db/models/Vendor";
+import {Vendor} from "../db/models/Vendor";
+import {AuthToken} from "../db/models/authtoken";
+import {Op} from "sequelize";
+import * as nodemailer from "nodemailer";
+import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
 
 /**
  * User Service Class
@@ -14,7 +18,7 @@ class UserService implements IUserService {
      * @param {IUserDetails} userDetails
      * @return {string} letting us know whether user was created or already exists in database
      */
-    public async CreateUser(userDetails: IUserDetails): Promise<string> {
+    public async CreateUser(userDetails: IUserDetails): Promise<IGenericQueryResult> {
         try {
             const userId = uuidv4().toString();
 
@@ -47,10 +51,16 @@ class UserService implements IUserService {
                     password: hashedPassword,
                     savedVendors: [],
                     isVerified: false,
-                    verificationCode: hashedToken,
+                    verificationToken: hashedToken,
+                    tokenExpiration: new Date(Date.now() + 1000*60*15),
                 });
 
-                return "Created user.";
+                this.GenerateEmail(userId, token, userDetails.email);
+
+                return {
+                    id: userId,
+                    message: `Created new user with id: ${userId}`,
+                };
             } else {
                 throw new Error("User already exists in database.");
             }
@@ -60,83 +70,306 @@ class UserService implements IUserService {
         }
     }
 
-
-    // TODO: (HIGH) Implement the following methods
+    /**
+   * Returns a user based on userId
+   * @param {string} userId
+   * @return {Promise<User>}
+   */
     public async GetUserByUserId(userId: string): Promise<User> {
         try {
+            const user: User | null = await User.findOne({
+                where: {
+                    uuid: userId,
+                },
+            });
 
+            if (!user) {
+                throw new Error(`No users with id: ${userId} found.`);
+            }
+            return user;
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);
         }
     }
 
+    /**
+     * Get list of Vendors based on user's saved vendors
+     * @param {string} userId
+     * @return {Vendor[]}
+     */
     public async GetSavedVendors(userId: string): Promise<Vendor[]> {
         try {
-            
+            const usersSavedVendors = await User.findOne({
+                where: {
+                    uuid: userId,
+                },
+                attributes: ["savedVendors"],
+            });
+
+            if (!usersSavedVendors) {
+                return [];
+            }
+
+            const savedVendors = await Vendor.findAll({
+                where: {
+                    name: {
+                        [Op.and]: usersSavedVendors.savedVendors,
+                    },
+                },
+                attributes: ["name", "uuid"],
+            });
+
+            return savedVendors;
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);
         }
-    };
+    }
 
+    // TODO
+    /**
+   * Updates user password
+   * @param {string} userId
+   * @param {string} oldPassword
+   * @param {string} newPassword
+   * @return {Promise<IGenericQueryResult>}
+   */
     public async UpdateUserPassword(
         userId: string,
         oldPassword: string,
         newPassword: string
-    ): Promise<string> {
+    ): Promise<IGenericQueryResult> {
         try {
-            return "foo";
+            // need to send confirmation email saying you just changed your password and
+            // add necessary steps for case of fraud
+            const user: User | null = await User.findOne({
+                where: {
+                    uuid: userId,
+                },
+            });
+
+            if (user === null || user === undefined) {
+                throw new Error("Could not find user with associated user id");
+            }
+
+            if (!(await argon2.verify(user.password, oldPassword))) {
+                throw new Error("Invalid password. Please try again.");
+            }
+
+            const hashedPassword: string = await argon2.hash(newPassword);
+
+            await User.update({
+                password: hashedPassword,
+            }, {
+                where: {
+                    uuid: userId,
+                },
+            });
+
+            // Send email saying you've just updated your password, if this wasn't you click here
+            // Figure out logic for handling fraud prevention
+
+            return {
+                id: userId,
+                message: `Successfully updated password of user ${userId}`,
+            };
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);
         }
-    };
+    }
 
-
-    public async DeleteUser(userId: string): Promise<string> {
+    /**
+   * Soft deletes a user from the DB
+   * @param {string} userId
+   * @return {Promise<IGenericQueryResult>}
+   */
+    public async DeleteUser(userId: string): Promise<IGenericQueryResult> {
         try {
-            return "foo"
+            await User.destroy({
+                where: {
+                  uuid: userId,
+                },
+              });
+              return {
+                id: userId,
+                message: `Successfully soft-deleted user ${userId}.`,
+              };
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);
         }
-    };
+    }
 
+    /**
+     * Login method so that user can login and get long term session cookies in return
+     * @param {string} email
+     * @param {string} password
+     * @returns {Promise<{
+     * {boolean} result
+     * {string | null} selector
+     * {string | null} validator
+     * {string} userId
+     * {Date | null} expires
+     * }>}
+     */
     public async Login(email: string, password: string): Promise<{
         result: boolean,
         selector?: string | null,
         validator?: string | null,
+        userId?: string,
         expires?: Date | null
     }> {
         try {
-            
+            const user: User | null = await User.findOne({
+                where: {
+                    email: email,
+                },
+            });
+
+            if (user === null || user === undefined) {
+                return {
+                    result: false,
+                };
+            }
+
+            if (!(await argon2.verify(user.password, password))) {
+                return {
+                    result: false,
+                };
+            }
+
+            const selector = uuidv4().toString();
+            const validator = uuidv4().toString();
+            const hashedValidator: string = await argon2.hash(validator);
+            const expirationDate = new Date(Date.now()+1000*60*60*24*90);
+
+            await AuthToken.create({
+                selector: selector,
+                validator: hashedValidator,
+                userId: user.uuid,
+                expires: new Date(expirationDate),
+            });
+
+            return {
+                result: true,
+                selector: selector,
+                validator: validator,
+                userId: user.uuid,
+                expires: expirationDate,
+            };
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);
         }
-    };
+    }
 
+    /**
+     * Logs the user out and deletes the user's info from AuthToken table
+     * @param {string} selector
+     */
+    public async Logout(selector: string): Promise<void> {
+        try {
+            console.log("Logging user out and deleting tokens.");
+            const rowsAffected = await AuthToken.destroy({
+                where: {
+                    selector: selector,
+                },
+            });
+            console.log(`Number of rows deleted: ${rowsAffected}`);
+        } catch (err) {
+            const error = err as Error;
+            throw Error(error.message);
+        }
+    }
+
+    /**
+   * Method to verify that the user's long term log in cookies are still valid and user can be logged in
+   * Is also used to verify that user has access to user actions such as Account, Listings, Messages, Cart etc.
+   * If false, then cookies will be deleted from client side.
+   * @param {string} selector
+   * @param {string} validator
+   * @param {string} userId
+   * @return {Promise<boolean>}
+   */
     public async VerifyUser(selector: string, validator: string, userId: string): Promise<boolean> {
         try {
-            // default everyone is unverified. Trust but verify.
-            return false;   
+            const auth: AuthToken | null = await AuthToken.findOne({
+                where: {
+                    selector: selector,
+                },
+            });
+
+            if (auth === null) {
+                return false;
+            }
+
+            if (!(await argon2.verify(auth.validator, validator))) {
+                return false;
+            }
+
+            if (userId != auth.userId) {
+                return false;
+            }
+
+            return true;
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);
         }
-    };
+    }
 
+    // TODO
+    /**
+   * Verifies that the token the user pass after clicking verification link from email is valid
+   * @param {string} userId
+   * @param {string} token
+   * @return {boolean}
+   */
     public async VerifyRegistrationToken(userId: string, token: string): Promise<{
         result: boolean,
         message: string,
     }> {
         try {
-            // default everyone is unverified. Trust but verify.
-            return {
-                result: false,
-                message: "We weren't able to verify your registration token."
-            };   
+            const user: User | null = await User.findOne({
+                where: {
+                  uuid: userId,
+                },
+              });
+              if (user === null || user === undefined) {
+                return {
+                  result: false,
+                  message: "The email does not exist.",
+                };
+              }
+        
+              if (Date.now() > Number(user.tokenExpiration)) {
+                return {
+                  result: false,
+                  message: "The verification token has expired. Please request for a new one to be sent to you.",
+                };
+              }
+        
+              if (!(await argon2.verify(user.verificationToken, token))) {
+                return {
+                  result: false,
+                  message: "The verification token is not valid. Please request for a new one to be sent to you.",
+                };
+              }
+        
+              await User.update({
+                isVerified: true,
+              }, {
+                where: {
+                  uuid: userId,
+                },
+              });
+        
+              return {
+                result: true,
+                message: "Successfully verified email.",
+              };
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);
@@ -149,19 +382,19 @@ class UserService implements IUserService {
    */
     public async SendNewVerificationToken(userId: string): Promise<void> {
         try {
-        const token = this.GenerateToken(128);
-        const user: User | null = await User.findOne({
-            where: {
-            id: userId,
-            },
-        });
+            const token = this.GenerateToken(128);
+            const user: User | null = await User.findOne({
+                where: {
+                    uuid: userId,
+                },
+            });
 
-        if (user) {
-            this.GenerateEmail(userId, token, user.email);
-        }
+            if (user) {
+                this.GenerateEmail(userId, token, user.email);
+            }
         } catch (err) {
-        const error = err as Error;
-        throw Error(error.message);
+            const error = err as Error;
+            throw Error(error.message);
         }
     }
 
@@ -179,6 +412,7 @@ class UserService implements IUserService {
         return token;
     }
 
+    // TODO
     /**
    * Utility method meant for just sending a verification email to a user
    * @param {string} userId
@@ -187,34 +421,34 @@ class UserService implements IUserService {
    */
     private GenerateEmail(userId: string, token: string, email: string): void {
         const verificationLink: string = process.env.NODE_ENV === "development" ?
-        `http://localhost:3000/verify?token=${token}&userId=${userId}` :
-        process.env.VERIFICATION_LINK + `/verify?token=${token}&userId=${userId}`;
+            `http://localhost:3000/verify?token=${token}&userId=${userId}` :
+            process.env.VERIFICATION_LINK + `/verify?token=${token}&userId=${userId}`;
 
         const mailOptions = {
-        from: "support@thehandl.com",
-        to: email,
-        subject: "Please verify your email - The Handl Team",
-        replyTo: "support@thehandl.com",
-        // TODO: (MEDIUM) Create fraud prevention link which deletes any registered account from DB
-        html: createEmailTemplate(verificationLink, ""),
+            from: "support@thehandl.com",
+            to: email,
+            subject: "Please verify your email - The Handl Team",
+            replyTo: "support@thehandl.com",
+            // TODO: (MEDIUM) Create fraud prevention link which deletes any registered account from DB
+            html: createEmailTemplate(verificationLink, ""),
         };
 
         const transporter = nodemailer.createTransport({
-        host: "smtp.zoho.com",
-        port: 465,
-        secure: true, // use SSL
-        auth: {
-            user: "support@thehandl.com",
-            pass: process.env.ZOHO_MAIL_PASSWORD as string,
-        },
+            host: "smtp.zoho.com",
+            port: 465,
+            secure: true, // use SSL
+            auth: {
+                user: "support@thehandl.com",
+                pass: process.env.ZOHO_MAIL_PASSWORD as string,
+            },
         });
 
         transporter.sendMail(mailOptions, ( err, res)=>{
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("The email was sent successfully: ", res);
-        }
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("The email was sent successfully: ", res);
+            }
         });
     }
 }

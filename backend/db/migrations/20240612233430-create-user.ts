@@ -71,17 +71,21 @@ module.exports = {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            verificationCode: {
+            verificationToken: {
                 type: DataTypes.STRING,
+                allowNull: false,
+            },
+            tokenExpiration: {
+                type: DataTypes.DATE,
                 allowNull: false,
             },
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE,
+                type: DataTypes.DATE,
             },
             updatedAt: {
                 allowNull: false,
-                type: Sequelize.DATE,
+                type: DataTypes.DATE,
             },
         });
     },

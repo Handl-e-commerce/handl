@@ -1,17 +1,18 @@
 import {User} from "../db/models/User";
 import {Vendor} from "../db/models/Vendor";
+import {IGenericQueryResult} from "./IGenericQueryResult";
 import {IUserDetails} from "./IUserDetails";
 
 interface IUserService {
-    CreateUser: (userDetails: IUserDetails) => Promise<string>;
+    CreateUser: (userDetails: IUserDetails) => Promise<IGenericQueryResult>;
     GetUserByUserId: (userId: string) => Promise<User>;
     GetSavedVendors: (userId: string) => Promise<Vendor[]>;
     UpdateUserPassword: (
         userId: string,
         oldPassword: string,
         newPassword: string
-    ) => Promise<string>;
-    DeleteUser: (userId: string) => Promise<string>;
+    ) => Promise<IGenericQueryResult>;
+    DeleteUser: (userId: string) => Promise<IGenericQueryResult>;
     Login: (email: string, password: string) => Promise<{
         result: boolean,
         selector?: string | null,

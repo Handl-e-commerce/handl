@@ -20,7 +20,8 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare password: string;
     declare savedVendors: string[];
     declare isVerified: boolean;
-    declare verificationCode: string;
+    declare verificationToken: string;
+    declare tokenExpiration: Date;
 }
 
 User.init({
@@ -90,14 +91,19 @@ User.init({
         type: DataTypes.STRING,
         allowNull: false,
     },
-    verificationCode: {
+    verificationToken: {
         type: DataTypes.STRING,
+        allowNull: false,
+    },
+    tokenExpiration: {
+        type: DataTypes.DATE,
         allowNull: false,
     },
 },
 {
     sequelize: Database.GetInstance().sequelize,
     modelName: "Users",
+    paranoid: true
 });
 
 export {User};
