@@ -103,7 +103,7 @@ User.init({
 {
     sequelize: Database.GetInstance().sequelize,
     modelName: "Users",
-    paranoid: true
+    paranoid: true,
 });
 
 export {User};

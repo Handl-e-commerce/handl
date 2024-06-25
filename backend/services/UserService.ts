@@ -4,10 +4,11 @@ import {IUserDetails} from "../interfaces/IUserDetails";
 import {IUserService} from "../interfaces/IUserService";
 import * as argon2 from "argon2";
 import {Vendor} from "../db/models/Vendor";
-import {AuthToken} from "../db/models/authtoken";
+import {AuthToken} from "../db/models/AuthToken";
 import {Op} from "sequelize";
 import * as nodemailer from "nodemailer";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
+import {createVerifyEmailTemplate} from "../utils/CreateVerifyEmailTemplate";
 
 /**
  * User Service Class
@@ -55,7 +56,7 @@ class UserService implements IUserService {
                     tokenExpiration: new Date(Date.now() + 1000*60*15),
                 });
 
-                this.GenerateEmail(userId, token, userDetails.email);
+                this.GenerateVerificationEmail(userId, token, userDetails.email);
 
                 return {
                     id: userId,
@@ -189,13 +190,13 @@ class UserService implements IUserService {
         try {
             await User.destroy({
                 where: {
-                  uuid: userId,
+                    uuid: userId,
                 },
-              });
-              return {
+            });
+            return {
                 id: userId,
                 message: `Successfully soft-deleted user ${userId}.`,
-              };
+            };
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);
@@ -203,17 +204,17 @@ class UserService implements IUserService {
     }
 
     /**
-     * Login method so that user can login and get long term session cookies in return
-     * @param {string} email
-     * @param {string} password
-     * @returns {Promise<{
-     * {boolean} result
-     * {string | null} selector
-     * {string | null} validator
-     * {string} userId
-     * {Date | null} expires
-     * }>}
-     */
+    * Login method so that user can login and get long term session cookies in return
+    * @param {string} email
+    * @param {string} password
+    * @returns {Promise<{
+    * {boolean} result
+    * {string | null} selector
+    * {string | null} validator
+    * {string} userId
+    * {Date | null} expires
+    * }>}
+    */
     public async Login(email: string, password: string): Promise<{
         result: boolean,
         selector?: string | null,
@@ -286,7 +287,7 @@ class UserService implements IUserService {
 
     /**
    * Method to verify that the user's long term log in cookies are still valid and user can be logged in
-   * Is also used to verify that user has access to user actions such as Account, Listings, Messages, Cart etc.
+   * Is also used to verify that user has access to user actions such as My Account, etc.
    * If false, then cookies will be deleted from client side.
    * @param {string} selector
    * @param {string} validator
@@ -320,7 +321,6 @@ class UserService implements IUserService {
         }
     }
 
-    // TODO
     /**
    * Verifies that the token the user pass after clicking verification link from email is valid
    * @param {string} userId
@@ -334,42 +334,42 @@ class UserService implements IUserService {
         try {
             const user: User | null = await User.findOne({
                 where: {
-                  uuid: userId,
+                    uuid: userId,
                 },
-              });
-              if (user === null || user === undefined) {
+            });
+            if (user === null || user === undefined) {
                 return {
-                  result: false,
-                  message: "The email does not exist.",
+                    result: false,
+                    message: "The email does not exist.",
                 };
-              }
-        
-              if (Date.now() > Number(user.tokenExpiration)) {
+            }
+
+            if (Date.now() > Number(user.tokenExpiration)) {
                 return {
-                  result: false,
-                  message: "The verification token has expired. Please request for a new one to be sent to you.",
+                    result: false,
+                    message: "The verification token has expired. Please request for a new one to be sent to you.",
                 };
-              }
-        
-              if (!(await argon2.verify(user.verificationToken, token))) {
+            }
+
+            if (!(await argon2.verify(user.verificationToken, token))) {
                 return {
-                  result: false,
-                  message: "The verification token is not valid. Please request for a new one to be sent to you.",
+                    result: false,
+                    message: "The verification token is not valid. Please request for a new one to be sent to you.",
                 };
-              }
-        
-              await User.update({
+            }
+
+            await User.update({
                 isVerified: true,
-              }, {
+            }, {
                 where: {
-                  uuid: userId,
+                    uuid: userId,
                 },
-              });
-        
-              return {
+            });
+
+            return {
                 result: true,
                 message: "Successfully verified email.",
-              };
+            };
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);
@@ -390,7 +390,7 @@ class UserService implements IUserService {
             });
 
             if (user) {
-                this.GenerateEmail(userId, token, user.email);
+                this.GenerateVerificationEmail(userId, token, user.email);
             }
         } catch (err) {
             const error = err as Error;
@@ -412,25 +412,24 @@ class UserService implements IUserService {
         return token;
     }
 
-    // TODO
     /**
    * Utility method meant for just sending a verification email to a user
    * @param {string} userId
    * @param {string} token
    * @param {string} email
    */
-    private GenerateEmail(userId: string, token: string, email: string): void {
+    private GenerateVerificationEmail(userId: string, token: string, email: string): void {
         const verificationLink: string = process.env.NODE_ENV === "development" ?
             `http://localhost:3000/verify?token=${token}&userId=${userId}` :
             process.env.VERIFICATION_LINK + `/verify?token=${token}&userId=${userId}`;
 
         const mailOptions = {
-            from: "support@thehandl.com",
+            from: "The Handl Team",
             to: email,
             subject: "Please verify your email - The Handl Team",
             replyTo: "support@thehandl.com",
-            // TODO: (MEDIUM) Create fraud prevention link which deletes any registered account from DB
-            html: createEmailTemplate(verificationLink, ""),
+            // TODO: (HIGH) Create fraud prevention link which deletes any registered account from DB
+            html: createVerifyEmailTemplate(verificationLink, ""),
         };
 
         const transporter = nodemailer.createTransport({
@@ -443,7 +442,7 @@ class UserService implements IUserService {
             },
         });
 
-        transporter.sendMail(mailOptions, ( err, res)=>{
+        transporter.sendMail(mailOptions, (err, res)=>{
             if (err) {
                 console.log(err);
             } else {
