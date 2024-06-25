@@ -1,4 +1,4 @@
-import {beforeEach, afterEach, describe, expect, it, jest} from "@jest/globals";
+import {beforeEach, afterEach, describe, expect, it, jest, beforeAll} from "@jest/globals";
 import {UserService} from "../services/UserService";
 import {IUserDetails} from "../interfaces/IUserDetails";
 import {User} from "../db/models/User";
@@ -26,6 +26,7 @@ const userDetails: IUserDetails = {
   categories: ["Beauty", "Apparel"]
 };
 
+
 beforeEach( () => {
     sendMailMock.mockClear();
     nodemailer.createTransport.mockClear();
@@ -36,6 +37,7 @@ afterEach(async () => {
     where: {
       email: userDetails.email,
     },
+    force: true
   });
 });
 
@@ -121,7 +123,7 @@ describe("UserService Tests", function() {
       await userService.GetUserByUserId("IdThatDoesntExist");
     } catch (err) {
       const error = err as Error;
-      expect(error.message).toMatch("No users with id IdThatDoesntExist found.");
+      expect(error.message).toMatch("No users with id: IdThatDoesntExist found.");
     }
   });
 
