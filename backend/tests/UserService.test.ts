@@ -88,24 +88,15 @@ describe("UserService Tests", function() {
 
   it("Should update an existing users password", async function() {
     const result = await userService.CreateUser(userDetails);
-    const passwordUpdateResult = await userService.UpdateUserPassword(result.id, userDetails.password, "Fugazzi500$");
+    const passwordUpdateResult = await userService.ResetUserPassword(result.id, "Fugazzi500$");
     expect(passwordUpdateResult).toBeDefined();
   });
 
-  it("Should throw an error when updating password because password was invalid", async function() {
-    const result = await userService.CreateUser(userDetails);
-    try {
-      await userService.UpdateUserPassword(result.id, "WrongPassword", "Fugazzi500$");
-    } catch (err) {
-      const error = err as Error;
-      expect(error.message).toMatch("Invalid password. Please try again.");
-    }
-  });
 
   it("Should throw an error when updating password because user does not exist", async function() {
     await userService.CreateUser(userDetails);
     try {
-      await userService.UpdateUserPassword("DoesNotExist", userDetails.password, "Fugazzi500$");
+      await userService.ResetUserPassword("DoesNotExist", "Fugazzi500$");
     } catch (err) {
       const error = err as Error;
       expect(error.message).toMatch("Could not find user with associated user id");

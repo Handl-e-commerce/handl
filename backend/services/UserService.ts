@@ -32,7 +32,7 @@ class UserService implements IUserService {
             const hashedPassword: string = await argon2.hash(userDetails.password);
             const token: string = this.GenerateToken(128);
             const hashedToken: string = await argon2.hash(token);
-            const hashedEIN: string = await argon2.hash(userDetails.EIN.toString());
+            const encryptedEIN: string = await argon2.hash(userDetails.EIN.toString());
             const publicEIN: string = userDetails.EIN.toString().slice(5, 9);
 
             if (!userExists) {
@@ -42,7 +42,7 @@ class UserService implements IUserService {
                     firstName: userDetails.firstName,
                     lastName: userDetails.lastName,
                     businessName: userDetails.businessName,
-                    EIN: hashedEIN,
+                    EIN: encryptedEIN,
                     publicEIN: publicEIN,
                     phoneNumber: userDetails.phoneNumber,
                     address: userDetails.address,
@@ -137,9 +137,8 @@ class UserService implements IUserService {
    * @param {string} newPassword
    * @return {Promise<IGenericQueryResult>}
    */
-    public async UpdateUserPassword(
+    public async ResetUserPassword(
         userId: string,
-        oldPassword: string,
         newPassword: string
     ): Promise<IGenericQueryResult> {
         try {
@@ -153,10 +152,6 @@ class UserService implements IUserService {
 
             if (user === null || user === undefined) {
                 throw new Error("Could not find user with associated user id");
-            }
-
-            if (!(await argon2.verify(user.password, oldPassword))) {
-                throw new Error("Invalid password. Please try again.");
             }
 
             const hashedPassword: string = await argon2.hash(newPassword);
@@ -429,7 +424,7 @@ class UserService implements IUserService {
             to: email,
             subject: "Please verify your email - The Handl Team",
             replyTo: "support@thehandl.com",
-            // TODO: (HIGH) Create fraud prevention link which deletes any registered account from DB
+            // TODO: (HIGH) Create fraud prevention link which deletes any newly registered account from DB
             html: createVerifyEmailTemplate(verificationLink, ""),
         };
 

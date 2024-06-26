@@ -29,7 +29,7 @@ userRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) =
 userRouter.put("/:id/password", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userService: UserService = new UserService();
-        const result = await userService.UpdateUserPassword(req.params.id, req.body.oldPassword, req.body.newPassword);
+        const result = await userService.ResetUserPassword(req.params.id, req.body.newPassword);
         return res.status(201).json({
             message: result,
         });

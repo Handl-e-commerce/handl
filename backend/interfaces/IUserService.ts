@@ -7,9 +7,8 @@ interface IUserService {
     CreateUser: (userDetails: IUserDetails) => Promise<IGenericQueryResult>;
     GetUserByUserId: (userId: string) => Promise<User>;
     GetSavedVendors: (userId: string) => Promise<Vendor[]>;
-    UpdateUserPassword: (
+    ResetUserPassword: (
         userId: string,
-        oldPassword: string,
         newPassword: string
     ) => Promise<IGenericQueryResult>;
     DeleteUser: (userId: string) => Promise<IGenericQueryResult>;
