@@ -118,10 +118,18 @@ describe("UserService Tests", function() {
     }
   });
 
-  it("Should delete an existing user", async function() {
+  it("Should soft delete an existing user", async function() {
     const result = await userService.CreateUser(userDetails);
     const deleteResult = await userService.DeleteUser(result.id);
     expect(deleteResult).toBeDefined();
+    let softDeletedUser = await User.findOne({
+        where: {
+            email: userDetails.email
+        },
+        paranoid: false
+    });
+
+    expect(softDeletedUser?.isSoftDeleted()).toEqual(true);
   });
 
   it("Should return true result, selector, validator, and expiration because user is valid", async function() {
