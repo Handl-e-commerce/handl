@@ -38,7 +38,7 @@ class UserService implements IUserService {
             const hashedPassword: string = await argon2.hash(userDetails.password);
             const token: string = this.GenerateToken(128);
             const hashedToken: string = await argon2.hash(token);
-            const encryptedEIN: string = this.encryptionUtil.EncryptData(userDetails.EIN.toString());
+            const encryptedEIN = this.encryptionUtil.EncryptData(userDetails.EIN.toString());
             const publicEIN: string = userDetails.EIN.toString().slice(5, 9);
 
             if (!userExists) {
@@ -60,7 +60,7 @@ class UserService implements IUserService {
                     savedVendors: [],
                     isVerified: false,
                     verificationToken: hashedToken,
-                    tokenExpiration: new Date(Date.now() + 1000*60*15),
+                    tokenExpiration: new Date(Date.now() + 1000*60*15)
                 });
 
                 this.GenerateVerificationEmail(userId, token, userDetails.email);
