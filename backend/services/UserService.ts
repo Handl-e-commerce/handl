@@ -9,11 +9,17 @@ import {Op} from "sequelize";
 import * as nodemailer from "nodemailer";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
 import {createVerifyEmailTemplate} from "../utils/CreateVerifyEmailTemplate";
+import {EncryptionUtil} from "../utils/EncryptionUtil";
 
 /**
  * User Service Class
  */
 class UserService implements IUserService {
+    private encryptionUtil: EncryptionUtil;
+    
+    constructor() {
+        this.encryptionUtil = new EncryptionUtil();
+    };
     /**
      * Method to create a user in our database and sends generated token for user email verification
      * @param {IUserDetails} userDetails
@@ -32,7 +38,7 @@ class UserService implements IUserService {
             const hashedPassword: string = await argon2.hash(userDetails.password);
             const token: string = this.GenerateToken(128);
             const hashedToken: string = await argon2.hash(token);
-            const encryptedEIN: string = await argon2.hash(userDetails.EIN.toString());
+            const encryptedEIN = this.encryptionUtil.EncryptData(userDetails.EIN.toString());
             const publicEIN: string = userDetails.EIN.toString().slice(5, 9);
 
             if (!userExists) {
@@ -54,7 +60,7 @@ class UserService implements IUserService {
                     savedVendors: [],
                     isVerified: false,
                     verificationToken: hashedToken,
-                    tokenExpiration: new Date(Date.now() + 1000*60*15),
+                    tokenExpiration: new Date(Date.now() + 1000*60*15)
                 });
 
                 this.GenerateVerificationEmail(userId, token, userDetails.email);

@@ -3,6 +3,7 @@ import {UserService} from "../services/UserService";
 import {IUserDetails} from "../interfaces/IUserDetails";
 import {User} from "../db/models/User";
 import {AuthToken} from "../db/models/AuthToken";
+import { EncryptionUtil } from "../utils/EncryptionUtil";
 
 const sendMailMock = jest.fn().mockReturnValue("Sent mock email!");
 
@@ -43,14 +44,14 @@ afterEach(async () => {
 
 describe("UserService Tests", function() {
   const userService: UserService = new UserService();
-  it("Should create a new user with its own id", async function() {
+  it("Should create a new user with its own id", async () => {
     const result = await userService.CreateUser(userDetails);
     expect(result).toBeDefined();
     expect(result.id).toBeDefined();
     expect(result.message).toBe(`Created new user with id: ${result.id}`);
   });
 
-  it("Should thorw an error if username already exists when creating new user", async function() {
+  it("Should thorw an error if username already exists when creating new user", async () => {
     try {
       await userService.CreateUser(userDetails);
       await userService.CreateUser(userDetails);
@@ -60,21 +61,22 @@ describe("UserService Tests", function() {
     }
   });
 
-  it("Should return an error if non-null field is null when creating user", async function() {
+  it("Should return an error if non-null field is null when creating user", async () => {
     // Realistically this will never happen, since I've created userDetails type to prevent this from happening.
     // I had to set this to any in order for this test to actually go through
     const userDetailsNull: any = {
-      username: "testUser",
-      password: "Bafang00l$!",
-      firstName: null,
-      lastName: "User",
-      businessName: null,
-      phoneNumber: "123-456-7890",
-      email: "foobar@fizz.buzz",
-      address: "4398 Space st",
-      city: "Crooklyn",
-      state: "FY",
-      zipcode: "42310",
+        email: "foobar@fizz.buzz",
+        businessName: null,
+        EIN: 123456789,
+        phoneNumber: "1234567890",
+        password: "Bafang00l$!",
+        firstName: "Test",
+        lastName: "User",
+        address: "4398 Space st",
+        city: "Crooklyn",
+        state: "FY",
+        zipcode: "42310",
+        categories: ["Beauty", "Apparel"]
     };
     try {
       await userService.CreateUser(userDetailsNull);
@@ -86,14 +88,26 @@ describe("UserService Tests", function() {
     }
   });
 
-  it("Should update an existing users password", async function() {
+  it("Should update an existing users password", async () => {
     const result = await userService.CreateUser(userDetails);
     const passwordUpdateResult = await userService.ResetUserPassword(result.id, "Fugazzi500$");
     expect(passwordUpdateResult).toBeDefined();
   });
 
+  it("Should assert that the EIN is encrypted and can be decrypted", async () => {
+    await userService.CreateUser(userDetails);
+    let user: User = await User.findOne({
+        where: {
+            businessName: userDetails.businessName
+        }
+    }) as User;
+    expect(user.EIN.toString()).not.toEqual(userDetails.EIN);
+    let encryptionUtil: EncryptionUtil = new EncryptionUtil();
+    let decryptedVal: string = encryptionUtil.DecryptData(user.EIN);
+    expect(decryptedVal).toEqual(userDetails.EIN.toString());
+  });
 
-  it("Should throw an error when updating password because user does not exist", async function() {
+  it("Should throw an error when updating password because user does not exist", async () => {
     await userService.CreateUser(userDetails);
     try {
       await userService.ResetUserPassword("DoesNotExist", "Fugazzi500$");
@@ -103,13 +117,13 @@ describe("UserService Tests", function() {
     }
   });
 
-  it("Should get an existing user with valid id", async function() {
+  it("Should get an existing user with valid id", async () => {
     const result = await userService.CreateUser(userDetails);
     const getResult: User = await userService.GetUserByUserId(result.id);
     expect(getResult.businessName).toMatch(userDetails.businessName);
   });
 
-  it("Should return an error because user does not exist in the DB", async function() {
+  it("Should return an error because user does not exist in the DB", async () => {
     try {
       await userService.GetUserByUserId("IdThatDoesntExist");
     } catch (err) {
@@ -118,13 +132,21 @@ describe("UserService Tests", function() {
     }
   });
 
-  it("Should delete an existing user", async function() {
+  it("Should soft delete an existing user", async () => {
     const result = await userService.CreateUser(userDetails);
     const deleteResult = await userService.DeleteUser(result.id);
     expect(deleteResult).toBeDefined();
+    let softDeletedUser = await User.findOne({
+        where: {
+            email: userDetails.email
+        },
+        paranoid: false
+    });
+
+    expect(softDeletedUser?.isSoftDeleted()).toEqual(true);
   });
 
-  it("Should return true result, selector, validator, and expiration because user is valid", async function() {
+  it("Should return true result, selector, validator, and expiration because user is valid", async () => {
     await userService.CreateUser(userDetails);
     const loginRes = await userService.Login(userDetails.email, userDetails.password);
     expect(loginRes.result).toBe(true);
@@ -146,7 +168,7 @@ describe("UserService Tests", function() {
     })
   });
 
-  it("Should return false because user does not exist", async function() {
+  it("Should return false because user does not exist", async () => {
     await userService.CreateUser(userDetails);
     const loginRes = await userService.Login("Bafangool@gmail.com", userDetails.password);
     expect(loginRes.result).toBe(false);
@@ -155,7 +177,7 @@ describe("UserService Tests", function() {
     expect(loginRes.expires).not.toBeDefined();
   });
 
-  it("Should return false because password is incorrect", async function() {
+  it("Should return false because password is incorrect", async () => {
     await userService.CreateUser(userDetails);
     const loginRes = await userService.Login(userDetails.email, "obviouslywrongpassword");
     expect(loginRes.result).toBe(false);
@@ -164,7 +186,7 @@ describe("UserService Tests", function() {
     expect(loginRes.expires).not.toBeDefined();
   });
 
-  it("Should return true because 'cookies' are valid from the user", async function() {
+  it("Should return true because 'cookies' are valid from the user", async () => {
     await userService.CreateUser(userDetails);
     const loginRes = await userService.Login(userDetails.email, userDetails.password);
     expect(loginRes.selector).toBeDefined();
@@ -182,7 +204,7 @@ describe("UserService Tests", function() {
     })
   });
 
-  it("Should return false because userId pass doesn't match userId found in AuthToken table.", async function() {
+  it("Should return false because userId pass doesn't match userId found in AuthToken table.", async () => {
     await userService.CreateUser(userDetails);
     const loginRes = await userService.Login(userDetails.email, userDetails.password);
     expect(loginRes.selector).toBeDefined();
@@ -196,12 +218,12 @@ describe("UserService Tests", function() {
     });
   });
 
-  it("Should return false because row doesn't exist in the DB leading to null from query", async function() {
+  it("Should return false because row doesn't exist in the DB leading to null from query", async () => {
     const verify: boolean = await userService.VerifyUser("SelectorThatDoesn'tExistInDB", "ValidatorThatDoesn'tExistInDB", "MockUserId");
     expect(verify).toBe(false);
   });
 
-  it("Should return false because validator doesn't match decrypted validator", async function() {
+  it("Should return false because validator doesn't match decrypted validator", async () => {
     await userService.CreateUser(userDetails);
     const loginRes = await userService.Login(userDetails.email, userDetails.password);
     expect(loginRes.selector).toBeDefined();
@@ -218,7 +240,7 @@ describe("UserService Tests", function() {
   // Skip for now because I need to figure out how to get the randomly generated token 
   // not from an email and instead programmatically. Until then, it will always fail the
   // token verification step which isn't a bad thing but still, this test is difficult.
-  it.skip("Should update that the user is verified because the token is valid and not expired", async function() {
+  it.skip("Should update that the user is verified because the token is valid and not expired", async () => {
     await userService.CreateUser(userDetails);
     let dummyUser = await User.findOne({
       where: {
@@ -235,7 +257,7 @@ describe("UserService Tests", function() {
     expect(result.message).toEqual("Successfully verified email.");
   });
 
-  it("Should return false because the user doesn't exist", async function() {
+  it("Should return false because the user doesn't exist", async () => {
     await userService.CreateUser(userDetails);
     let dummyUser = await User.findOne({
       where: {
@@ -251,7 +273,7 @@ describe("UserService Tests", function() {
     expect(result.message).toEqual("The email does not exist.");
   });
 
-  it("Should return false because the token is expired", async function() {
+  it("Should return false because the token is expired", async () => {
     await userService.CreateUser(userDetails);
     let dummyUser = await User.findOne({
       where: {
@@ -275,7 +297,7 @@ describe("UserService Tests", function() {
     expect(result.message).toEqual("The verification token has expired. Please request for a new one to be sent to you.");
   });
 
-  it("Should return false because the token is not valid", async function() {
+  it("Should return false because the token is not valid", async () => {
     await userService.CreateUser(userDetails);
     let dummyUser = await User.findOne({
       where: {
@@ -291,20 +313,20 @@ describe("UserService Tests", function() {
     expect(result.message).toEqual("The verification token is not valid. Please request for a new one to be sent to you.");
   });
 
-  it("Should confirm that email is sent because user exists", async function() {
+  it("Should confirm that email is sent because user exists", async () => {
     await userService.CreateUser(userDetails);
     await userService.SendNewVerificationToken(userDetails.email);
     expect(sendMailMock).toHaveBeenCalledTimes(1);
     expect(sendMailMock).toHaveBeenCalled();
   });
 
-  it("Should do nothing because user doesn't exist", async function() {
+  it("Should do nothing because user doesn't exist", async () => {
     await userService.SendNewVerificationToken("foo");
     expect(sendMailMock).toHaveBeenCalledTimes(0);
     expect(sendMailMock).not.toHaveBeenCalled();
   });
   
-  it("Should delete row containing selecter after logout is invoked", async function() {
+  it("Should delete row containing selecter after logout is invoked", async () => {
     await userService.CreateUser(userDetails);
     const loginRes = await userService.Login(userDetails.email, userDetails.password);
     let tokenRow = await AuthToken.findOne({
