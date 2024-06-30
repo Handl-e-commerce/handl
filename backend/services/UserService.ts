@@ -448,6 +448,11 @@ class UserService implements IUserService {
             subject: "Please verify your email - The Handl Team",
             replyTo: "support@thehandl.com",
             html: htmlToSend,
+            attachments: [{
+                filename: "handl-email-logo-narrow.png",
+                path: path.resolve("../backend/email-templates/handl-email-logo-narrow.png"),
+                cid: "companyLogo",
+            }],
         };
 
         const transporter = nodemailer.createTransport({
