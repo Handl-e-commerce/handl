@@ -431,7 +431,7 @@ class UserService implements IUserService {
     private GenerateVerificationEmail(name: string, userId: string, token: string, email: string): void {
         const url = process.env.NODE_ENV === "development" ? "http://localhost:3000" : process.env.VERIFICATION_LINK;
         const verificationLink: string = url + `/verify?token=${token}&userId=${userId}`;
-        const fruadPreventionLink: string = url + `/cancel-registration/?userId=${userId}`
+        const fruadPreventionLink: string = url + `/cancel-registration/?userId=${userId}`;
         const filePath = path.resolve("../backend/email-templates/VerifyEmail/VerifyEmail.html");
         const source = fs.readFileSync(filePath, "utf-8").toString();
         const template = handlebars.compile(source);
@@ -443,7 +443,7 @@ class UserService implements IUserService {
         const htmlToSend = template(replacements);
 
         const mailOptions = {
-            from: "The Handl Team",
+            from: "The Handl Team <support@thehandl.com>",
             to: email,
             subject: "Please verify your email - The Handl Team",
             replyTo: "support@thehandl.com",
