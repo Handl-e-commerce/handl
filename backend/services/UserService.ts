@@ -429,7 +429,7 @@ class UserService implements IUserService {
    * @param {string} email
    */
     private GenerateVerificationEmail(name: string, userId: string, token: string, email: string): void {
-        const url = process.env.NODE_ENV === "development" ? "http://localhost:3000" : process.env.VERIFICATION_LINK;
+        const url = process.env.NODE_ENV === "local_dev" ? "http://localhost:3000" : process.env.VERIFICATION_LINK;
         const verificationLink: string = url + `/verify?token=${token}&userId=${userId}`;
         const fruadPreventionLink: string = url + `/cancel-registration/?userId=${userId}`;
         const filePath = path.resolve("../backend/email-templates/VerifyEmail/VerifyEmail.html");
