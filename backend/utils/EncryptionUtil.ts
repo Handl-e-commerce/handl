@@ -1,10 +1,16 @@
 import crypto from "crypto";
 
+/**
+ * Encryption Util class used for encrypting and decrypting data to store in DB using Node's built in crypto library
+ */
 class EncryptionUtil {
     private encryption_method: crypto.CipherGCMTypes;
     private key: crypto.CipherKey;
     private encryptionIV: Buffer;
 
+    /**
+     * constructor
+     */
     constructor() {
         this.encryption_method = process.env.ENCRYPTION_METHOD as crypto.CipherGCMTypes;
         this.key = crypto
@@ -15,6 +21,11 @@ class EncryptionUtil {
         this.encryptionIV = crypto.randomBytes(32);
     }
 
+    /**
+     * Encryption method which takes in a string and encrypts the data we want to store
+     * @param {string} data
+     * @return {string} encrypted data
+     */
     public EncryptData(data: string): string {
         const cipher = crypto.createCipheriv(
             this.encryption_method,
@@ -30,6 +41,11 @@ class EncryptionUtil {
         return encryptedData + "$$" + tag + "$$" + iv.toString("hex");
     }
 
+    /**
+     * Decryption method which takes in an encrypted string and decrypts it for us to read
+     * @param {string} encryptedData
+     * @return {string} decrypted data for us to be able to read
+     */
     public DecryptData(encryptedData: string): string {
         const cipherSplit: string[] = encryptedData.split("$$");
         console.log(cipherSplit);
