@@ -2,14 +2,18 @@ const express = require("express");
 import {NextFunction, Request, Response} from "express";
 import {IUserDetails} from "../interfaces/IUserDetails";
 import {UserService} from "../services/UserService";
+import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
 
 const userRouter = express.Router();
 
 userRouter.post("/register", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userDetails: IUserDetails = req.body;
-        console.log(userDetails);
-        return res.status(201).json();
+        const userService: UserService = new UserService();
+        const result: IGenericQueryResult = await userService.CreateUser(userDetails);
+        return res.status(201).json({
+            message: result.message,
+        });
     } catch (err: unknown) {
         const error = err as Error;
         return next(error);

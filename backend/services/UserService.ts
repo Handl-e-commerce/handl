@@ -7,8 +7,10 @@ import {Vendor} from "../db/models/Vendor";
 import {AuthToken} from "../db/models/AuthToken";
 import {Op} from "sequelize";
 import * as nodemailer from "nodemailer";
+import * as handlebars from "handlebars";
+import * as fs from "fs";
+import * as path from "path";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
-import {createVerifyEmailTemplate} from "../utils/CreateVerifyEmailTemplate";
 import {EncryptionUtil} from "../utils/EncryptionUtil";
 
 /**
@@ -16,10 +18,13 @@ import {EncryptionUtil} from "../utils/EncryptionUtil";
  */
 class UserService implements IUserService {
     private encryptionUtil: EncryptionUtil;
-    
+
+    /**
+     * constructor where we inject services and utils
+     */
     constructor() {
         this.encryptionUtil = new EncryptionUtil();
-    };
+    }
     /**
      * Method to create a user in our database and sends generated token for user email verification
      * @param {IUserDetails} userDetails
@@ -60,10 +65,10 @@ class UserService implements IUserService {
                     savedVendors: [],
                     isVerified: false,
                     verificationToken: hashedToken,
-                    tokenExpiration: new Date(Date.now() + 1000*60*15)
+                    tokenExpiration: new Date(Date.now() + 1000*60*30),
                 });
 
-                this.GenerateVerificationEmail(userId, token, userDetails.email);
+                this.GenerateVerificationEmail(userDetails.firstName, userId, token, userDetails.email);
 
                 return {
                     id: userId,
@@ -139,7 +144,6 @@ class UserService implements IUserService {
     /**
    * Updates user password
    * @param {string} userId
-   * @param {string} oldPassword
    * @param {string} newPassword
    * @return {Promise<IGenericQueryResult>}
    */
@@ -183,6 +187,7 @@ class UserService implements IUserService {
         }
     }
 
+    // TODO: (HIGH) Create deletion confirmation email
     /**
    * Soft deletes a user from the DB
    * @param {string} userId
@@ -206,17 +211,10 @@ class UserService implements IUserService {
     }
 
     /**
-    * Login method so that user can login and get long term session cookies in return
-    * @param {string} email
-    * @param {string} password
-    * @returns {Promise<{
-    * {boolean} result
-    * {string | null} selector
-    * {string | null} validator
-    * {string} userId
-    * {Date | null} expires
-    * }>}
-    */
+     * Login method so that user can login and get long term session cookies in return
+     * @param {string} email
+     * @param {string} password
+     */
     public async Login(email: string, password: string): Promise<{
         result: boolean,
         selector?: string | null,
@@ -385,6 +383,15 @@ class UserService implements IUserService {
     public async SendNewVerificationToken(userId: string): Promise<void> {
         try {
             const token = this.GenerateToken(128);
+            await User.update({
+                verificationToken: token,
+                tokenExpiration: new Date(Date.now() + 1000*60*30),
+            }, {
+                where: {
+                    uuid: userId,
+                },
+            });
+
             const user: User | null = await User.findOne({
                 where: {
                     uuid: userId,
@@ -392,7 +399,7 @@ class UserService implements IUserService {
             });
 
             if (user) {
-                this.GenerateVerificationEmail(userId, token, user.email);
+                this.GenerateVerificationEmail(user.firstName, userId, token, user.email);
             }
         } catch (err) {
             const error = err as Error;
@@ -416,22 +423,36 @@ class UserService implements IUserService {
 
     /**
    * Utility method meant for just sending a verification email to a user
+   * @param {string} name
    * @param {string} userId
    * @param {string} token
    * @param {string} email
    */
-    private GenerateVerificationEmail(userId: string, token: string, email: string): void {
-        const verificationLink: string = process.env.NODE_ENV === "development" ?
-            `http://localhost:3000/verify?token=${token}&userId=${userId}` :
-            process.env.VERIFICATION_LINK + `/verify?token=${token}&userId=${userId}`;
+    private GenerateVerificationEmail(name: string, userId: string, token: string, email: string): void {
+        const url = process.env.NODE_ENV === "local_dev" ? "http://localhost:3000" : process.env.VERIFICATION_LINK;
+        const verificationLink: string = url + `/verify?token=${token}&userId=${userId}`;
+        const fraudPreventionLink: string = url + `/cancel-registration/?userId=${userId}`;
+        const filePath = path.resolve("../backend/email-templates/VerifyEmail/VerifyEmail.html");
+        const source = fs.readFileSync(filePath, "utf-8").toString();
+        const template = handlebars.compile(source);
+        const replacements = {
+            name: name,
+            verificationLink: verificationLink,
+            fraudPreventionLink: fraudPreventionLink,
+        };
+        const htmlToSend = template(replacements);
 
         const mailOptions = {
-            from: "The Handl Team",
+            from: "The Handl Team <support@thehandl.com>",
             to: email,
             subject: "Please verify your email - The Handl Team",
             replyTo: "support@thehandl.com",
-            // TODO: (HIGH) Create fraud prevention link which deletes any newly registered account from DB
-            html: createVerifyEmailTemplate(verificationLink, ""),
+            html: htmlToSend,
+            attachments: [{
+                filename: "handl-email-logo-narrow.png",
+                path: path.resolve("../backend/email-templates/handl-email-logo-narrow.png"),
+                cid: "companyLogo",
+            }],
         };
 
         const transporter = nodemailer.createTransport({
