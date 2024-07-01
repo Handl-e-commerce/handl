@@ -140,7 +140,6 @@ class UserService implements IUserService {
         }
     }
 
-    // TODO: (HIGH) Implement password reset and fraud prevention logic and email
     /**
    * Updates user password
    * @param {string} userId
@@ -152,8 +151,6 @@ class UserService implements IUserService {
         newPassword: string
     ): Promise<IGenericQueryResult> {
         try {
-            // need to send confirmation email saying you just changed your password and
-            // add necessary steps for case of fraud
             const user: User | null = await User.findOne({
                 where: {
                     uuid: userId,
@@ -174,8 +171,7 @@ class UserService implements IUserService {
                 },
             });
 
-            // Send email saying you've just updated your password, if this wasn't you click here
-            // Figure out logic for handling fraud prevention
+            this.GeneratePasswordResetConfirmationEmail(user.firstName, user.email);
 
             return {
                 id: userId,
@@ -187,7 +183,29 @@ class UserService implements IUserService {
         }
     }
 
-    // TODO: (HIGH) Create deletion confirmation email
+
+    /**
+     * Creates a secure link for a user to change their passowrd,
+     * email will be sent to them in order to change the password
+     * @param {stirng} userId
+     */
+    public async RequestUserPasswordReset(userId: string): Promise<void> {
+        try {
+            const user = await User.findOne({
+                where: {
+                    uuid: userId,
+                },
+            });
+            if (!user) {
+                throw new Error("User does not exist.");
+            }
+            this.GeneratePasswordResetEmail(user.firstName, user.email);
+        } catch (err) {
+            const error = err as Error;
+            throw Error(error.message);
+        }
+    }
+
     /**
    * Soft deletes a user from the DB
    * @param {string} userId
@@ -195,11 +213,24 @@ class UserService implements IUserService {
    */
     public async DeleteUser(userId: string): Promise<IGenericQueryResult> {
         try {
+            const user = await User.findOne({
+                where: {
+                    uuid: userId,
+                },
+            });
+
+            if (!user) {
+                throw new Error("User does not exist, cannot delete.");
+            }
+
             await User.destroy({
                 where: {
                     uuid: userId,
                 },
             });
+
+            this.GenerateDeletionConfirmationEmail(user.firstName, user.email);
+
             return {
                 id: userId,
                 message: `Successfully soft-deleted user ${userId}.`,
@@ -446,6 +477,145 @@ class UserService implements IUserService {
             from: "The Handl Team <support@thehandl.com>",
             to: email,
             subject: "Please verify your email - The Handl Team",
+            replyTo: "support@thehandl.com",
+            html: htmlToSend,
+            attachments: [{
+                filename: "handl-email-logo-narrow.png",
+                path: path.resolve("../backend/email-templates/handl-email-logo-narrow.png"),
+                cid: "companyLogo",
+            }],
+        };
+
+        const transporter = nodemailer.createTransport({
+            host: "smtp.zoho.com",
+            port: 465,
+            secure: true, // use SSL
+            auth: {
+                user: "support@thehandl.com",
+                pass: process.env.ZOHO_MAIL_PASSWORD as string,
+            },
+        });
+
+        transporter.sendMail(mailOptions, (err, res)=>{
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("The email was sent successfully: ", res);
+            }
+        });
+    }
+
+    /**
+     * Utility method meant for sending a secure email letting them know that we've successfully reset their password
+     * @param {string} name
+     * @param {string} email
+     */
+    private GeneratePasswordResetConfirmationEmail(name: string, email: string): void {
+        // eslint-disable-next-line
+        const filePath = path.resolve("../backend/email-templates/PasswordResetConfirmation/PasswordResetConfirmation.html");
+        const source = fs.readFileSync(filePath, "utf-8").toString();
+        const template = handlebars.compile(source);
+        const replacements = {
+            name: name,
+        };
+        const htmlToSend = template(replacements);
+
+        const mailOptions = {
+            from: "The Handl Team <support@thehandl.com>",
+            to: email,
+            subject: "Password Reset Confirmation - Handl",
+            replyTo: "support@thehandl.com",
+            html: htmlToSend,
+            attachments: [{
+                filename: "handl-email-logo-narrow.png",
+                path: path.resolve("../backend/email-templates/handl-email-logo-narrow.png"),
+                cid: "companyLogo",
+            }],
+        };
+
+        const transporter = nodemailer.createTransport({
+            host: "smtp.zoho.com",
+            port: 465,
+            secure: true, // use SSL
+            auth: {
+                user: "support@thehandl.com",
+                pass: process.env.ZOHO_MAIL_PASSWORD as string,
+            },
+        });
+
+        transporter.sendMail(mailOptions, (err, res)=>{
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("The email was sent successfully: ", res);
+            }
+        });
+    }
+
+    /**
+     * Utility method meant for sending a secure email and link to let a uer reset their password
+     * @param {string} name
+     * @param {string} email
+     */
+    private GeneratePasswordResetEmail(name: string, email: string): void {
+        const filePath = path.resolve("../backend/email-templates/ResetPassword/ResetPassword.html");
+        const source = fs.readFileSync(filePath, "utf-8").toString();
+        const template = handlebars.compile(source);
+        const replacements = {
+            name: name,
+        };
+        const htmlToSend = template(replacements);
+
+        const mailOptions = {
+            from: "The Handl Team <support@thehandl.com>",
+            to: email,
+            subject: "Password Reset Confirmation - Handl",
+            replyTo: "support@thehandl.com",
+            html: htmlToSend,
+            attachments: [{
+                filename: "handl-email-logo-narrow.png",
+                path: path.resolve("../backend/email-templates/handl-email-logo-narrow.png"),
+                cid: "companyLogo",
+            }],
+        };
+
+        const transporter = nodemailer.createTransport({
+            host: "smtp.zoho.com",
+            port: 465,
+            secure: true, // use SSL
+            auth: {
+                user: "support@thehandl.com",
+                pass: process.env.ZOHO_MAIL_PASSWORD as string,
+            },
+        });
+
+        transporter.sendMail(mailOptions, (err, res)=>{
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("The email was sent successfully: ", res);
+            }
+        });
+    }
+
+    /**
+     * Utility method meant for sending a secure email letting the user know we've deleted their account
+     * @param {string} name
+     * @param {string} email
+     */
+    private GenerateDeletionConfirmationEmail(name: string, email: string): void {
+        const filePath = path.resolve("../backend/email-templates/DeletionConfirmation/DeletionConfirmation.html");
+        const source = fs.readFileSync(filePath, "utf-8").toString();
+        const template = handlebars.compile(source);
+        const replacements = {
+            name: name,
+        };
+        const htmlToSend = template(replacements);
+
+        const mailOptions = {
+            from: "The Handl Team <support@thehandl.com>",
+            to: email,
+            subject: "Account Deletion Confirmation - Handl",
             replyTo: "support@thehandl.com",
             html: htmlToSend,
             attachments: [{
