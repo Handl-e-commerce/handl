@@ -452,6 +452,7 @@ class UserService implements IUserService {
         return token;
     }
 
+    // TODO: (LOW) Refactor these methods into utility class called EmailService
     /**
    * Utility method meant for just sending a verification email to a user
    * @param {string} name
