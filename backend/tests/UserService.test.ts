@@ -273,7 +273,7 @@ describe("UserService Tests", function() {
     expect(result.message).toEqual("The email does not exist.");
   });
 
-  it("Should return false because the token is expired", async () => {
+  it("Should return false because the registration token is expired", async () => {
     await userService.CreateUser(userDetails);
     let dummyUser = await User.findOne({
       where: {
@@ -297,7 +297,7 @@ describe("UserService Tests", function() {
     expect(result.message).toEqual("The verification token has expired. Please request for a new one to be sent to you.");
   });
 
-  it("Should return false because the token is not valid", async () => {
+  it("Should return false because the registration token is not valid", async () => {
     await userService.CreateUser(userDetails);
     let dummyUser = await User.findOne({
       where: {
@@ -313,14 +313,26 @@ describe("UserService Tests", function() {
     expect(result.message).toEqual("The verification token is not valid. Please request for a new one to be sent to you.");
   });
 
-  it("Should confirm that email is sent because user exists", async () => {
+  it("Should send a verification email upon user being created", async () => {
     await userService.CreateUser(userDetails);
-    await userService.SendNewVerificationToken(userDetails.email);
     expect(sendMailMock).toHaveBeenCalledTimes(1);
     expect(sendMailMock).toHaveBeenCalled();
   });
 
-  it("Should do nothing because user doesn't exist", async () => {
+  it("Should send a new verification email upon being invoked if user exists", async () => {
+    await userService.CreateUser(userDetails);
+    let user = await User.findOne({
+      where: {
+        email: userDetails.email
+      }
+    });
+    expect(user).toBeDefined();
+    await userService.SendNewVerificationToken(user!.uuid);
+    expect(sendMailMock).toHaveBeenCalledTimes(2);
+    expect(sendMailMock).toHaveBeenCalled();
+  });
+
+  it("Should send nothing because a user doesn't exist", async () => {
     await userService.SendNewVerificationToken("foo");
     expect(sendMailMock).toHaveBeenCalledTimes(0);
     expect(sendMailMock).not.toHaveBeenCalled();
@@ -351,7 +363,8 @@ describe("UserService Tests", function() {
       }
     });
     await userService.RequestUserPasswordReset(user!.uuid);
-    expect(sendMailMock).toHaveBeenCalledTimes(1);
+    // called once after creation of user and once after sending new verificaiton token
+    expect(sendMailMock).toHaveBeenCalledTimes(2);
     expect(sendMailMock).toHaveBeenCalled();
   });
 
@@ -384,8 +397,18 @@ describe("UserService Tests", function() {
         email: userDetails.email
       }
     });
+    let oldToken = user?.verificationToken;
+    let expiration = user?.tokenExpiration;
     await userService.SendNewVerificationToken(user!.uuid);
-    expect(sendMailMock).toHaveBeenCalledTimes(1);
+    user = await User.findOne({
+      where: {
+        email: userDetails.email
+      }
+    });
+    expect(user?.verificationToken).not.toEqual(oldToken);
+    expect(user?.tokenExpiration.getTime() as number).toBeGreaterThan(expiration?.getTime() as number);
+    // called once after creation of user and once after sending new verificaiton token
+    expect(sendMailMock).toHaveBeenCalledTimes(2);
     expect(sendMailMock).toHaveBeenCalled();
   });
 });
