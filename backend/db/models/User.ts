@@ -14,13 +14,15 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare publicEIN: string;
     declare phoneNumber: string;
     declare address: string;
+    declare city: string;
     declare state: string;
     declare zipcode: string;
     declare categories: string[];
     declare password: string;
     declare savedVendors: string[];
     declare isVerified: boolean;
-    declare verificationCode: string;
+    declare verificationToken: string;
+    declare tokenExpiration: Date;
 }
 
 User.init({
@@ -49,7 +51,7 @@ User.init({
         unique: true,
     },
     EIN: {
-        type: DataTypes.STRING(9),
+        type: DataTypes.STRING,
         allowNull: false,
         unique: true,
     },
@@ -67,6 +69,10 @@ User.init({
         allowNull: false,
     },
     state: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    city: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -90,14 +96,19 @@ User.init({
         type: DataTypes.STRING,
         allowNull: false,
     },
-    verificationCode: {
+    verificationToken: {
         type: DataTypes.STRING,
+        allowNull: false,
+    },
+    tokenExpiration: {
+        type: DataTypes.DATE,
         allowNull: false,
     },
 },
 {
     sequelize: Database.GetInstance().sequelize,
     modelName: "Users",
+    paranoid: true,
 });
 
 export {User};

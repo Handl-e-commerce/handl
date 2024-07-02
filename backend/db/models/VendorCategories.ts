@@ -27,7 +27,7 @@ VendorCategories.init({
             key: "name",
         },
         allowNull: false,
-        unique: true
+        unique: true,
     },
     CategorySubcategory: {
         type: DataTypes.STRING,
@@ -36,7 +36,7 @@ VendorCategories.init({
             key: "subcategory",
         },
         allowNull: false,
-        unique: true
+        unique: true,
     },
 }, {
     sequelize: Database.GetInstance().sequelize,

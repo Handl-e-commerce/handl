@@ -6,6 +6,7 @@ interface IUserDetails {
     EIN: number;
     phoneNumber: string;
     address: string;
+    city: string;
     state: string;
     zipcode: string;
     categories: string[];

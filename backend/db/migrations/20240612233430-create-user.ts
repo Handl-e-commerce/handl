@@ -6,73 +6,81 @@ module.exports = {
   async up(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
         await queryInterface.createTable("Users", {
             uuid: {
-                type: DataTypes.STRING,
+                type: Sequelize.STRING,
                 allowNull: false,
                 unique: true,
                 primaryKey: true,
             },
             email: {
-                type: DataTypes.STRING,
+                type: Sequelize.STRING,
                 allowNull: false,
                 unique: true,
             },
             firstName: {
-                type: DataTypes.STRING,
+                type: Sequelize.STRING,
                 allowNull: false,
             },
             lastName: {
-                type: DataTypes.STRING,
+                type: Sequelize.STRING,
                 allowNull: false,
             },
             businessName: {
-                type: DataTypes.STRING,
+                type: Sequelize.STRING,
                 allowNull: false,
                 unique: true,
             },
             EIN: {
-                type: DataTypes.STRING(9),
+                type: Sequelize.STRING,
                 allowNull: false,
                 unique: true,
             },
             publicEIN: {
-                type: DataTypes.STRING(4),
+                type: Sequelize.STRING(4),
                 allowNull: false,
                 unique: false,
             },
             phoneNumber: {
-                type: DataTypes.STRING,
+                type: Sequelize.STRING,
                 allowNull: false,
             },
             address: {
-                type: DataTypes.STRING,
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
+            city: {
+                type: Sequelize.STRING,
                 allowNull: false,
             },
             state: {
-                type: DataTypes.STRING,
+                type: Sequelize.STRING,
                 allowNull: false,
             },
             zipcode: {
-                type: DataTypes.STRING,
+                type: Sequelize.STRING,
                 allowNull: false,
             },
             categories: {
-                type: DataTypes.ARRAY(DataTypes.STRING),
+                type: Sequelize.ARRAY(Sequelize.STRING),
                 allowNull: true,
             },
             password: {
-                type: DataTypes.STRING,
+                type: Sequelize.STRING,
                 allowNull: false,
             },
             savedVendors: {
-                type: DataTypes.ARRAY(DataTypes.STRING),
+                type: Sequelize.ARRAY(Sequelize.STRING),
                 allowNull: true,
             },
             isVerified: {
-                type: DataTypes.STRING,
+                type: Sequelize.STRING,
                 allowNull: false,
             },
-            verificationCode: {
-                type: DataTypes.STRING,
+            verificationToken: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
+            tokenExpiration: {
+                type: Sequelize.DATE,
                 allowNull: false,
             },
             createdAt: {
@@ -81,6 +89,10 @@ module.exports = {
             },
             updatedAt: {
                 allowNull: false,
+                type: Sequelize.DATE,
+            },
+            deletedAt: {
+                allowNull: true,
                 type: Sequelize.DATE,
             },
         });

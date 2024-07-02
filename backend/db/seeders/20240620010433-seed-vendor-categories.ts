@@ -722,7 +722,7 @@ module.exports = {
                 "updatedAt": new Date(Date.now()),
             },
         ];
-    
+
         for (let i = 0; i < data.length; i++) {
             const vendor = data[i];
             if (vendor?.categories) {

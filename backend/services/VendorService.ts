@@ -3,7 +3,7 @@ import {Vendor} from "../db/models/Vendor";
 import {Op} from "sequelize";
 import {VendorCategories} from "../db/models/VendorCategories";
 
-/** Class Vendor Service */
+/** Vendor Service Class */
 class VendorService implements IVendorService {
     /**
      * Returns the total number of items found using the query and the results fixed by limit and offset
@@ -19,17 +19,17 @@ class VendorService implements IVendorService {
             const vendorResults: Vendor[] = await Vendor.findAll({
                 where: searchVal ? {
                     name: {
-                        [Op.iLike]: `%${searchVal}%`
-                    }
+                        [Op.iLike]: `%${searchVal}%`,
+                    },
                 }: {},
                 include: [{
                     model: VendorCategories,
                     where: categories ? {
                         CategorySubcategory: {
-                            [Op.or]: categories
-                        }
-                    } : {}
-                }]
+                            [Op.or]: categories,
+                        },
+                    } : {},
+                }],
             });
 
             // const vendorResults: VendorCategories[] = await VendorCategories.findAll({
