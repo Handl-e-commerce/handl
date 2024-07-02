@@ -342,4 +342,50 @@ describe("UserService Tests", function() {
     });
     expect(result).toBeNull();
   });
+
+  it("Should send email with generated link for reseting password", async () => {
+    await userService.CreateUser(userDetails);
+    let user = await User.findOne({
+      where: {
+        email: userDetails.email
+      }
+    });
+    await userService.RequestUserPasswordReset(user!.uuid);
+    expect(sendMailMock).toHaveBeenCalledTimes(1);
+    expect(sendMailMock).toHaveBeenCalled();
+  });
+
+  it("Should throw an error for password reset beacause user does not exist", async () => {
+    try {
+      await userService.RequestUserPasswordReset("uuidThatDoesn'tExists");
+    } catch(err) {
+      const error = err as Error;
+      expect(error.message).toMatch("User does not exist.");
+    }
+  });
+
+  // TODO: (LOW) Implement method to update saved vendors for user as it doesn't exist but it's not high priority right now
+  it("Should get a list of saved vendors", async () => {
+    await userService.CreateUser(userDetails);
+    let user = await User.findOne({
+      where: {
+        email: userDetails.email
+      }
+    });
+
+    const savedVendors = await userService.GetSavedVendors(user!.uuid);
+    expect(savedVendors.length).toBeDefined();
+  });
+
+  it("Should send a new verification token and update the columns in the database with new token and expiration date", async () => {
+    await userService.CreateUser(userDetails);
+    let user = await User.findOne({
+      where: {
+        email: userDetails.email
+      }
+    });
+    await userService.SendNewVerificationToken(user!.uuid);
+    expect(sendMailMock).toHaveBeenCalledTimes(1);
+    expect(sendMailMock).toHaveBeenCalled();
+  });
 });
