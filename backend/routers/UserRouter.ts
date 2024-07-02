@@ -3,6 +3,8 @@ import {NextFunction, Request, Response} from "express";
 import {IUserDetails} from "../interfaces/IUserDetails";
 import {UserService} from "../services/UserService";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
+import {User} from "../db/models/User";
+import {Vendor} from "../db/models/Vendor";
 
 const userRouter = express.Router();
 
@@ -23,8 +25,24 @@ userRouter.post("/register", async (req: Request, res: Response, next: NextFunct
 userRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userId: string = req.params.id;
-        console.log(userId);
-        return res.status(200).json();
+        const userService: UserService = new UserService();
+        const user: User = await userService.GetUserByUserId(userId);
+        return res.status(200).json({
+            user: user,
+        });
+    } catch (err: unknown) {
+        return next(err as Error);
+    }
+});
+
+userRouter.get("/:id/vendors", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId: string = req.params.id;
+        const userService: UserService = new UserService();
+        const savedVendors: Vendor[] = await userService.GetSavedVendors(userId);
+        return res.status(200).json({
+            savedVendors: savedVendors,
+        });
     } catch (err: unknown) {
         return next(err as Error);
     }
@@ -33,7 +51,7 @@ userRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) =
 userRouter.put("/:id/password", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userService: UserService = new UserService();
-        const result = await userService.ResetUserPassword(req.params.id, req.body.newPassword);
+        const result: IGenericQueryResult = await userService.ResetUserPassword(req.params.id, req.body.newPassword);
         return res.status(201).json({
             message: result,
         });
@@ -45,11 +63,28 @@ userRouter.put("/:id/password", async (req: Request, res: Response, next: NextFu
     }
 });
 
+userRouter.get("/:id/password/request-reset", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId: string = req.params.id;
+        const userService: UserService = new UserService();
+        await userService.RequestUserPasswordReset(userId);
+        return res.status(200).send();
+    } catch (err: unknown) {
+        return next(err as Error);
+    }
+});
+
 userRouter.post("/login", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userDetails = req.body;
         const userService: UserService = new UserService();
-        const loginStatus = await userService.Login(userDetails.email, userDetails.password);
+        const loginStatus: {
+            result: boolean;
+            selector?: string | null | undefined;
+            validator?: string | null | undefined;
+            userId?: string | undefined;
+            expires?: Date | null | undefined;
+        } = await userService.Login(userDetails.email, userDetails.password);
         if (loginStatus.result) {
             return res.status(201)
                 .cookie("selector", loginStatus.selector, {
@@ -139,7 +174,10 @@ userRouter.post("/registration/verify", async (req: Request, res: Response, next
         const userId: string = req.body.userId;
         const token: string = req.body.token;
         const userService: UserService = new UserService();
-        const verificationResult = await userService.VerifyRegistrationToken(userId, token);
+        const verificationResult: {
+            result: boolean;
+            message: string;
+        } = await userService.VerifyRegistrationToken(userId, token);
         if (verificationResult.result) {
             return res.status(201).json({
                 message: verificationResult.message,
@@ -160,6 +198,20 @@ userRouter.post("/registration/verify/new-token", async (req: Request, res: Resp
         const userService: UserService = new UserService();
         await userService.SendNewVerificationToken(userId);
         return res.status(201).send();
+    } catch (err: unknown) {
+        return next(err as Error);
+    }
+});
+
+userRouter.put("/delete/:id", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId: string = req.params.id;
+        const userService: UserService = new UserService();
+        const result: IGenericQueryResult = await userService.DeleteUser(userId);
+        return res.status(200).json({
+            id: result.id,
+            message: result.message,
+        });
     } catch (err: unknown) {
         return next(err as Error);
     }
