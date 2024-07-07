@@ -48,7 +48,6 @@ class EncryptionUtil {
      */
     public DecryptData(encryptedData: string): string {
         const cipherSplit: string[] = encryptedData.split("$$");
-        console.log(cipherSplit);
         const data = cipherSplit[0];
         const tag = Buffer.from(cipherSplit[1], "hex");
         const iv = Buffer.from(cipherSplit[2], "hex");
