@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 // import "./SearchBar.css"
-import { IoIosSearch } from "react-icons/io";
 
 function SearchBar(): JSX.Element {
     const [searchInput, setSearchInput] = useState("");
