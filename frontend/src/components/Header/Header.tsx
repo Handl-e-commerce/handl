@@ -66,7 +66,7 @@ function Header(): JSX.Element {
     
     if (loggedIn) {
         return (
-            <div>
+            <div data-testid='logged-in-header'>
                 <div>Hi, {userName}!</div>
                 <div onClick={handleLogout}>Logout</div>
             </div>
@@ -74,7 +74,7 @@ function Header(): JSX.Element {
     };
 
     return (
-        <header>
+        <header data-testid='logged-out-header'>
             <img src="" alt="" />
             <SearchBar />
             <button onClick={redirectSignUp}>Sign Up</button>
