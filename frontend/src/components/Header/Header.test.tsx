@@ -3,7 +3,6 @@ import { render, screen, act, waitFor } from '@testing-library/react';
 import { Header } from './Header';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
-import { mockSearchParams } from '../../utils/mock-search-params-util';
 import { server } from "../../../__mocks__/server";
 import { http, HttpResponse } from 'msw';
 import { addCookie, cookieParser, deleteCookie } from '../../utils/cookie-util';
@@ -31,13 +30,13 @@ afterEach(() => {
 });
 
 describe("Header Test", function() {
-    it.skip("Should render the logged in header because valid long term session cookies are stored", async function() {
+    it("Should render the logged in header because valid long term session cookies are stored", async function() {
         document.cookie = "loggedIn=true;";
-        // server.use(
-        //     http.post(REACT_APP_SERVER_URI + `/users/login/verify`, ({ request, params, cookies }) => {
-        //         return new HttpResponse(null, { status: 201 });
-        //     })
-        // );
+        server.use(
+            http.post(REACT_APP_SERVER_URI + `/users/login/verify`, ({ request, params, cookies }) => {
+                return new HttpResponse(null, { status: 201 });
+            })
+        );
         const { container } = await act(async () => render(<Header />));
         
         await waitFor(async () => {
@@ -82,7 +81,7 @@ describe("Header Test", function() {
         });
     });
 
-    it.skip("Should delete long term login cookies because server returns 401 status code", async function() {
+    it("Should delete long term login cookies because server returns 401 status code", async function() {
         server.use(
             http.post(REACT_APP_SERVER_URI + `/users/login/verify`, ({ request, params, cookies }) => {
                 return new HttpResponse(null, { status: 401 });

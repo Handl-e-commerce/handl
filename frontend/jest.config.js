@@ -3,7 +3,7 @@ module.exports = {
     rootDir: __dirname,
     preset: 'ts-jest',
     globals: { fetch },
-    setupFiles: ['<rootDir>/jest.polyfills.js', '<rootDir>/setupEnvVar.js'],
+    setupFiles: ['./jest.polyfills.js', './setupEnvVar.js'],
     setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
     testEnvironment: 'jest-environment-jsdom',
     testEnvironmentOptions: {
