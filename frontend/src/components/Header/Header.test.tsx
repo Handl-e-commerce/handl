@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { server } from "../../../__mocks__/server";
 import { http, HttpResponse } from 'msw';
-import { addCookie, cookieParser, deleteCookie } from '../../utils/cookie-util';
+import { cookieParser } from '../../utils/cookie-util';
 
 const envVariables = process.env;
 const {

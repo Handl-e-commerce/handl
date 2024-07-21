@@ -2,12 +2,12 @@ import React from "react";
 
 function Home(): JSX.Element {
     let location = window.location;
-    let queryParams = new URL(document.location.toString()).searchParams;
 
+    // TODO: (LOW) Implement dynamic route creation for redirects and populating of categories
     return (
         <div>
             Welcome to Handl!
-            <div>
+            <div data-testid="most-viewed-categories-container">
                 <div>Most Viewed Categories</div>
                 <div>
                     <a href={location.origin + '/results?category=amazon-fba'} target="_self">
@@ -34,7 +34,7 @@ function Home(): JSX.Element {
                     <div>Electronics</div>
                 </div>
             </div>
-            <div>
+            <div data-testid="featured-categories-container">
                 <div>Featured Categories</div>
                 <div>
                     <a href={location.origin + '/results?category=amazon-fba'} target="_self">
