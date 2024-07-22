@@ -1,12 +1,12 @@
 import { describe, expect, it } from '@jest/globals';
-import { render, screen, act, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Footer } from './Footer';
-import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
-import { mockSearchParams } from '../../utils/mock-search-params-util';
 
 describe("Footer Tests", () => {
-    it("Blank test for scaffholding purposes", () => {
-
+    it("Container links should all contain an href allowing them to redirect to results page with category param in query", async () => {
+        const { container } = render(<Footer />);
+        expect(screen.getByText("About Us")).toHaveAttribute("href", expect.stringMatching(window.location.origin + "/about-us"));
+        expect(screen.getByText("Contact Us")).toHaveAttribute("href", expect.stringMatching(window.location.origin + "/contact-us"));
     });
 });
