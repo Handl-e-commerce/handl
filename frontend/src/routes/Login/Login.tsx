@@ -97,8 +97,21 @@ function Login(): JSX.Element {
 
     return (
         <div>
-            <input type="text" />
-            <input type="password" />
+            <input 
+                type="text"
+                placeholder="Business Email"
+                name="business_email"
+                className="login-input"
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+                type={showInput ? 'text':'password'}
+                placeholder="Password"
+                name="password"
+                className="login-input"
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            {showInput ? <IoEyeOffOutline onClick={() => setShowInput(!showInput)} data-testid="hide-password-switch"/> : <IoEyeOutline onClick={() => setShowInput(!showInput)} data-testid="show-password-switch"/>}
             <div onClick={() => setIsForgotPassword(true)}>Forgot password?</div>
             <button onClick={redirectSignUp}>Sign up for an account</button>
         </div>
