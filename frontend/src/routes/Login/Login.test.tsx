@@ -25,7 +25,7 @@ afterEach(() => {
 });
 
 describe("Login Route Test", function() {
-    it("Should have a disabled button because both input fields are empty", async function() {
+    it("Should have a disabled button because both input fields are empty", async () => {
         const { container } = render(<Login />);
         
         waitFor(() => {
@@ -36,7 +36,7 @@ describe("Login Route Test", function() {
         });
     });
 
-    it("Should have a disabled button because email input field is empty", async function() {
+    it("Should have a disabled button because email input field is empty", async () => {
         const { container } = render(<Login />);
 
         let loginButton = screen.getByRole("button");
@@ -51,7 +51,7 @@ describe("Login Route Test", function() {
         });
     });
     
-    it("Should have a disabled button because password input field is empty", async function() {
+    it("Should have a disabled button because password input field is empty", async () => {
         const { container } = render(<Login />);
 
         let loginButton = screen.getByRole("button");
@@ -66,7 +66,7 @@ describe("Login Route Test", function() {
         });
     });
 
-    it("Should redirect to homepage because login returned 201", async function() {
+    it("Should redirect to homepage because login returned 201", async () => {
         const { container } = render(<Login />);
 
         let loginButton = screen.getByRole("button");
@@ -89,7 +89,7 @@ describe("Login Route Test", function() {
         });
     });
 
-    it("Should display an error message because login returned 401", async function() {
+    it("Should display an error message because login returned 401", async () => {
         server.use(
             http.post(REACT_APP_SERVER_URI + `/users/login`, ({ request, params, cookies }) => {
                 return new HttpResponse(null, { status: 401,});
@@ -119,7 +119,7 @@ describe("Login Route Test", function() {
         });
     });
 
-    it("Should set the password input type to text after clicking the show password checkbox", async function() {
+    it("Should set the password input type to text after clicking the show password checkbox", async () => {
         const { container } = render(<Login />);
 
         let passwordInput = screen.getByPlaceholderText("Password");
@@ -136,5 +136,21 @@ describe("Login Route Test", function() {
         waitFor(() => {
             expect(passwordInput.inputMode).toEqual("text");
         });
+    });
+
+    it("Should show the password reset form upon clicking forgot password and then confirm request was sent to backend after clicking reset request button", async () => {
+        const { container } = render(<Login />);
+        let forgotPasswordButton = screen.getByText("Forgot password?")
+        act(() => {
+            userEvent.click(forgotPasswordButton);
+        });
+        waitFor(() => {
+            expect("Enter the email associated with your account").toBeInTheDocument();
+        });
+        let resetRequestButton = screen.getByText("Request Password Reset");
+        act(() => {
+            userEvent.click(resetRequestButton);
+        })
+        // TODO: (HIGH) Complete this unit test
     });
 });

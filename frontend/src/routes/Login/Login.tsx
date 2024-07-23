@@ -88,9 +88,7 @@ function Login(): JSX.Element {
                 />
                 {showInput ? <IoEyeOffOutline onClick={() => setShowInput(!showInput)}/> : <IoEyeOutline onClick={() => setShowInput(!showInput)}/>}
                 <button onClick={handlePasswordResetRequest}>Request Password Reset</button>
-                {hasError && <div className="error-message">The email or password you entered was incorrect</div>}
                 {/* TODO: (MEDIUM) add captcha here to prevent bot requests */}
-                <button className="login-button" disabled={isBusy || email.length === 0 || password.length === 0} onClick={handleLogin}>Login</button>
             </div>
         )
     }
