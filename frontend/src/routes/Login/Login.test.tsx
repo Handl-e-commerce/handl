@@ -39,7 +39,7 @@ describe("Login Route Test", function() {
     it("Should have a disabled button because email input field is empty", async () => {
         const { container } = render(<Login />);
 
-        let loginButton = screen.getByRole("button");
+        let loginButton = screen.getByRole("login-button");
         let passwordInput = screen.getByPlaceholderText("Password");
         act(() => {
             userEvent.type(passwordInput, "mockPassword");
@@ -54,7 +54,7 @@ describe("Login Route Test", function() {
     it("Should have a disabled button because password input field is empty", async () => {
         const { container } = render(<Login />);
 
-        let loginButton = screen.getByRole("button");
+        let loginButton = screen.getByRole("login-button");
         let emailInput = screen.getByPlaceholderText("Business Email");
         act(() => {
             userEvent.type(emailInput, "mockEmail@email.com");
@@ -69,7 +69,7 @@ describe("Login Route Test", function() {
     it("Should redirect to homepage because login returned 201", async () => {
         const { container } = render(<Login />);
 
-        let loginButton = screen.getByRole("button");
+        let loginButton = screen.getByRole("login-button");
         let emailInput = screen.getByPlaceholderText("Business Email");
         let passwordInput = screen.getByPlaceholderText("Password");
         act(() => {
@@ -146,11 +146,14 @@ describe("Login Route Test", function() {
         });
         waitFor(() => {
             expect("Enter the email associated with your account").toBeInTheDocument();
+            let resetRequestButton = screen.getByText("Request Password Reset");
+            act(() => {
+                userEvent.click(resetRequestButton);
+            }); 
+            waitFor(() => {
+                expect("We've sent a password reset link to your email.").toBeInTheDocument();
+            });
         });
-        let resetRequestButton = screen.getByText("Request Password Reset");
-        act(() => {
-            userEvent.click(resetRequestButton);
-        })
-        // TODO: (HIGH) Complete this unit test
+        screen.debug();
     });
 });

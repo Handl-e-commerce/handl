@@ -19,7 +19,7 @@ function Login(): JSX.Element {
     const [password, setPassword] = useState<string>("");
     const [isBusy, setIsBusy] = useState<boolean>(false);
     const [hasError, setHasError] = useState<boolean>(false);
-    const [showInput, setShowInput] = useState<boolean>(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
     function redirectSignUp(): void {
         // redirect to sign up route
@@ -28,14 +28,14 @@ function Login(): JSX.Element {
         window.history.pushState({}, "", location.origin + "/sign-up?" + queryParams.toString());
     };
 
-    function handlePasswordResetRequest() {
+    function handlePasswordResetRequest(): void {
         fetchWrapper(REACT_APP_SERVER_URI + "/user/password/request-reset", "POST", {
             email: email
         });
         setSubmittedResetRequest(true);
     };
 
-    async function handleLogin() {
+    async function handleLogin(): Promise<void> {
         setIsBusy(true);
         const response: Response = await fetchWrapper(REACT_APP_SERVER_URI + `/users/login`, "POST", {
             email: email,
@@ -80,14 +80,19 @@ function Login(): JSX.Element {
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <input
-                    type={showInput ? 'text':'password'}
+                    type={showPassword ? 'text':'password'}
                     placeholder="Password"
                     name="password"
                     className="login-input"
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                {showInput ? <IoEyeOffOutline onClick={() => setShowInput(!showInput)}/> : <IoEyeOutline onClick={() => setShowInput(!showInput)}/>}
-                <button onClick={handlePasswordResetRequest}>Request Password Reset</button>
+                {showPassword ? <IoEyeOffOutline onClick={() => setShowPassword(!showPassword)}/> : <IoEyeOutline onClick={() => setShowPassword(!showPassword)}/>}
+                <button 
+                    onClick={handlePasswordResetRequest}
+                    disabled={isBusy || email.length === 0 || password.length === 0}
+                >
+                    Request Password Reset
+                </button>
                 {/* TODO: (MEDIUM) add captcha here to prevent bot requests */}
             </div>
         )
@@ -103,13 +108,20 @@ function Login(): JSX.Element {
                 onChange={(e) => setEmail(e.target.value)}
             />
             <input
-                type={showInput ? 'text':'password'}
+                type={showPassword ? 'text':'password'}
                 placeholder="Password"
                 name="password"
                 className="login-input"
                 onChange={(e) => setPassword(e.target.value)}
             />
-            {showInput ? <IoEyeOffOutline onClick={() => setShowInput(!showInput)} data-testid="hide-password-switch"/> : <IoEyeOutline onClick={() => setShowInput(!showInput)} data-testid="show-password-switch"/>}
+            {showPassword ? <IoEyeOffOutline onClick={() => setShowPassword(!showPassword)} data-testid="hide-password-switch"/> : <IoEyeOutline onClick={() => setShowPassword(!showPassword)} data-testid="show-password-switch"/>}
+            <button 
+                onClick={handleLogin}
+                role="login-button" 
+                disabled={isBusy || email.length === 0 || password.length === 0}
+            >
+                Login
+            </button>
             <div onClick={() => setIsForgotPassword(true)}>Forgot password?</div>
             <button onClick={redirectSignUp}>Sign up for an account</button>
         </div>
