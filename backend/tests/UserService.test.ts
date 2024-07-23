@@ -357,12 +357,7 @@ describe("UserService Tests", function() {
 
   it("Should send email with generated link for reseting password", async () => {
     await userService.CreateUser(userDetails);
-    let user = await User.findOne({
-      where: {
-        email: userDetails.email
-      }
-    });
-    await userService.RequestUserPasswordReset(user!.uuid);
+    await userService.RequestUserPasswordReset(userDetails.email);
     // called once after creation of user and once after sending new verificaiton token
     expect(sendMailMock).toHaveBeenCalledTimes(2);
     expect(sendMailMock).toHaveBeenCalled();
@@ -370,7 +365,7 @@ describe("UserService Tests", function() {
 
   it("Should throw an error for password reset beacause user does not exist", async () => {
     try {
-      await userService.RequestUserPasswordReset("uuidThatDoesn'tExists");
+      await userService.RequestUserPasswordReset("emailThatDoesNotExist");
     } catch(err) {
       const error = err as Error;
       expect(error.message).toMatch("User does not exist.");

@@ -189,11 +189,11 @@ class UserService implements IUserService {
      * email will be sent to them in order to change the password
      * @param {stirng} userId
      */
-    public async RequestUserPasswordReset(userId: string): Promise<void> {
+    public async RequestUserPasswordReset(email: string): Promise<void> {
         try {
             const user = await User.findOne({
                 where: {
-                    uuid: userId,
+                    email: email,
                 },
             });
             if (!user) {

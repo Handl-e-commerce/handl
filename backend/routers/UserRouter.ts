@@ -63,12 +63,12 @@ userRouter.put("/:id/password", async (req: Request, res: Response, next: NextFu
     }
 });
 
-userRouter.get("/:id/password/request-reset", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.post("/password/request-reset", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId: string = req.params.id;
+        const email: string = req.params.email;
         const userService: UserService = new UserService();
-        await userService.RequestUserPasswordReset(userId);
-        return res.status(200).send();
+        await userService.RequestUserPasswordReset(email);
+        return res.status(201).send();
     } catch (err: unknown) {
         return next(err as Error);
     }
