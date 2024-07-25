@@ -19,7 +19,7 @@ describe("Sign Up Route Test", function() {
         let registrationButton = screen.getByText("Create Account");
 
         expect(form).toBeDefined();
-        expect(form.childNodes.length).toEqual(7);
+        expect(form.childNodes.length).toEqual(12);
         expect(registrationButton).toBeDisabled();
     });
 
@@ -29,7 +29,7 @@ describe("Sign Up Route Test", function() {
         let form = screen.getByTestId("default-form");
         let registrationButton = screen.getByText("Create Account");
         expect(form).toBeDefined();
-        expect(form.childNodes.length).toEqual(7);
+        expect(form.childNodes.length).toEqual(12);
 
         act(() => {
             userEvent.type(form.children[1], "mockemail@foo.com");
