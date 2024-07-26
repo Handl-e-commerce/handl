@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { fetchWrapper } from "../../utils/fetch-wrapper";
 
 const envVariables = process.env;
 const {
@@ -21,26 +22,22 @@ function SignUp(): JSX.Element {
     const [password, setPassword] = useState<string>("");
     const [signUpSuccess, setSignUpSuccess] = useState<boolean>();
 
+    console.log(REACT_APP_SERVER_URI);
+
     async function createAccount() {
         setIsBusy(true);
-        const response: Response = await fetch(REACT_APP_SERVER_URI + `/users/create`, {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Origin": "*",
-                "Accept": "application/json"
-            },
-            redirect: "follow",
-            referrerPolicy: "no-referrer",
-            body: JSON.stringify({
-                email: email,
-                businessName: businessName,
-                phoneNumber: phoneNumber,
-                password: password
-            })
+        const response: Response = await fetchWrapper(REACT_APP_SERVER_URI + `/users/register`, "POST", {
+            email: email,
+            businessName: businessName,
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: phoneNumber,
+            EIN: EIN,
+            address: address,
+            city: city,
+            state: state,
+            zipcode: zipcode,
+            password: password
         });
         if (response.status === 201) {
             setIsBusy(false);
@@ -112,6 +109,13 @@ function SignUp(): JSX.Element {
                 name="phone number"
                 className="sign-up-input"
                 onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+            <input 
+                type="text"
+                placeholder="EIN"
+                name="EIN"
+                className="sign-up-input"
+                onChange={(e) => setEIN(e.target.value)}
             />
             <input 
                 type="text"
