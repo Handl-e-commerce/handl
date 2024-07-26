@@ -100,6 +100,7 @@ function Login(): JSX.Element {
 
     return (
         <div>
+            <h1>Login to Handl</h1>
             <input 
                 type="text"
                 placeholder="Business Email"

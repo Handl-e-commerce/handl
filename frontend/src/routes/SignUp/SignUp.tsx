@@ -8,6 +8,9 @@ const {
 
 
 function SignUp(): JSX.Element {
+    let location = window.location;
+    let queryParams = new URL(document.location.toString()).searchParams;
+    
     const [isBusy, setIsBusy] = useState<boolean>(false);
     const [email, setEmail] = useState<string>("");
     const [businessName, setBusinessName] = useState<string>("");
@@ -22,7 +25,6 @@ function SignUp(): JSX.Element {
     const [password, setPassword] = useState<string>("");
     const [signUpSuccess, setSignUpSuccess] = useState<boolean>();
 
-    console.log(REACT_APP_SERVER_URI);
 
     async function createAccount() {
         setIsBusy(true);
@@ -52,7 +54,7 @@ function SignUp(): JSX.Element {
     function canSubmit(): boolean {
         if (isBusy)
             return false;
-        if (email === "" || businessName === "" || phoneNumber === "" || password === "")
+        if (email === "" || businessName === "" || firstName === "" || lastName === "" || phoneNumber === "" || EIN === "" || address === "" || city === "" || state === "" || zipcode === "" ||  password === "")
             return false;
         // TODO: (LOW) Implement logic for automatically formating and handling phone numbers
         if (phoneNumber) {}
@@ -71,7 +73,8 @@ function SignUp(): JSX.Element {
 
     return (
         <div className="sign-up-container" data-testid="default-form">
-            <h1>Create your Handl account today!</h1>
+            <h1>Sign Up Free</h1>
+            <div>Already a member? <a href={location.origin + "/login?isBusy=true"}>{"Login ->"}</a></div>
             <input 
                 type="text"
                 placeholder="Business Email"
@@ -153,7 +156,7 @@ function SignUp(): JSX.Element {
                 onChange={(e) => setPassword(e.target.value)}
             />
 
-            <button className="create-account-button" disabled={!canSubmit()} onClick={createAccount}>Create Account</button>
+            <button className="create-account-button" disabled={!canSubmit()} onClick={createAccount}>Register</button>
             {signUpSuccess === false ? <div className="sign-up-error">User already exists.</div> : null}
         </div>
     );
