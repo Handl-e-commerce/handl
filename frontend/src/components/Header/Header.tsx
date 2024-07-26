@@ -82,8 +82,8 @@ function Header(): JSX.Element {
                 <img src="" alt="" />
             </a>
             <SearchBar />
-            <button onClick={redirectSignUp}>Sign Up</button>
-            <button onClick={redirectLogin}>Login</button>
+            {!queryParams.get("isBusy") && <button onClick={redirectSignUp}>Sign Up</button>}
+            {!queryParams.get("isBusy") && <button onClick={redirectLogin}>Login</button>}
         </header>
     );
 };
