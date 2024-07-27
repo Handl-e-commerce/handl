@@ -43,7 +43,7 @@ function SignUp(): JSX.Element {
     
     function enforceFormat(event: React.KeyboardEvent<HTMLInputElement>): void {
         // Input must be of a valid number format or a modifier key, and not longer than ten digits
-        if(!isNumericInput(event) && !isModifierKey(event)){
+        if (!isNumericInput(event) && !isModifierKey(event)) {
             event.preventDefault();
         }
     };
@@ -155,7 +155,7 @@ function SignUp(): JSX.Element {
                 placeholder="EIN"
                 name="EIN"
                 pattern="[0-9]{9}"
-                // onKeyDown={(e) => {}}
+                onKeyDown={(e) => enforceFormat(e)}
                 maxLength={9}
                 className="sign-up-input"
                 onChange={(e) => setEIN(e.target.value)}
