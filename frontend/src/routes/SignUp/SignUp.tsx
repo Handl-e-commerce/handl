@@ -65,13 +65,6 @@ function SignUp(): JSX.Element {
         else if(input.length > 3){target.value = `(${zip})-${middle}`;}
         else if(input.length > 0){target.value = `(${zip}`;}
     };
-    
-    const inputElement = document.getElementById('phone') as Element;
-    console.log(phoneNumber);
-    if (inputElement) {
-        inputElement.addEventListener('keydown',enforceFormat);
-        inputElement.addEventListener('keyup',formatToPhone);
-    }
 
     async function createAccount() {
         setIsBusy(true);
@@ -151,7 +144,9 @@ function SignUp(): JSX.Element {
             <input 
                 type="tel"
                 id="phone"
-                pattern="([0-9]{3})-[0-9]{3}-[0-9]{4}" 
+                pattern="([0-9]{3})-[0-9]{3}-[0-9]{4}"
+                onKeyDown={(e) => enforceFormat(e)}
+                onKeyUp={(e) => formatToPhone(e)}
                 required
                 placeholder="Phone Number"
                 name="phone number"
@@ -162,6 +157,9 @@ function SignUp(): JSX.Element {
                 type="text"
                 placeholder="EIN"
                 name="EIN"
+                pattern="[0-9]{9}"
+                // onKeyDown={(e) => {}}
+                maxLength={9}
                 className="sign-up-input"
                 onChange={(e) => setEIN(e.target.value)}
             />
