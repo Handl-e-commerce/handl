@@ -24,12 +24,12 @@ function SignUp(): JSX.Element {
     const [password, setPassword] = useState<string>("");
     const [signUpSuccess, setSignUpSuccess] = useState<boolean>();
 
-    const isNumericInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    function isNumericInput(event: React.KeyboardEvent<HTMLInputElement>): boolean {
         const key = event.key;
         return ((key >= "0" && key <= "9"));
     };
     
-    const isModifierKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    function isModifierKey(event: React.KeyboardEvent<HTMLInputElement>): boolean {
         const key = event.key;
         return (event.shiftKey === true || key === "Home" || key === "End") || // Allow Shift, Home, End
             (key === "Backspace" || key === "Tab" || key === "Enter" || key === "Delete") || // Allow Backspace, Tab, Enter, Delete
@@ -41,19 +41,19 @@ function SignUp(): JSX.Element {
             )
     };
     
-    const enforceFormat = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    function enforceFormat(event: React.KeyboardEvent<HTMLInputElement>): void {
         // Input must be of a valid number format or a modifier key, and not longer than ten digits
         if(!isNumericInput(event) && !isModifierKey(event)){
             event.preventDefault();
         }
     };
     
-    const formatToPhone = (event: any) => {
+    function formatToPhone(event: React.KeyboardEvent<HTMLInputElement>): void {
         if(isModifierKey(event)) {return;}
     
         // I am lazy and don't like to type things more than once
-        const target = event.target;
-        const input = event.target.value.replace(/\D/g,'').substring(0,10); // First ten digits of input only
+        const target = event.target as HTMLInputElement;
+        const input = target.value.replace(/\D/g,'').substring(0,10); // First ten digits of input only
         const zip = input.substring(0,3);
         const middle = input.substring(3,6);
         const last = input.substring(6,10);
