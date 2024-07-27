@@ -12,14 +12,14 @@ const {
 } = envVariables;
 
 describe("Sign Up Route Test", function() {
-    it("Create account button should be disabled by default", async function() {
+    it("Register button should be disabled by default", async function() {
         const { container } = render(<SignUp />);
 
         let form = screen.getByTestId("default-form");
-        let registrationButton = screen.getByText("Create Account");
+        let registrationButton = screen.getByText("Register");
 
         expect(form).toBeDefined();
-        expect(form.childNodes.length).toEqual(13);
+        expect(form.childNodes.length).toEqual(14);
         expect(registrationButton).toBeDisabled();
     });
 
@@ -27,9 +27,9 @@ describe("Sign Up Route Test", function() {
         const { container } = render(<SignUp />);
 
         let form = screen.getByTestId("default-form");
-        let registrationButton = screen.getByText("Create Account");
+        let registrationButton = screen.getByText("Register");
         expect(form).toBeDefined();
-        expect(form.childNodes.length).toEqual(13);
+        expect(form.childNodes.length).toEqual(14);
 
         act(() => {
             userEvent.type(form.children[1], "mockemail@foo.com");
@@ -53,7 +53,7 @@ describe("Sign Up Route Test", function() {
         const { container } = render(<SignUp />);
 
         let form = screen.getByTestId("default-form");
-        let registrationButton = screen.getByText("Create Account");
+        let registrationButton = screen.getByText("Register");
 
         act(() => {
             userEvent.type(form.children[2], "Mock Business");
@@ -74,7 +74,7 @@ describe("Sign Up Route Test", function() {
         const { container } = render(<SignUp />);
 
         let form = screen.getByTestId("default-form");
-        let registrationButton = screen.getByText("Create Account");
+        let registrationButton = screen.getByText("Register");
 
         act(() => {
             userEvent.type(form.children[1], "mockemail@foo.com");
@@ -95,7 +95,7 @@ describe("Sign Up Route Test", function() {
         const { container } = render(<SignUp />);
 
         let form = screen.getByTestId("default-form");
-        let registrationButton = screen.getByText("Create Account");
+        let registrationButton = screen.getByText("Register");
 
         act(() => {
             userEvent.type(form.children[1], "mockemail@foo.com");
@@ -116,7 +116,7 @@ describe("Sign Up Route Test", function() {
         const { container } = render(<SignUp />);
 
         let form = screen.getByTestId("default-form");
-        let registrationButton = screen.getByText("Create Account");
+        let registrationButton = screen.getByText("Register");
 
         act(() => {
             userEvent.type(form.children[0], "mockemail@foo.com");
@@ -144,7 +144,7 @@ describe("Sign Up Route Test", function() {
         const { container } = render(<SignUp />);
 
         let form = screen.getByTestId("default-form");
-        let registrationButton = screen.getByText("Create Account");
+        let registrationButton = screen.getByText("Register");
 
         act(() => {
             userEvent.type(form.children[0], "mockemail@foo.com");
