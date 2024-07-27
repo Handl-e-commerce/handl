@@ -24,14 +24,13 @@ function SignUp(): JSX.Element {
     const [password, setPassword] = useState<string>("");
     const [signUpSuccess, setSignUpSuccess] = useState<boolean>();
 
-    const isNumericInput = (event: KeyboardEvent) => {
+    const isNumericInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
         const key = event.key;
         return ((key >= "0" && key <= "9"));
     };
     
-    const isModifierKey = (event: KeyboardEvent) => {
+    const isModifierKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
         const key = event.key;
-        console.log(key);
         return (event.shiftKey === true || key === "Home" || key === "End") || // Allow Shift, Home, End
             (key === "Backspace" || key === "Tab" || key === "Enter" || key === "Delete") || // Allow Backspace, Tab, Enter, Delete
             (key === "ArrowLeft" || key === "ArrowRight" || key === "ArrowUp" || key === "ArrowDown") || // Allow left, up, right, down
@@ -42,7 +41,7 @@ function SignUp(): JSX.Element {
             )
     };
     
-    const enforceFormat = (event: any) => {
+    const enforceFormat = (event: React.KeyboardEvent<HTMLInputElement>) => {
         // Input must be of a valid number format or a modifier key, and not longer than ten digits
         if(!isNumericInput(event) && !isModifierKey(event)){
             event.preventDefault();
