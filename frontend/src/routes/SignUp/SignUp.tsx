@@ -61,8 +61,8 @@ function SignUp(): JSX.Element {
         const middle = input.substring(3,6);
         const last = input.substring(6,10);
     
-        if(input.length > 6){target.value = `(${zip}) ${middle} - ${last}`;}
-        else if(input.length > 3){target.value = `(${zip}) ${middle}`;}
+        if(input.length > 6){target.value = `(${zip})-${middle}-${last}`;}
+        else if(input.length > 3){target.value = `(${zip})-${middle}`;}
         else if(input.length > 0){target.value = `(${zip}`;}
     };
     
@@ -151,9 +151,9 @@ function SignUp(): JSX.Element {
             <input 
                 type="tel"
                 id="phone"
-                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
+                pattern="([0-9]{3})-[0-9]{3}-[0-9]{4}" 
                 required
-                placeholder="Phone Number ex: 000-000-0000"
+                placeholder="Phone Number"
                 name="phone number"
                 className="sign-up-input"
                 onChange={(e) => setPhoneNumber(e.target.value)}
