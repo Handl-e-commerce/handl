@@ -116,6 +116,7 @@ function Login(): JSX.Element {
                 onChange={(e) => setPassword(e.target.value)}
             />
             {showPassword ? <IoEyeOffOutline onClick={() => setShowPassword(!showPassword)} data-testid="hide-password-switch"/> : <IoEyeOutline onClick={() => setShowPassword(!showPassword)} data-testid="show-password-switch"/>}
+            {hasError && <div className="error-message">The email or password you entered was incorrect</div>}
             <button 
                 onClick={handleLogin}
                 role="login-button" 
