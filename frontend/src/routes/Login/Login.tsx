@@ -96,7 +96,7 @@ function Login(): JSX.Element {
                 {/* TODO: (MEDIUM) add captcha here to prevent bot requests */}
             </div>
         )
-    }
+    };
 
     return (
         <div>
@@ -127,7 +127,7 @@ function Login(): JSX.Element {
             <div onClick={() => setIsForgotPassword(true)}>Forgot password?</div>
             <button onClick={redirectSignUp}>Sign up for an account</button>
         </div>
-    )
+    );
 };
 
 export {Login};

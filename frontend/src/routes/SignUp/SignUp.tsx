@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
@@ -125,7 +125,7 @@ function SignUp(): JSX.Element {
             setInvalidPasswordMessage("Password must contain an uppercase letter");
             return false;
         };
-        if (!(/[~`!#$%\^&*€£@+=\-\[\]\\';,/{}\(\)|\\":<>\?\.\_]/g).test(password)) {
+        if (!(/[~`!#$%^&*€£@+=\-[\]';,/{}()|":<>?._]/g).test(password)) {
             setInvalidPasswordMessage("Password must contain a special character from the following: ~ ` ! # $ % ^ & * € £ @ + = - [ ] ' ; , / { } ( ) | \" : < > ? . _");
             return false;
         };
