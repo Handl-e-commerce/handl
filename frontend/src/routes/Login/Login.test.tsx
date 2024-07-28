@@ -154,6 +154,5 @@ describe("Login Route Test", function() {
                 expect("We've sent a password reset link to your email.").toBeInTheDocument();
             });
         });
-        screen.debug();
     });
 });

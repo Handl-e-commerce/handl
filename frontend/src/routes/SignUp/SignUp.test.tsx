@@ -19,7 +19,7 @@ describe("Sign Up Route Test", function() {
         let registrationButton = screen.getByText("Register");
 
         expect(form).toBeDefined();
-        expect(form.childNodes.length).toEqual(14);
+        expect(form.childNodes.length).toEqual(15);
         expect(registrationButton).toBeDisabled();
     });
 
@@ -147,6 +147,20 @@ describe("Sign Up Route Test", function() {
             expect(screen.getByDisplayValue("User already exists.")).toBeInTheDocument();
             expect(registrationButton).toBeEnabled();
             expect(form.children.length).toEqual(8);
+        });
+    });
+
+    it("Should show the password whenever show password icon is clicked", async function() {
+        const { container } = render(<SignUp />);
+        let form = screen.getByTestId("default-form");
+        let showPasswordIcon = form.children[13];
+
+        act(() => {
+            userEvent.click(showPasswordIcon);
+        });
+
+        waitFor(() => {
+            expect(form.children[12]).toHaveAttribute("type", "text");
         });
     });
 });

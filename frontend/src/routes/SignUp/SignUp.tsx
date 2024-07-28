@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 const envVariables = process.env;
 const {
@@ -23,6 +24,7 @@ function SignUp(): JSX.Element {
     const [zipcode, setZipcode] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [signUpSuccess, setSignUpSuccess] = useState<boolean>();
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
     function isNumericInput(event: React.KeyboardEvent<HTMLInputElement>): boolean {
         const key = event.key;
@@ -251,14 +253,14 @@ function SignUp(): JSX.Element {
                 onChange={(e) => setZipcode(e.target.value)}
             />
             <input
-                type="password"
+                type={showPassword ? 'text':'password'}
                 required
                 placeholder="Password"
                 name="password"
                 className="sign-up-input"
                 onChange={(e) => setPassword(e.target.value)}
             />
-
+            {showPassword ? <IoEyeOffOutline onClick={() => setShowPassword(!showPassword)}/> : <IoEyeOutline onClick={() => setShowPassword(!showPassword)}/>}
             <button className="create-account-button" disabled={!canSubmit()} onClick={createAccount}>Register</button>
             {signUpSuccess === false ? <div className="sign-up-error">User already exists.</div> : null}
         </div>
