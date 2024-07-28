@@ -187,7 +187,7 @@ class UserService implements IUserService {
     /**
      * Creates a secure link for a user to change their passowrd,
      * email will be sent to them in order to change the password
-     * @param {stirng} userId
+     * @param {stirng} email
      */
     public async RequestUserPasswordReset(email: string): Promise<void> {
         try {

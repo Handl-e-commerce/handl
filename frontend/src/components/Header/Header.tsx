@@ -81,9 +81,9 @@ function Header(): JSX.Element {
             <a href={location.origin} target="_self">
                 <img src="" alt="" />
             </a>
-            <SearchBar />
-            <button onClick={redirectSignUp}>Sign Up</button>
-            <button onClick={redirectLogin}>Login</button>
+            {!queryParams.get("isBusy") && <SearchBar />}
+            {!queryParams.get("isBusy") && <button onClick={redirectSignUp}>Sign Up</button>}
+            {!queryParams.get("isBusy") && <button onClick={redirectLogin}>Login</button>}
         </header>
     );
 };
