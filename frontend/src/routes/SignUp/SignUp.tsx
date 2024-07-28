@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
@@ -6,7 +6,6 @@ const envVariables = process.env;
 const {
     REACT_APP_SERVER_URI,
 } = envVariables;
-
 
 function SignUp(): JSX.Element {
     let location = window.location;
@@ -23,6 +22,7 @@ function SignUp(): JSX.Element {
     const [state, setState] = useState<string>("");
     const [zipcode, setZipcode] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [invalidPasswordMessage, setInvalidPasswordMessage] = useState<string>("");
     const [signUpSuccess, setSignUpSuccess] = useState<boolean>();
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -88,15 +88,15 @@ function SignUp(): JSX.Element {
             setIsBusy(false);
             setSignUpSuccess(false);
         };
-    }
+    };
 
     function canSubmit(): boolean {
         if (isBusy)
             return false;
-        if (email === "" || businessName === "" || firstName === "" || lastName === "" || phoneNumber === "" || EIN === "" || address === "" || city === "" || state === "--" || zipcode === "" ||  password === "")
+        if (email === "" || businessName === "" || firstName === "" || lastName === "" || phoneNumber === "" || EIN === "" || address === "" || city === "" || state === "--" || zipcode === "")
             return false;
         return true;
-    }
+    };
 
     if(signUpSuccess) {
         return (
@@ -106,7 +106,32 @@ function SignUp(): JSX.Element {
                 <div>The link expires in 30 mins</div>
             </div>
         )
-    }
+    };
+
+    function validPassword(password: string): boolean {
+        if (password.length < 8) {
+            setInvalidPasswordMessage("Password is too short");
+            return false;
+        };
+        if (!RegExp("[0-9]").test(password)) {            
+            setInvalidPasswordMessage("Password must contain a number");
+            return false;
+        };
+        if (!RegExp("[a-z]+").test(password)) {
+            setInvalidPasswordMessage("Password must contain a lowercase letter");
+            return false;
+        };
+        if (!RegExp("[A-Z]+").test(password)) {
+            setInvalidPasswordMessage("Password must contain an uppercase letter");
+            return false;
+        };
+        if (!(/[~`!#$%\^&*€£@+=\-\[\]\\';,/{}\(\)|\\":<>\?\.\_]/g).test(password)) {
+            setInvalidPasswordMessage("Password must contain a special character from the following: ~ ` ! # $ % ^ & * € £ @ + = - [ ] ' ; , / { } ( ) | \" : < > ? . _");
+            return false;
+        };
+        setInvalidPasswordMessage("");
+        return true;
+    };
 
     return (
         <div className="sign-up-container" data-testid="default-form">
@@ -255,12 +280,17 @@ function SignUp(): JSX.Element {
             <input
                 type={showPassword ? 'text':'password'}
                 required
+                maxLength={32}
                 placeholder="Password"
                 name="password"
                 className="sign-up-input"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                    validPassword(e.target.value);
+                    setPassword(e.target.value);
+                }}
             />
             {showPassword ? <IoEyeOffOutline onClick={() => setShowPassword(!showPassword)}/> : <IoEyeOutline onClick={() => setShowPassword(!showPassword)}/>}
+            {invalidPasswordMessage !== "" && <div>{invalidPasswordMessage}</div>}
             <button className="create-account-button" disabled={!canSubmit()} onClick={createAccount}>Register</button>
             {signUpSuccess === false ? <div className="sign-up-error">User already exists.</div> : null}
         </div>

@@ -163,4 +163,69 @@ describe("Sign Up Route Test", function() {
             expect(form.children[12]).toHaveAttribute("type", "text");
         });
     });
+
+    it("Should show password is too short error message", async function() {
+        const { container } = render(<SignUp />);
+        let form = screen.getByTestId("default-form");
+
+        act(() => {
+            userEvent.type(form.children[12], "foo");
+        });
+
+        waitFor(() => {
+            expect(screen.getByDisplayValue("Password is too short")).toBeInTheDocument();
+        }); 
+    });
+
+    it("Should show password must contain a number message", async function() {
+        const { container } = render(<SignUp />);
+        let form = screen.getByTestId("default-form");
+
+        act(() => {
+            userEvent.type(form.children[12], "foobaroni$#");
+        });
+
+        waitFor(() => {
+            expect(screen.getByDisplayValue("Password must contain a number")).toBeInTheDocument();
+        }); 
+    });
+
+    it("Should show password must contain a lower case letter message", async function() {
+        const { container } = render(<SignUp />);
+        let form = screen.getByTestId("default-form");
+
+        act(() => {
+            userEvent.type(form.children[12], "FOOBARONI$#%34");
+        });
+
+        waitFor(() => {
+            expect(screen.getByDisplayValue("Password must contain a lowercase letter")).toBeInTheDocument();
+        });
+    });
+
+    it("Should show password must contain an uppercase letter message", async function() {
+        const { container } = render(<SignUp />);
+        let form = screen.getByTestId("default-form");
+
+        act(() => {
+            userEvent.type(form.children[12], "foobaroni$34238$#$!");
+        });
+
+        waitFor(() => {
+            expect(screen.getByDisplayValue("Password must contain an uppercase letter")).toBeInTheDocument();
+        }); 
+    });
+
+    it("Should show password must contain a special character message", async function() {
+        const { container } = render(<SignUp />);
+        let form = screen.getByTestId("default-form");
+
+        act(() => {
+            userEvent.type(form.children[12], "FOobaroni434");
+        });
+
+        waitFor(() => {
+            expect(screen.getByDisplayValue("Password must contain a special character from the following: ~ ` ! # $ % ^ & * € £ @ + = - [ ] ' ; , / { } ( ) | \" : < > ? . _")).toBeInTheDocument();
+        }); 
+    });
 });
