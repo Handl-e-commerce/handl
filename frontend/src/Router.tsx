@@ -3,6 +3,7 @@ import { Home } from './routes/Home/Home';
 import { Login } from './routes/Login/Login';
 import { SignUp } from './routes/SignUp/SignUp';
 import { AboutUs } from './routes/AboutUs/AboutUs';
+import { ContactUs } from './routes/ContactUs/ContactUs';
 
 const Router = createBrowserRouter([
     {
@@ -20,6 +21,10 @@ const Router = createBrowserRouter([
     {
         path: "/about-us",
         element: <AboutUs />,
+    },
+    {
+        path: "/contact-us",
+        element: <ContactUs />,
     }
 ]);
 

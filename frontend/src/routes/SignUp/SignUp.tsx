@@ -138,7 +138,7 @@ function SignUp(): JSX.Element {
             <h1>Sign Up Free</h1>
             <div>Already a member? <a href={location.origin + "/login?isBusy=true"}>{"Login ->"}</a></div>
             <input 
-                type="text"
+                type="email"
                 required
                 placeholder="Business Email"
                 name="business_email"
