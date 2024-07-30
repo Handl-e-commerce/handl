@@ -30,8 +30,8 @@ function Header(): JSX.Element {
     function redirectSignUp(): void {
         // redirect to sign up route
         queryParams.set("isBusy", "true");
-        location.replace(location.origin + "/sign-up?" + queryParams.toString());
         window.history.pushState({}, "", location.origin + "/sign-up?" + queryParams.toString());
+        location.replace(location.origin + "/sign-up?" + queryParams.toString());
     };
 
     function redirectLogin(): void {

@@ -12,6 +12,10 @@ function Results(): JSX.Element {
     const [vendors, setVendors] = useState();
     const [width, setWidth] = useState<number>(window.innerWidth);
 
+    async function handleQuery(): Promise<void> {
+        const results = await fetchWrapper(REACT_APP_SERVER_URI + `/vendors?${queryParams.toString()}`, 'GET');
+    }
+
     function handleWindowSizeChange() {
         setWidth(window.innerWidth);
     }
@@ -29,18 +33,28 @@ function Results(): JSX.Element {
         {label: "Name", renderCell: (item: any) => item.name }
     ] : [
         {label: "Name", renderCell: (item: any) => item.name },
-        {label: "Description", renderCell: (item: any) => item.name },
-        {label: "Categories", renderCell: (item: any) => item.name },
-        {label: "State", renderCell: (item: any) => item.name }
+        {label: "Description", renderCell: (item: any) => item.description },
+        {label: "Categories", renderCell: (item: any) => item.categories },
+        {label: "State", renderCell: (item: any) => item.state }
     ];
-    async function handleQuery(): Promise<void> {
-        const results = await fetchWrapper(REACT_APP_SERVER_URI + `/vendors?${queryParams.toString()}`, 'GET');
-    }
 
-    // Can just throw an if statement here to render 1 Column or 4 for mobile vs desktop
+    let nodes = [
+        {
+            id: "0",
+            name: "Test",
+            description: "Test description",
+            categories: ["Cat 1, Cat 2, Cat 3"],
+            state: "TX"
+        }
+    ];
+
+    let data = { nodes }
+
+    // Need to blur everything if user isn't logged in
 
     return (
-        <CompactTable columns={columns} data={}/>
+        // <div></div>
+        <CompactTable columns={columns} data={data} />
     )
 };
 

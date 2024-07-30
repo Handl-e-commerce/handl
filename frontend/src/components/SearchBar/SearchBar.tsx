@@ -11,20 +11,31 @@ function SearchBar(): JSX.Element {
         }
     };
 
+    function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>): void {
+        if (e.key === 'Enter') {
+            // redirect to "/results?search-params=xyz&offset=1&limit=25"
+            let searchParams = new URL(document.location.toString()).searchParams;
+            if (searchInput !== "" && searchInput !== undefined && searchInput !== null) {
+                searchParams.set("search-params", searchInput);
+                searchParams.set("offset", "1");
+                searchParams.set("limit", "25");
+                window.history.replaceState("", "", `/results?${searchParams.toString()}`);
+                window.location.replace(window.location.origin + "/results?" + searchParams.toString());
+            }
+        }
+    };
+
     return (
-        <form className="search-bar-container">
-            <input
-                type="text"
-                placeholder="Search here"
-                onChange={handleChange}
-                value={searchInput}
-                name="search_params"
-                required={true}
-                className="search-input"
-            />
-            <input type="hidden" name="offset" value={"1"}/>
-            <input type="hidden" name="limit" value={"25"}/>
-        </form>
+        <input
+            type="text"
+            placeholder="Search here"
+            onChange={handleChange}
+            value={searchInput}
+            name="search_params"
+            required={true}
+            className="search-input"
+            onKeyUp={handleKeyPress}
+        />
     );
 };
 
