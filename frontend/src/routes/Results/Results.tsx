@@ -7,14 +7,38 @@ const {
     REACT_APP_SERVER_URI,
 } = envVariables;
 
+type vendor = {
+    uuid: string;
+    name: string;
+    description: string;
+    website: string;
+    categories: string;
+    people: string[];
+    address: string;
+    city: string;
+    state: string;
+    zipcode: string;
+    phoneNumber: string;
+    email: string;
+}
+
 function Results(): JSX.Element {
     let queryParams = new URL(document.location.toString()).searchParams;
-    const [vendors, setVendors] = useState();
+    const [vendors, setVendors] = useState<vendor[] | undefined>(undefined);
     const [width, setWidth] = useState<number>(window.innerWidth);
+    useEffect(() => {
+        let ignore = false;
+        if (!ignore) {
+            handleQuery();
+        };
+        return () => { ignore = true };
+    }, []);
 
     async function handleQuery(): Promise<void> {
-        const results = await fetchWrapper(REACT_APP_SERVER_URI + `/vendors?${queryParams.toString()}`, 'GET');
-    }
+        const response = await fetchWrapper(REACT_APP_SERVER_URI + `/vendors?${queryParams.toString()}`, 'GET');
+        const data: vendor[] = (await response.json()).result;
+        setVendors(data);
+    };
 
     function handleWindowSizeChange() {
         setWidth(window.innerWidth);
@@ -38,23 +62,31 @@ function Results(): JSX.Element {
         {label: "State", renderCell: (item: any) => item.state }
     ];
 
-    let nodes = [
-        {
-            id: "0",
-            name: "Test",
-            description: "Test description",
-            categories: ["Cat 1, Cat 2, Cat 3"],
-            state: "TX"
-        }
-    ];
+    const nodes: any = [];
+    if (vendors) {
+        vendors.forEach((val, i) => {
+            nodes.push({
+                id: val.uuid,
+                name: val.name,
+                description: val.description,
+                website: val.website,
+                categories: val.categories,
+                people: val.people,
+                address: val.address,
+                city: val.city,
+                state: val.state,
+                zipcode: val.zipcode,
+                phoneNumber: val.phoneNumber,
+                email: val.email,
+            });
+        });
+    };
 
-    let data = { nodes }
-
-    // Need to blur everything if user isn't logged in
-
+    const data = { nodes };
     return (
-        // <div></div>
-        <CompactTable columns={columns} data={data} />
+        <div>
+            {vendors && <CompactTable columns={columns} data={data} />}
+        </div>
     )
 };
 

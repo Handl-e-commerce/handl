@@ -13,12 +13,9 @@ function SearchBar(): JSX.Element {
 
     function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>): void {
         if (e.key === 'Enter') {
-            // redirect to "/results?search-params=xyz&offset=1&limit=25"
             let searchParams = new URL(document.location.toString()).searchParams;
             if (searchInput !== "" && searchInput !== undefined && searchInput !== null) {
                 searchParams.set("search-params", searchInput);
-                searchParams.set("offset", "1");
-                searchParams.set("limit", "25");
                 window.history.replaceState("", "", `/results?${searchParams.toString()}`);
                 window.location.replace(window.location.origin + "/results?" + searchParams.toString());
             }
