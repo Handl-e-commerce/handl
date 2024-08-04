@@ -54,10 +54,6 @@ function Results(): JSX.Element {
           setIds(ids.concat(item.id));
         }
     };
-
-    function handlePaginationChange(action: any, state: any): void {
-        console.log(action, state);
-    }
     
     // Setting it to 393 to match iPhone 15 width
     const isMobile = width <= 393;
