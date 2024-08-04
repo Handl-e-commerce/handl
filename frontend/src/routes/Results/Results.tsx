@@ -3,9 +3,10 @@ import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { CompactTable } from '@table-library/react-table-library/compact';
 import { useTheme } from "@table-library/react-table-library/theme";
 import { getTheme } from "@table-library/react-table-library/baseline";
-
+import { Pagination, usePagination } from "@table-library/react-table-library/pagination";
 import { vendor, vendorRow } from "../../types/types";
 import { ExpandedRow } from "../../components/ExpandedRow/ExpandedRow";
+import { PaginationBar } from "../../components/PaginationBar/PaginationBar";
 
 const envVariables = process.env;
 const {
@@ -16,10 +17,11 @@ function Results(): JSX.Element {
     let queryParams = new URL(document.location.toString()).searchParams;
     const [vendors, setVendors] = useState<vendor[]>([]);
     const [width, setWidth] = useState<number>(window.innerWidth);
-    const [ids, setIds] = React.useState<string[]>([]);
-
-    const theme = useTheme(getTheme());
+    const [ids, setIds] = useState<string[]>([]);
+    const [resultsPerPage, setResultsPerPage] = useState<number>(25);
     
+    const theme = useTheme(getTheme());
+
     useEffect(() => {
         let ignore = false;
         if (!ignore) {
@@ -41,17 +43,21 @@ function Results(): JSX.Element {
         setVendors(data);
     };
 
-    function handleWindowSizeChange() {
+    function handleWindowSizeChange(): void {
         setWidth(window.innerWidth);
     };
 
-    const handleExpand = (item: vendorRow) => {
+    function handleExpand(item: vendorRow): void {
         if (ids.includes(item.id)) {
           setIds(ids.filter((id) => id !== item.id));
         } else {
           setIds(ids.concat(item.id));
         }
-      };
+    };
+
+    function handlePaginationChange(action: any, state: any): void {
+        console.log(action, state);
+    }
     
     // Setting it to 393 to match iPhone 15 width
     const isMobile = width <= 393;
@@ -66,7 +72,7 @@ function Results(): JSX.Element {
     ];
 
     const nodes: vendorRow[] = [];
-    vendors.forEach((val, i) => {
+    vendors.forEach((val: vendor, i: number) => {
         nodes.push({
             id: val.uuid,
             name: val.name,
@@ -83,6 +89,13 @@ function Results(): JSX.Element {
         });
     });
     const data = { nodes };
+
+    const pagination: Pagination<vendorRow> = usePagination(data, {
+        state: {
+            page: 0,
+            size: resultsPerPage
+        },
+    });
     
     const ROW_PROPS = {
         onClick: handleExpand,
@@ -93,13 +106,22 @@ function Results(): JSX.Element {
     };    
     
     return (
-        <CompactTable 
-            columns={COLUMNS} 
-            rowProps={ROW_PROPS}
-            rowOptions={ROW_OPTIONS}
-            data={data} 
-            theme={theme}
-        />
+        <>
+            <CompactTable 
+                columns={COLUMNS} 
+                rowProps={ROW_PROPS}
+                rowOptions={ROW_OPTIONS}
+                data={data} 
+                theme={theme}
+                pagination={pagination}
+            />
+            <PaginationBar
+                data={data}
+                resultsPerPage={resultsPerPage}
+                setResultsPerPage={setResultsPerPage}
+                pagination={pagination}
+            />
+        </>
     )
 };
 
