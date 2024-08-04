@@ -4,9 +4,16 @@ import { CompactTable } from '@table-library/react-table-library/compact';
 import { useTheme } from "@table-library/react-table-library/theme";
 import { getTheme } from "@table-library/react-table-library/baseline";
 import { Pagination, usePagination } from "@table-library/react-table-library/pagination";
+import {
+    useSort,
+    HeaderCellSort,
+    SortIconPositions,
+    SortToggleType,
+} from "@table-library/react-table-library/sort";
 import { vendor, vendorRow } from "../../types/types";
 import { ExpandedRow } from "../../components/ExpandedRow/ExpandedRow";
 import { PaginationBar } from "../../components/PaginationBar/PaginationBar";
+import { HiChevronUpDown, HiChevronUp, HiChevronDown } from "react-icons/hi2";
 
 const envVariables = process.env;
 const {
@@ -59,12 +66,12 @@ function Results(): JSX.Element {
     const isMobile = width <= 393;
 
     const COLUMNS = isMobile ? [
-        {label: "Name", renderCell: (item: any) => item.name }
+        {label: "Name", renderCell: (item: vendor) => item.name }
     ] : [
-        {label: "Name", renderCell: (item: any) => item.name },
-        {label: "Description", renderCell: (item: any) => item.description },
-        {label: "Categories", renderCell: (item: any) => item.categories },
-        {label: "State", renderCell: (item: any) => item.state }
+        {label: "Name", renderCell: (item: vendor) => item.name },
+        {label: "Description", renderCell: (item: vendor) => item.description },
+        {label: "Categories", renderCell: (item: vendor) => item.categories },
+        {label: "State", renderCell: (item: vendor) => item.state }
     ];
 
     const nodes: vendorRow[] = [];
@@ -85,6 +92,27 @@ function Results(): JSX.Element {
         });
     });
     const data = { nodes };
+
+    const sort = useSort(
+        data,
+        {
+            onChange: () => console.log("Sorted"),
+        },
+        {
+            sortIcon: {
+                margin: '0px',
+                iconDefault: <HiChevronUpDown />,
+                iconUp: <HiChevronUp />,
+                iconDown: <HiChevronDown />
+            },
+            sortFns: {
+               Name: (array) => array.sort((a, b) => a.name.localeCompare(b.name)),
+               Description: (array) => array.sort((a, b) => a.description.localeCompare(b.description)),
+               Category: (array) => array.sort((a, b) => a.category.localeCompare(b.category)), // This one may be very tricky
+               State: (array) => array.sort((a, b) => a.state.localeCompare(b.state)),
+            }
+        }
+    )
 
     const pagination: Pagination<vendorRow> = usePagination(data, {
         state: {
@@ -110,6 +138,7 @@ function Results(): JSX.Element {
                 data={data} 
                 theme={theme}
                 pagination={pagination}
+                sort={sort}
             />
             <PaginationBar
                 data={data}
