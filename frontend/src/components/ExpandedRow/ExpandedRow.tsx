@@ -26,8 +26,8 @@ function ExpandedRow({row, ids}: IExpandedRowProps): JSX.Element {
                   return <div key={i}>People: {person}</div>
                 })}
                 <h4>Categories</h4>
-                {row.categories.split(",").map((category) => (
-                  <div>{category}</div>
+                {row.categories.split(",").map((category: string, i: number) => (
+                  <div key={i}>{category}</div>
                 ))}
                 <h4>Contact Info</h4>
                 <a href={row.website}>{row.website}</a>
