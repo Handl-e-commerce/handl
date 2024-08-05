@@ -25,7 +25,7 @@ function Results(): JSX.Element {
     const [vendors, setVendors] = useState<vendor[]>([]);
     const [width, setWidth] = useState<number>(window.innerWidth);
     const [ids, setIds] = useState<string[]>([]);
-    const [resultsPerPage, setResultsPerPage] = useState<number>(25);
+    const [resultsPerPage, setResultsPerPage] = useState<number>(10);
     
     const theme = useTheme(getTheme());
 
@@ -66,12 +66,12 @@ function Results(): JSX.Element {
     const isMobile = width <= 393;
 
     const COLUMNS = isMobile ? [
-        {label: "Name", renderCell: (item: vendor) => item.name }
+        {label: "Name", renderCell: (item: vendor) => item.name, sort: { sortKey: "name"} }
     ] : [
-        {label: "Name", renderCell: (item: vendor) => item.name },
-        {label: "Description", renderCell: (item: vendor) => item.description },
-        {label: "Categories", renderCell: (item: vendor) => item.categories },
-        {label: "State", renderCell: (item: vendor) => item.state }
+        {label: "Name", renderCell: (item: vendor) => item.name, sort: { sortKey: "name"} },
+        {label: "Description", renderCell: (item: vendor) => item.description, sort: { sortKey: "description"} },
+        {label: "Categories", renderCell: (item: vendor) => item.categories, sort: { sortKey: "categories"} },
+        {label: "State", renderCell: (item: vendor) => item.state, sort: { sortKey: "state"} }
     ];
 
     const nodes: vendorRow[] = [];
@@ -100,16 +100,16 @@ function Results(): JSX.Element {
         },
         {
             sortIcon: {
-                margin: '0px',
-                iconDefault: <HiChevronUpDown />,
-                iconUp: <HiChevronUp />,
-                iconDown: <HiChevronDown />
+                iconDefault: <HiChevronUpDown size={"30px"}/>,
+                iconUp: <HiChevronUp size={"20px"}/>,
+                iconDown: <HiChevronDown size={"20px"}/>
             },
+            sortToggleType: SortToggleType.AlternateWithReset,
             sortFns: {
-               Name: (array) => array.sort((a, b) => a.name.localeCompare(b.name)),
-               Description: (array) => array.sort((a, b) => a.description.localeCompare(b.description)),
-               Category: (array) => array.sort((a, b) => a.category.localeCompare(b.category)), // This one may be very tricky
-               State: (array) => array.sort((a, b) => a.state.localeCompare(b.state)),
+               name: (array) => array.sort((a, b) => a.name.localeCompare(b.name)),
+               description: (array) => array.sort((a, b) => a.description.localeCompare(b.description)),
+               category: (array) => array.sort((a, b) => a.category.localeCompare(b.category)), // This one may be very tricky
+               state: (array) => array.sort((a, b) => a.state.localeCompare(b.state)),
             }
         }
     )
