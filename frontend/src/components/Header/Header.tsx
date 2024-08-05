@@ -12,7 +12,8 @@ const {
 function Header(): JSX.Element {
     const cookieObject = cookieParser();
     let location = window.location;
-    let queryParams = new URL(document.location.toString()).searchParams;
+    let isLandingPage: boolean = location.pathname === "/";
+    let isLoginOrSignUpPage: boolean = location.pathname === "/login" || location.pathname === "/sign-up";
 
     const [loggedIn, setLoggedIn] = useState<boolean>(cookieObject.loggedIn === "true");
 
@@ -29,16 +30,14 @@ function Header(): JSX.Element {
 
     function redirectSignUp(): void {
         // redirect to sign up route
-        queryParams.set("isBusy", "true");
-        window.history.pushState({}, "", location.origin + "/sign-up?" + queryParams.toString());
-        location.replace(location.origin + "/sign-up?" + queryParams.toString());
+        window.history.pushState({}, "", location.origin + "/sign-up?");
+        location.replace(location.origin + "/sign-up?");
     };
 
     function redirectLogin(): void {
         // redirect to login page
-        queryParams.set("isBusy", "true");
-        window.history.pushState({}, "", location.origin + "/login?" + queryParams.toString());
-        location.replace(location.origin + "/login?" + queryParams.toString());
+        window.history.pushState({}, "", location.origin + "/login?");
+        location.replace(location.origin + "/login?");
     };
 
     async function verifyUserLogin() {
@@ -81,9 +80,9 @@ function Header(): JSX.Element {
             <a href={location.origin} target="_self">
                 <img src="" alt="" />
             </a>
-            {!queryParams.get("isBusy") && <SearchBar />}
-            {!queryParams.get("isBusy") && <button onClick={redirectSignUp}>Sign Up</button>}
-            {!queryParams.get("isBusy") && <button onClick={redirectLogin}>Login</button>}
+            {isLandingPage && <SearchBar />}
+            {!isLoginOrSignUpPage && <button onClick={redirectSignUp}>Sign Up</button>}
+            {!isLoginOrSignUpPage && <button onClick={redirectLogin}>Login</button>}
         </header>
     );
 };

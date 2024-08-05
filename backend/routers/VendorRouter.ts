@@ -10,7 +10,7 @@ vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
         if (req.query.categories) {
             categories = (req.query.categories as string).split(",");
         }
-        const searchVal: string = req.query.searchVal as string;
+        const searchVal: string = req.query["search-params"] as string;
         const vendorService: VendorService = new VendorService();
         const vendors = await vendorService.GetVendors(categories, searchVal);
         return res.status(200).json({
