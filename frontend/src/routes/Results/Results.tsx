@@ -4,12 +4,7 @@ import { CompactTable } from '@table-library/react-table-library/compact';
 import { useTheme } from "@table-library/react-table-library/theme";
 import { getTheme } from "@table-library/react-table-library/baseline";
 import { Pagination, usePagination } from "@table-library/react-table-library/pagination";
-import {
-    useSort,
-    HeaderCellSort,
-    SortIconPositions,
-    SortToggleType,
-} from "@table-library/react-table-library/sort";
+import { useSort, SortToggleType } from "@table-library/react-table-library/sort";
 import { vendor, vendorRow } from "../../types/types";
 import { ExpandedRow } from "../../components/ExpandedRow/ExpandedRow";
 import { PaginationBar } from "../../components/PaginationBar/PaginationBar";
