@@ -3,6 +3,7 @@ import { SearchBar } from "../SearchBar/SearchBar";
 import { cookieParser } from "../../utils/cookie-util";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { deleteCookie } from "../../utils/cookie-util";
+import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 
 const envVariables = process.env;
 const {
@@ -10,23 +11,13 @@ const {
 } = envVariables;
 
 function Header(): JSX.Element {
-    const cookieObject = cookieParser();
     let location = window.location;
     let isLandingPage: boolean = location.pathname === "/";
     let isLoginOrSignUpPage: boolean = location.pathname === "/login" || location.pathname === "/sign-up";
-
-    const [loggedIn, setLoggedIn] = useState<boolean>(cookieObject.loggedIn === "true");
-
-    // Temporarily putting this here just to get code to compile
+    let loggedIn = useLoginStatus();
+    
+    // TODO: (MEDIUM) have logged in return user's first name upon successful login
     let userName = "";
-
-    useEffect(() => {
-        let ignore = false;
-        if (loggedIn && !ignore) {
-            verifyUserLogin();
-        }
-        return () => { ignore = true };
-    }, []);
 
     function redirectSignUp(): void {
         // redirect to sign up route
@@ -40,23 +31,7 @@ function Header(): JSX.Element {
         location.replace(location.origin + "/login?");
     };
 
-    async function verifyUserLogin() {
-        const response: Response = await fetchWrapper(REACT_APP_SERVER_URI + `/users/login/verify`, "POST", {
-            userId: cookieObject.userId
-        });
-        if (response.status === 201) {
-            setLoggedIn(true);
-        }
-        else {
-            console.log("Failed verification, logging user out.");
-            setLoggedIn(false);
-            deleteCookie("loggedIn");
-            deleteCookie("userId");
-        }
-    };
-
     async function handleLogout() {
-        setLoggedIn(false);
         deleteCookie("loggedIn");
         deleteCookie("userId");
         await fetchWrapper(REACT_APP_SERVER_URI + `/users/logout`, "POST");
@@ -71,6 +46,7 @@ function Header(): JSX.Element {
                 </a>
                 <div>Hi, {userName}!</div>
                 <div onClick={handleLogout}>Logout</div>
+                {isLandingPage && <SearchBar />}
             </div>
         );
     };

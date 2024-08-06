@@ -9,7 +9,9 @@ import { vendor, vendorRow } from "../../types/types";
 import { ExpandedRow } from "../../components/ExpandedRow/ExpandedRow";
 import { PaginationBar } from "../../components/PaginationBar/PaginationBar";
 import { HiChevronUpDown, HiChevronUp, HiChevronDown } from "react-icons/hi2";
+import { cookieParser } from "../../utils/cookie-util";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
+import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 
 const envVariables = process.env;
 const {
@@ -18,27 +20,11 @@ const {
 
 function Results(): JSX.Element {
     let queryParams = new URL(document.location.toString()).searchParams;
+
     const [vendors, setVendors] = useState<vendor[]>([]);
     const [width, setWidth] = useState<number>(window.innerWidth);
     const [ids, setIds] = useState<string[]>([]);
     const [resultsPerPage, setResultsPerPage] = useState<number>(10);
-    
-    const theme = useTheme(getTheme());
-
-    useEffect(() => {
-        let ignore = false;
-        if (!ignore) {
-            handleQuery();
-        };
-        return () => { ignore = true };
-    }, []);
-
-    useEffect(() => {
-        window.addEventListener('resize', handleWindowSizeChange);
-        return () => {
-            window.removeEventListener('resize', handleWindowSizeChange);
-        }
-    }, []);
 
     async function handleQuery(): Promise<void> {
         const response = await fetchWrapper(REACT_APP_SERVER_URI + `/vendors?${queryParams.toString()}`, 'GET');
@@ -64,17 +50,22 @@ function Results(): JSX.Element {
         window.location.replace(window.location.origin + "/results?" + queryParams.toString());
     };
     
-    // Setting it to 393 to match iPhone 15 width
-    const isMobile = width <= 393;
+    const theme = useTheme(getTheme());
+    
+    useEffect(() => {
+        let ignore = false;
+        if (!ignore) {
+            handleQuery();
+        };
+        return () => { ignore = true };
+    }, []);
 
-    const COLUMNS = isMobile ? [
-        {label: "Name", renderCell: (item: vendor) => item.name, sort: { sortKey: "name"} }
-    ] : [
-        {label: "Name", renderCell: (item: vendor) => item.name, sort: { sortKey: "name"} },
-        {label: "Description", renderCell: (item: vendor) => item.description, sort: { sortKey: "description"} },
-        {label: "Categories", renderCell: (item: vendor) => item.categories, sort: { sortKey: "categories"} },
-        {label: "State", renderCell: (item: vendor) => item.state, sort: { sortKey: "state"} }
-    ];
+    useEffect(() => {
+        window.addEventListener('resize', handleWindowSizeChange);
+        return () => {
+            window.removeEventListener('resize', handleWindowSizeChange);
+        }
+    }, []);
 
     const nodes: vendorRow[] = [];
     vendors.forEach((val: vendor, i: number) => {
@@ -95,6 +86,13 @@ function Results(): JSX.Element {
     });
     const data = { nodes };
 
+    const pagination: Pagination<vendorRow> = usePagination(data, {
+        state: {
+            page: 0,
+            size: resultsPerPage
+        },
+    });
+
     const sort = useSort(
         data,
         {
@@ -114,44 +112,59 @@ function Results(): JSX.Element {
                state: (array) => array.sort((a, b) => a.state.localeCompare(b.state)),
             }
         }
-    )
+    );
 
-    const pagination: Pagination<vendorRow> = usePagination(data, {
-        state: {
-            page: 0,
-            size: resultsPerPage
-        },
-    });
-    
-    const ROW_PROPS = {
-        onClick: handleExpand,
-    };    
+    let loggedIn = useLoginStatus();
 
-    const ROW_OPTIONS = {
-        renderAfterRow: (row: vendorRow) => <ExpandedRow ids={ids} row={row}/>
-    };    
+    if (!loggedIn) {
+        return (
+            <div>Modal goes here</div>
+        );
+    }
+
+    else {
+        // Setting it to 393 to match iPhone 15 width
+        const isMobile = width <= 393;
     
-    return (
-        <>
-            <SearchBar />
-            {queryParams.get("search-params") ? <div onClick={handleRemoveSearchVal}>{queryParams.get("search-params")}</div> : null}
-            <CompactTable 
-                columns={COLUMNS} 
-                rowProps={ROW_PROPS}
-                rowOptions={ROW_OPTIONS}
-                data={data} 
-                theme={theme}
-                pagination={pagination}
-                sort={sort}
-            />
-            <PaginationBar
-                data={data}
-                resultsPerPage={resultsPerPage}
-                setResultsPerPage={setResultsPerPage}
-                pagination={pagination}
-            />
-        </>
-    )
+        const COLUMNS = isMobile ? [
+            {label: "Name", renderCell: (item: vendor) => item.name, sort: { sortKey: "name"} }
+        ] : [
+            {label: "Name", renderCell: (item: vendor) => item.name, sort: { sortKey: "name"} },
+            {label: "Description", renderCell: (item: vendor) => item.description, sort: { sortKey: "description"} },
+            {label: "Categories", renderCell: (item: vendor) => item.categories, sort: { sortKey: "categories"} },
+            {label: "State", renderCell: (item: vendor) => item.state, sort: { sortKey: "state"} }
+        ];
+        
+        const ROW_PROPS = {
+            onClick: handleExpand,
+        };    
+    
+        const ROW_OPTIONS = {
+            renderAfterRow: (row: vendorRow) => <ExpandedRow ids={ids} row={row}/>
+        };    
+        
+        return (
+            <>
+                <SearchBar />
+                {queryParams.get("search-params") ? <div onClick={handleRemoveSearchVal}>{queryParams.get("search-params")}</div> : null}
+                <CompactTable 
+                    columns={COLUMNS} 
+                    rowProps={ROW_PROPS}
+                    rowOptions={ROW_OPTIONS}
+                    data={data} 
+                    theme={theme}
+                    pagination={pagination}
+                    sort={sort}
+                />
+                <PaginationBar
+                    data={data}
+                    resultsPerPage={resultsPerPage}
+                    setResultsPerPage={setResultsPerPage}
+                    pagination={pagination}
+                />
+            </>
+        )
+    }
 };
 
 export { Results };
