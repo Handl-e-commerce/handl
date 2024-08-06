@@ -9,6 +9,7 @@ import { vendor, vendorRow } from "../../types/types";
 import { ExpandedRow } from "../../components/ExpandedRow/ExpandedRow";
 import { PaginationBar } from "../../components/PaginationBar/PaginationBar";
 import { HiChevronUpDown, HiChevronUp, HiChevronDown } from "react-icons/hi2";
+import { SearchBar } from "../../components/SearchBar/SearchBar";
 
 const envVariables = process.env;
 const {
@@ -126,6 +127,7 @@ function Results(): JSX.Element {
     
     return (
         <>
+            <SearchBar />
             <CompactTable 
                 columns={COLUMNS} 
                 rowProps={ROW_PROPS}

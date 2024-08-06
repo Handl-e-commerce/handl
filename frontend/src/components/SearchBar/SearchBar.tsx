@@ -2,6 +2,7 @@ import React, { useState } from "react";
 // import "./SearchBar.css"
 
 function SearchBar(): JSX.Element {
+    let searchParams = new URL(document.location.toString()).searchParams;
     const [searchInput, setSearchInput] = useState("");
 
     function handleChange(e: any) {
@@ -13,7 +14,6 @@ function SearchBar(): JSX.Element {
 
     function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>): void {
         if (e.key === 'Enter') {
-            let searchParams = new URL(document.location.toString()).searchParams;
             if (searchInput !== "" && searchInput !== undefined && searchInput !== null) {
                 searchParams.set("search-params", searchInput);
                 window.history.replaceState("", "", `/results?${searchParams.toString()}`);
@@ -25,7 +25,7 @@ function SearchBar(): JSX.Element {
     return (
         <input
             type="text"
-            placeholder="Search here"
+            placeholder={searchParams.get("search-params")?.toString() ?? "Search here"}
             onChange={handleChange}
             value={searchInput}
             name="search_params"
