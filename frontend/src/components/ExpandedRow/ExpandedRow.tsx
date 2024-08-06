@@ -16,7 +16,6 @@ function ExpandedRow({row, ids}: IExpandedRowProps): JSX.Element {
                 <h4>Company Information</h4>
                 <div>{row.name.toUpperCase()}</div>
                 <div>{row.description}</div>
-                <div>Categories: {row.categories}</div>
               </div>
             </td>
             <td>

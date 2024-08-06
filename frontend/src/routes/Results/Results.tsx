@@ -57,6 +57,12 @@ function Results(): JSX.Element {
           setIds(ids.concat(item.id));
         }
     };
+
+    function handleRemoveSearchVal(): void {
+        queryParams.delete("search-params");
+        window.history.replaceState("", "", `/results?${queryParams.toString()}`);
+        window.location.replace(window.location.origin + "/results?" + queryParams.toString());
+    };
     
     // Setting it to 393 to match iPhone 15 width
     const isMobile = width <= 393;
@@ -128,6 +134,7 @@ function Results(): JSX.Element {
     return (
         <>
             <SearchBar />
+            {queryParams.get("search-params") ? <div onClick={handleRemoveSearchVal}>{queryParams.get("search-params")}</div> : null}
             <CompactTable 
                 columns={COLUMNS} 
                 rowProps={ROW_PROPS}

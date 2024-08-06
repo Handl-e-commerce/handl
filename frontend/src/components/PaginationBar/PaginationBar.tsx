@@ -15,7 +15,7 @@ interface IPaginationBarProps {
 function PaginationBar({data, resultsPerPage, setResultsPerPage, pagination}: IPaginationBarProps): JSX.Element {
     let first = pagination.state.getPageBoundaries(data.nodes).start;
     let end = pagination.state.getPageBoundaries(data.nodes).end;
-    
+    let resultsMessage = end > 0 ? `${first} - ${end} of ${data.nodes.length}` : "No results found";
     return (
         <div style={{ display: "flex", justifyContent: "space-between" }}>
             <select
@@ -27,7 +27,7 @@ function PaginationBar({data, resultsPerPage, setResultsPerPage, pagination}: IP
                 <option value="50">50</option>
                 <option value="100">100</option>
             </select>
-            <span>{first} - {end} of {data.nodes.length}</span>
+            <span>{resultsMessage}</span>
             <span>
                 {pagination.state.page > 0 &&
                 <IoArrowBackOutline 
