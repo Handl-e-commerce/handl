@@ -54,7 +54,7 @@ function Results(): JSX.Element {
     
     useEffect(() => {
         let ignore = false;
-        if (!ignore) {
+        if (!ignore && loggedIn) {
             handleQuery();
         };
         return () => { ignore = true };
