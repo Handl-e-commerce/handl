@@ -9,9 +9,15 @@ import { vendor, vendorRow } from "../../types/types";
 import { ExpandedRow } from "../../components/ExpandedRow/ExpandedRow";
 import { PaginationBar } from "../../components/PaginationBar/PaginationBar";
 import { HiChevronUpDown, HiChevronUp, HiChevronDown } from "react-icons/hi2";
-import { cookieParser } from "../../utils/cookie-util";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
+
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Checkbox from '@mui/material/Checkbox';
 
 const envVariables = process.env;
 const {
@@ -22,14 +28,33 @@ function Results(): JSX.Element {
     let queryParams = new URL(document.location.toString()).searchParams;
 
     const [vendors, setVendors] = useState<vendor[]>([]);
+    const [categories, setCategories] = useState<string[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [width, setWidth] = useState<number>(window.innerWidth);
     const [ids, setIds] = useState<string[]>([]);
     const [resultsPerPage, setResultsPerPage] = useState<number>(10);
 
+    let loggedIn = useLoginStatus();
+
     async function handleQuery(): Promise<void> {
+        if (selectedCategories.length > 0) {
+            queryParams.delete("categories");
+            let categories: string = selectedCategories.join(",");
+            queryParams.set("categories", categories);
+        };
         const response = await fetchWrapper(REACT_APP_SERVER_URI + `/vendors?${queryParams.toString()}`, 'GET');
         const data: vendor[] = (await response.json()).result;
         setVendors(data);
+    };
+
+    async function getCategories(): Promise<void> {
+        const response = await fetchWrapper(REACT_APP_SERVER_URI + '/vendors/categories', 'GET');
+        const data: { subcategory: string }[] = (await response.json()).result;
+        let categories: string[] = [];
+        data.forEach((val, i) => {
+            categories.push(val.subcategory);
+        });
+        setCategories(categories);
     };
 
     function handleWindowSizeChange(): void {
@@ -50,12 +75,23 @@ function Results(): JSX.Element {
         window.location.replace(window.location.origin + "/results?" + queryParams.toString());
     };
     
+    function handleChange(event: SelectChangeEvent<typeof categories>) {
+        const {
+          target: { value },
+        } = event;
+        setSelectedCategories(
+          // On autofill we get a stringified value.
+          typeof value === 'string' ? value.split(',') : value,
+        );
+    };
+
     const theme = useTheme(getTheme());
     
     useEffect(() => {
         let ignore = false;
         if (!ignore && loggedIn) {
             handleQuery();
+            getCategories();
         };
         return () => { ignore = true };
     }, []);
@@ -114,8 +150,6 @@ function Results(): JSX.Element {
         }
     );
 
-    let loggedIn = useLoginStatus();
-
     if (!loggedIn) {
         return (
             <div>Modal goes here</div>
@@ -146,6 +180,23 @@ function Results(): JSX.Element {
         return (
             <>
                 <SearchBar />
+                <FormControl sx={{ m: 1, width: 200 }}>
+                    <InputLabel id="categories-multiple-checkbox-label">Categories</InputLabel>
+                    <Select
+                        multiple
+                        value={selectedCategories}
+                        onChange={handleChange}
+                        onClose={handleQuery}
+                        renderValue={(selected) => selected.join(', ')}
+                    >
+                        {categories.map((subcategory, i) => (
+                            <MenuItem key={subcategory} value={subcategory}>
+                                <Checkbox checked={selectedCategories.indexOf(subcategory) > -1} />
+                                    <ListItemText primary={subcategory}/>
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 {queryParams.get("search-params") ? <div onClick={handleRemoveSearchVal}>{queryParams.get("search-params")}</div> : null}
                 <CompactTable 
                     columns={COLUMNS} 
