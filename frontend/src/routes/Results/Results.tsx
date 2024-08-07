@@ -29,7 +29,7 @@ function Results(): JSX.Element {
 
     const [vendors, setVendors] = useState<vendor[]>([]);
     const [categories, setCategories] = useState<string[]>([]);
-    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<string[]>(queryParams.get("categories")?.split(",") ?? []);
     const [width, setWidth] = useState<number>(window.innerWidth);
     const [ids, setIds] = useState<string[]>([]);
     const [resultsPerPage, setResultsPerPage] = useState<number>(10);
@@ -37,11 +37,14 @@ function Results(): JSX.Element {
     let loggedIn = useLoginStatus();
 
     async function handleQuery(): Promise<void> {
-        if (selectedCategories.length > 0) {
+        if (selectedCategories.length === 0)
+            queryParams.delete("categories");
+        else {
             queryParams.delete("categories");
             let categories: string = selectedCategories.join(",");
             queryParams.set("categories", categories);
         };
+        window.history.pushState("", "", `/results?${queryParams.toString()}`);
         const response = await fetchWrapper(REACT_APP_SERVER_URI + `/vendors?${queryParams.toString()}`, 'GET');
         const data: vendor[] = (await response.json()).result;
         setVendors(data);
@@ -79,10 +82,7 @@ function Results(): JSX.Element {
         const {
           target: { value },
         } = event;
-        setSelectedCategories(
-          // On autofill we get a stringified value.
-          typeof value === 'string' ? value.split(',') : value,
-        );
+        setSelectedCategories(typeof value === 'string' ? value.split(',') : value,);
     };
 
     const theme = useTheme(getTheme());
