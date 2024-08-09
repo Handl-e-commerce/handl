@@ -11,13 +11,8 @@ import { PaginationBar } from "../../components/PaginationBar/PaginationBar";
 import { HiChevronUpDown, HiChevronUp, HiChevronDown } from "react-icons/hi2";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
-
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import ListItemText from '@mui/material/ListItemText';
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Checkbox from '@mui/material/Checkbox';
+import { CategoryDropDown } from "../../components/CategoryDropDown/CategoryDropDown";
+import Chip from '@mui/material/Chip';
 
 const envVariables = process.env;
 const {
@@ -36,6 +31,29 @@ function Results(): JSX.Element {
 
     let loggedIn = useLoginStatus();
 
+    useEffect(() => {
+        let ignore = false;
+        if (!ignore && loggedIn) {
+            handleQuery();
+            getCategories();
+        };
+        return () => { ignore = true };
+    }, []);
+
+    useEffect(() => {
+        window.addEventListener('resize', handleWindowSizeChange);
+        return () => {
+            window.removeEventListener('resize', handleWindowSizeChange);
+        }
+    }, []);
+
+    async function getData(): Promise<void> {
+        window.history.pushState("", "", `/results?${queryParams.toString()}`);
+        const response = await fetchWrapper(REACT_APP_SERVER_URI + `/vendors?${queryParams.toString()}`, 'GET');
+        const data: vendor[] = (await response.json()).result;
+        setVendors(data);
+    }
+
     async function handleQuery(): Promise<void> {
         if (selectedCategories.length === 0)
             queryParams.delete("categories");
@@ -44,10 +62,7 @@ function Results(): JSX.Element {
             let categories: string = selectedCategories.join(",");
             queryParams.set("categories", categories);
         };
-        window.history.pushState("", "", `/results?${queryParams.toString()}`);
-        const response = await fetchWrapper(REACT_APP_SERVER_URI + `/vendors?${queryParams.toString()}`, 'GET');
-        const data: vendor[] = (await response.json()).result;
-        setVendors(data);
+        await getData();
     };
 
     async function getCategories(): Promise<void> {
@@ -77,31 +92,8 @@ function Results(): JSX.Element {
         window.history.replaceState("", "", `/results?${queryParams.toString()}`);
         window.location.replace(window.location.origin + "/results?" + queryParams.toString());
     };
-    
-    function handleChange(event: SelectChangeEvent<typeof categories>) {
-        const {
-          target: { value },
-        } = event;
-        setSelectedCategories(typeof value === 'string' ? value.split(',') : value,);
-    };
 
     const theme = useTheme(getTheme());
-    
-    useEffect(() => {
-        let ignore = false;
-        if (!ignore && loggedIn) {
-            handleQuery();
-            getCategories();
-        };
-        return () => { ignore = true };
-    }, []);
-
-    useEffect(() => {
-        window.addEventListener('resize', handleWindowSizeChange);
-        return () => {
-            window.removeEventListener('resize', handleWindowSizeChange);
-        }
-    }, []);
 
     const nodes: vendorRow[] = [];
     vendors.forEach((val: vendor, i: number) => {
@@ -180,24 +172,25 @@ function Results(): JSX.Element {
         return (
             <>
                 <SearchBar />
-                <FormControl sx={{ m: 1, width: 200 }}>
-                    <InputLabel id="categories-multiple-checkbox-label">Categories</InputLabel>
-                    <Select
-                        multiple
-                        value={selectedCategories}
-                        onChange={handleChange}
-                        onClose={handleQuery}
-                        renderValue={(selected) => selected.join(', ')}
-                    >
-                        {categories.map((subcategory, i) => (
-                            <MenuItem key={subcategory} value={subcategory}>
-                                <Checkbox checked={selectedCategories.indexOf(subcategory) > -1} />
-                                    <ListItemText primary={subcategory}/>
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                <CategoryDropDown 
+                    categories={categories}
+                    selectedCategories={selectedCategories}
+                    setSelectedCategories={setSelectedCategories}
+                    handleQuery={handleQuery}
+                />
                 {queryParams.get("search-params") ? <div onClick={handleRemoveSearchVal}>{queryParams.get("search-params")}</div> : null}
+                {selectedCategories.map((category) => (
+                    // onDelete should remove from the selectedCategories and query the db
+                    <Chip key={category} label={category} onDelete={() => {
+                            let filteredCategories = selectedCategories.filter(val => val !== category);
+                            setSelectedCategories(filteredCategories);
+                            queryParams.delete("categories");
+                            let categories: string = filteredCategories.join(",");
+                            queryParams.set("categories", categories);
+                            getData();
+                        }}
+                    />
+                ))}
                 <CompactTable 
                     columns={COLUMNS} 
                     rowProps={ROW_PROPS}
