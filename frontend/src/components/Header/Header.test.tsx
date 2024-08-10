@@ -36,7 +36,7 @@ jest.mock('../../utils/cookie-util', () => {
         "loggedIn": "true"
       }))
     };
-  });
+});
   
 
 beforeEach(() => {
