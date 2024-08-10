@@ -25,6 +25,24 @@ Object.defineProperty(window, 'location', {
     }
 );
 
+jest.mock('../../utils/cookie-util', () => {
+    const originalModule = jest.requireActual('../../utils/cookie-util');
+  
+    //Mock the default export and named export 'foo'
+    return {
+      __esModule: true,
+      ...originalModule,
+      cookieParser: jest.fn(() => ({
+        "loggedIn": "true"
+      }))
+    };
+  });
+  
+
+beforeEach(() => {
+    document.cookie = "loggedIn=;";
+});
+
 afterEach(() => {
     jest.resetAllMocks();
 });
@@ -32,6 +50,7 @@ afterEach(() => {
 describe("Header Test", function() {
     it("Should render the logged in header because valid long term session cookies are stored", async function() {
         document.cookie = "loggedIn=true;";
+        
         server.use(
             http.post(REACT_APP_SERVER_URI + `/users/login/verify`, ({ request, params, cookies }) => {
                 return new HttpResponse(null, { status: 201 });
@@ -44,7 +63,6 @@ describe("Header Test", function() {
             expect(navBar).toBeDefined();
             expect(navBar).toBeInTheDocument();
         });
-        document.cookie = "loggedIn=;"
     });
 
     it("Should render the logged out header because there are no cookies and user", async function() {
