@@ -13,6 +13,10 @@ import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { CategoryDropDown } from "../../components/CategoryDropDown/CategoryDropDown";
 import Chip from '@mui/material/Chip';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 const envVariables = process.env;
 const {
@@ -21,6 +25,7 @@ const {
 
 function Results(): JSX.Element {
     let queryParams = new URL(document.location.toString()).searchParams;
+    let location = window.location;
 
     const [vendors, setVendors] = useState<vendor[]>([]);
     const [categories, setCategories] = useState<string[]>([]);
@@ -93,6 +98,18 @@ function Results(): JSX.Element {
         window.location.replace(window.location.origin + "/results?" + queryParams.toString());
     };
 
+    function redirectSignUp(): void {
+        // redirect to sign up route
+        window.history.pushState({}, "", location.origin + "/sign-up?");
+        location.replace(location.origin + "/sign-up?");
+    };
+
+    function redirectLogin(): void {
+        // redirect to login page
+        window.history.pushState({}, "", location.origin + "/login?");
+        location.replace(location.origin + "/login?");
+    };
+
     const theme = useTheme(getTheme());
 
     const nodes: vendorRow[] = [];
@@ -144,7 +161,17 @@ function Results(): JSX.Element {
 
     if (!loggedIn) {
         return (
-            <div>Modal goes here</div>
+            <Modal
+                open={!loggedIn}
+                aria-labelledby="results-modal"
+            >
+                <Box>
+                    <Typography id="modal-title" variant="h3" component="h3">Login or Sign up to get full access to our data!</Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>Get access to hundreds of wholesalers and distributors today!</Typography>
+                    <Button onClick={redirectSignUp}>Sign Up</Button>
+                    <Button onClick={redirectLogin}>Login</Button>
+                </Box>
+            </Modal>
         );
     }
 

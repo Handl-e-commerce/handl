@@ -47,6 +47,7 @@ class VendorService implements IVendorService {
     public async GetCategories(): Promise<Category[]> {
         try {
             return await Category.findAll({
+                order: ["subcategory", "ASC"],
                 attributes: ["subcategory"],
             });
         } catch (err) {
