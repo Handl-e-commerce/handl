@@ -1,14 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
-import { CompactTable } from '@table-library/react-table-library/compact';
-import { useTheme } from "@table-library/react-table-library/theme";
-import { getTheme } from "@table-library/react-table-library/baseline";
-import { Pagination, usePagination } from "@table-library/react-table-library/pagination";
-import { useSort, SortToggleType } from "@table-library/react-table-library/sort";
 import { vendor, vendorRow } from "../../types/types";
-import { ExpandedRow } from "../../components/ExpandedRow/ExpandedRow";
-import { PaginationBar } from "../../components/PaginationBar/PaginationBar";
-import { HiChevronUpDown, HiChevronUp, HiChevronDown } from "react-icons/hi2";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { CategoryDropDown } from "../../components/CategoryDropDown/CategoryDropDown";
@@ -17,6 +9,8 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Table } from "../../components/Table/Table";
+import { type Column } from 'react-table';
 
 const envVariables = process.env;
 const {
@@ -30,15 +24,17 @@ function Results(): JSX.Element {
     const [vendors, setVendors] = useState<vendor[]>([]);
     const [categories, setCategories] = useState<string[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<string[]>(queryParams.get("categories")?.split(",") ?? []);
-    const [width, setWidth] = useState<number>(window.innerWidth);
     const [ids, setIds] = useState<string[]>([]);
-    const [resultsPerPage, setResultsPerPage] = useState<number>(10);
-
-    let loggedIn = useLoginStatus();
+    const [width, setWidth] = useState<number>(window.innerWidth);
+    const [loadingData, setLoadingData] = useState<boolean>(true);
+    // Setting it to 393 to match iPhone 15 width
+    const isMobile: boolean = width <= 393;
+    const data: vendor[] = useMemo(() => vendors, [loadingData]);
+    let loggedIn: boolean = useLoginStatus();
 
     useEffect(() => {
         let ignore = false;
-        if (!ignore && loggedIn) {
+        if ((!ignore && loggedIn) || loadingData) {
             handleQuery();
             getCategories();
         };
@@ -52,12 +48,18 @@ function Results(): JSX.Element {
         }
     }, []);
 
+    function handleWindowSizeChange(): void {
+        setWidth(window.innerWidth);
+    };
+
     async function getData(): Promise<void> {
+        setLoadingData(true);
         window.history.pushState("", "", `/results?${queryParams.toString()}`);
         const response = await fetchWrapper(REACT_APP_SERVER_URI + `/vendors?${queryParams.toString()}`, 'GET');
         const data: vendor[] = (await response.json()).result;
         setVendors(data);
-    }
+        setLoadingData(false);
+    };
 
     async function handleQuery(): Promise<void> {
         if (selectedCategories.length === 0)
@@ -78,10 +80,6 @@ function Results(): JSX.Element {
             categories.push(val.subcategory);
         });
         setCategories(categories);
-    };
-
-    function handleWindowSizeChange(): void {
-        setWidth(window.innerWidth);
     };
 
     function handleExpand(item: vendorRow): void {
@@ -110,132 +108,47 @@ function Results(): JSX.Element {
         location.replace(location.origin + "/login?");
     };
 
-    const theme = useTheme(getTheme());
+    // if (!loggedIn) {
+    //     return (
+    //         <Modal
+    //             open={!loggedIn}
+    //             aria-labelledby="results-modal"
+    //         >
+    //             <Box>
+    //                 <Typography id="modal-title" variant="h3" component="h3">Login or Sign up to get full access to our data!</Typography>
+    //                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>Get access to hundreds of wholesalers and distributors today!</Typography>
+    //                 <Button onClick={redirectSignUp}>Sign Up</Button>
+    //                 <Button onClick={redirectLogin}>Login</Button>
+    //             </Box>
+    //         </Modal>
+    //     );
+    // }
 
-    const nodes: vendorRow[] = [];
-    vendors.forEach((val: vendor, i: number) => {
-        nodes.push({
-            id: val.uuid,
-            name: val.name,
-            description: val.description,
-            website: val.website,
-            categories: val.categories,
-            people: val.people,
-            address: val.address,
-            city: val.city,
-            state: val.state,
-            zipcode: val.zipcode,
-            phoneNumber: val.phoneNumber,
-            email: val.email,
-        });
-    });
-    const data = { nodes };
-
-    const pagination: Pagination<vendorRow> = usePagination(data, {
-        state: {
-            page: 0,
-            size: resultsPerPage
-        },
-    });
-
-    const sort = useSort(
-        data,
-        {
-            onChange: () => console.log("Sorted"),
-        },
-        {
-            sortIcon: {
-                iconDefault: <HiChevronUpDown size={"30px"}/>,
-                iconUp: <HiChevronUp size={"20px"}/>,
-                iconDown: <HiChevronDown size={"20px"}/>
-            },
-            sortToggleType: SortToggleType.AlternateWithReset,
-            sortFns: {
-               name: (array) => array.sort((a, b) => a.name.localeCompare(b.name)),
-               description: (array) => array.sort((a, b) => a.description.localeCompare(b.description)),
-               category: (array) => array.sort((a, b) => a.category.localeCompare(b.category)), // This one may be very tricky
-               state: (array) => array.sort((a, b) => a.state.localeCompare(b.state)),
-            }
-        }
-    );
-
-    if (!loggedIn) {
-        return (
-            <Modal
-                open={!loggedIn}
-                aria-labelledby="results-modal"
-            >
-                <Box>
-                    <Typography id="modal-title" variant="h3" component="h3">Login or Sign up to get full access to our data!</Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>Get access to hundreds of wholesalers and distributors today!</Typography>
-                    <Button onClick={redirectSignUp}>Sign Up</Button>
-                    <Button onClick={redirectLogin}>Login</Button>
-                </Box>
-            </Modal>
-        );
-    }
-
-    else {
-        // Setting it to 393 to match iPhone 15 width
-        const isMobile = width <= 393;
-    
-        const COLUMNS = isMobile ? [
-            {label: "Name", renderCell: (item: vendor) => item.name, sort: { sortKey: "name"} }
-        ] : [
-            {label: "Name", renderCell: (item: vendor) => item.name, sort: { sortKey: "name"} },
-            {label: "Description", renderCell: (item: vendor) => item.description, sort: { sortKey: "description"} },
-            {label: "Categories", renderCell: (item: vendor) => item.categories, sort: { sortKey: "categories"} },
-            {label: "State", renderCell: (item: vendor) => item.state, sort: { sortKey: "state"} }
-        ];
-        
-        const ROW_PROPS = {
-            onClick: handleExpand,
-        };    
-    
-        const ROW_OPTIONS = {
-            renderAfterRow: (row: vendorRow) => <ExpandedRow ids={ids} row={row}/>
-        };    
-        
-        return (
-            <>
-                <SearchBar />
-                <CategoryDropDown 
-                    categories={categories}
-                    selectedCategories={selectedCategories}
-                    setSelectedCategories={setSelectedCategories}
-                    handleQuery={handleQuery}
+    return (
+        <>
+            <SearchBar />
+            <CategoryDropDown 
+                categories={categories}
+                selectedCategories={selectedCategories}
+                setSelectedCategories={setSelectedCategories}
+                handleQuery={handleQuery}
+            />
+            {queryParams.get("search-params") ? <div onClick={handleRemoveSearchVal}>{queryParams.get("search-params")}</div> : null}
+            {selectedCategories.map((category) => (
+                // onDelete should remove from the selectedCategories and query the db
+                <Chip key={category} label={category} onDelete={() => {
+                        let filteredCategories = selectedCategories.filter(val => val !== category);
+                        setSelectedCategories(filteredCategories);
+                        queryParams.delete("categories");
+                        let categories: string = filteredCategories.join(",");
+                        categories.length > 0 ? queryParams.set("categories", categories) : queryParams.delete("categories");
+                        getData();
+                    }}
                 />
-                {queryParams.get("search-params") ? <div onClick={handleRemoveSearchVal}>{queryParams.get("search-params")}</div> : null}
-                {selectedCategories.map((category) => (
-                    // onDelete should remove from the selectedCategories and query the db
-                    <Chip key={category} label={category} onDelete={() => {
-                            let filteredCategories = selectedCategories.filter(val => val !== category);
-                            setSelectedCategories(filteredCategories);
-                            queryParams.delete("categories");
-                            let categories: string = filteredCategories.join(",");
-                            queryParams.set("categories", categories);
-                            getData();
-                        }}
-                    />
-                ))}
-                <CompactTable 
-                    columns={COLUMNS} 
-                    rowProps={ROW_PROPS}
-                    rowOptions={ROW_OPTIONS}
-                    data={data} 
-                    theme={theme}
-                    pagination={pagination}
-                    sort={sort}
-                />
-                <PaginationBar
-                    data={data}
-                    resultsPerPage={resultsPerPage}
-                    setResultsPerPage={setResultsPerPage}
-                    pagination={pagination}
-                />
-            </>
-        )
-    }
+            ))}
+            <Table isMobile={isMobile} data={data}/>
+        </>
+    )
 };
 
 export { Results };
