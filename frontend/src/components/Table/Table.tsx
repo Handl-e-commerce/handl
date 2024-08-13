@@ -1,69 +1,92 @@
-import React, {useState, useEffect, useMemo} from "react";
-import { useTable, usePagination, type Column, type Row } from 'react-table'
+import React, {useState, useEffect, useMemo, Fragment} from "react";
+import { useTable, usePagination } from 'react-table'
 import { 
     createColumnHelper,
     flexRender,
+    getExpandedRowModel,
     getCoreRowModel,
-    useReactTable 
+    useReactTable,
+    Row,
+    ColumnDef
 } from "@tanstack/react-table";
 import { Vendor } from "../../types/types";
 // import { PaginationBar } from "../../components/PaginationBar/PaginationBar";
 // import { HiChevronUpDown, HiChevronUp, HiChevronDown } from "react-icons/hi2";
+import { ExpandedRow } from "../ExpandedRow/ExpandedRow";
 
 interface ITableProps {
     isMobile: boolean;
-    // purposely setting this to any for the time being in order to get table to render the rows
-    data: any;
+    data: Vendor[];
 };
 
 function Table({ isMobile, data }: ITableProps): JSX.Element {
     const [resultsPerPage, setResultsPerPage] = useState<number>(10);
-    const columnHelper = createColumnHelper<Vendor[]>();
-
-    const mobileColumn = [
-        columnHelper.accessor("name", {
+   
+    const mobileColumn: ColumnDef<Vendor>[] = [
+        {
+            accessorKey: "name",
             header: "Name",
-            cell: info => info.renderValue(),
-        })
+            cell: info => info.renderValue()
+        },
     ];
 
-    const desktopColumns = [
-        columnHelper.accessor("name", {
+    const desktopColumns: ColumnDef<Vendor>[] = [
+        {
+            id: "expander",
+            header: "",
+            cell: ({ row }) => {
+                return row.getCanExpand() ? (
+                    <button
+                      {...{
+                        onClick: row.getToggleExpandedHandler(),
+                        style: { cursor: 'pointer' },
+                      }}
+                    >
+                      {row.getIsExpanded() ? 'Collapse' : 'Expand'}
+                    </button>
+                ) :
+                <div>Can't expand</div>
+            },
+        },
+        {
+            accessorKey: "name",
             header: "Name",
-            cell: info => info.renderValue(),
-        }),
-        columnHelper.accessor("description", {
+            cell: info => info.renderValue()
+        },
+        {
+            accessorKey: "description",
             header: "Description",
-            cell: info => info.renderValue(),
-        }),
-        columnHelper.accessor("categories", {
+            cell: info => info.renderValue()
+        },
+        {
+            accessorKey: "categories",
             header: "Categories",
-            cell: info => info.renderValue(),
-        }),
-        columnHelper.accessor("state", {
+            cell: info => info.renderValue()
+        },
+        {
+            accessorKey: "state",
             header: "State",
-            cell: info => info.renderValue(),
-        }),
+            cell: info => info.renderValue()
+        },
     ];
 
     let columns = isMobile ? mobileColumn : desktopColumns;
 
-    const table = useReactTable({
+    const table = useReactTable<Vendor>({
         data,
         columns,
-        getCoreRowModel: getCoreRowModel()
-    })
+        getRowCanExpand: () => true,
+        getCoreRowModel: getCoreRowModel(),
+        getExpandedRowModel: getExpandedRowModel(),
+    });
 
-    // <select
-    //     value={resultsPerPage}
-    //     onChange={(e) => setResultsPerPage(Number(e.target.value))}
-    // >
-    //     <option value="10">10</option>
-    //     <option value="25">25</option>
-    //     <option value="50">50</option>
-    //     <option value="100">100</option>
-    // </select>
-
+    function renderExpandedRow(): JSX.Element {
+        return (
+            <>
+                <div>Test to see that it's rendering this component.</div>
+            </>
+        )
+    }
     
     return (
         <>
@@ -87,13 +110,22 @@ function Table({ isMobile, data }: ITableProps): JSX.Element {
                 <tbody>
                     {table.getRowModel().rows.map(row => {
                         return (
-                            <tr key={row.id}>
-                                {row.getVisibleCells().map(cell => (
-                                    <td key={cell.id}>
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </td>
-                                ))}
-                            </tr>
+                            <Fragment>
+                                <tr>
+                                    {row.getVisibleCells().map(cell => (
+                                        <td key={cell.id}>
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </td>
+                                    ))}
+                                </tr>
+                                {row.getIsExpanded() && (
+                                    <tr>
+                                        <td>
+                                            {renderExpandedRow()}
+                                        </td>
+                                    </tr>
+                                )}
+                            </Fragment>
                         )
                     })}
                 </tbody>
