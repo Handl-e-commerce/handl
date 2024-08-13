@@ -1,83 +1,104 @@
 import React, {useState, useEffect, useMemo} from "react";
-import { type Column, useTable } from 'react-table'
-import { vendor } from "../../types/types";
+import { useTable, usePagination, type Column, type Row } from 'react-table'
+import { 
+    createColumnHelper,
+    flexRender,
+    getCoreRowModel,
+    useReactTable 
+} from "@tanstack/react-table";
+import { Vendor } from "../../types/types";
 // import { PaginationBar } from "../../components/PaginationBar/PaginationBar";
 // import { HiChevronUpDown, HiChevronUp, HiChevronDown } from "react-icons/hi2";
 
 interface ITableProps {
     isMobile: boolean;
-    data: vendor[];
+    // purposely setting this to any for the time being in order to get table to render the rows
+    data: any;
 };
 
 function Table({ isMobile, data }: ITableProps): JSX.Element {
     const [resultsPerPage, setResultsPerPage] = useState<number>(10);
-    
-    const columns: Column<{ name: string; }>[] | Column<{ name: string; description: string; categories: string; state: string }>[] = useMemo(() => {
-        return isMobile ? [
-            {Header: "Name", accessor: 'name', }
-        ] : [
-            {Header: "Name", accessor: 'name', },
-            {Header: "Description", accessor: 'description', },
-            {Header: "Categories", accessor: 'categories', },
-            {Header: "State", accessor: 'state', },
-        ];
-    }, [isMobile]);
+    const columnHelper = createColumnHelper<Vendor[]>();
 
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-    } = useTable({ columns, data });
-    
+    const mobileColumn = [
+        columnHelper.accessor("name", {
+            header: "Name",
+            cell: info => info.renderValue(),
+        })
+    ];
 
+    const desktopColumns = [
+        columnHelper.accessor("name", {
+            header: "Name",
+            cell: info => info.renderValue(),
+        }),
+        columnHelper.accessor("description", {
+            header: "Description",
+            cell: info => info.renderValue(),
+        }),
+        columnHelper.accessor("categories", {
+            header: "Categories",
+            cell: info => info.renderValue(),
+        }),
+        columnHelper.accessor("state", {
+            header: "State",
+            cell: info => info.renderValue(),
+        }),
+    ];
+
+    let columns = isMobile ? mobileColumn : desktopColumns;
+
+    const table = useReactTable({
+        data,
+        columns,
+        getCoreRowModel: getCoreRowModel()
+    })
+
+    // <select
+    //     value={resultsPerPage}
+    //     onChange={(e) => setResultsPerPage(Number(e.target.value))}
+    // >
+    //     <option value="10">10</option>
+    //     <option value="25">25</option>
+    //     <option value="50">50</option>
+    //     <option value="100">100</option>
+    // </select>
+
+    
     return (
-        <table>
-            <thead>
-            {headerGroups.map(headerGroup => (
-                <tr key={headerGroup.getFooterGroupProps().key} role={headerGroup.getHeaderGroupProps().role}>
-                    {headerGroup.headers.map(column => (
-                        <th
-                            key={column.getHeaderProps().key}
-                            role={column.getHeaderProps().role}
-                            style={{
-                                borderBottom: 'solid 3px red',
-                                background: 'aliceblue',
-                                color: 'black',
-                                fontWeight: 'bold',
-                            }}
-                            >
-                            {column.render('Header')}
-                        </th>
+        <>
+            <table>
+                <thead>
+                    {table.getHeaderGroups().map(headerGroup => (
+                        <tr key={headerGroup.id}>
+                            {headerGroup.headers.map(header => (
+                                <th key={header.id}>
+                                    {header.isPlaceholder ? 
+                                    null
+                                    : flexRender(
+                                        header.column.columnDef.header,
+                                        header.getContext()
+                                    )}
+                                </th>
+                            ))}
+                        </tr>
                     ))}
-                </tr>
-            ))}
-            </thead>
-            <tbody>
-                {rows.map(row => {
-                    prepareRow(row)
-                    return (
-                    <tr key={row.getRowProps().key} role={row.getRowProps().role}>
-                        {row.cells.map(cell => {
-                            return (
-                                <td
-                                    key={cell.getCellProps().key}
-                                    role={cell.getCellProps().role}
-                                    style={{
-                                        padding: '10px',
-                                        border: 'solid 1px gray',
-                                        background: 'papayawhip',
-                                    }}
-                                >
-                                    {cell.render('Cell')}
-                                </td>
-                            )
-                        })}
-                    </tr>
-                )})}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {table.getRowModel().rows.map(row => {
+                        return (
+                            <tr key={row.id}>
+                                {row.getVisibleCells().map(cell => (
+                                    <td key={cell.id}>
+                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                    </td>
+                                ))}
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
+        </>
     )
 };
 

@@ -1,15 +1,15 @@
 import React from "react";
 import { Pagination } from "@table-library/react-table-library/pagination";
-import { vendor, vendorRow } from "../../types/types";
+import { Vendor, VendorRow } from "../../types/types";
 import { IoArrowForwardOutline , IoArrowBackOutline  } from "react-icons/io5";
 
 interface IPaginationBarProps {
     data: {
-        nodes: vendorRow[];
+        nodes: VendorRow[];
     };
     resultsPerPage: number;
     setResultsPerPage: React.Dispatch<React.SetStateAction<number>>;
-    pagination: Pagination<vendorRow>;
+    pagination: Pagination<VendorRow>;
 };
 
 function PaginationBar({data, resultsPerPage, setResultsPerPage, pagination}: IPaginationBarProps): JSX.Element {
@@ -33,7 +33,7 @@ function PaginationBar({data, resultsPerPage, setResultsPerPage, pagination}: IP
                 <IoArrowBackOutline 
                     onClick={() => pagination.fns.onSetPage(pagination.state.page - 1)}            
                 />}
-                {pagination.state.getPages(data.nodes).map((node: vendor, index: number) => {
+                {pagination.state.getPages(data.nodes).map((node: Vendor, index: number) => {
                     return (
                         <button
                             key={index}

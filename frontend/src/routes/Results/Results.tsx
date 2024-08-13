@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
-import { vendor, vendorRow } from "../../types/types";
+import { Vendor, VendorRow } from "../../types/types";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { CategoryDropDown } from "../../components/CategoryDropDown/CategoryDropDown";
@@ -21,7 +21,7 @@ function Results(): JSX.Element {
     let queryParams = new URL(document.location.toString()).searchParams;
     let location = window.location;
 
-    const [vendors, setVendors] = useState<vendor[]>([]);
+    const [vendors, setVendors] = useState<Vendor[]>([]);
     const [categories, setCategories] = useState<string[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<string[]>(queryParams.get("categories")?.split(",") ?? []);
     const [ids, setIds] = useState<string[]>([]);
@@ -29,7 +29,7 @@ function Results(): JSX.Element {
     const [loadingData, setLoadingData] = useState<boolean>(true);
     // Setting it to 393 to match iPhone 15 width
     const isMobile: boolean = width <= 393;
-    const data: vendor[] = useMemo(() => vendors, [loadingData]);
+    const data: Vendor[] = useMemo(() => vendors, [loadingData]);
     let loggedIn: boolean = useLoginStatus();
 
     useEffect(() => {
@@ -56,7 +56,7 @@ function Results(): JSX.Element {
         setLoadingData(true);
         window.history.pushState("", "", `/results?${queryParams.toString()}`);
         const response = await fetchWrapper(REACT_APP_SERVER_URI + `/vendors?${queryParams.toString()}`, 'GET');
-        const data: vendor[] = (await response.json()).result;
+        const data: Vendor[] = (await response.json()).result;
         setVendors(data);
         setLoadingData(false);
     };
@@ -82,7 +82,7 @@ function Results(): JSX.Element {
         setCategories(categories);
     };
 
-    function handleExpand(item: vendorRow): void {
+    function handleExpand(item: VendorRow): void {
         if (ids.includes(item.id)) {
           setIds(ids.filter((id) => id !== item.id));
         } else {

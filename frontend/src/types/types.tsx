@@ -1,4 +1,4 @@
-export type vendor = {
+export type Vendor = {
     uuid: string;
     name: string;
     description: string;
@@ -13,7 +13,7 @@ export type vendor = {
     email: string;
 };
 
-export type vendorRow = {
+export type VendorRow = {
     id: string;
     name: string;
     description: string;

@@ -1,8 +1,8 @@
 import React from "react";
-import { vendorRow } from "../../types/types";
+import { VendorRow } from "../../types/types";
 
 interface IExpandedRowProps {
-    row: vendorRow;
+    row: VendorRow;
     ids: string[];
 };
 
