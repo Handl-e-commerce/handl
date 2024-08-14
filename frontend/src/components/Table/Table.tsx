@@ -22,15 +22,8 @@ interface ITableProps {
 function Table({ isMobile, data }: ITableProps): JSX.Element {
     const [resultsPerPage, setResultsPerPage] = useState<number>(10);
    
-    const mobileColumn: ColumnDef<Vendor>[] = [
-        {
-            accessorKey: "name",
-            header: "Name",
-            cell: info => info.renderValue()
-        },
-    ];
-
-    const desktopColumns: ColumnDef<Vendor>[] = [
+    console.log(isMobile);
+    const columns: ColumnDef<Vendor>[] = [
         {
             id: "expander",
             header: "",
@@ -55,22 +48,55 @@ function Table({ isMobile, data }: ITableProps): JSX.Element {
         },
         {
             accessorKey: "description",
-            header: "Description",
-            cell: info => info.renderValue()
+            header: isMobile ? undefined : "Description",
+            cell: isMobile ? undefined : info => info.renderValue()
         },
         {
             accessorKey: "categories",
-            header: "Categories",
-            cell: info => info.renderValue()
+            header: isMobile ? undefined : "Categories",
+            cell: isMobile ? undefined : info => info.renderValue()
         },
         {
             accessorKey: "state",
-            header: "State",
-            cell: info => info.renderValue()
+            header: isMobile ? undefined : "State",
+            cell: isMobile ? undefined : info => info.renderValue()
+        },
+        {
+            accessorKey: "email",
+            header: undefined,
+            cell: () => null
+        },
+        {
+            accessorKey: "website",
+            header: undefined,
+            cell: () => null
+        },
+        {
+            accessorKey: "people",
+            header: undefined,
+            cell: () => null
+        },
+        {
+            accessorKey: "address",
+            header: undefined,
+            cell: () => null
+        },
+        {
+            accessorKey: "city",
+            header: undefined,
+            cell: () => null
+        },
+        {
+            accessorKey: "zipcode",
+            header: undefined,
+            cell: () => null
+        },
+        {
+            accessorKey: "phoneNumber",
+            header: undefined,
+            cell: () => null
         },
     ];
-
-    let columns = isMobile ? mobileColumn : desktopColumns;
 
     const table = useReactTable<Vendor>({
         data,
@@ -79,14 +105,6 @@ function Table({ isMobile, data }: ITableProps): JSX.Element {
         getCoreRowModel: getCoreRowModel(),
         getExpandedRowModel: getExpandedRowModel(),
     });
-
-    function renderExpandedRow(): JSX.Element {
-        return (
-            <>
-                <div>Test to see that it's rendering this component.</div>
-            </>
-        )
-    }
     
     return (
         <>
@@ -118,13 +136,7 @@ function Table({ isMobile, data }: ITableProps): JSX.Element {
                                         </td>
                                     ))}
                                 </tr>
-                                {row.getIsExpanded() && (
-                                    <tr>
-                                        <td>
-                                            {renderExpandedRow()}
-                                        </td>
-                                    </tr>
-                                )}
+                                {row.getIsExpanded() && <ExpandedRow row={row}/>}
                             </Fragment>
                         )
                     })}
