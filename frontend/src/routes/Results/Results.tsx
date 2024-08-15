@@ -81,14 +81,6 @@ function Results(): JSX.Element {
         setCategories(categories);
     };
 
-    function handleExpand(item: VendorRow): void {
-        if (ids.includes(item.id)) {
-          setIds(ids.filter((id) => id !== item.id));
-        } else {
-          setIds(ids.concat(item.id));
-        }
-    };
-
     function handleRemoveSearchVal(): void {
         queryParams.delete("search-params");
         window.history.replaceState("", "", `/results?${queryParams.toString()}`);
