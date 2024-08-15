@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw';
+import { Vendor } from '../src/types/types';
 
 const envVariables = process.env;
 const {
@@ -102,8 +103,24 @@ export const handlers = [
         });
     }),
     http.get(REACT_APP_SERVER_URI + `/vendors`, ({request, params, cookies}) => {
-       let body = JSON.stringify({
-
+       let data: Vendor[] = [
+        {
+            uuid: "randomUuid1",
+            name: "Foobaroni",
+            description: "Description of Foobaroni",
+            website: "Foobaroni.com",
+            categories: "category1, category2, category4",
+            people: ["Foo", "Bar"],
+            address: "123 Foobaz Ave",
+            city: "Footy",
+            state: "FO",
+            zipcode: "11221",
+            phoneNumber: "123-456-7890",
+            email: "foo@bar.com",
+        },
+       ]
+        let body = JSON.stringify({
+            result: []
        });
        return new HttpResponse(body, {
             status: 200
