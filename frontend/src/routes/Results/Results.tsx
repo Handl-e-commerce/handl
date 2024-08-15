@@ -10,7 +10,6 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Table } from "../../components/Table/Table";
-import { type Column } from 'react-table';
 
 const envVariables = process.env;
 const {
@@ -27,8 +26,8 @@ function Results(): JSX.Element {
     const [ids, setIds] = useState<string[]>([]);
     const [width, setWidth] = useState<number>(window.innerWidth);
     const [loadingData, setLoadingData] = useState<boolean>(true);
-    // Setting it to 393 to match iPhone 15 width
-    const isMobile: boolean = width <= 393;
+    // Setting it to 393 to match iPhone Plus widths
+    const isMobile: boolean = width <= 430;
     const data: Vendor[] = useMemo(() => vendors, [loadingData]);
     let loggedIn: boolean = useLoginStatus();
 

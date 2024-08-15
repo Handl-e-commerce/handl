@@ -1,149 +1,88 @@
-import React, {useState, useEffect, useMemo, Fragment} from "react";
-import { useTable, usePagination } from 'react-table'
-import { 
-    createColumnHelper,
-    flexRender,
-    getExpandedRowModel,
-    getCoreRowModel,
-    useReactTable,
-    Row,
-    ColumnDef
-} from "@tanstack/react-table";
+import React, { useMemo } from "react";
+import {
+    MaterialReactTable,
+    useMaterialReactTable,
+    type MRT_ColumnDef,  
+} from 'material-react-table';
 import { Vendor } from "../../types/types";
-// import { PaginationBar } from "../../components/PaginationBar/PaginationBar";
-// import { HiChevronUpDown, HiChevronUp, HiChevronDown } from "react-icons/hi2";
 import { ExpandedRow } from "../ExpandedRow/ExpandedRow";
 
-interface ITableProps {
+interface IMTableProps {
     isMobile: boolean;
     data: Vendor[];
 };
 
-function Table({ isMobile, data }: ITableProps): JSX.Element {
-    const [resultsPerPage, setResultsPerPage] = useState<number>(10);
-   
-    console.log(isMobile);
-    const columns: ColumnDef<Vendor>[] = [
-        {
-            id: "expander",
-            header: "",
-            cell: ({ row }) => {
-                return row.getCanExpand() ? (
-                    <button
-                      {...{
-                        onClick: row.getToggleExpandedHandler(),
-                        style: { cursor: 'pointer' },
-                      }}
-                    >
-                      {row.getIsExpanded() ? 'Collapse' : 'Expand'}
-                    </button>
-                ) :
-                <div>Can't expand</div>
-            },
-        },
+function Table({ isMobile, data }: IMTableProps): JSX.Element {
+    const columns = useMemo<MRT_ColumnDef<Vendor>[]>(() => [
         {
             accessorKey: "name",
             header: "Name",
-            cell: info => info.renderValue()
         },
         {
             accessorKey: "description",
-            header: isMobile ? undefined : "Description",
-            cell: isMobile ? undefined : info => info.renderValue()
+            header: "Description",
         },
         {
             accessorKey: "categories",
-            header: isMobile ? undefined : "Categories",
-            cell: isMobile ? undefined : info => info.renderValue()
+            header: "Categories",
         },
         {
             accessorKey: "state",
-            header: isMobile ? undefined : "State",
-            cell: isMobile ? undefined : info => info.renderValue()
+            header: "State",
         },
         {
             accessorKey: "email",
-            header: undefined,
-            cell: () => null
+            header: "Email",
         },
         {
             accessorKey: "website",
-            header: undefined,
-            cell: () => null
+            header: "Website",
         },
         {
             accessorKey: "people",
-            header: undefined,
-            cell: () => null
+            header: "People",
         },
         {
             accessorKey: "address",
-            header: undefined,
-            cell: () => null
+            header: "Address",
         },
         {
             accessorKey: "city",
-            header: undefined,
-            cell: () => null
+            header: "City",
         },
         {
             accessorKey: "zipcode",
-            header: undefined,
-            cell: () => null
+            header: "Zipcode",
         },
         {
             accessorKey: "phoneNumber",
-            header: undefined,
-            cell: () => null
+            header: "Phone Number",
         },
-    ];
+    ], [isMobile]);
 
-    const table = useReactTable<Vendor>({
-        data,
+    const table = useMaterialReactTable({
         columns,
-        getRowCanExpand: () => true,
-        getCoreRowModel: getCoreRowModel(),
-        getExpandedRowModel: getExpandedRowModel(),
+        data,
+        initialState: { columnVisibility: {
+            description: !isMobile,
+            categories: !isMobile,
+            state: !isMobile,
+            email: false,
+            website: false,
+            people: false,
+            address: false,
+            city: false,
+            zipcode: false,
+            phoneNumber: false,
+        }},
+        enableExpandAll: false,
+        renderDetailPanel: ({ row }) => <ExpandedRow row={row} />,
+        muiExpandButtonProps: ({ row, table }) => ({
+          onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //set only this row to be expanded
+        }),
     });
     
-    return (
-        <>
-            <table>
-                <thead>
-                    {table.getHeaderGroups().map(headerGroup => (
-                        <tr key={headerGroup.id}>
-                            {headerGroup.headers.map(header => (
-                                <th key={header.id}>
-                                    {header.isPlaceholder ? 
-                                    null
-                                    : flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext()
-                                    )}
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
-                </thead>
-                <tbody>
-                    {table.getRowModel().rows.map(row => {
-                        return (
-                            <Fragment>
-                                <tr>
-                                    {row.getVisibleCells().map(cell => (
-                                        <td key={cell.id}>
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                        </td>
-                                    ))}
-                                </tr>
-                                {row.getIsExpanded() && <ExpandedRow row={row}/>}
-                            </Fragment>
-                        )
-                    })}
-                </tbody>
-            </table>
-        </>
-    )
+    return <MaterialReactTable table={table} />
 };
 
 export { Table };
