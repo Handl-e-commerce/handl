@@ -87,4 +87,26 @@ export const handlers = [
             status: 201
         });
     }),
+    http.get(REACT_APP_SERVER_URI + `/vendors/categories`, ({ request, params, cookies }) => {
+        let categories: { subcategory: string }[] = [];
+        for (let i = 0; i < 10; i++) {
+            categories.push({
+                subcategory: `categories${(i+1) % 5}`
+            });
+        };
+        let body = JSON.stringify({
+            result: categories
+        });
+        return new HttpResponse(body, {
+            status: 200
+        });
+    }),
+    http.get(REACT_APP_SERVER_URI + `/vendors`, ({request, params, cookies}) => {
+       let body = JSON.stringify({
+
+       });
+       return new HttpResponse(body, {
+            status: 200
+       }); 
+    })
 ];
