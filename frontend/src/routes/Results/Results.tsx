@@ -107,21 +107,21 @@ function Results(): JSX.Element {
         location.replace(location.origin + "/login?");
     };
 
-    // if (!loggedIn) {
-    //     return (
-    //         <Modal
-    //             open={!loggedIn}
-    //             aria-labelledby="results-modal"
-    //         >
-    //             <Box>
-    //                 <Typography id="modal-title" variant="h3" component="h3">Login or Sign up to get full access to our data!</Typography>
-    //                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>Get access to hundreds of wholesalers and distributors today!</Typography>
-    //                 <Button onClick={redirectSignUp}>Sign Up</Button>
-    //                 <Button onClick={redirectLogin}>Login</Button>
-    //             </Box>
-    //         </Modal>
-    //     );
-    // }
+    if (!loggedIn) {
+        return (
+            <Modal
+                open={!loggedIn}
+                aria-labelledby="results-modal"
+            >
+                <Box>
+                    <Typography id="modal-title" variant="h3" component="h3">Login or Sign up to get full access to our data!</Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>Get access to hundreds of wholesalers and distributors today!</Typography>
+                    <Button onClick={redirectSignUp}>Sign Up</Button>
+                    <Button onClick={redirectLogin}>Login</Button>
+                </Box>
+            </Modal>
+        );
+    }
 
     return (
         <>
