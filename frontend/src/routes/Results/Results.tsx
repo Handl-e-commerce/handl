@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
-import { Vendor, VendorRow } from "../../types/types";
+import { Vendor } from "../../types/types";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { CategoryDropDown } from "../../components/CategoryDropDown/CategoryDropDown";
@@ -23,7 +23,6 @@ function Results(): JSX.Element {
     const [vendors, setVendors] = useState<Vendor[]>([]);
     const [categories, setCategories] = useState<string[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<string[]>(queryParams.get("categories")?.split(",") ?? []);
-    const [ids, setIds] = useState<string[]>([]);
     const [width, setWidth] = useState<number>(window.innerWidth);
     const [loadingData, setLoadingData] = useState<boolean>(true);
     // Setting it to 393 to match iPhone Plus widths
@@ -87,6 +86,15 @@ function Results(): JSX.Element {
         window.location.replace(window.location.origin + "/results?" + queryParams.toString());
     };
 
+    function handleRemoveCategoryChip(category: string): void {
+        let filteredCategories = selectedCategories.filter(val => val !== category);
+        setSelectedCategories(filteredCategories);
+        queryParams.delete("categories");
+        let categories: string = filteredCategories.join(",");
+        categories.length > 0 ? queryParams.set("categories", categories) : queryParams.delete("categories");
+        getData();
+    };
+
     function redirectSignUp(): void {
         // redirect to sign up route
         window.history.pushState({}, "", location.origin + "/sign-up?");
@@ -113,11 +121,11 @@ function Results(): JSX.Element {
                 </Box>
             </Modal>
         );
-    }
+    };
 
     return (
         <>
-            <SearchBar />
+            <SearchBar data-testid="search-bar"/>
             <CategoryDropDown 
                 categories={categories}
                 selectedCategories={selectedCategories}
@@ -127,17 +135,9 @@ function Results(): JSX.Element {
             {queryParams.get("search-params") ? <div onClick={handleRemoveSearchVal}>{queryParams.get("search-params")}</div> : null}
             {selectedCategories.map((category) => (
                 // onDelete should remove from the selectedCategories and query the db
-                <Chip key={category} label={category} onDelete={() => {
-                        let filteredCategories = selectedCategories.filter(val => val !== category);
-                        setSelectedCategories(filteredCategories);
-                        queryParams.delete("categories");
-                        let categories: string = filteredCategories.join(",");
-                        categories.length > 0 ? queryParams.set("categories", categories) : queryParams.delete("categories");
-                        getData();
-                    }}
-                />
+                <Chip key={category} label={category} onDelete={() => handleRemoveCategoryChip(category)} />
             ))}
-            <Table isMobile={isMobile} data={data}/>
+            <Table isMobile={isMobile} data={data} data-testid="table"/>
         </>
     )
 };
