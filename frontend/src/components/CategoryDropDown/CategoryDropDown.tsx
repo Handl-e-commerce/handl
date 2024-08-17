@@ -30,13 +30,17 @@ function CategoryDropDown({categories, selectedCategories, setSelectedCategories
                 onChange={handleChange}
                 onClose={handleQuery}
                 renderValue={(selected) => selected.join(', ')}
+                SelectDisplayProps={{
+                    // @ts-ignore
+                    "data-testid" : "categories-multiple-checkbox-select"
+                }}
             >
-            {categories.map((subcategory, i) => (
-                <MenuItem key={subcategory} value={subcategory}>
-                    <Checkbox checked={selectedCategories.indexOf(subcategory) > -1} />
-                    <ListItemText primary={subcategory}/>
-                </MenuItem>
-            ))}
+                {categories.map((subcategory, i) => (
+                    <MenuItem key={subcategory} value={subcategory} data-testid="menu-item">
+                        <Checkbox checked={selectedCategories.indexOf(subcategory) > -1} />
+                        <ListItemText primary={subcategory}/>
+                    </MenuItem>
+                ))}
             </Select>
         </FormControl>
     );

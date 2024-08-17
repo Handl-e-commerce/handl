@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { Results } from './Results';
 import { server } from "../../../__mocks__/server";
 import { http, HttpResponse } from 'msw';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('../../utils/cookie-util', () => {
     const originalModule = jest.requireActual('../../utils/cookie-util');
@@ -32,21 +33,49 @@ beforeEach(() => {
 });
 
 describe("Results Route Test", () => {
-    it.skip("Should render only results that match search params", async () => {
+    it("Should render only category query chips and remove them when closing them", async () => {
         const { container } = await act( async () => render(<Results />));
-    });
+        let dropdown = await waitFor(() => screen.getByTestId("categories-multiple-checkbox-select"), {
+            timeout: 3000
+        });
+        expect(dropdown).toBeInTheDocument();
 
-    it.skip("Should render only results that match filter values", async () => {
-        const { container } = await act( async () => render(<Results />));
-    });
+        act(() => {
+            userEvent.click(dropdown);
+        });
 
-    it.skip("Should render only results that match both search params and filter values", async () => {
-        const { container } = await act( async () => render(<Results />));
-    });
+        let checkboxItems = await waitFor(async () => await screen.findAllByTestId("menu-item"), {
+            timeout: 3000,
+        });
+                
+        act(() => {
+            userEvent.click(checkboxItems[0]);
+            userEvent.click(checkboxItems[1]);
+            userEvent.click(checkboxItems[2]);
+            userEvent.click(checkboxItems[3]);
+            userEvent.keyboard("{esc}")
+        });
+        
+        await waitFor(() => {
+            expect(screen.getByText("Fashion Jewelry / Watches")).toBeInTheDocument();
+            expect(screen.getByText("Handbags")).toBeInTheDocument();
+            expect(screen.getByText("Hats / Scarves")).toBeInTheDocument();
+            expect(screen.getByText("Small Leather Goods (Belts/Wallets/etc)")).toBeInTheDocument();
+        });
+        
+        let chipContainer = await screen.findByTestId("chips-container");
+        expect(chipContainer.childElementCount).toEqual(4);
 
-    it.skip("Sort functionality should sort by ascending and descending orders and be able to go back to normal", async () => {
-        const { container } = await act( async () => render(<Results />));
+        act(() => {
+            userEvent.click(chipContainer.children[0].children[1]);
+            userEvent.click(chipContainer.children[1].children[1]);
+        });
+
+        await waitFor(() => {
+            expect(chipContainer.childElementCount).toEqual(2);
+        })
     });
+    
 
     it("Should render you must sign in first in order to access our data modal if user isn't signed up", async () => {
         const { container } = await act( async () => render(<Results />));

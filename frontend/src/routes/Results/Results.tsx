@@ -126,17 +126,16 @@ function Results(): JSX.Element {
     return (
         <>
             <SearchBar data-testid="search-bar"/>
-            <CategoryDropDown 
+            {categories.length > 0 && <CategoryDropDown 
                 categories={categories}
                 selectedCategories={selectedCategories}
                 setSelectedCategories={setSelectedCategories}
                 handleQuery={handleQuery}
-            />
+            />}
             {queryParams.get("search-params") ? <div onClick={handleRemoveSearchVal}>{queryParams.get("search-params")}</div> : null}
-            {selectedCategories.map((category) => (
-                // onDelete should remove from the selectedCategories and query the db
-                <Chip key={category} label={category} onDelete={() => handleRemoveCategoryChip(category)} />
-            ))}
+            <div data-testid="chips-container">
+                {selectedCategories.map((category) => <Chip key={category} label={category} onDelete={() => handleRemoveCategoryChip(category)} />)}
+            </div>
             <Table isMobile={isMobile} data={data} data-testid="table"/>
         </>
     )
