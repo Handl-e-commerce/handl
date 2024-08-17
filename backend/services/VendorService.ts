@@ -2,6 +2,7 @@ import {IVendorService} from "../interfaces/IVendorService";
 import {Vendor} from "../db/models/Vendor";
 import {Op} from "sequelize";
 import {VendorCategories} from "../db/models/VendorCategories";
+import {Category} from "../db/models/Category";
 
 /** Vendor Service Class */
 class VendorService implements IVendorService {
@@ -32,23 +33,25 @@ class VendorService implements IVendorService {
                 }],
             });
 
-            // const vendorResults: VendorCategories[] = await VendorCategories.findAll({
-            //     where: categories ? {
-            //         CategorySubcategory: {
-            //             [Op.or]: categories
-            //         }
-            //     }: {},
-            //     include: [{
-            //         model: Vendor,
-            //         where: searchVal ? {
-            //             name: {
-            //                 [Op.iLike]: `%${searchVal}%`
-            //             }
-            //         } : {}
-            //     }],
-            // });
-
             return vendorResults;
+        } catch (err) {
+            const error = err as Error;
+            throw new Error(error.message);
+        }
+    }
+
+    /**
+     * Simple method to return all of the categories in the database
+     * @return {Category[]}
+     */
+    public async GetCategories(): Promise<Category[]> {
+        try {
+            return await Category.findAll({
+                order: [
+                    ["subcategory", "ASC"],
+                ],
+                attributes: ["subcategory"],
+            });
         } catch (err) {
             const error = err as Error;
             throw new Error(error.message);

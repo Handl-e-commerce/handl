@@ -136,7 +136,7 @@ function SignUp(): JSX.Element {
     return (
         <div className="sign-up-container" data-testid="default-form">
             <h1>Sign Up Free</h1>
-            <div>Already a member? <a href={location.origin + "/login?isBusy=true"}>{"Login ->"}</a></div>
+            <div>Already a member? <a href={location.origin + "/login?"}>{"Login ->"}</a></div>
             <input 
                 type="email"
                 required

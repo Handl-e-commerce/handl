@@ -7,11 +7,11 @@ import { Footer } from '../components/Footer/Footer';
 
 function App() {
   return (
-    <body className="App">
+    <div className="App">
       <Header />
       <RouterProvider router={Router} />
       <Footer />
-    </body>
+    </div>
   );
 }
 
