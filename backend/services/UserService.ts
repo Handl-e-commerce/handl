@@ -371,10 +371,17 @@ class UserService implements IUserService {
             if (user === null || user === undefined) {
                 return {
                     result: false,
-                    message: "The email does not exist.",
+                    message: "Something went wrong. Please try again later.",
                 };
             }
 
+            if (user.isVerified) {
+                return {
+                    result: true,
+                    message: "Your email is already verified.",
+                };
+            }
+            
             if (Date.now() > Number(user.tokenExpiration)) {
                 return {
                     result: false,
@@ -391,6 +398,7 @@ class UserService implements IUserService {
 
             await User.update({
                 isVerified: true,
+                verificationToken: undefined,
             }, {
                 where: {
                     uuid: userId,

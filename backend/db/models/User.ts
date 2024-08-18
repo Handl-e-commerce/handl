@@ -93,7 +93,7 @@ User.init({
         allowNull: true,
     },
     isVerified: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
         allowNull: false,
     },
     verificationToken: {

@@ -5,6 +5,7 @@ import { SignUp } from './routes/SignUp/SignUp';
 import { AboutUs } from './routes/AboutUs/AboutUs';
 import { ContactUs } from './routes/ContactUs/ContactUs';
 import { Results } from './routes/Results/Results';
+import { Verify } from './routes/Verify/Verify';
 
 const Router = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ const Router = createBrowserRouter([
     {
         path: "/results",
         element: <Results />,
+    },
+    {
+        path: "/verify",
+        element: <Verify />
     }
 ]);
 

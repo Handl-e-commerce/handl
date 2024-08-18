@@ -251,10 +251,34 @@ describe("UserService Tests", function() {
       dummyUser?.uuid as string,
       ""
     );
-    console.log(result);
     expect(result.result).toBeTruthy();
     expect(result.result).toEqual(true);
     expect(result.message).toEqual("Successfully verified email.");
+  });
+  
+  // Ditto as above
+  it("Should send a verification message saying the user is already verified if isVerified is true for a user.", async () => {
+    await userService.CreateUser(userDetails);
+    await User.update({
+      isVerified: true,
+    }, {
+      where: {
+        email: userDetails.email
+      }
+    });
+    let dummyUser = await User.findOne({
+      where: {
+        email: userDetails.email 
+      }
+    });
+    let result = await userService.VerifyRegistrationToken(
+      dummyUser?.uuid as string,
+      ""
+    );
+    
+    expect(result.result).toBeTruthy();
+    expect(result.result).toEqual(true);
+    expect(result.message).toEqual("Your email is already verified.");
   });
 
   it("Should return false because the user doesn't exist", async () => {
@@ -270,7 +294,7 @@ describe("UserService Tests", function() {
     );
     expect(result.result).toBeFalsy();
     expect(result.result).toEqual(false);
-    expect(result.message).toEqual("The email does not exist.");
+    expect(result.message).toEqual("Something went wrong. Please try again later.");
   });
 
   it("Should return false because the registration token is expired", async () => {
@@ -281,7 +305,7 @@ describe("UserService Tests", function() {
       }
     });
     await User.update({
-      tokenExpiration: new Date(Date.now() - 1000*60*60*15)
+      tokenExpiration: new Date(Date.now() - 1000*60*60*30)
     },
     {
       where: {
@@ -406,4 +430,5 @@ describe("UserService Tests", function() {
     expect(sendMailMock).toHaveBeenCalledTimes(2);
     expect(sendMailMock).toHaveBeenCalled();
   });
+
 });
