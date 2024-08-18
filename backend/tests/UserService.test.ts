@@ -257,7 +257,7 @@ describe("UserService Tests", function() {
   });
   
   // Ditto as above
-  it.skip("Should send a verification message saying the user is already verified if isVerified is true for a user.", async () => {
+  it("Should send a verification message saying the user is already verified if isVerified is true for a user.", async () => {
     await userService.CreateUser(userDetails);
     await User.update({
       isVerified: true,
@@ -271,8 +271,6 @@ describe("UserService Tests", function() {
         email: userDetails.email 
       }
     });
-    console.log(dummyUser?.isVerified);
-
     let result = await userService.VerifyRegistrationToken(
       dummyUser?.uuid as string,
       ""
