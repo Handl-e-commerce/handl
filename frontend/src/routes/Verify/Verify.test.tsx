@@ -20,6 +20,24 @@ describe("Verify Route Test", function() {
             expect(screen.getByText("Successfully verified email.")).toBeInTheDocument();
         });
     });
+    
+    it("Should show user is already validated message", async function() {
+        server.use(
+            http.post(REACT_APP_SERVER_URI + `/users/registration/verify`, ({ request, params, cookies }) => {
+                let body = JSON.stringify({
+                    message: "Your email is already verified."
+                })
+                return new HttpResponse(body, { status: 201,});
+            })
+        );
+        const { container } = render(<Verify />);
+
+        let verifyContainer = screen.getByTestId("verify-container");
+        waitFor(() => {
+            expect(verifyContainer.childElementCount).toEqual(1);
+            expect(screen.getByText("Your email is already verified.")).toBeInTheDocument();
+        });
+    });
 
     it("Should show token expiration response message with request new token div", async function() {
         server.use(

@@ -72,7 +72,7 @@ module.exports = {
                 allowNull: true,
             },
             isVerified: {
-                type: Sequelize.STRING,
+                type: Sequelize.BOOLEAN,
                 allowNull: false,
             },
             verificationToken: {
