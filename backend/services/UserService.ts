@@ -371,7 +371,7 @@ class UserService implements IUserService {
             if (user === null || user === undefined) {
                 return {
                     result: false,
-                    message: "The email does not exist.",
+                    message: "Something went wrong. Please try again later.",
                 };
             }
 
