@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import { SearchBar } from "../SearchBar/SearchBar";
-import { cookieParser } from "../../utils/cookie-util";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { deleteCookie } from "../../utils/cookie-util";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";

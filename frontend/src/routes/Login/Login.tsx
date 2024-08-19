@@ -72,7 +72,7 @@ function Login(): JSX.Element {
             <div>
                 <div>Enter the email associated with your account</div>
                 <input 
-                    type="text"
+                    type="email"
                     placeholder="Business Email"
                     name="business_email"
                     className="login-input"
