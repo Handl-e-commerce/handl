@@ -27,7 +27,7 @@ function Login(): JSX.Element {
     };
 
     function handlePasswordResetRequest(): void {
-        fetchWrapper(REACT_APP_SERVER_URI + "/user/password/request-reset", "POST", {
+        fetchWrapper(REACT_APP_SERVER_URI + "/user/password/reset/request", "POST", {
             email: email
         });
         setSubmittedResetRequest(true);

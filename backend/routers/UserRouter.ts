@@ -63,7 +63,7 @@ userRouter.put("/:id/password", async (req: Request, res: Response, next: NextFu
     }
 });
 
-userRouter.post("/password/request-reset", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.post("/password/reset/request", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const email: string = req.params.email;
         const userService: UserService = new UserService();
@@ -73,6 +73,29 @@ userRouter.post("/password/request-reset", async (req: Request, res: Response, n
         return next(err as Error);
     }
 });
+
+userRouter.post("/password/reset/verify", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId: string = req.body.userId;
+        const token: string = req.body.token;
+        const userService: UserService = new UserService();
+        const verificationResult: {
+            result: boolean;
+            message: string;
+        } = await userService.VerifyToken(userId, token, true);
+        if (verificationResult.result) {
+            return res.status(201).json({
+                message: verificationResult.message,
+            });
+        } else {
+            return res.status(401).json({
+                message: verificationResult.message,
+            });
+        }
+    } catch (err: unknown) {
+        return next(err as Error);
+    }
+})
 
 userRouter.post("/login", async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -177,7 +200,7 @@ userRouter.post("/registration/verify", async (req: Request, res: Response, next
         const verificationResult: {
             result: boolean;
             message: string;
-        } = await userService.VerifyRegistrationToken(userId, token);
+        } = await userService.VerifyToken(userId, token, false);
         if (verificationResult.result) {
             return res.status(201).json({
                 message: verificationResult.message,
