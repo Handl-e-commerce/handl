@@ -22,8 +22,8 @@ function Login(): JSX.Element {
 
     function redirectSignUp(): void {
         // redirect to sign up route
-        location.replace(location.origin + "/sign-up?");
         window.history.pushState({}, "", location.origin + "/sign-up?");
+        location.replace(location.origin + "/sign-up?");
     };
 
     function handlePasswordResetRequest(): void {
