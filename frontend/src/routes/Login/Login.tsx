@@ -11,7 +11,6 @@ const {
 
 function Login(): JSX.Element {
     let location = window.location;
-    let queryParams = new URL(document.location.toString()).searchParams;
     const navigate = useNavigate();
     const [isForgotPassword, setIsForgotPassword] = useState<boolean>(false);
     const [submittedResetRequest, setSubmittedResetRequest] = useState<boolean>(false);
