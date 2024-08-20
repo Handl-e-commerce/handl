@@ -61,7 +61,7 @@ describe("Login Route Test", function() {
     });
 
     it("Should have a disabled button because email input field is empty", async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup();
         const { container } = render(<Login />);
 
         let loginButton = screen.getByRole("login-button");
@@ -77,7 +77,7 @@ describe("Login Route Test", function() {
     });
     
     it("Should have a disabled button because password input field is empty", async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup();
         const { container } = render(<Login />);
 
         let loginButton = screen.getByRole("login-button");
@@ -93,7 +93,7 @@ describe("Login Route Test", function() {
     });
 
     it("Should redirect to homepage because login returned 201", async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup();
         document.cookie = "loggedIn=true;";
         const { container } = render(<Login />);
 
@@ -117,26 +117,25 @@ describe("Login Route Test", function() {
         });
     });
 
-    // TODO: (HIGH) Fix these last 3 unit tests when I get back
-    it.skip("Should display an error message because login returned 401", async () => {
+    it("Should display an error message because login returned 401", async () => {
         server.use(
             http.post(REACT_APP_SERVER_URI + `/users/login`, ({ request, params, cookies }) => {
                 return new HttpResponse(null, { status: 401,});
             })
         );
-        
+        const user = userEvent.setup();
         const { container } = render(<Login />);
-
-        let loginButton = screen.getByRole("button");
+        
+        let loginButton = screen.getByRole("login-button");
         let emailInput = screen.getByPlaceholderText("Business Email");
         let passwordInput = screen.getByPlaceholderText("Password");
-        act(() => {
-            userEvent.type(emailInput, "mockEmail@email.com");
-            userEvent.type(passwordInput, "mockPassword");
+        await act(async () => {
+            await user.type(emailInput, "mockEmail@email.com");
+            await user.type(passwordInput, "mockPassword");
         });
         await waitFor(() => {
-            expect(emailInput.innerText).toEqual("mockEmail@email.com");
-            expect(passwordInput.innerText).toEqual("mockPassword");
+            expect(screen.getByDisplayValue("mockEmail@email.com")).toBeInTheDocument();
+            expect(screen.getByDisplayValue("mockPassword")).toBeInTheDocument();
             expect(loginButton).toBeEnabled();
         });
         act(() => {
@@ -147,36 +146,38 @@ describe("Login Route Test", function() {
         });
     });
 
-    it.skip("Should set the password input type to text after clicking the show password checkbox", async () => {
+    // TODO: (HIGH) Fix these last 2 unit tests when I get back
+    it("Should set the password input type to text after clicking the show password checkbox", async () => {
         const { container } = render(<Login />);
-
+        const user = userEvent.setup();
         let passwordInput = screen.getByPlaceholderText("Password");
         let checkbox = screen.getByTestId("show-password-switch");
-        act(() => {
-            userEvent.type(passwordInput, "mockPassword");
+        await act(async () => {
+            await user.type(passwordInput, "mockPassword");
         });
         await waitFor(() => {
-            expect(screen.getByText("mockPassword")).toBeInTheDocument();
+            expect(screen.getByDisplayValue("mockPassword")).toBeInTheDocument();
         });
-        act(() => {
-            userEvent.click(checkbox);
+        await act(async () => {
+            await user.click(checkbox);
         });
         await waitFor(() => {
             expect(passwordInput.inputMode).toEqual("text");
         });
     });
 
-    it.skip("Should show the password reset form upon clicking forgot password and then confirm request was sent to backend after clicking reset request button", async () => {
+    it("Should show the password reset form upon clicking forgot password and then confirm request was sent to backend after clicking reset request button", async () => {
         const { container } = render(<Login />);
+        const user = userEvent.setup();
         let forgotPasswordButton = screen.getByText("Forgot password?")
-        act(() => {
-            userEvent.click(forgotPasswordButton);
+        await act(async () => {
+            await user.click(forgotPasswordButton);
         });
         await waitFor(() => {
             expect("Enter the email associated with your account").toBeInTheDocument();
             let resetRequestButton = screen.getByText("Request Password Reset");
-            act(() => {
-                userEvent.click(resetRequestButton);
+            act(async () => {
+                await user.click(resetRequestButton);
             }); 
             waitFor(() => {
                 expect("We've sent a password reset link to your email.").toBeInTheDocument();
