@@ -78,7 +78,6 @@ describe("Results Route Test", () => {
     
 
     it("Should render you must sign in first in order to access our data modal if user isn't signed up", async () => {
-        const { container } = await act( async () => render(<Results />));
         server.use(
             http.post(REACT_APP_SERVER_URI + `/users/login/verify`, ({ request, params, cookies }) => {
                 return new HttpResponse(null, {
@@ -86,8 +85,9 @@ describe("Results Route Test", () => {
                 });
             }),
         );
+        const { container } = await act( async () => render(<Results />));
         
-        waitFor(() => {
+        await waitFor(() => {
             expect(screen.getByText("Login or Sign up to get full access to our data!")).toBeInTheDocument();
         });
     });
