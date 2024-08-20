@@ -65,7 +65,7 @@ userRouter.put("/:id/password", async (req: Request, res: Response, next: NextFu
 
 userRouter.post("/password/reset/request", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const email: string = req.params.email;
+        const email: string = req.body.email as string;
         const userService: UserService = new UserService();
         await userService.RequestUserPasswordReset(email);
         return res.status(201).send();
@@ -95,7 +95,7 @@ userRouter.post("/password/reset/verify", async (req: Request, res: Response, ne
     } catch (err: unknown) {
         return next(err as Error);
     }
-})
+});
 
 userRouter.post("/login", async (req: Request, res: Response, next: NextFunction) => {
     try {

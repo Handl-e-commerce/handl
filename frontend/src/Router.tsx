@@ -47,7 +47,7 @@ const Router = createBrowserRouter([
         errorElement: <ErrorPage />,
     },
     {
-        path: "/reset/redirect,",
+        path: "/reset/redirect",
         element: <Redirect />,
         errorElement: <ErrorPage />,
     },

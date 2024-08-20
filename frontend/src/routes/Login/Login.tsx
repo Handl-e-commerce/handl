@@ -27,7 +27,7 @@ function Login(): JSX.Element {
     };
 
     function handlePasswordResetRequest(): void {
-        fetchWrapper(REACT_APP_SERVER_URI + "/user/password/reset/request", "POST", {
+        fetchWrapper(REACT_APP_SERVER_URI + "/users/password/reset/request", "POST", {
             email: email
         });
         setSubmittedResetRequest(true);
@@ -77,17 +77,9 @@ function Login(): JSX.Element {
                     className="login-input"
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <input
-                    type={showPassword ? 'text':'password'}
-                    placeholder="Password"
-                    name="password"
-                    className="login-input"
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                {showPassword ? <IoEyeOffOutline onClick={() => setShowPassword(!showPassword)}/> : <IoEyeOutline onClick={() => setShowPassword(!showPassword)}/>}
                 <button 
                     onClick={handlePasswordResetRequest}
-                    disabled={isBusy || email.length === 0 || password.length === 0}
+                    disabled={isBusy || email.length === 0}
                 >
                     Request Password Reset
                 </button>
