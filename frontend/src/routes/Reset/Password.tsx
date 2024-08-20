@@ -55,7 +55,6 @@ function Password(): JSX.Element {
         setSubmitted(true); 
     };
 
-    // TODO: (HIGH) Refactor this checker to work for both password and confirmation password
     function validPassword(password: string): {result: boolean, message: string} {
         if (password.length < 8) {
             return { result: false, message: "Password is too short" };
