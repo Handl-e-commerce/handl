@@ -20,8 +20,6 @@ function Password(): JSX.Element {
     const [invalidPasswordMessage, setInvalidPasswordMessage] = useState<string>("");
     const [submitted, setSubmitted] = useState<boolean>(false);
 
-    console.log(status);
-
     useEffect(() => {
         let ignore = false;
         if (!ignore) {
@@ -76,7 +74,6 @@ function Password(): JSX.Element {
     };
 
     function submitDisabled(): boolean {
-        console.log(newPassword !== confirmationPassword);
         return !(validPassword(newPassword).result || validPassword(confirmationPassword).result) || newPassword !== confirmationPassword;
     };
 
