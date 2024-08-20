@@ -17,7 +17,6 @@ function Password(): JSX.Element {
     const [message, setMessage] = useState<string>("");
     const [newPassword, setNewPassword] = useState<string>("");
     const [confirmationPassword, setConfirmationPassword] = useState<string>("");
-    const [invalidPasswordMessage, setInvalidPasswordMessage] = useState<string>("");
     const [submitted, setSubmitted] = useState<boolean>(false);
 
     useEffect(() => {

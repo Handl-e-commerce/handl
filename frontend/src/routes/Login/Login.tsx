@@ -11,7 +11,6 @@ const {
 
 function Login(): JSX.Element {
     let location = window.location;
-    const navigate = useNavigate();
     const [isForgotPassword, setIsForgotPassword] = useState<boolean>(false);
     const [submittedResetRequest, setSubmittedResetRequest] = useState<boolean>(false);
     const [email, setEmail] = useState<string>("");
@@ -48,9 +47,7 @@ function Login(): JSX.Element {
             let cookies = cookieParser();
             if (cookies.loggedIn === "true") {
                 let queryParams = new URL(document.location.toString()).searchParams;
-                queryParams.delete("isLogin");
                 window.location.replace(window.location.origin + "/" + queryParams.toString());
-                return navigate("/");
             };
         }
         else {
