@@ -146,7 +146,6 @@ describe("Login Route Test", function() {
         });
     });
 
-    // TODO: (HIGH) Fix these last 2 unit tests when I get back
     it("Should set the password input type to text after clicking the show password checkbox", async () => {
         const { container } = render(<Login />);
         const user = userEvent.setup();
@@ -162,7 +161,7 @@ describe("Login Route Test", function() {
             await user.click(checkbox);
         });
         await waitFor(() => {
-            expect(passwordInput.inputMode).toEqual("text");
+            expect(screen.getByPlaceholderText("Password").getAttribute("type")).toEqual("text");
         });
     });
 
@@ -174,14 +173,15 @@ describe("Login Route Test", function() {
             await user.click(forgotPasswordButton);
         });
         await waitFor(() => {
-            expect("Enter the email associated with your account").toBeInTheDocument();
-            let resetRequestButton = screen.getByText("Request Password Reset");
-            act(async () => {
-                await user.click(resetRequestButton);
-            }); 
-            waitFor(() => {
-                expect("We've sent a password reset link to your email.").toBeInTheDocument();
-            });
+            expect(screen.getByText("Enter the email associated with your account")).toBeInTheDocument();
+        });
+        let resetRequestButton = await waitFor(() => screen.getByText("Request Password Reset"));
+        await act(async () => {
+            await user.type(screen.getByRole("reset-password-email-input"), "foo@bar.com");
+            await user.click(resetRequestButton);
+        });
+        await waitFor(() => {
+            expect(screen.getByText(("We've sent a password reset link to your email."))).toBeInTheDocument();
         });
     });
 });

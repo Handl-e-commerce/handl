@@ -72,6 +72,7 @@ function Login(): JSX.Element {
                     placeholder="Business Email"
                     name="business_email"
                     className="login-input"
+                    role="reset-password-email-input"
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <button 

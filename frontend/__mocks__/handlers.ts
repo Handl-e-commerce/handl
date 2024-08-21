@@ -88,6 +88,11 @@ export const handlers = [
             status: 201
         });
     }),
+    http.post(REACT_APP_SERVER_URI + `/users/password/reset/request`, ({ request, params, cookies }) => {
+        return new HttpResponse(null, {
+            status: 201
+        });
+    }),
     http.get(REACT_APP_SERVER_URI + `/vendors/categories`, ({ request, params, cookies }) => {
         let categories: { subcategory: string }[] = [{
             subcategory: "Fashion Jewelry / Watches",
