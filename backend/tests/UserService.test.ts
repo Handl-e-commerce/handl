@@ -413,6 +413,66 @@ describe("UserService Verification Token Tests", () => {
     expect(result.message).toEqual("The verification token is not valid. Please request for a new one to be sent to you.");
   });
 
+  it("Password Reset: Should return false because the user doesn't exist", async () => {
+    await userService.CreateUser(userDetails);
+    let dummyUser = await User.findOne({
+      where: {
+        email: userDetails.email 
+      }
+    });
+    let result = await userService.VerifyToken(
+      "nonexistentUser",
+      dummyUser?.verificationToken as string,
+      true
+    );
+    expect(result.result).toBeFalsy();
+    expect(result.result).toEqual(false);
+    expect(result.message).toEqual("Something went wrong. Please try again later.");
+  });
+
+  it("Password Reset: Should return false because the registration token is expired", async () => {
+    await userService.CreateUser(userDetails);
+    let dummyUser = await User.findOne({
+      where: {
+        email: userDetails.email 
+      }
+    });
+    await User.update({
+      tokenExpiration: new Date(Date.now() - 1000*60*60*30)
+    },
+    {
+      where: {
+        email: userDetails.email
+      }
+    });
+    let result = await userService.VerifyToken(
+      dummyUser?.uuid as string, 
+      dummyUser?.verificationToken as string,
+      true
+    );
+    expect(result.result).toBeFalsy();
+    expect(result.result).toEqual(false);
+    expect(result.message).toEqual("The verification token has expired. Please request for a new one to be sent to you.");
+  });
+
+  it("Password Reset: Should return false because the registration token is not valid", async () => {
+    await userService.CreateUser(userDetails);
+    let dummyUser = await User.findOne({
+      where: {
+        email: userDetails.email 
+      }
+    });
+    let result = await userService.VerifyToken(
+      dummyUser?.uuid as string,
+      "nonexistentTokenWhichIsAlsoIncorrect",
+      true
+    );
+    expect(result.result).toBeFalsy();
+    expect(result.result).toEqual(false);
+    expect(result.message).toEqual("The verification token is not valid. Please request for a new one to be sent to you.");
+  });
+
+
   it("Should send a verification email upon user being created", async () => {
     await userService.CreateUser(userDetails);
     expect(sendMailMock).toHaveBeenCalledTimes(1);
@@ -428,6 +488,7 @@ describe("UserService Verification Token Tests", () => {
     });
     expect(user).toBeDefined();
     await userService.SendNewVerificationToken(user!.uuid);
+    // Being called once because registration/welcome to handl email is sent before on CreateUser call
     expect(sendMailMock).toHaveBeenCalledTimes(2);
     expect(sendMailMock).toHaveBeenCalled();
   });
