@@ -107,6 +107,7 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
             validator?: string | null | undefined;
             userId?: string | undefined;
             expires?: Date | null | undefined;
+            firstName?: string | null | undefined,
         } = await userService.Login(userDetails.email, userDetails.password);
         if (loginStatus.result) {
             return res.status(201)
@@ -127,6 +128,7 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
                     userId: loginStatus.userId,
                     loggedIn: "true",
                     expires: new Date(Date.now() + (1000*60*60*24*90)),
+                    firstName: loginStatus.firstName
                 })
             ;
         } else {

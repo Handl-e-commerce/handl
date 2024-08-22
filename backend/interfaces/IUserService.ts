@@ -17,6 +17,7 @@ interface IUserService {
         selector?: string | null,
         validator?: string | null,
         expires?: Date | null
+        firstName?: string | null
     }>;
     VerifyUser: (selector: string, validator: string, userId: string) => Promise<boolean>;
     VerifyToken: (userId: string, token: string, isPasswordReset: boolean) => Promise<{
