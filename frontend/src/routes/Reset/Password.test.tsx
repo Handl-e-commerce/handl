@@ -138,18 +138,14 @@ describe("Password tests", () => {
             expect(screen.getByRole("confirmation-password-input")).toBeInTheDocument();
         })
 
-        await act(async () => {
-            await user.type(screen.getByRole("password-input").querySelector("input")!, "M0ckpassword0830$");
-            await user.type(screen.getByRole("confirmation-password-input").querySelector("input")!, "M0ckpassword0830$");
-        });
+        await user.type(screen.getByRole("password-input").querySelector("input")!, "M0ckpassword0830$");
+        await user.type(screen.getByRole("confirmation-password-input").querySelector("input")!, "M0ckpassword0830$");
 
         await waitFor(() => {
             expect(screen.getByRole("password-reset-button")).toBeEnabled();
         });
 
-        await act(async () => {
-            await user.click(screen.getByRole("password-reset-button"));
-        });
+        await user.click(screen.getByRole("password-reset-button"));
 
         await waitFor(() => {
             expect(screen.getByText("We've successfully reset your password.")).toBeInTheDocument();
