@@ -305,7 +305,7 @@ class UserService implements IUserService {
                 validator: validator,
                 userId: user.uuid,
                 expires: expirationDate,
-                firstName: user.firstName
+                firstName: user.firstName,
             };
         } catch (err) {
             const error = err as Error;

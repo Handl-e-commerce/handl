@@ -128,7 +128,7 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
                     userId: loginStatus.userId,
                     loggedIn: "true",
                     expires: new Date(Date.now() + (1000*60*60*24*90)),
-                    firstName: loginStatus.firstName
+                    firstName: loginStatus.firstName,
                 })
             ;
         } else {

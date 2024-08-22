@@ -42,6 +42,7 @@ function Login(): JSX.Element {
             let data = await response.json();
             addCookie("loggedIn", data.loggedIn, data.expires);
             addCookie("userId", data.userId, data.expires);
+            addCookie("firstName", data.firstName, data.expires);
             setHasError(false);
             setIsBusy(false);
             let cookies = cookieParser();
