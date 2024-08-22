@@ -26,6 +26,7 @@ jest.mock('../../utils/cookie-util', () => {
 });
 
 describe("Password tests", () => {
+    const user = userEvent.setup();
     // This will come in handy in the future for this test + component:
     // https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
     // The test works and passes, it's just it throws a really ugly error warning which annoys me. 
@@ -93,7 +94,6 @@ describe("Password tests", () => {
     });
         
     it("Submit Reset button should be disabled due to passwords not matching", async () => {
-        const user = userEvent.setup();
         server.use(
             http.post(REACT_APP_SERVER_URI + `/users/password/reset/verify`, ({ request, params, cookies }) => {
                 let body = JSON.stringify({
@@ -118,7 +118,6 @@ describe("Password tests", () => {
     });
         
     it("Should show successful submission message", async () => {
-        const user = userEvent.setup();
         server.use(
             http.post(REACT_APP_SERVER_URI + `/users/password/reset/verify`, ({ request, params, cookies }) => {
                 let body = JSON.stringify({
