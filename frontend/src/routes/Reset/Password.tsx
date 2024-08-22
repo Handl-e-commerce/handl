@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
-import { cookieParser } from "../../utils/cookie-util";
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { Button } from "@mui/material";
-
+import { cookieParser, deleteCookie } from "../../utils/cookie-util";
+import { Button, Box, TextField } from "@mui/material";
 
 const envVariables = process.env;
 const {
@@ -39,6 +36,7 @@ function Password(): JSX.Element {
         const data = await response.json();
         setStatus(response.status);
         setMessage(data.message);
+        deleteCookie("token");
     };
 
     async function submitPasswordReset() {
@@ -100,11 +98,12 @@ function Password(): JSX.Element {
     };
 
     return (
-        <Box component="form">
+        <Box component="form" role="password-reset-form">
             <h2>Enter your new password below</h2>
             <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                 <TextField 
                     id="password-input"
+                    role="password-input"
                     type="password"
                     defaultValue="Password"
                     onChange={(e) => setNewPassword(e.target.value)}
@@ -114,6 +113,7 @@ function Password(): JSX.Element {
                 />
                 <TextField
                     id="confirmation-password-input"
+                    role="confirmation-password-input"
                     type="password"
                     defaultValue="Password"
                     onChange={(e) => setConfirmationPassword(e.target.value)}
@@ -123,6 +123,7 @@ function Password(): JSX.Element {
                 />
                 <Button 
                     variant="contained" 
+                    role="password-reset-button"
                     onClick={submitPasswordReset} 
                     style={{width: "15%"}}
                     disabled={submitDisabled()}
