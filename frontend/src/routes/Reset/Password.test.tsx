@@ -109,10 +109,8 @@ describe("Password tests", () => {
             expect(screen.getByRole("password-reset-form")).toBeInTheDocument();
         })
 
-        await act(async () => {
-            await user.type(screen.getByRole("password-input"), "alkdjfaocieahlken");
-            await user.type(screen.getByRole("confirmation-password-input"), "srughosiepuhabdkjahc");
-        });
+        await user.type(screen.getByRole("password-input"), "alkdjfaocieahlken");
+        await user.type(screen.getByRole("confirmation-password-input"), "srughosiepuhabdkjahc");
 
         await waitFor(() => {
             expect(screen.getByRole("password-reset-button")).toBeDisabled();
