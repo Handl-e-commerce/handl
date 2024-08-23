@@ -115,9 +115,9 @@ describe("Sign Up Route Test", function() {
         });
     });
 
-    it.skip("Should show error message because account already exists.", async function() {
+    it("Should show error message because account already exists.", async function() {
         server.use(
-            http.post(REACT_APP_SERVER_URI + `/users/create`, ({ request, params, cookies }) => {
+            http.post(REACT_APP_SERVER_URI + `/users/register`, ({ request, params, cookies }) => {
                 return new HttpResponse(null, { status: 401,});
             })
         );
@@ -127,101 +127,89 @@ describe("Sign Up Route Test", function() {
         let form = screen.getByTestId("default-form");
         let registrationButton = screen.getByText("Register");
 
-        act(() => {
-            userEvent.type(form.children[0], "mockemail@foo.com");
-            userEvent.type(form.children[1], "Mock Business");
-            userEvent.type(form.children[2], "012-345-6789");
-            userEvent.type(form.children[3], "fooPassw0rd!");
-            userEvent.type(form.children[4], "fooPassw0rd!");
-            userEvent.click(registrationButton);
-        });
+        await user.type(form.children[2], "mockemail@foo.com");
+        await user.type(form.children[3], "Mock Business");
+        await user.type(form.children[4], "Foo");
+        await user.type(form.children[5], "Bar");
+        await user.type(form.children[6], "1234567890");
+        await user.type(form.children[7], "123456789");
+        await user.type(form.children[8], "555 Foo st.");
+        await user.type(form.children[9], "La La Land");
+        await user.selectOptions(form.children[10], "CA");
+        await user.type(form.children[11], "90210");
+        await user.type(form.children[12], "fooPassw0rd!");   
+        await user.click(registrationButton);
 
-        waitFor(() => {
-            expect(screen.getByDisplayValue("mockemail@foo.com")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("Mock Business")).toBeInTheDocument()
-            expect(screen.getByDisplayValue("fooPassw0rd!")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("User already exists.")).toBeInTheDocument();
-            expect(registrationButton).toBeEnabled();
-            expect(form.children.length).toEqual(8);
+        await waitFor(() => {
+            expect(screen.getByTestId("sign-up-error")).toBeInTheDocument();
+            expect(screen.getByTestId("sign-up-error").innerHTML).toEqual("User already exists.");
         });
     });
 
-    it.skip("Should show the password whenever show password icon is clicked", async function() {
+    it("Should show the password whenever show password icon is clicked", async function() {
         const { container } = render(<SignUp />);
         let form = screen.getByTestId("default-form");
         let showPasswordIcon = form.children[13];
 
-        act(() => {
-            userEvent.click(showPasswordIcon);
-        });
-
-        waitFor(() => {
+        await user.click(showPasswordIcon);
+        
+        await waitFor(() => {
             expect(form.children[12]).toHaveAttribute("type", "text");
         });
     });
 
-    it.skip("Should show password is too short error message", async function() {
+    it("Should show password is too short error message", async function() {
         const { container } = render(<SignUp />);
         let form = screen.getByTestId("default-form");
 
-        act(() => {
-            userEvent.type(form.children[12], "foo");
-        });
-
+        await user.type(form.children[12], "foo");
+        
         waitFor(() => {
-            expect(screen.getByDisplayValue("Password is too short")).toBeInTheDocument();
+            expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password is too short");
         }); 
     });
 
-    it.skip("Should show password must contain a number message", async function() {
+    it("Should show password must contain a number message", async function() {
         const { container } = render(<SignUp />);
         let form = screen.getByTestId("default-form");
 
-        act(() => {
-            userEvent.type(form.children[12], "foobaroni$#");
-        });
-
-        waitFor(() => {
-            expect(screen.getByDisplayValue("Password must contain a number")).toBeInTheDocument();
+        await user.type(form.children[12], "foobaroni$#");
+        
+        await waitFor(() => {
+            expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain a number");
         }); 
     });
 
-    it.skip("Should show password must contain a lower case letter message", async function() {
+    it("Should show password must contain a lower case letter message", async function() {
         const { container } = render(<SignUp />);
         let form = screen.getByTestId("default-form");
 
-        act(() => {
-            userEvent.type(form.children[12], "FOOBARONI$#%34");
-        });
-
-        waitFor(() => {
-            expect(screen.getByDisplayValue("Password must contain a lowercase letter")).toBeInTheDocument();
+        await user.type(form.children[12], "FOOBARONI$#%34");
+        
+        await waitFor(() => {
+            expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain a lowercase letter");
         });
     });
 
-    it.skip("Should show password must contain an uppercase letter message", async function() {
+    it("Should show password must contain an uppercase letter message", async function() {
         const { container } = render(<SignUp />);
         let form = screen.getByTestId("default-form");
 
-        act(() => {
-            userEvent.type(form.children[12], "foobaroni$34238$#$!");
-        });
-
-        waitFor(() => {
-            expect(screen.getByDisplayValue("Password must contain an uppercase letter")).toBeInTheDocument();
+        await user.type(form.children[12], "foobaroni$34238$#$!");
+        
+        await waitFor(() => {
+            expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain an uppercase letter");
         }); 
     });
 
-    it.skip("Should show password must contain a special character message", async function() {
+    it("Should show password must contain a special character message", async function() {
         const { container } = render(<SignUp />);
         let form = screen.getByTestId("default-form");
 
-        act(() => {
-            userEvent.type(form.children[12], "FOobaroni434");
-        });
-
-        waitFor(() => {
-            expect(screen.getByDisplayValue("Password must contain a special character from the following: ~ ` ! # $ % ^ & * € £ @ + = - [ ] ' ; , / { } ( ) | \" : < > ? . _")).toBeInTheDocument();
+        await user.type(form.children[12], "FOobaroni434");
+        
+        await waitFor(() => {
+            expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain a special character from the following: ~ ` ! # $ % ^ &amp; * € £ @ + = - [ ] ' ; , / { } ( ) | \" : &lt; &gt; ? . _");
         }); 
     });
 });
