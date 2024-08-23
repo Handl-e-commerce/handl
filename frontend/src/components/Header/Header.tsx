@@ -41,7 +41,7 @@ function Header(): JSX.Element {
                 <a href={location.origin} target="_self">
                     <img src="" alt="" />
                 </a>
-                <div>Hi, {cookieObject.firstName}!</div>
+                <div>Hi, {cookieObject?.firstName}!</div>
                 <div onClick={handleLogout}>Logout</div>
                 {isLandingPage && <SearchBar />}
             </div>

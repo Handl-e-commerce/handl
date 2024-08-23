@@ -93,7 +93,7 @@ function SignUp(): JSX.Element {
     function canSubmit(): boolean {
         if (isBusy)
             return false;
-        if (email === "" || businessName === "" || firstName === "" || lastName === "" || phoneNumber === "" || EIN === "" || address === "" || city === "" || state === "--" || zipcode === "")
+        if (email === "" || businessName === "" || firstName === "" || lastName === "" || phoneNumber === "" || address === "" || city === "" || state === "--" || zipcode === "")
             return false;
         return true;
     };
@@ -290,9 +290,9 @@ function SignUp(): JSX.Element {
                 }}
             />
             {showPassword ? <IoEyeOffOutline onClick={() => setShowPassword(!showPassword)}/> : <IoEyeOutline onClick={() => setShowPassword(!showPassword)}/>}
-            {invalidPasswordMessage !== "" && <div>{invalidPasswordMessage}</div>}
+            {invalidPasswordMessage !== "" && <div data-testid="invalid-password-message">{invalidPasswordMessage}</div>}
             <button className="create-account-button" disabled={!canSubmit()} onClick={createAccount}>Register</button>
-            {signUpSuccess === false ? <div className="sign-up-error">User already exists.</div> : null}
+            {signUpSuccess === false ? <div className="sign-up-error" data-testid="sign-up-error">User already exists.</div> : null}
         </div>
     );
 };

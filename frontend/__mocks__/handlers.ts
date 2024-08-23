@@ -45,7 +45,7 @@ export const handlers = [
             status: 401
         });
     }),
-    http.post(REACT_APP_SERVER_URI + `/users/create`, ({}) => {
+    http.post(REACT_APP_SERVER_URI + `/users/register`, ({}) => {
         let body = JSON.stringify({
             message: "Successfully authenticated user"
         });
