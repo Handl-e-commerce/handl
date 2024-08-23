@@ -7,6 +7,8 @@ import { ContactUs } from './routes/ContactUs/ContactUs';
 import { Results } from './routes/Results/Results';
 import { Verify } from './routes/Verify/Verify';
 import { ErrorPage } from './components/ErrorPage/ErrorPage';
+import { Redirect } from './routes/Reset/Redirect';
+import { Password } from './routes/Reset/Password';
 
 const Router = createBrowserRouter([
     {
@@ -42,6 +44,16 @@ const Router = createBrowserRouter([
     {
         path: "/verify",
         element: <Verify />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/reset/redirect",
+        element: <Redirect />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/reset/password",
+        element: <Password />,
         errorElement: <ErrorPage />,
     }
 ]);

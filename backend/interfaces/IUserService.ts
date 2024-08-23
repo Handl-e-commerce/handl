@@ -17,9 +17,10 @@ interface IUserService {
         selector?: string | null,
         validator?: string | null,
         expires?: Date | null
+        firstName?: string | null
     }>;
     VerifyUser: (selector: string, validator: string, userId: string) => Promise<boolean>;
-    VerifyRegistrationToken: (userId: string, token: string) => Promise<{
+    VerifyToken: (userId: string, token: string, isPasswordReset: boolean) => Promise<{
         result: boolean,
         message: string
     }>;

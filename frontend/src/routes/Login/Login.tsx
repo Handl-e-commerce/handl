@@ -11,8 +11,6 @@ const {
 
 function Login(): JSX.Element {
     let location = window.location;
-    let queryParams = new URL(document.location.toString()).searchParams;
-    const navigate = useNavigate();
     const [isForgotPassword, setIsForgotPassword] = useState<boolean>(false);
     const [submittedResetRequest, setSubmittedResetRequest] = useState<boolean>(false);
     const [email, setEmail] = useState<string>("");
@@ -23,12 +21,12 @@ function Login(): JSX.Element {
 
     function redirectSignUp(): void {
         // redirect to sign up route
-        location.replace(location.origin + "/sign-up?");
         window.history.pushState({}, "", location.origin + "/sign-up?");
+        location.replace(location.origin + "/sign-up?");
     };
 
     function handlePasswordResetRequest(): void {
-        fetchWrapper(REACT_APP_SERVER_URI + "/user/password/request-reset", "POST", {
+        fetchWrapper(REACT_APP_SERVER_URI + "/users/password/reset/request", "POST", {
             email: email
         });
         setSubmittedResetRequest(true);
@@ -44,14 +42,13 @@ function Login(): JSX.Element {
             let data = await response.json();
             addCookie("loggedIn", data.loggedIn, data.expires);
             addCookie("userId", data.userId, data.expires);
+            addCookie("firstName", data.firstName, data.expires);
             setHasError(false);
             setIsBusy(false);
             let cookies = cookieParser();
             if (cookies.loggedIn === "true") {
                 let queryParams = new URL(document.location.toString()).searchParams;
-                queryParams.delete("isLogin");
                 window.location.replace(window.location.origin + "/" + queryParams.toString());
-                return navigate("/");
             };
         }
         else {
@@ -72,23 +69,16 @@ function Login(): JSX.Element {
             <div>
                 <div>Enter the email associated with your account</div>
                 <input 
-                    type="text"
+                    type="email"
                     placeholder="Business Email"
                     name="business_email"
                     className="login-input"
+                    role="reset-password-email-input"
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <input
-                    type={showPassword ? 'text':'password'}
-                    placeholder="Password"
-                    name="password"
-                    className="login-input"
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                {showPassword ? <IoEyeOffOutline onClick={() => setShowPassword(!showPassword)}/> : <IoEyeOutline onClick={() => setShowPassword(!showPassword)}/>}
                 <button 
                     onClick={handlePasswordResetRequest}
-                    disabled={isBusy || email.length === 0 || password.length === 0}
+                    disabled={isBusy || email.length === 0}
                 >
                     Request Password Reset
                 </button>

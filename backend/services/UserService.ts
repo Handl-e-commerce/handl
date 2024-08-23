@@ -165,6 +165,8 @@ class UserService implements IUserService {
 
             await User.update({
                 password: hashedPassword,
+                verificationToken: undefined,
+                tokenExpiration: undefined,
             }, {
                 where: {
                     uuid: userId,
@@ -196,10 +198,22 @@ class UserService implements IUserService {
                     email: email,
                 },
             });
+
             if (!user) {
                 throw new Error("User does not exist.");
             }
-            this.GeneratePasswordResetEmail(user.firstName, user.email);
+
+            const token = this.GenerateToken(128);
+            const hashedToken: string = await argon2.hash(token);
+            await user.update({
+                verificationToken: hashedToken,
+                tokenExpiration: new Date(Date.now() + 1000*60*30),
+            }, {
+                where: {
+                    email: email,
+                },
+            });
+            this.GeneratePasswordResetEmail(user.firstName, user.email, user.uuid, token);
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);
@@ -251,7 +265,8 @@ class UserService implements IUserService {
         selector?: string | null,
         validator?: string | null,
         userId?: string,
-        expires?: Date | null
+        expires?: Date | null,
+        firstName?: string | null
     }> {
         try {
             const user: User | null = await User.findOne({
@@ -290,6 +305,7 @@ class UserService implements IUserService {
                 validator: validator,
                 userId: user.uuid,
                 expires: expirationDate,
+                firstName: user.firstName,
             };
         } catch (err) {
             const error = err as Error;
@@ -356,9 +372,10 @@ class UserService implements IUserService {
    * Verifies that the token the user pass after clicking verification link from email is valid
    * @param {string} userId
    * @param {string} token
+   * @param {string} isPasswordReset
    * @return {boolean}
    */
-    public async VerifyRegistrationToken(userId: string, token: string): Promise<{
+    public async VerifyToken(userId: string, token: string, isPasswordReset: boolean): Promise<{
         result: boolean,
         message: string,
     }> {
@@ -375,13 +392,13 @@ class UserService implements IUserService {
                 };
             }
 
-            if (user.isVerified) {
+            if (user.isVerified && !isPasswordReset) {
                 return {
                     result: true,
                     message: "Your email is already verified.",
                 };
             }
-            
+
             if (Date.now() > Number(user.tokenExpiration)) {
                 return {
                     result: false,
@@ -399,6 +416,7 @@ class UserService implements IUserService {
             await User.update({
                 isVerified: true,
                 verificationToken: undefined,
+                tokenExpiration: undefined,
             }, {
                 where: {
                     uuid: userId,
@@ -565,13 +583,19 @@ class UserService implements IUserService {
      * Utility method meant for sending a secure email and link to let a uer reset their password
      * @param {string} name
      * @param {string} email
+     * @param {string} userId
+     * @param {string} token
      */
-    private GeneratePasswordResetEmail(name: string, email: string): void {
+    private GeneratePasswordResetEmail(name: string, email: string, userId: string, token: string): void {
         const filePath = path.resolve("../backend/email-templates/ResetPassword/ResetPassword.html");
         const source = fs.readFileSync(filePath, "utf-8").toString();
         const template = handlebars.compile(source);
+        const url = process.env.NODE_ENV === "local_dev" ? "http://localhost:3000" : process.env.VERIFICATION_LINK;
+        const verificationLink: string = url + `/reset/redirect?token=${token}&userId=${userId}`;
+
         const replacements = {
             name: name,
+            verificationLink: verificationLink,
         };
         const htmlToSend = template(replacements);
 

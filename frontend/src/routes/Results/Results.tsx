@@ -4,11 +4,7 @@ import { Vendor } from "../../types/types";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { CategoryDropDown } from "../../components/CategoryDropDown/CategoryDropDown";
-import Chip from '@mui/material/Chip';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { Box, Button, Chip, Modal, Typography  } from '@mui/material';
 import { Table } from "../../components/Table/Table";
 
 const envVariables = process.env;

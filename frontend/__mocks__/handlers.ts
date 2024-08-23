@@ -10,11 +10,12 @@ export const handlers = [
     http.post(REACT_APP_SERVER_URI + `/users/login`, ({ request, params, cookies }) => {
         let body = JSON.stringify({
             message: "Successfully authenticated user",
+            userId: "MockUserId",
+            firstName: "MockFirstName"
         });
         let responseCookies: string[] = [
             "selector=MockSelectorValue; HttpOnly; Secure; SameSite=None; MaxAge=9999999999999999;",
             "validator=MockValidatorValue; HttpOnly; Secure; SameSite=None; MaxAge=9999999999999999;",
-            "userId=MockUserId; HttpOnly; Secure; SameSite=None; MaxAge=9999999999999999;"
         ];
         return new HttpResponse(body,
         {
@@ -85,6 +86,11 @@ export const handlers = [
             message: "Successfully updated your password."
         });
         return new HttpResponse(body, {
+            status: 201
+        });
+    }),
+    http.post(REACT_APP_SERVER_URI + `/users/password/reset/request`, ({ request, params, cookies }) => {
+        return new HttpResponse(null, {
             status: 201
         });
     }),

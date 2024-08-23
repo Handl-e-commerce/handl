@@ -33,6 +33,7 @@ beforeEach(() => {
 });
 
 describe("Results Route Test", () => {
+    const user = userEvent.setup();
     it("Should render only category query chips and remove them when closing them", async () => {
         const { container } = await act( async () => render(<Results />));
         let dropdown = await waitFor(() => screen.getByTestId("categories-multiple-checkbox-select"), {
@@ -40,45 +41,37 @@ describe("Results Route Test", () => {
         });
         expect(dropdown).toBeInTheDocument();
 
-        act(() => {
-            userEvent.click(dropdown);
-        });
+        await user.click(dropdown);
 
         let checkboxItems = await waitFor(async () => await screen.findAllByTestId("menu-item"), {
             timeout: 3000,
         });
                 
-        act(() => {
-            userEvent.click(checkboxItems[0]);
-            userEvent.click(checkboxItems[1]);
-            userEvent.click(checkboxItems[2]);
-            userEvent.click(checkboxItems[3]);
-            userEvent.keyboard("{esc}")
-        });
+        await user.click(checkboxItems[0]);
+        await user.click(checkboxItems[1]);
+        await user.click(checkboxItems[2]);
+        await user.click(checkboxItems[3]);
+        await user.keyboard("{esc}")
         
         await waitFor(() => {
-            expect(screen.getByText("Fashion Jewelry / Watches")).toBeInTheDocument();
-            expect(screen.getByText("Handbags")).toBeInTheDocument();
-            expect(screen.getByText("Hats / Scarves")).toBeInTheDocument();
-            expect(screen.getByText("Small Leather Goods (Belts/Wallets/etc)")).toBeInTheDocument();
+            expect(screen.getAllByText("Fashion Jewelry / Watches").length).toEqual(2);
+            expect(screen.getAllByText("Handbags").length).toEqual(2);
+            expect(screen.getAllByText("Hats / Scarves").length).toEqual(2);
+            expect(screen.getAllByText("Small Leather Goods (Belts/Wallets/etc)").length).toEqual(2);
         });
         
         let chipContainer = await screen.findByTestId("chips-container");
         expect(chipContainer.childElementCount).toEqual(4);
-
-        act(() => {
-            userEvent.click(chipContainer.children[0].children[1]);
-            userEvent.click(chipContainer.children[1].children[1]);
-        });
+        await user.click(chipContainer.children[0].children[1]);
+        await user.click(chipContainer.children[1].children[1]);
 
         await waitFor(() => {
             expect(chipContainer.childElementCount).toEqual(2);
         })
-    });
+    }, 6000);
     
 
     it("Should render you must sign in first in order to access our data modal if user isn't signed up", async () => {
-        const { container } = await act( async () => render(<Results />));
         server.use(
             http.post(REACT_APP_SERVER_URI + `/users/login/verify`, ({ request, params, cookies }) => {
                 return new HttpResponse(null, {
@@ -86,8 +79,9 @@ describe("Results Route Test", () => {
                 });
             }),
         );
+        const { container } = await act( async () => render(<Results />));
         
-        waitFor(() => {
+        await waitFor(() => {
             expect(screen.getByText("Login or Sign up to get full access to our data!")).toBeInTheDocument();
         });
     });

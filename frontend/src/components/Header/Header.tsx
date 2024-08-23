@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import { SearchBar } from "../SearchBar/SearchBar";
-import { cookieParser } from "../../utils/cookie-util";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
-import { deleteCookie } from "../../utils/cookie-util";
+import { cookieParser, deleteCookie } from "../../utils/cookie-util";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 
 const envVariables = process.env;
@@ -11,13 +10,11 @@ const {
 } = envVariables;
 
 function Header(): JSX.Element {
+    const cookieObject = cookieParser();
     let location = window.location;
     let isLandingPage: boolean = location.pathname === "/";
     let isLoginOrSignUpPage: boolean = location.pathname === "/login" || location.pathname === "/sign-up";
     let loggedIn = useLoginStatus();
-    
-    // TODO: (MEDIUM) have logged in return user's first name upon successful login
-    let userName = "";
 
     function redirectSignUp(): void {
         // redirect to sign up route
@@ -44,7 +41,7 @@ function Header(): JSX.Element {
                 <a href={location.origin} target="_self">
                     <img src="" alt="" />
                 </a>
-                <div>Hi, {userName}!</div>
+                <div>Hi, {cookieObject.firstName}!</div>
                 <div onClick={handleLogout}>Logout</div>
                 {isLandingPage && <SearchBar />}
             </div>

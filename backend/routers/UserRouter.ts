@@ -63,12 +63,35 @@ userRouter.put("/:id/password", async (req: Request, res: Response, next: NextFu
     }
 });
 
-userRouter.post("/password/request-reset", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.post("/password/reset/request", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const email: string = req.params.email;
+        const email: string = req.body.email as string;
         const userService: UserService = new UserService();
         await userService.RequestUserPasswordReset(email);
         return res.status(201).send();
+    } catch (err: unknown) {
+        return next(err as Error);
+    }
+});
+
+userRouter.post("/password/reset/verify", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId: string = req.body.userId;
+        const token: string = req.body.token;
+        const userService: UserService = new UserService();
+        const verificationResult: {
+            result: boolean;
+            message: string;
+        } = await userService.VerifyToken(userId, token, true);
+        if (verificationResult.result) {
+            return res.status(201).json({
+                message: verificationResult.message,
+            });
+        } else {
+            return res.status(401).json({
+                message: verificationResult.message,
+            });
+        }
     } catch (err: unknown) {
         return next(err as Error);
     }
@@ -84,6 +107,7 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
             validator?: string | null | undefined;
             userId?: string | undefined;
             expires?: Date | null | undefined;
+            firstName?: string | null | undefined,
         } = await userService.Login(userDetails.email, userDetails.password);
         if (loginStatus.result) {
             return res.status(201)
@@ -104,6 +128,7 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
                     userId: loginStatus.userId,
                     loggedIn: "true",
                     expires: new Date(Date.now() + (1000*60*60*24*90)),
+                    firstName: loginStatus.firstName,
                 })
             ;
         } else {
@@ -177,7 +202,7 @@ userRouter.post("/registration/verify", async (req: Request, res: Response, next
         const verificationResult: {
             result: boolean;
             message: string;
-        } = await userService.VerifyRegistrationToken(userId, token);
+        } = await userService.VerifyToken(userId, token, false);
         if (verificationResult.result) {
             return res.status(201).json({
                 message: verificationResult.message,
