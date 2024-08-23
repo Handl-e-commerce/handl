@@ -93,7 +93,7 @@ function SignUp(): JSX.Element {
     function canSubmit(): boolean {
         if (isBusy)
             return false;
-        if (email === "" || businessName === "" || firstName === "" || lastName === "" || phoneNumber === "" || EIN === "" || address === "" || city === "" || state === "--" || zipcode === "")
+        if (email === "" || businessName === "" || firstName === "" || lastName === "" || phoneNumber === "" || address === "" || city === "" || state === "--" || zipcode === "")
             return false;
         return true;
     };
