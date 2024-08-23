@@ -39,7 +39,7 @@ describe("Verify Route Test", function() {
         });
     });
 
-    it.skip("Should show token expiration response message with request new token div", async function() {
+    it("Should show token expiration response message with request new token div", async function() {
         server.use(
             http.post(REACT_APP_SERVER_URI + `/users/registration/verify`, ({ request, params, cookies }) => {
                 let body = JSON.stringify({
@@ -52,12 +52,12 @@ describe("Verify Route Test", function() {
         let verifyContainer = screen.getByTestId("verify-container");
         await waitFor(() => {
             expect(verifyContainer.childElementCount).toEqual(2);
-            expect(screen.getByText("The verification token has expired.")).toBeInTheDocument();
-            expect(screen.getByText("resend verification link")).toBeInTheDocument();
+            expect(screen.getByText(/The verification token has expired./i)).toBeInTheDocument();
+            expect(screen.getByText(/resend verification link/i)).toBeInTheDocument();
         });
     });
 
-    it.skip("Should show invalid token response message with request new token div", async function() {
+    it("Should show invalid token response message with request new token div", async function() {
         server.use(
             http.post(REACT_APP_SERVER_URI + `/users/registration/verify`, ({ request, params, cookies }) => {
                 let body = JSON.stringify({
@@ -70,8 +70,8 @@ describe("Verify Route Test", function() {
         let verifyContainer = screen.getByTestId("verify-container");
         await waitFor(() => {
             expect(verifyContainer.childElementCount).toEqual(2);
-            expect(screen.getByText("The verification token is not valid.")).toBeInTheDocument();
-            expect(screen.getByText("resend verification link")).toBeInTheDocument();
+            expect(screen.getByText(/The verification token is not valid./i)).toBeInTheDocument();
+            expect(screen.getByText(/resend verification link/i)).toBeInTheDocument();
         });
     });
 });
