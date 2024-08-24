@@ -19,8 +19,8 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare password: string;
     declare savedVendors: string[];
     declare isVerified: boolean;
-    declare verificationToken: string;
-    declare tokenExpiration: Date;
+    declare verificationToken: string | null;
+    declare tokenExpiration: Date | null;
 }
 
 User.init({
@@ -86,11 +86,11 @@ User.init({
     },
     verificationToken: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     tokenExpiration: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
     },
 },
 {

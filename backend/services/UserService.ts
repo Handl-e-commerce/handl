@@ -162,8 +162,8 @@ class UserService implements IUserService {
 
             await User.update({
                 password: hashedPassword,
-                verificationToken: undefined,
-                tokenExpiration: undefined,
+                verificationToken: null,
+                tokenExpiration: null,
             }, {
                 where: {
                     uuid: userId,
@@ -394,6 +394,13 @@ class UserService implements IUserService {
                     result: true,
                     message: "Your email is already verified.",
                 };
+            }
+
+            if (!user.verificationToken) {
+                return {
+                    result: false,
+                    message: "Verification token does not exist. Please request for a new one to be sent to you."
+                }
             }
 
             if (Date.now() > Number(user.tokenExpiration)) {
