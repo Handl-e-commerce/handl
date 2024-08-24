@@ -15,7 +15,6 @@ nodemailer.createTransport.mockReturnValue({"sendMail": sendMailMock});
 const userDetails: IUserDetails = {
   email: "foobar@fizz.buzz",
   businessName: "Foobarony & Associates",
-  EIN: 123456789,
   phoneNumber: "1234567890",
   password: "Bafang00l$!",
   firstName: "Test",
@@ -68,7 +67,6 @@ describe("UserService Tests", function() {
     const userDetailsNull: any = {
         email: "foobar@fizz.buzz",
         businessName: null,
-        EIN: 123456789,
         phoneNumber: "1234567890",
         password: "Bafang00l$!",
         firstName: "Test",
@@ -92,20 +90,14 @@ describe("UserService Tests", function() {
   it("Should update an existing users password", async () => {
     const result = await userService.CreateUser(userDetails);
     const passwordUpdateResult = await userService.ResetUserPassword(result.id, "Fugazzi500$");
+    let user = await User.findOne({
+      where: {
+        email: userDetails.email
+      }
+    });
     expect(passwordUpdateResult).toBeDefined();
-  });
-
-  it("Should assert that the EIN is encrypted and can be decrypted", async () => {
-    await userService.CreateUser(userDetails);
-    let user: User = await User.findOne({
-        where: {
-            businessName: userDetails.businessName
-        }
-    }) as User;
-    expect(user.EIN.toString()).not.toEqual(userDetails.EIN);
-    let encryptionUtil: EncryptionUtil = new EncryptionUtil();
-    let decryptedVal: string = encryptionUtil.DecryptData(user.EIN);
-    expect(decryptedVal).toEqual(userDetails.EIN.toString());
+    expect(user?.verificationToken).toBeNull();
+    expect(user?.tokenExpiration).toBeNull();
   });
 
   it("Should throw an error when updating password because user does not exist", async () => {
@@ -301,7 +293,7 @@ describe("UserService Tests", function() {
       }
     });
     expect(user?.verificationToken).not.toEqual(oldToken);
-    expect(user?.tokenExpiration.getTime() as number).toBeGreaterThan(expiration?.getTime() as number);
+    expect((user?.tokenExpiration as Date).getTime() as number).toBeGreaterThan(expiration?.getTime() as number);
     // called once after creation of user and once after sending new verificaiton token
     expect(sendMailMock).toHaveBeenCalledTimes(2);
     expect(sendMailMock).toHaveBeenCalled();
@@ -352,6 +344,31 @@ describe("UserService Verification Token Tests", () => {
     expect(result.result).toBeTruthy();
     expect(result.result).toEqual(true);
     expect(result.message).toEqual("Your email is already verified.");
+  });
+
+  it("Should return false because the verification token doesn't exist", async () => {
+    await userService.CreateUser(userDetails);
+    let dummyUser = await User.findOne({
+      where: {
+        email: userDetails.email 
+      }
+    });
+    await User.update({
+      verificationToken: null,
+      tokenExpiration: null
+    }, {
+      where: {
+        email: userDetails.email
+      }
+    })
+    let result = await userService.VerifyToken(
+      dummyUser?.uuid as string,
+      dummyUser?.verificationToken as string,
+      false
+    );
+    expect(result.result).toBeFalsy();
+    expect(result.result).toEqual(false);
+    expect(result.message).toEqual("Verification token does not exist. Please request for a new one to be sent to you.");
   });
 
   it("Should return false because the user doesn't exist", async () => {

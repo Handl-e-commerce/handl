@@ -77,11 +77,11 @@ module.exports = {
             },
             verificationToken: {
                 type: Sequelize.STRING,
-                allowNull: false,
+                allowNull: true,
             },
             tokenExpiration: {
                 type: Sequelize.DATE,
-                allowNull: false,
+                allowNull: true,
             },
             createdAt: {
                 allowNull: false,

@@ -10,8 +10,6 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare firstName: string;
     declare lastName: string;
     declare businessName: string;
-    declare EIN: string;
-    declare publicEIN: string;
     declare phoneNumber: string;
     declare address: string;
     declare city: string;
@@ -21,8 +19,8 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare password: string;
     declare savedVendors: string[];
     declare isVerified: boolean;
-    declare verificationToken: string;
-    declare tokenExpiration: Date;
+    declare verificationToken: string | null;
+    declare tokenExpiration: Date | null;
 }
 
 User.init({
@@ -49,16 +47,6 @@ User.init({
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
-    },
-    EIN: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-    },
-    publicEIN: {
-        type: DataTypes.STRING(4),
-        allowNull: false,
-        unique: false,
     },
     phoneNumber: {
         type: DataTypes.STRING,
@@ -98,11 +86,11 @@ User.init({
     },
     verificationToken: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     tokenExpiration: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
     },
 },
 {
