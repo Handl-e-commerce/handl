@@ -2,6 +2,7 @@ import {DataTypes, QueryInterface} from "sequelize";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async up(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
         await queryInterface.removeColumn("Users", "EIN");
         await queryInterface.removeColumn("Users", "publicEIN");

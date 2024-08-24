@@ -399,8 +399,8 @@ class UserService implements IUserService {
             if (!user.verificationToken) {
                 return {
                     result: false,
-                    message: "Verification token does not exist. Please request for a new one to be sent to you."
-                }
+                    message: "Verification token does not exist. Please request for a new one to be sent to you.",
+                };
             }
 
             if (Date.now() > Number(user.tokenExpiration)) {
