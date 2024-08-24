@@ -16,7 +16,6 @@ function SignUp(): JSX.Element {
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
     const [phoneNumber, setPhoneNumber] = useState<string>("");
-    const [EIN, setEIN] = useState<string>("");
     const [address, setAddress] = useState<string>("");
     const [city, setCity] = useState<string>("");
     const [state, setState] = useState<string>("");
@@ -73,7 +72,6 @@ function SignUp(): JSX.Element {
             firstName: firstName,
             lastName: lastName,
             phoneNumber: phoneNumber,
-            EIN: EIN,
             address: address,
             city: city,
             state: state,
@@ -180,17 +178,6 @@ function SignUp(): JSX.Element {
                 name="phone number"
                 className="sign-up-input"
                 onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-            <input 
-                type="text"
-                required
-                placeholder="EIN"
-                name="EIN"
-                pattern="[0-9]{9}"
-                onKeyDown={(e) => enforceFormat(e)}
-                maxLength={9}
-                className="sign-up-input"
-                onChange={(e) => setEIN(e.target.value)}
             />
             <input 
                 type="text"
