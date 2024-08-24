@@ -11,19 +11,20 @@ import * as handlebars from "handlebars";
 import * as fs from "fs";
 import * as path from "path";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
-import {EncryptionUtil} from "../utils/EncryptionUtil";
+// TODO: (HIGH) Figure out what to do with Encryption Util
+// import {EncryptionUtil} from "../utils/EncryptionUtil";
 
 /**
  * User Service Class
  */
 class UserService implements IUserService {
-    private encryptionUtil: EncryptionUtil;
+    // private encryptionUtil: EncryptionUtil;
 
     /**
      * constructor where we inject services and utils
      */
     constructor() {
-        this.encryptionUtil = new EncryptionUtil();
+        // this.encryptionUtil = new EncryptionUtil();
     }
     /**
      * Method to create a user in our database and sends generated token for user email verification
@@ -43,8 +44,6 @@ class UserService implements IUserService {
             const hashedPassword: string = await argon2.hash(userDetails.password);
             const token: string = this.GenerateToken(128);
             const hashedToken: string = await argon2.hash(token);
-            const encryptedEIN = this.encryptionUtil.EncryptData(userDetails.EIN.toString());
-            const publicEIN: string = userDetails.EIN.toString().slice(5, 9);
 
             if (!userExists) {
                 await User.create({
@@ -53,8 +52,6 @@ class UserService implements IUserService {
                     firstName: userDetails.firstName,
                     lastName: userDetails.lastName,
                     businessName: userDetails.businessName,
-                    EIN: encryptedEIN,
-                    publicEIN: publicEIN,
                     phoneNumber: userDetails.phoneNumber,
                     address: userDetails.address,
                     city: userDetails.city,

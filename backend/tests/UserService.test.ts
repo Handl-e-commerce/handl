@@ -15,7 +15,6 @@ nodemailer.createTransport.mockReturnValue({"sendMail": sendMailMock});
 const userDetails: IUserDetails = {
   email: "foobar@fizz.buzz",
   businessName: "Foobarony & Associates",
-  EIN: 123456789,
   phoneNumber: "1234567890",
   password: "Bafang00l$!",
   firstName: "Test",
@@ -93,19 +92,6 @@ describe("UserService Tests", function() {
     const result = await userService.CreateUser(userDetails);
     const passwordUpdateResult = await userService.ResetUserPassword(result.id, "Fugazzi500$");
     expect(passwordUpdateResult).toBeDefined();
-  });
-
-  it("Should assert that the EIN is encrypted and can be decrypted", async () => {
-    await userService.CreateUser(userDetails);
-    let user: User = await User.findOne({
-        where: {
-            businessName: userDetails.businessName
-        }
-    }) as User;
-    expect(user.EIN.toString()).not.toEqual(userDetails.EIN);
-    let encryptionUtil: EncryptionUtil = new EncryptionUtil();
-    let decryptedVal: string = encryptionUtil.DecryptData(user.EIN);
-    expect(decryptedVal).toEqual(userDetails.EIN.toString());
   });
 
   it("Should throw an error when updating password because user does not exist", async () => {

@@ -3,7 +3,6 @@ interface IUserDetails {
     firstName: string;
     lastName: string;
     businessName: string;
-    EIN: number;
     phoneNumber: string;
     address: string;
     city: string;
