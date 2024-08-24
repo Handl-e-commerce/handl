@@ -10,8 +10,6 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare firstName: string;
     declare lastName: string;
     declare businessName: string;
-    declare EIN: string;
-    declare publicEIN: string;
     declare phoneNumber: string;
     declare address: string;
     declare city: string;
@@ -49,16 +47,6 @@ User.init({
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
-    },
-    EIN: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-    },
-    publicEIN: {
-        type: DataTypes.STRING(4),
-        allowNull: false,
-        unique: false,
     },
     phoneNumber: {
         type: DataTypes.STRING,
