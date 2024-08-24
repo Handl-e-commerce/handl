@@ -140,7 +140,7 @@ function SignUp(): JSX.Element {
                 required
                 placeholder="Business Email"
                 name="business_email"
-                className="sign-up-input"
+                role="email-input"
                 onChange={(e) => setEmail(e.target.value)}
             />
             <input 
@@ -148,7 +148,7 @@ function SignUp(): JSX.Element {
                 required
                 placeholder="Business Name"
                 name="business_name"
-                className="sign-up-input"
+                role="business-name-input"
                 onChange={(e) => setBusinessName(e.target.value)}
             />
             <input 
@@ -156,7 +156,7 @@ function SignUp(): JSX.Element {
                 required
                 placeholder="First Name"
                 name="first_name"
-                className="sign-up-input"
+                role="first-name-input"
                 onChange={(e) => setFirstName(e.target.value)}
             />
             <input 
@@ -164,7 +164,7 @@ function SignUp(): JSX.Element {
                 required
                 placeholder="Last Name"
                 name="last_name"
-                className="sign-up-input"
+                role="last-name-input"
                 onChange={(e) => setLastName(e.target.value)}
             />
             <input 
@@ -176,14 +176,14 @@ function SignUp(): JSX.Element {
                 onKeyUp={(e) => formatToPhone(e)}
                 placeholder="Phone Number"
                 name="phone number"
-                className="sign-up-input"
+                role="phone-number-input"
                 onChange={(e) => setPhoneNumber(e.target.value)}
             />
             <input 
                 type="text"
                 placeholder="Address"
                 name="Address"
-                className="sign-up-input"
+                role="address-input"
                 onChange={(e) => setAddress(e.target.value)}
             />
             <input 
@@ -191,13 +191,14 @@ function SignUp(): JSX.Element {
                 required
                 placeholder="City"
                 name="City"
-                className="sign-up-input"
+                role="city-input"
                 onChange={(e) => setCity(e.target.value)}
             />
             <select 
                 className="state-selector" 
                 required
                 value={state}
+                role="state-selector"
                 onChange={(e) => {setState(e.target.value)}}
             >
                 <option value="--">--</option>
@@ -261,7 +262,7 @@ function SignUp(): JSX.Element {
                 pattern="[0-9]{5}"
                 onKeyDown={(e) => enforceFormat(e)}
                 name="Zipcode"
-                className="sign-up-input"
+                role="zipcode-input"
                 onChange={(e) => setZipcode(e.target.value)}
             />
             <input
@@ -270,7 +271,7 @@ function SignUp(): JSX.Element {
                 maxLength={32}
                 placeholder="Password"
                 name="password"
-                className="sign-up-input"
+                role="password-input"
                 onChange={(e) => {
                     validPassword(e.target.value);
                     setPassword(e.target.value);
@@ -278,7 +279,7 @@ function SignUp(): JSX.Element {
             />
             {showPassword ? <IoEyeOffOutline onClick={() => setShowPassword(!showPassword)}/> : <IoEyeOutline onClick={() => setShowPassword(!showPassword)}/>}
             {invalidPasswordMessage !== "" && <div data-testid="invalid-password-message">{invalidPasswordMessage}</div>}
-            <button className="create-account-button" disabled={!canSubmit()} onClick={createAccount}>Register</button>
+            <button className="create-account-button" disabled={!canSubmit()} onClick={createAccount} role="registration-button">Register</button>
             {signUpSuccess === false ? <div className="sign-up-error" data-testid="sign-up-error">User already exists.</div> : null}
         </div>
     );
