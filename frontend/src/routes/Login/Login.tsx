@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
-import { useNavigate } from "react-router-dom";
 import { addCookie, cookieParser } from "../../utils/cookie-util";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
