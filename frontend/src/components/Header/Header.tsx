@@ -3,6 +3,7 @@ import { SearchBar } from "../SearchBar/SearchBar";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { cookieParser, deleteCookie } from "../../utils/cookie-util";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
+import svg from '../../static/5_SVG.svg';
 
 const envVariables = process.env;
 const {
@@ -34,28 +35,19 @@ function Header(): JSX.Element {
         await fetchWrapper(REACT_APP_SERVER_URI + `/users/logout`, "POST");
         redirectLogin();
     };
-    
-    if (loggedIn) {
-        return (
-            <div data-testid='logged-in-header'>
-                <a href={location.origin} target="_self">
-                    <img src="" alt="" />
-                </a>
-                <div>Hi, {cookieObject?.firstName}!</div>
-                <div onClick={handleLogout}>Logout</div>
-                {isLandingPage && <SearchBar />}
-            </div>
-        );
-    };
 
     return (
-        <header data-testid='logged-out-header'>
+        <header data-testid='header'>
             <a href={location.origin} target="_self">
-                <img src="" alt="" />
+                <img src={svg} alt="Handl Logo" width={"250px"} height={"250px"}/>
             </a>
             {isLandingPage && <SearchBar />}
-            {!isLoginOrSignUpPage && <button onClick={redirectSignUp}>Sign Up</button>}
-            {!isLoginOrSignUpPage && <button onClick={redirectLogin}>Login</button>}
+            {loggedIn && <>
+                <div>Hi, {cookieObject?.firstName}!</div>
+                <div onClick={handleLogout}>Logout</div>
+            </>}
+            {!isLoginOrSignUpPage && !loggedIn && <button onClick={redirectSignUp}>Sign Up</button>}
+            {!isLoginOrSignUpPage && !loggedIn && <button onClick={redirectLogin}>Login</button>}
         </header>
     );
 };
