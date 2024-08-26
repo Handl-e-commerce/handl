@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { server } from "../../../__mocks__/server";
 import { http, HttpResponse } from 'msw';
-import { addCookie, cookieParser } from '../../utils/cookie-util';
+import { cookieParser } from '../../utils/cookie-util';
 
 const envVariables = process.env;
 const {
@@ -56,7 +56,7 @@ describe("Header Test", function() {
         const { container } = await act(async () => render(<Header />));
         
         await waitFor(async () => {
-            let navBar = screen.getByTestId("logged-in-header");
+            let navBar = screen.getByTestId("header");
             expect(navBar).toBeDefined();
             expect(navBar).toBeInTheDocument();
             expect(screen.getByText(/MockFirstName/i)).toBeInTheDocument();
@@ -73,7 +73,7 @@ describe("Header Test", function() {
         const { container } = await act(async () => render(<Header />));
         
         await waitFor(() => {
-            let header = screen.getByTestId("logged-out-header");
+            let header = screen.getByTestId("header");
             expect(header).toBeDefined();
             expect(header).toBeInTheDocument();
         });
@@ -92,7 +92,7 @@ describe("Header Test", function() {
     it("Should redirect to login because login tab is clicked", async function() {
         const { container } = await act(async () => render(<Header />));
 
-        let loginTab = screen.getByTestId("logged-out-header").children[0];
+        let loginTab = screen.getByTestId("header").children[0];
         await user.click(loginTab);
         waitFor(() => {
             expect(replaceMock).toHaveBeenCalledTimes(1);
@@ -109,7 +109,7 @@ describe("Header Test", function() {
         const { container } = await act(async () => render(<Header />));
 
         waitFor(() => {
-            let navBar = screen.getByTestId("logged-out-header");
+            let navBar = screen.getByTestId("header");
             expect(navBar).toBeDefined();
             expect(navBar).toBeInTheDocument();
             let cookies = cookieParser();
