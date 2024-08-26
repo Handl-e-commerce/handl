@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-// import "./SearchBar.css"
+import { TextField } from "@mui/material";
 
 function SearchBar(): JSX.Element {
     let searchParams = new URL(document.location.toString()).searchParams;
     const [searchInput, setSearchInput] = useState("");
 
-    function handleChange(e: any) {
+    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         e.preventDefault();
         if (e.target) {
             setSearchInput(e.target.value);
@@ -23,15 +23,19 @@ function SearchBar(): JSX.Element {
     };
 
     return (
-        <input
+        <TextField
             type="text"
-            placeholder={searchParams.get("search-params")?.toString() ?? "Search here"}
-            onChange={handleChange}
-            value={searchInput}
+            value={searchParams.get("search-params")?.toString() ?? searchInput}
             name="search_params"
-            required={true}
-            className="search-input"
-            onKeyUp={handleKeyPress}
+            variant="outlined"
+            required
+            hiddenLabel
+            placeholder={searchParams.get("search-params")?.toString() ?? "Search here"}
+            onChange={(e) => handleChange(e)}
+            onKeyUp={handleKeyPress} 
+            style={{
+                margin: 8
+            }}
         />
     );
 };
