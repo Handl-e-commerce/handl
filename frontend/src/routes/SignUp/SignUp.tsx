@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
-import { Box, Button, FormControl, InputLabel, ListItemText, MenuItem, Select, TextField } from "@mui/material";
+import { Box, Button, FormControl, ListItemText, MenuItem, Select, TextField } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const envVariables = process.env;
@@ -25,23 +25,6 @@ function SignUp(): JSX.Element {
     const [invalidPasswordMessage, setInvalidPasswordMessage] = useState<string>("");
     const [signUpSuccess, setSignUpSuccess] = useState<boolean>();
     const [showPassword, setShowPassword] = useState<boolean>(false);
-
-    function isNumericInput(event: React.KeyboardEvent<HTMLInputElement>): boolean {
-        const key = event.key;
-        return ((key >= "0" && key <= "9"));
-    };
-    
-    function isModifierKey(event: React.KeyboardEvent<HTMLInputElement>): boolean {
-        const key = event.key;
-        return (event.shiftKey === true || key === "Home" || key === "End") || // Allow Shift, Home, End
-            (key === "Backspace" || key === "Tab" || key === "Enter" || key === "Delete") || // Allow Backspace, Tab, Enter, Delete
-            (key === "ArrowLeft" || key === "ArrowRight" || key === "ArrowUp" || key === "ArrowDown") || // Allow left, up, right, down
-            (
-                // Allow Ctrl/Command + A,C,V,X,Z
-                (event.ctrlKey === true || event.metaKey === true) &&
-                (key === "a" || key === "c" || key === "v" || key === "x" || key === "z")
-            )
-    };
 
     const states = [
         {
@@ -249,15 +232,32 @@ function SignUp(): JSX.Element {
             "abbreviation":"WY"
         }
     ];
+
+    function isNumericInput(event: React.KeyboardEvent<HTMLDivElement>): boolean {
+        const key = event.key;
+        return ((key >= "0" && key <= "9"));
+    };
     
-    function enforceFormat(event: React.KeyboardEvent<HTMLInputElement>): void {
+    function isModifierKey(event: React.KeyboardEvent<HTMLDivElement>): boolean {
+        const key = event.key;
+        return (event.shiftKey === true || key === "Home" || key === "End") || // Allow Shift, Home, End
+            (key === "Backspace" || key === "Tab" || key === "Enter" || key === "Delete") || // Allow Backspace, Tab, Enter, Delete
+            (key === "ArrowLeft" || key === "ArrowRight" || key === "ArrowUp" || key === "ArrowDown") || // Allow left, up, right, down
+            (
+                // Allow Ctrl/Command + A,C,V,X,Z
+                (event.ctrlKey === true || event.metaKey === true) &&
+                (key === "a" || key === "c" || key === "v" || key === "x" || key === "z")
+            )
+    };
+    
+    function enforceFormat(event: React.KeyboardEvent<HTMLDivElement>): void {
         // Input must be of a valid number format or a modifier key, and not longer than ten digits
         if (!isNumericInput(event) && !isModifierKey(event)) {
             event.preventDefault();
         }
     };
     
-    function formatToPhone(event: React.KeyboardEvent<HTMLInputElement>): void {
+    function formatToPhone(event: React.KeyboardEvent<HTMLDivElement>): void {
         if(isModifierKey(event)) {return;}
     
         // I am lazy and don't like to type things more than once
@@ -304,16 +304,6 @@ function SignUp(): JSX.Element {
         return true;
     };
 
-    if(signUpSuccess) {
-        return (
-            <div className="sign-up-container" data-testid="successful-registration">
-                <h1>You've successfully signed up for Handl!</h1>
-                <div>We've just sent you a verification email. Click the link in the email to confirm your email!</div>
-                <div>The link expires in 30 mins</div>
-            </div>
-        )
-    };
-
     function validPassword(password: string): boolean {
         if (password.length < 8) {
             setInvalidPasswordMessage("Password is too short");
@@ -337,6 +327,16 @@ function SignUp(): JSX.Element {
         };
         setInvalidPasswordMessage("");
         return true;
+    };
+
+    if(signUpSuccess) {
+        return (
+            <div className="sign-up-container" data-testid="successful-registration">
+                <h1>You've successfully signed up for Handl!</h1>
+                <div>We've just sent you a verification email. Click the link in the email to confirm your email!</div>
+                <div>The link expires in 30 mins</div>
+            </div>
+        )
     };
 
     return (
@@ -394,9 +394,8 @@ function SignUp(): JSX.Element {
                 required
                 hiddenLabel
                 id="phone"
-                // pattern="([0-9]{3})-[0-9]{3}-[0-9]{4}"
-                // onKeyDown={(e) => enforceFormat(e)}
-                // onKeyUp={(e) => formatToPhone(e)}
+                onKeyDown={(e) => enforceFormat(e)}
+                onKeyUp={(e) => formatToPhone(e)}
                 placeholder="Phone Number"
                 name="phone number"
                 data-testid="phone-number-input"
@@ -448,9 +447,7 @@ function SignUp(): JSX.Element {
                 required
                 hiddenLabel
                 placeholder="Zipcode"
-                // max={5}
-                // pattern="[0-9]{5}"
-                // onKeyDown={(e) => enforceFormat(e)}
+                onKeyDown={(e) => enforceFormat(e)}
                 name="Zipcode"
                 data-testid="zipcode-input"
                 onChange={(e) => setZipcode(e.target.value)}
@@ -461,7 +458,6 @@ function SignUp(): JSX.Element {
                 variant="outlined"
                 required
                 hiddenLabel
-                // maxLength={32}
                 placeholder="Password"
                 name="password"
                 data-testid="password-input"
