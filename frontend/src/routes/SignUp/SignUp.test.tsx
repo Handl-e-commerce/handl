@@ -20,7 +20,7 @@ describe("Sign Up Route Test", function() {
 
         expect(form).toBeDefined();
         expect(form.childNodes.length).toEqual(14);
-        expect(screen.getByRole("registration-button")).toBeDisabled();
+        expect(screen.getByTestId("registration-button")).toBeDisabled();
     });
 
     it("Should have disabled registration button because email field is empty", async function() {
@@ -28,15 +28,15 @@ describe("Sign Up Route Test", function() {
 
         let registrationButton = screen.getByText("Register");
 
-        await user.type(screen.getByRole("business-name-input"), "Mock Business");
-        await user.type(screen.getByRole("first-name-input"), "Foo");
-        await user.type(screen.getByRole("last-name-input"), "Bar");
-        await user.type(screen.getByRole("phone-number-input"), "1234567890");
-        await user.type(screen.getByRole("address-input"), "555 Foo st.");
-        await user.type(screen.getByRole("city-input"), "La La Land");
-        await user.selectOptions(screen.getByRole("state-selector"), "CA");
-        await user.type(screen.getByRole("zipcode-input"), "90210");
-        await user.type(screen.getByRole("password-input"), "fooPassw0rd!");
+        await user.type(screen.getByTestId("business-name-input"), "Mock Business");
+        await user.type(screen.getByTestId("first-name-input"), "Foo");
+        await user.type(screen.getByTestId("last-name-input"), "Bar");
+        await user.type(screen.getByTestId("phone-number-input"), "1234567890");
+        await user.type(screen.getByTestId("address-input"), "555 Foo st.");
+        await user.type(screen.getByTestId("city-input"), "La La Land");
+        await user.selectOptions(screen.getByTestId("state-selector"), "CA");
+        await user.type(screen.getByTestId("zipcode-input"), "90210");
+        await user.type(screen.getByTestId("password-input"), "fooPassw0rd!");
 
         await waitFor(() => {
             expect(screen.getByDisplayValue("Mock Business")).toBeInTheDocument();
@@ -45,7 +45,7 @@ describe("Sign Up Route Test", function() {
             expect(screen.getByDisplayValue("(123)-456-7890")).toBeInTheDocument();
             expect(screen.getByDisplayValue("555 Foo st.")).toBeInTheDocument();
             expect(screen.getByDisplayValue("La La Land")).toBeInTheDocument();
-            expect((screen.getByRole("state-selector").children[5] as HTMLOptionElement).selected).toBeTruthy();
+            expect((screen.getByTestId("state-selector").children[5] as HTMLOptionElement).selected).toBeTruthy();
             expect(screen.getByDisplayValue("90210")).toBeInTheDocument();
             expect(screen.getByDisplayValue("fooPassw0rd!")).toBeInTheDocument();
             expect(registrationButton).toBeDisabled();
@@ -57,15 +57,15 @@ describe("Sign Up Route Test", function() {
 
         let registrationButton = screen.getByText("Register");
 
-        await user.type(screen.getByRole("email-input"), "mockemail@foo.com");
-        await user.type(screen.getByRole("first-name-input"), "Foo");
-        await user.type(screen.getByRole("last-name-input"), "Bar");
-        await user.type(screen.getByRole("phone-number-input"), "1234567890");
-        await user.type(screen.getByRole("address-input"), "555 Foo st.");
-        await user.type(screen.getByRole("city-input"), "La La Land");
-        await user.selectOptions(screen.getByRole("state-selector"), "CA");
-        await user.type(screen.getByRole("zipcode-input"), "90210");
-        await user.type(screen.getByRole("password-input"), "fooPassw0rd!");
+        await user.type(screen.getByTestId("email-input"), "mockemail@foo.com");
+        await user.type(screen.getByTestId("first-name-input"), "Foo");
+        await user.type(screen.getByTestId("last-name-input"), "Bar");
+        await user.type(screen.getByTestId("phone-number-input"), "1234567890");
+        await user.type(screen.getByTestId("address-input"), "555 Foo st.");
+        await user.type(screen.getByTestId("city-input"), "La La Land");
+        await user.selectOptions(screen.getByTestId("state-selector"), "CA");
+        await user.type(screen.getByTestId("zipcode-input"), "90210");
+        await user.type(screen.getByTestId("password-input"), "fooPassw0rd!");
 
         await waitFor(() => {
             expect(screen.getByDisplayValue("mockemail@foo.com")).toBeInTheDocument();
@@ -74,7 +74,7 @@ describe("Sign Up Route Test", function() {
             expect(screen.getByDisplayValue("(123)-456-7890")).toBeInTheDocument();
             expect(screen.getByDisplayValue("555 Foo st.")).toBeInTheDocument();
             expect(screen.getByDisplayValue("La La Land")).toBeInTheDocument();
-            expect((screen.getByRole("state-selector").children[5] as HTMLOptionElement).selected).toBeTruthy();
+            expect((screen.getByTestId("state-selector").children[5] as HTMLOptionElement).selected).toBeTruthy();
             expect(screen.getByDisplayValue("90210")).toBeInTheDocument();
             expect(screen.getByDisplayValue("fooPassw0rd!")).toBeInTheDocument();
             expect(registrationButton).toBeDisabled();
@@ -86,16 +86,16 @@ describe("Sign Up Route Test", function() {
 
         let registrationButton = screen.getByText("Register");
 
-        await user.type(screen.getByRole("email-input"), "mockemail@foo.com");
-        await user.type(screen.getByRole("business-name-input"), "Mock Business");
-        await user.type(screen.getByRole("first-name-input"), "Foo");
-        await user.type(screen.getByRole("last-name-input"), "Bar");
-        await user.type(screen.getByRole("phone-number-input"), "1234567890");
-        await user.type(screen.getByRole("address-input"), "555 Foo st.");
-        await user.type(screen.getByRole("city-input"), "La La Land");
-        await user.selectOptions(screen.getByRole("state-selector"), "CA");
-        await user.type(screen.getByRole("zipcode-input"), "90210");
-        await user.type(screen.getByRole("password-input"), "fooPassw0rd!");
+        await user.type(screen.getByTestId("email-input"), "mockemail@foo.com");
+        await user.type(screen.getByTestId("business-name-input"), "Mock Business");
+        await user.type(screen.getByTestId("first-name-input"), "Foo");
+        await user.type(screen.getByTestId("last-name-input"), "Bar");
+        await user.type(screen.getByTestId("phone-number-input"), "1234567890");
+        await user.type(screen.getByTestId("address-input"), "555 Foo st.");
+        await user.type(screen.getByTestId("city-input"), "La La Land");
+        await user.selectOptions(screen.getByTestId("state-selector"), "CA");
+        await user.type(screen.getByTestId("zipcode-input"), "90210");
+        await user.type(screen.getByTestId("password-input"), "fooPassw0rd!");
         await user.click(registrationButton);
 
         await waitFor(() => {
@@ -114,17 +114,17 @@ describe("Sign Up Route Test", function() {
 
         const { container } = render(<SignUp />);
 
-        await user.type(screen.getByRole("email-input"), "mockemail@foo.com");
-        await user.type(screen.getByRole("business-name-input"), "Mock Business");
-        await user.type(screen.getByRole("first-name-input"), "Foo");
-        await user.type(screen.getByRole("last-name-input"), "Bar");
-        await user.type(screen.getByRole("phone-number-input"), "1234567890");
-        await user.type(screen.getByRole("address-input"), "555 Foo st.");
-        await user.type(screen.getByRole("city-input"), "La La Land");
-        await user.selectOptions(screen.getByRole("state-selector"), "CA");
-        await user.type(screen.getByRole("zipcode-input"), "90210");
-        await user.type(screen.getByRole("password-input"), "fooPassw0rd!");
-        await user.click(screen.getByRole("registration-button"));
+        await user.type(screen.getByTestId("email-input"), "mockemail@foo.com");
+        await user.type(screen.getByTestId("business-name-input"), "Mock Business");
+        await user.type(screen.getByTestId("first-name-input"), "Foo");
+        await user.type(screen.getByTestId("last-name-input"), "Bar");
+        await user.type(screen.getByTestId("phone-number-input"), "1234567890");
+        await user.type(screen.getByTestId("address-input"), "555 Foo st.");
+        await user.type(screen.getByTestId("city-input"), "La La Land");
+        await user.selectOptions(screen.getByTestId("state-selector"), "CA");
+        await user.type(screen.getByTestId("zipcode-input"), "90210");
+        await user.type(screen.getByTestId("password-input"), "fooPassw0rd!");
+        await user.click(screen.getByTestId("registration-button"));
 
         await waitFor(() => {
             expect(screen.getByTestId("sign-up-error")).toBeInTheDocument();
@@ -140,7 +140,7 @@ describe("Sign Up Route Test", function() {
         await user.click(showPasswordIcon);
         
         await waitFor(() => {
-            expect(screen.getByRole("password-input")).toHaveAttribute("type", "text");
+            expect(screen.getByTestId("password-input")).toHaveAttribute("type", "text");
         });
     });
 
@@ -148,7 +148,7 @@ describe("Sign Up Route Test", function() {
         const { container } = render(<SignUp />);
         let form = screen.getByTestId("default-form");
 
-        await user.type(screen.getByRole("password-input"), "foo");
+        await user.type(screen.getByTestId("password-input"), "foo");
         
         waitFor(() => {
             expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password is too short");
@@ -159,7 +159,7 @@ describe("Sign Up Route Test", function() {
         const { container } = render(<SignUp />);
         let form = screen.getByTestId("default-form");
 
-        await user.type(screen.getByRole("password-input"), "foobaroni$#");
+        await user.type(screen.getByTestId("password-input"), "foobaroni$#");
         
         await waitFor(() => {
             expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain a number");
@@ -170,7 +170,7 @@ describe("Sign Up Route Test", function() {
         const { container } = render(<SignUp />);
         let form = screen.getByTestId("default-form");
 
-        await user.type(screen.getByRole("password-input"), "FOOBARONI$#%34");
+        await user.type(screen.getByTestId("password-input"), "FOOBARONI$#%34");
         
         await waitFor(() => {
             expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain a lowercase letter");
@@ -181,7 +181,7 @@ describe("Sign Up Route Test", function() {
         const { container } = render(<SignUp />);
         let form = screen.getByTestId("default-form");
 
-        await user.type(screen.getByRole("password-input"), "foobaroni$34238$#$!");
+        await user.type(screen.getByTestId("password-input"), "foobaroni$34238$#$!");
         
         await waitFor(() => {
             expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain an uppercase letter");
@@ -192,7 +192,7 @@ describe("Sign Up Route Test", function() {
         const { container } = render(<SignUp />);
         let form = screen.getByTestId("default-form");
 
-        await user.type(screen.getByRole("password-input"), "FOobaroni434");
+        await user.type(screen.getByTestId("password-input"), "FOobaroni434");
         
         await waitFor(() => {
             expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain a special character from the following: ~ ` ! # $ % ^ &amp; * € £ @ + = - [ ] ' ; , / { } ( ) | \" : &lt; &gt; ? . _");

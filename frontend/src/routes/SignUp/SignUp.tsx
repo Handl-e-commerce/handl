@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
-import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+import { Box, Button, FormControl, InputLabel, ListItemText, MenuItem, Select, TextField } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const envVariables = process.env;
 const {
@@ -41,6 +42,213 @@ function SignUp(): JSX.Element {
                 (key === "a" || key === "c" || key === "v" || key === "x" || key === "z")
             )
     };
+
+    const states = [
+        {
+            "name":"--",
+            "abbreviation":"--"
+        },
+        {
+            "name":"Alabama",
+            "abbreviation":"AL"
+        },
+        {
+            "name":"Alaska",
+            "abbreviation":"AK"
+        },
+        {
+            "name":"Arizona",
+            "abbreviation":"AZ"
+        },
+        {
+            "name":"Arkansas",
+            "abbreviation":"AR"
+        },
+        {
+            "name":"California",
+            "abbreviation":"CA"
+        },
+        {
+            "name":"Colorado",
+            "abbreviation":"CO"
+        },
+        {
+            "name":"Connecticut",
+            "abbreviation":"CT"
+        },
+        {
+            "name":"Delaware",
+            "abbreviation":"DE"
+        },
+        {
+            "name":"Florida",
+            "abbreviation":"FL"
+        },
+        {
+            "name":"Georgia",
+            "abbreviation":"GA"
+        },
+        {
+            "name":"Hawaii",
+            "abbreviation":"HI"
+        },
+        {
+            "name":"Idaho",
+            "abbreviation":"ID"
+        },
+        {
+            "name":"Illinois",
+            "abbreviation":"IL"
+        },
+        {
+            "name":"Indiana",
+            "abbreviation":"IN"
+        },
+        {
+            "name":"Iowa",
+            "abbreviation":"IA"
+        },
+        {
+            "name":"Kansas",
+            "abbreviation":"KS"
+        },
+        {
+            "name":"Kentucky",
+            "abbreviation":"KY"
+        },
+        {
+            "name":"Louisiana",
+            "abbreviation":"LA"
+        },
+        {
+            "name":"Maine",
+            "abbreviation":"ME"
+        },
+        {
+            "name":"Maryland",
+            "abbreviation":"MD"
+        },
+        {
+            "name":"Massachusetts",
+            "abbreviation":"MA"
+        },
+        {
+            "name":"Michigan",
+            "abbreviation":"MI"
+        },
+        {
+            "name":"Minnesota",
+            "abbreviation":"MN"
+        },
+        {
+            "name":"Mississippi",
+            "abbreviation":"MS"
+        },
+        {
+            "name":"Missouri",
+            "abbreviation":"MO"
+        },
+        {
+            "name":"Montana",
+            "abbreviation":"MT"
+        },
+        {
+            "name":"Nebraska",
+            "abbreviation":"NE"
+        },
+        {
+            "name":"Nevada",
+            "abbreviation":"NV"
+        },
+        {
+            "name":"New Hampshire",
+            "abbreviation":"NH"
+        },
+        {
+            "name":"New Jersey",
+            "abbreviation":"NJ"
+        },
+        {
+            "name":"New Mexico",
+            "abbreviation":"NM"
+        },
+        {
+            "name":"New York",
+            "abbreviation":"NY"
+        },
+        {
+            "name":"North Carolina",
+            "abbreviation":"NC"
+        },
+        {
+            "name":"North Dakota",
+            "abbreviation":"ND"
+        },
+        {
+            "name":"Ohio",
+            "abbreviation":"OH"
+        },
+        {
+            "name":"Oklahoma",
+            "abbreviation":"OK"
+        },
+        {
+            "name":"Oregon",
+            "abbreviation":"OR"
+        },
+        {
+            "name":"Pennsylvania",
+            "abbreviation":"PA"
+        },
+        {
+            "name":"Rhode Island",
+            "abbreviation":"RI"
+        },
+        {
+            "name":"South Carolina",
+            "abbreviation":"SC"
+        },
+        {
+            "name":"South Dakota",
+            "abbreviation":"SD"
+        },
+        {
+            "name":"Tennessee",
+            "abbreviation":"TN"
+        },
+        {
+            "name":"Texas",
+            "abbreviation":"TX"
+        },
+        {
+            "name":"Utah",
+            "abbreviation":"UT"
+        },
+        {
+            "name":"Vermont",
+            "abbreviation":"VT"
+        },
+        {
+            "name":"Virginia",
+            "abbreviation":"VA"
+        },
+        {
+            "name":"Washington",
+            "abbreviation":"WA"
+        },
+        {
+            "name":"West Virginia",
+            "abbreviation":"WV"
+        },
+        {
+            "name":"Wisconsin",
+            "abbreviation":"WI"
+        },
+        {
+            "name":"Wyoming",
+            "abbreviation":"WY"
+        }
+    ];
     
     function enforceFormat(event: React.KeyboardEvent<HTMLInputElement>): void {
         // Input must be of a valid number format or a modifier key, and not longer than ten digits
@@ -132,156 +340,141 @@ function SignUp(): JSX.Element {
     };
 
     return (
-        <div className="sign-up-container" data-testid="default-form">
+        <Box className="sign-up-container" data-testid="default-form">
             <h1>Sign Up Free</h1>
             <div>Already a member? <a href={location.origin + "/login?"}>{"Login ->"}</a></div>
-            <input 
+            <TextField 
                 type="email"
+                value={email}
+                variant="outlined"
                 required
+                hiddenLabel
                 placeholder="Business Email"
                 name="business_email"
-                role="email-input"
+                data-testid="email-input"
                 onChange={(e) => setEmail(e.target.value)}
             />
-            <input 
+            <TextField 
                 type="text"
+                value={businessName}
+                variant="outlined"
                 required
+                hiddenLabel
                 placeholder="Business Name"
                 name="business_name"
-                role="business-name-input"
+                data-testid="business-name-input"
                 onChange={(e) => setBusinessName(e.target.value)}
             />
-            <input 
+            <TextField 
                 type="text"
+                value={firstName}
+                variant="outlined"
                 required
+                hiddenLabel
                 placeholder="First Name"
                 name="first_name"
-                role="first-name-input"
+                data-testid="first-name-input"
                 onChange={(e) => setFirstName(e.target.value)}
             />
-            <input 
+            <TextField 
                 type="text"
+                value={lastName}
+                variant="outlined"
                 required
+                hiddenLabel
                 placeholder="Last Name"
                 name="last_name"
-                role="last-name-input"
+                data-testid="last-name-input"
                 onChange={(e) => setLastName(e.target.value)}
             />
-            <input 
+            <TextField 
                 type="tel"
+                value={phoneNumber}
+                variant="outlined"
                 required
+                hiddenLabel
                 id="phone"
-                pattern="([0-9]{3})-[0-9]{3}-[0-9]{4}"
-                onKeyDown={(e) => enforceFormat(e)}
-                onKeyUp={(e) => formatToPhone(e)}
+                // pattern="([0-9]{3})-[0-9]{3}-[0-9]{4}"
+                // onKeyDown={(e) => enforceFormat(e)}
+                // onKeyUp={(e) => formatToPhone(e)}
                 placeholder="Phone Number"
                 name="phone number"
-                role="phone-number-input"
+                data-testid="phone-number-input"
                 onChange={(e) => setPhoneNumber(e.target.value)}
             />
-            <input 
+            <TextField 
                 type="text"
+                value={address}
+                variant="outlined"
+                required
+                hiddenLabel
                 placeholder="Address"
                 name="Address"
-                role="address-input"
+                data-testid="address-input"
                 onChange={(e) => setAddress(e.target.value)}
             />
-            <input 
+            <TextField 
                 type="text"
+                value={city}
+                variant="outlined"
                 required
+                hiddenLabel
                 placeholder="City"
                 name="City"
-                role="city-input"
+                data-testid="city-input"
                 onChange={(e) => setCity(e.target.value)}
             />
-            <select 
-                className="state-selector" 
-                required
-                value={state}
-                role="state-selector"
-                onChange={(e) => {setState(e.target.value)}}
-            >
-                <option value="--">--</option>
-                <option value="AL">Alabama</option>
-                <option value="AK">Alaska</option>
-                <option value="AZ">Arizona</option>
-                <option value="AR">Arkansas</option>
-                <option value="CA">California</option>
-                <option value="CO">Colorado</option>
-                <option value="CT">Connecticut</option>
-                <option value="DE">Delaware</option>
-                <option value="DC">District Of Columbia</option>
-                <option value="FL">Florida</option>
-                <option value="GA">Georgia</option>
-                <option value="HI">Hawaii</option>
-                <option value="ID">Idaho</option>
-                <option value="IL">Illinois</option>
-                <option value="IN">Indiana</option>
-                <option value="IA">Iowa</option>
-                <option value="KS">Kansas</option>
-                <option value="KY">Kentucky</option>
-                <option value="LA">Louisiana</option>
-                <option value="ME">Maine</option>
-                <option value="MD">Maryland</option>
-                <option value="MA">Massachusetts</option>
-                <option value="MI">Michigan</option>
-                <option value="MN">Minnesota</option>
-                <option value="MS">Mississippi</option>
-                <option value="MO">Missouri</option>
-                <option value="MT">Montana</option>
-                <option value="NE">Nebraska</option>
-                <option value="NV">Nevada</option>
-                <option value="NH">New Hampshire</option>
-                <option value="NJ">New Jersey</option>
-                <option value="NM">New Mexico</option>
-                <option value="NY">New York</option>
-                <option value="NC">North Carolina</option>
-                <option value="ND">North Dakota</option>
-                <option value="OH">Ohio</option>
-                <option value="OK">Oklahoma</option>
-                <option value="OR">Oregon</option>
-                <option value="PA">Pennsylvania</option>
-                <option value="RI">Rhode Island</option>
-                <option value="SC">South Carolina</option>
-                <option value="SD">South Dakota</option>
-                <option value="TN">Tennessee</option>
-                <option value="TX">Texas</option>
-                <option value="UT">Utah</option>
-                <option value="VT">Vermont</option>
-                <option value="VA">Virginia</option>
-                <option value="WA">Washington</option>
-                <option value="WV">West Virginia</option>
-                <option value="WI">Wisconsin</option>
-                <option value="WY">Wyoming</option>
-            </select>
-            <input 
+            <FormControl sx={{ width: 70 }}>
+                <Select
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                    renderValue={() => state}
+                    SelectDisplayProps={{
+                        // @ts-ignore
+                        "data-testid" : "state-selector"
+                    }}
+                >
+                    {states.map((state) => (
+                        <MenuItem key={state.abbreviation} value={state.abbreviation} data-testid="menu-item">
+                            <ListItemText primary={state.abbreviation}/>
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+            <TextField 
                 type="text"
+                value={zipcode}
+                variant="outlined"
                 required
+                hiddenLabel
                 placeholder="Zipcode"
-                max={5}
-                pattern="[0-9]{5}"
-                onKeyDown={(e) => enforceFormat(e)}
+                // max={5}
+                // pattern="[0-9]{5}"
+                // onKeyDown={(e) => enforceFormat(e)}
                 name="Zipcode"
-                role="zipcode-input"
+                data-testid="zipcode-input"
                 onChange={(e) => setZipcode(e.target.value)}
             />
-            <input
+            <TextField
                 type={showPassword ? 'text':'password'}
+                value={password}
+                variant="outlined"
                 required
-                maxLength={32}
+                hiddenLabel
+                // maxLength={32}
                 placeholder="Password"
                 name="password"
-                role="password-input"
+                data-testid="password-input"
                 onChange={(e) => {
                     validPassword(e.target.value);
                     setPassword(e.target.value);
                 }}
             />
-            {showPassword ? <IoEyeOffOutline onClick={() => setShowPassword(!showPassword)}/> : <IoEyeOutline onClick={() => setShowPassword(!showPassword)}/>}
+            {showPassword ? <VisibilityOff onClick={() => setShowPassword(!showPassword)}/> : <Visibility onClick={() => setShowPassword(!showPassword)}/>}
             {invalidPasswordMessage !== "" && <div data-testid="invalid-password-message">{invalidPasswordMessage}</div>}
-            <button className="create-account-button" disabled={!canSubmit()} onClick={createAccount} role="registration-button">Register</button>
+            <Button className="create-account-button" variant="contained" disabled={!canSubmit()} onClick={createAccount} data-testid="registration-button">Register</Button>
             {signUpSuccess === false ? <div className="sign-up-error" data-testid="sign-up-error">User already exists.</div> : null}
-        </div>
+        </Box>
     );
 };
 
