@@ -54,7 +54,6 @@ describe("Sign Up Route Test", function() {
             // expect(screen.getByTestId("state-selector").querySelector('value'));
             expect(screen.getByText(/CA/i)).toBeInTheDocument();
             expect(screen.getByText(/90210/i)).toBeInTheDocument();
-            // expect(screen.getByTestId("zipcode-input").querySelector('input')?.value).toBe("90210");
             // expect(screen.getByTestId("password-input").querySelector('input')?.value).toBe("fooPassw0rd!");
             expect(registrationButton).toBeDisabled();
         });
