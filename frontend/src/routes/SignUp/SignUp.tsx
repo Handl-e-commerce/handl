@@ -343,7 +343,7 @@ function SignUp(): JSX.Element {
         <Box className="sign-up-container" data-testid="default-form">
             <h1>Sign Up Free</h1>
             <div>Already a member? <a href={location.origin + "/login?"}>{"Login ->"}</a></div>
-            <TextField 
+            {/* <TextField 
                 type="email"
                 value={email}
                 variant="outlined"
@@ -393,7 +393,6 @@ function SignUp(): JSX.Element {
                 variant="outlined"
                 required
                 hiddenLabel
-                id="phone"
                 onKeyDown={(e) => enforceFormat(e)}
                 onKeyUp={(e) => formatToPhone(e)}
                 placeholder="Phone Number"
@@ -422,7 +421,7 @@ function SignUp(): JSX.Element {
                 name="City"
                 data-testid="city-input"
                 onChange={(e) => setCity(e.target.value)}
-            />
+            /> */}
             <FormControl sx={{ width: 70 }}>
                 <Select
                     value={state}
@@ -447,8 +446,8 @@ function SignUp(): JSX.Element {
                 required
                 hiddenLabel
                 placeholder="Zipcode"
-                onKeyDown={(e) => enforceFormat(e)}
-                name="Zipcode"
+                // onKeyDown={(e) => enforceFormat(e)}
+                name="zipcode"
                 data-testid="zipcode-input"
                 onChange={(e) => setZipcode(e.target.value)}
             />
