@@ -343,7 +343,7 @@ function SignUp(): JSX.Element {
         <Box className="sign-up-container" data-testid="default-form">
             <h1>Sign Up Free</h1>
             <div>Already a member? <a href={location.origin + "/login?"}>{"Login ->"}</a></div>
-            {/* <TextField 
+            <TextField 
                 type="email"
                 value={email}
                 variant="outlined"
@@ -421,7 +421,7 @@ function SignUp(): JSX.Element {
                 name="City"
                 data-testid="city-input"
                 onChange={(e) => setCity(e.target.value)}
-            /> */}
+            />
             <FormControl sx={{ width: 70 }}>
                 <Select
                     value={state}
