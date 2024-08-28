@@ -49,6 +49,7 @@ afterEach(() => {
 });
 
 describe("Login Route Test", function() {
+    const user = userEvent.setup();
     it("Should have a disabled button because both input fields are empty", async () => {
         const { container } = render(<Login />);
         
@@ -61,14 +62,13 @@ describe("Login Route Test", function() {
     });
 
     it("Should have a disabled button because email input field is empty", async () => {
-        const user = userEvent.setup();
         const { container } = render(<Login />);
 
         let loginButton = screen.getByRole("login-button");
         let passwordInput = screen.getByPlaceholderText("Password");
-        await act(async () => {
-            await user.type(passwordInput, "mockPassword");
-        });
+        
+        await user.type(passwordInput, "mockPassword");
+        
         await waitFor(() => {
             expect(screen.queryAllByDisplayValue("mockEmail@email.com").length).toEqual(0);
             expect(screen.getByDisplayValue("mockPassword")).toBeInTheDocument();
@@ -77,14 +77,13 @@ describe("Login Route Test", function() {
     });
     
     it("Should have a disabled button because password input field is empty", async () => {
-        const user = userEvent.setup();
         const { container } = render(<Login />);
 
         let loginButton = screen.getByRole("login-button");
         let emailInput = screen.getByPlaceholderText("Business Email");
-        await act(async () => {
-            await user.type(emailInput, "mockEmail@email.com");
-        });
+        
+        await user.type(emailInput, "mockEmail@email.com");
+        
         await waitFor(() => {
             expect(screen.queryAllByDisplayValue("mockPassword").length).toEqual(0);
             expect(screen.getByDisplayValue("mockEmail@email.com")).toBeInTheDocument();
@@ -93,17 +92,16 @@ describe("Login Route Test", function() {
     });
 
     it("Should redirect to homepage because login returned 201", async () => {
-        const user = userEvent.setup();
         document.cookie = "loggedIn=true;";
         const { container } = render(<Login />);
 
         let loginButton = screen.getByRole("login-button");
         let emailInput = screen.getByPlaceholderText("Business Email");
         let passwordInput = screen.getByPlaceholderText("Password");
-        await act(async () => {
-            await user.type(emailInput, "mockEmail@email.com");
-            await user.type(passwordInput, "mockPassword");
-        });
+        
+        await user.type(emailInput, "mockEmail@email.com");
+        await user.type(passwordInput, "mockPassword");
+        
         await waitFor(() => {
             expect(screen.getByDisplayValue("mockEmail@email.com")).toBeInTheDocument();
             expect(screen.getByDisplayValue("mockPassword")).toBeInTheDocument();
@@ -123,16 +121,15 @@ describe("Login Route Test", function() {
                 return new HttpResponse(null, { status: 401,});
             })
         );
-        const user = userEvent.setup();
         const { container } = render(<Login />);
         
         let loginButton = screen.getByRole("login-button");
         let emailInput = screen.getByPlaceholderText("Business Email");
         let passwordInput = screen.getByPlaceholderText("Password");
-        await act(async () => {
-            await user.type(emailInput, "mockEmail@email.com");
-            await user.type(passwordInput, "mockPassword");
-        });
+        
+        await user.type(emailInput, "mockEmail@email.com");
+        await user.type(passwordInput, "mockPassword");
+        
         await waitFor(() => {
             expect(screen.getByDisplayValue("mockEmail@email.com")).toBeInTheDocument();
             expect(screen.getByDisplayValue("mockPassword")).toBeInTheDocument();
@@ -148,38 +145,37 @@ describe("Login Route Test", function() {
 
     it("Should set the password input type to text after clicking the show password checkbox", async () => {
         const { container } = render(<Login />);
-        const user = userEvent.setup();
+        
         let passwordInput = screen.getByPlaceholderText("Password");
         let checkbox = screen.getByTestId("show-password-switch");
-        await act(async () => {
-            await user.type(passwordInput, "mockPassword");
-        });
+        
+        await user.type(passwordInput, "mockPassword");
+        
         await waitFor(() => {
             expect(screen.getByDisplayValue("mockPassword")).toBeInTheDocument();
         });
-        await act(async () => {
-            await user.click(checkbox);
-        });
+        
+        await user.click(checkbox);
+        
         await waitFor(() => {
             expect(screen.getByPlaceholderText("Password").getAttribute("type")).toEqual("text");
         });
     });
 
-    it("Should show the password reset form upon clicking forgot password and then confirm request was sent to backend after clicking reset request button", async () => {
+    it("Should show the password reset form upon clicking forgot password and then show confirmation after clicking reset request button", async () => {
         const { container } = render(<Login />);
-        const user = userEvent.setup();
         let forgotPasswordButton = screen.getByText("Forgot password?")
-        await act(async () => {
-            await user.click(forgotPasswordButton);
-        });
+        
+        await user.click(forgotPasswordButton);
+        
         await waitFor(() => {
             expect(screen.getByText("Enter the email associated with your account")).toBeInTheDocument();
         });
         let resetRequestButton = await waitFor(() => screen.getByText("Request Password Reset"));
-        await act(async () => {
-            await user.type(screen.getByRole("reset-password-email-input"), "foo@bar.com");
-            await user.click(resetRequestButton);
-        });
+        
+        await user.type(screen.getByRole("reset-password-email-input").querySelector('input') as HTMLInputElement, "foo@bar.com");
+        await user.click(resetRequestButton);
+        
         await waitFor(() => {
             expect(screen.getByText(("We've sent a password reset link to your email."))).toBeInTheDocument();
         });
