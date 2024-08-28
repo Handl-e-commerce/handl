@@ -158,7 +158,7 @@ describe("Sign Up Route Test", function() {
         });
     });
 
-    it.skip("Should show the password whenever show password icon is clicked", async function() {
+    it("Should show the password whenever show password icon is clicked", async function() {
         const { container } = render(<SignUp />);
         let form = screen.getByTestId("default-form");
         let showPasswordIcon = form.children[12];
@@ -166,8 +166,7 @@ describe("Sign Up Route Test", function() {
         await user.click(showPasswordIcon);
         
         await waitFor(() => {
-            screen.debug();
-            expect(screen.getByTestId("password-input")).toHaveAttribute("type", "text");
+            expect(screen.getByTestId("password-input").querySelector('input')).toHaveAttribute("type", "text");
         });
     });
 
