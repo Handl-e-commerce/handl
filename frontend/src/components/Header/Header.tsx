@@ -5,7 +5,6 @@ import { cookieParser, deleteCookie } from "../../utils/cookie-util";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { Box, Button, Menu, MenuItem } from "@mui/material";
 import { KeyboardArrowDown, Logout } from "@mui/icons-material";
-import LogoutIcon from '@mui/icons-material/Logout';
 import svg from '../../static/5_SVG.svg';
 
 const envVariables = process.env;
