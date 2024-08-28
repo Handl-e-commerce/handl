@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { addCookie, cookieParser } from "../../utils/cookie-util";
-import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+import { Box, Button, TextField } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const envVariables = process.env;
 const {
@@ -65,9 +66,9 @@ function Login(): JSX.Element {
             )
         }
         return (
-            <div>
+            <Box>
                 <div>Enter the email associated with your account</div>
-                <input 
+                <TextField 
                     type="email"
                     placeholder="Business Email"
                     name="business_email"
@@ -75,46 +76,46 @@ function Login(): JSX.Element {
                     role="reset-password-email-input"
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <button 
+                <Button 
                     onClick={handlePasswordResetRequest}
                     disabled={isBusy || email.length === 0}
                 >
                     Request Password Reset
-                </button>
+                </Button>
                 {/* TODO: (MEDIUM) add captcha here to prevent bot requests */}
-            </div>
+            </Box>
         )
     };
 
     return (
-        <div>
+        <Box>
             <h1>Login to Handl</h1>
-            <input 
+            <TextField 
                 type="email"
                 placeholder="Business Email"
                 name="business_email"
                 className="login-input"
                 onChange={(e) => setEmail(e.target.value)}
             />
-            <input
+            <TextField
                 type={showPassword ? 'text':'password'}
                 placeholder="Password"
                 name="password"
                 className="login-input"
                 onChange={(e) => setPassword(e.target.value)}
             />
-            {showPassword ? <IoEyeOffOutline onClick={() => setShowPassword(!showPassword)} data-testid="hide-password-switch"/> : <IoEyeOutline onClick={() => setShowPassword(!showPassword)} data-testid="show-password-switch"/>}
+            {showPassword ? <VisibilityOff onClick={() => setShowPassword(!showPassword)} data-testid="hide-password-switch"/> : <Visibility onClick={() => setShowPassword(!showPassword)} data-testid="show-password-switch"/>}
             {hasError && <div className="error-message">The email or password you entered was incorrect</div>}
-            <button 
+            <Button 
                 onClick={handleLogin}
                 role="login-button" 
                 disabled={isBusy || email.length === 0 || password.length === 0}
             >
                 Login
-            </button>
+            </Button>
             <div onClick={() => setIsForgotPassword(true)}>Forgot password?</div>
-            <button onClick={redirectSignUp}>Sign up for an account</button>
-        </div>
+            <Button onClick={redirectSignUp}>Sign up for an account</Button>
+        </Box>
     );
 };
 
