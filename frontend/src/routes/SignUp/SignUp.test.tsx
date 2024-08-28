@@ -149,7 +149,7 @@ describe("Sign Up Route Test", function() {
         });
 
         await user.click(checkboxItems[5]);
-        
+
         await user.click(screen.getByTestId("registration-button"));
 
         await waitFor(() => {
@@ -166,60 +166,56 @@ describe("Sign Up Route Test", function() {
         await user.click(showPasswordIcon);
         
         await waitFor(() => {
+            screen.debug();
             expect(screen.getByTestId("password-input")).toHaveAttribute("type", "text");
         });
     });
 
-    it.skip("Should show password is too short error message", async function() {
+    it("Should show password is too short error message", async function() {
         const { container } = render(<SignUp />);
-        let form = screen.getByTestId("default-form");
 
-        await user.type(screen.getByTestId("password-input"), "foo");
-        
+        fireEvent.change(screen.getByTestId("password-input").querySelector('input') as HTMLInputElement, { target: { value: "foo"}});
+
         waitFor(() => {
             expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password is too short");
         }); 
     });
 
-    it.skip("Should show password must contain a number message", async function() {
+    it("Should show password must contain a number message", async function() {
         const { container } = render(<SignUp />);
-        let form = screen.getByTestId("default-form");
 
-        await user.type(screen.getByTestId("password-input"), "foobaroni$#");
+        fireEvent.change(screen.getByTestId("password-input").querySelector('input') as HTMLInputElement, { target: { value: "foobaroni$#"}});
         
         await waitFor(() => {
             expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain a number");
         }); 
     });
 
-    it.skip("Should show password must contain a lower case letter message", async function() {
+    it("Should show password must contain a lower case letter message", async function() {
         const { container } = render(<SignUp />);
-        let form = screen.getByTestId("default-form");
 
-        await user.type(screen.getByTestId("password-input"), "FOOBARONI$#%34");
+        fireEvent.change(screen.getByTestId("password-input").querySelector('input') as HTMLInputElement, { target: { value: "FOOBARONI$#%34"}})
         
         await waitFor(() => {
             expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain a lowercase letter");
         });
     });
 
-    it.skip("Should show password must contain an uppercase letter message", async function() {
+    it("Should show password must contain an uppercase letter message", async function() {
         const { container } = render(<SignUp />);
-        let form = screen.getByTestId("default-form");
 
-        await user.type(screen.getByTestId("password-input"), "foobaroni$34238$#$!");
-        
+        fireEvent.change(screen.getByTestId("password-input").querySelector('input') as HTMLInputElement, { target: { value: "foobaroni$34238$#$!"}})
+
         await waitFor(() => {
             expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain an uppercase letter");
         }); 
     });
 
-    it.skip("Should show password must contain a special character message", async function() {
+    it("Should show password must contain a special character message", async function() {
         const { container } = render(<SignUp />);
-        let form = screen.getByTestId("default-form");
 
-        await user.type(screen.getByTestId("password-input"), "FOobaroni434");
-        
+        fireEvent.change(screen.getByTestId("password-input").querySelector('input') as HTMLInputElement, { target: { value: "FOobaroni434"}})
+
         await waitFor(() => {
             expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain a special character from the following: ~ ` ! # $ % ^ &amp; * € £ @ + = - [ ] ' ; , / { } ( ) | \" : &lt; &gt; ? . _");
         }); 

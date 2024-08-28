@@ -446,7 +446,7 @@ function SignUp(): JSX.Element {
                 required
                 hiddenLabel
                 placeholder="Zipcode"
-                // onKeyDown={(e) => enforceFormat(e)}
+                onKeyDown={(e) => enforceFormat(e)}
                 name="zipcode"
                 data-testid="zipcode-input"
                 onChange={(e) => setZipcode(e.target.value)}
