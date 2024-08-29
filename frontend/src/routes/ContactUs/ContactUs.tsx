@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Box, Button, TextField } from "@mui/material";
 
 const envVariables = process.env;
 const {
@@ -36,43 +37,43 @@ function ContactUs(): JSX.Element {
         <div>
             <h1>Contact Us</h1>
             <div>First Name</div>
-            <input 
+            <TextField 
                 type="text"
                 required
                 placeholder="First Name"
                 name="firstName"
-                className="sign-up-input"
+                variant="outlined"
                 onChange={(e) => setFirstName(e.target.value)}
             />
             <div>Last Name</div>
-            <input 
+            <TextField
                 type="text"
                 required
                 placeholder="Last Name"
                 name="lastName"
-                className="sign-up-input"
+                variant="outlined"
                 onChange={(e) => setLastName(e.target.value)}
             />
             <div>Email</div>
-            <input 
+            <TextField 
                 type="email"
                 required
                 placeholder="Email"
                 name="email"
-                className="sign-up-input"
                 onChange={(e) => setEmail(e.target.value)}
             />
             <div>Message</div>
-            <input 
+            <TextField 
                 type="text"
+                multiline
                 required
                 placeholder="Message"
-                maxLength={1500}
+                inputProps={{ maxLength: 1500 }}
+                variant="outlined"
                 name="message"
-                className="sign-up-input"
                 onChange={(e) => setMessage(e.target.value)}
             />
-            <button onClick={handleSubmitMessage} disabled={!isDisabled()}>Submit</button>
+            <Button onClick={handleSubmitMessage} disabled={!isDisabled()} variant="contained">Submit</Button>
         </div>
     );
 };

@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { SignUp } from './SignUp';
-import { render, screen, act, waitFor } from '@testing-library/react';
+import { render, screen, act, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { server } from "../../../__mocks__/server";
@@ -20,7 +20,7 @@ describe("Sign Up Route Test", function() {
 
         expect(form).toBeDefined();
         expect(form.childNodes.length).toEqual(14);
-        expect(screen.getByRole("registration-button")).toBeDisabled();
+        expect(screen.getByTestId("registration-button")).toBeDisabled();
     });
 
     it("Should have disabled registration button because email field is empty", async function() {
@@ -28,26 +28,32 @@ describe("Sign Up Route Test", function() {
 
         let registrationButton = screen.getByText("Register");
 
-        await user.type(screen.getByRole("business-name-input"), "Mock Business");
-        await user.type(screen.getByRole("first-name-input"), "Foo");
-        await user.type(screen.getByRole("last-name-input"), "Bar");
-        await user.type(screen.getByRole("phone-number-input"), "1234567890");
-        await user.type(screen.getByRole("address-input"), "555 Foo st.");
-        await user.type(screen.getByRole("city-input"), "La La Land");
-        await user.selectOptions(screen.getByRole("state-selector"), "CA");
-        await user.type(screen.getByRole("zipcode-input"), "90210");
-        await user.type(screen.getByRole("password-input"), "fooPassw0rd!");
+        await user.type(screen.getByTestId("business-name-input").querySelector('input') as HTMLInputElement, "Mock Business");
+        await user.type(screen.getByTestId("first-name-input").querySelector('input') as HTMLInputElement, "Foo");
+        await user.type(screen.getByTestId("last-name-input").querySelector('input') as HTMLInputElement, "Bar");
+        await user.type(screen.getByTestId("phone-number-input").querySelector('input') as HTMLInputElement, "1234567890");
+        await user.type(screen.getByTestId("address-input").querySelector('input') as HTMLInputElement, "555 Foo st.");
+        await user.type(screen.getByTestId("city-input").querySelector('input') as HTMLInputElement, "La La Land");
+        await user.click(screen.getByTestId("state-selector"));
+        fireEvent.change(screen.getByTestId("zipcode-input").querySelector('input') as HTMLInputElement, { target: { value: "90210"}})
+        fireEvent.change(screen.getByTestId("password-input").querySelector('input') as HTMLInputElement, { target: { value: "fooPassw0rd!"}})
+
+        let checkboxItems = await waitFor(async () => await screen.findAllByTestId("menu-item"), {
+            timeout: 3000,
+        });
+
+        await user.click(checkboxItems[5]);
 
         await waitFor(() => {
-            expect(screen.getByDisplayValue("Mock Business")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("Foo")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("Bar")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("(123)-456-7890")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("555 Foo st.")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("La La Land")).toBeInTheDocument();
-            expect((screen.getByRole("state-selector").children[5] as HTMLOptionElement).selected).toBeTruthy();
+            expect(screen.getByTestId("business-name-input").querySelector('input')?.value).toBe("Mock Business");
+            expect(screen.getByTestId("first-name-input").querySelector('input')?.value).toBe("Foo");
+            expect(screen.getByTestId("last-name-input").querySelector('input')?.value).toBe("Bar");
+            expect(screen.getByTestId("phone-number-input").querySelector('input')?.value).toBe("(123)-456-7890");
+            expect(screen.getByTestId("address-input").querySelector('input')?.value).toBe("555 Foo st.");
+            expect(screen.getByTestId("city-input").querySelector('input')?.value).toBe("La La Land");
+            expect(screen.getByText(/CA/i)).toBeInTheDocument();
             expect(screen.getByDisplayValue("90210")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("fooPassw0rd!")).toBeInTheDocument();
+            expect(screen.getByTestId("password-input").querySelector('input')?.value).toBe("fooPassw0rd!");
             expect(registrationButton).toBeDisabled();
         });
     });
@@ -57,26 +63,32 @@ describe("Sign Up Route Test", function() {
 
         let registrationButton = screen.getByText("Register");
 
-        await user.type(screen.getByRole("email-input"), "mockemail@foo.com");
-        await user.type(screen.getByRole("first-name-input"), "Foo");
-        await user.type(screen.getByRole("last-name-input"), "Bar");
-        await user.type(screen.getByRole("phone-number-input"), "1234567890");
-        await user.type(screen.getByRole("address-input"), "555 Foo st.");
-        await user.type(screen.getByRole("city-input"), "La La Land");
-        await user.selectOptions(screen.getByRole("state-selector"), "CA");
-        await user.type(screen.getByRole("zipcode-input"), "90210");
-        await user.type(screen.getByRole("password-input"), "fooPassw0rd!");
+        await user.type(screen.getByTestId("email-input").querySelector('input') as HTMLInputElement, "mockemail@foo.com");
+        await user.type(screen.getByTestId("first-name-input").querySelector('input') as HTMLInputElement, "Foo");
+        await user.type(screen.getByTestId("last-name-input").querySelector('input') as HTMLInputElement, "Bar");
+        await user.type(screen.getByTestId("phone-number-input").querySelector('input') as HTMLInputElement, "1234567890");
+        await user.type(screen.getByTestId("address-input").querySelector('input') as HTMLInputElement, "555 Foo st.");
+        await user.type(screen.getByTestId("city-input").querySelector('input') as HTMLInputElement, "La La Land");
+        await user.click(screen.getByTestId("state-selector"));
+        fireEvent.change(screen.getByTestId("zipcode-input").querySelector('input') as HTMLInputElement, { target: { value: "90210"}})
+        fireEvent.change(screen.getByTestId("password-input").querySelector('input') as HTMLInputElement, { target: { value: "fooPassw0rd!"}})
+
+        let checkboxItems = await waitFor(async () => await screen.findAllByTestId("menu-item"), {
+            timeout: 3000,
+        });
+
+        await user.click(checkboxItems[5]);
 
         await waitFor(() => {
-            expect(screen.getByDisplayValue("mockemail@foo.com")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("Foo")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("Bar")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("(123)-456-7890")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("555 Foo st.")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("La La Land")).toBeInTheDocument();
-            expect((screen.getByRole("state-selector").children[5] as HTMLOptionElement).selected).toBeTruthy();
+            expect(screen.getByTestId("email-input").querySelector('input')?.value).toBe("mockemail@foo.com");
+            expect(screen.getByTestId("first-name-input").querySelector('input')?.value).toBe("Foo");
+            expect(screen.getByTestId("last-name-input").querySelector('input')?.value).toBe("Bar");
+            expect(screen.getByTestId("phone-number-input").querySelector('input')?.value).toBe("(123)-456-7890");
+            expect(screen.getByTestId("address-input").querySelector('input')?.value).toBe("555 Foo st.");
+            expect(screen.getByTestId("city-input").querySelector('input')?.value).toBe("La La Land");
+            expect(screen.getByText(/CA/i)).toBeInTheDocument();
             expect(screen.getByDisplayValue("90210")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("fooPassw0rd!")).toBeInTheDocument();
+            expect(screen.getByTestId("password-input").querySelector('input')?.value).toBe("fooPassw0rd!");
             expect(registrationButton).toBeDisabled();
         });
     });
@@ -86,16 +98,23 @@ describe("Sign Up Route Test", function() {
 
         let registrationButton = screen.getByText("Register");
 
-        await user.type(screen.getByRole("email-input"), "mockemail@foo.com");
-        await user.type(screen.getByRole("business-name-input"), "Mock Business");
-        await user.type(screen.getByRole("first-name-input"), "Foo");
-        await user.type(screen.getByRole("last-name-input"), "Bar");
-        await user.type(screen.getByRole("phone-number-input"), "1234567890");
-        await user.type(screen.getByRole("address-input"), "555 Foo st.");
-        await user.type(screen.getByRole("city-input"), "La La Land");
-        await user.selectOptions(screen.getByRole("state-selector"), "CA");
-        await user.type(screen.getByRole("zipcode-input"), "90210");
-        await user.type(screen.getByRole("password-input"), "fooPassw0rd!");
+        await user.type(screen.getByTestId("email-input").querySelector('input') as HTMLInputElement, "mockemail@foo.com");
+        await user.type(screen.getByTestId("business-name-input").querySelector('input') as HTMLInputElement, "Mock Business");
+        await user.type(screen.getByTestId("first-name-input").querySelector('input') as HTMLInputElement, "Foo");
+        await user.type(screen.getByTestId("last-name-input").querySelector('input') as HTMLInputElement, "Bar");
+        await user.type(screen.getByTestId("phone-number-input").querySelector('input') as HTMLInputElement, "1234567890");
+        await user.type(screen.getByTestId("address-input").querySelector('input') as HTMLInputElement, "555 Foo st.");
+        await user.type(screen.getByTestId("city-input").querySelector('input') as HTMLInputElement, "La La Land");
+        await user.click(screen.getByTestId("state-selector"));
+        fireEvent.change(screen.getByTestId("zipcode-input").querySelector('input') as HTMLInputElement, { target: { value: "90210"}})
+        fireEvent.change(screen.getByTestId("password-input").querySelector('input') as HTMLInputElement, { target: { value: "fooPassw0rd!"}})
+
+        let checkboxItems = await waitFor(async () => await screen.findAllByTestId("menu-item"), {
+            timeout: 3000,
+        });
+
+        await user.click(checkboxItems[5]);
+        
         await user.click(registrationButton);
 
         await waitFor(() => {
@@ -114,17 +133,24 @@ describe("Sign Up Route Test", function() {
 
         const { container } = render(<SignUp />);
 
-        await user.type(screen.getByRole("email-input"), "mockemail@foo.com");
-        await user.type(screen.getByRole("business-name-input"), "Mock Business");
-        await user.type(screen.getByRole("first-name-input"), "Foo");
-        await user.type(screen.getByRole("last-name-input"), "Bar");
-        await user.type(screen.getByRole("phone-number-input"), "1234567890");
-        await user.type(screen.getByRole("address-input"), "555 Foo st.");
-        await user.type(screen.getByRole("city-input"), "La La Land");
-        await user.selectOptions(screen.getByRole("state-selector"), "CA");
-        await user.type(screen.getByRole("zipcode-input"), "90210");
-        await user.type(screen.getByRole("password-input"), "fooPassw0rd!");
-        await user.click(screen.getByRole("registration-button"));
+        await user.type(screen.getByTestId("email-input").querySelector('input') as HTMLInputElement, "mockemail@foo.com");
+        await user.type(screen.getByTestId("business-name-input").querySelector('input') as HTMLInputElement, "Mock Business");
+        await user.type(screen.getByTestId("first-name-input").querySelector('input') as HTMLInputElement, "Foo");
+        await user.type(screen.getByTestId("last-name-input").querySelector('input') as HTMLInputElement, "Bar");
+        await user.type(screen.getByTestId("phone-number-input").querySelector('input') as HTMLInputElement, "1234567890");
+        await user.type(screen.getByTestId("address-input").querySelector('input') as HTMLInputElement, "555 Foo st.");
+        await user.type(screen.getByTestId("city-input").querySelector('input') as HTMLInputElement, "La La Land");
+        await user.click(screen.getByTestId("state-selector"));
+        fireEvent.change(screen.getByTestId("zipcode-input").querySelector('input') as HTMLInputElement, { target: { value: "90210"}})
+        fireEvent.change(screen.getByTestId("password-input").querySelector('input') as HTMLInputElement, { target: { value: "fooPassw0rd!"}})
+
+        let checkboxItems = await waitFor(async () => await screen.findAllByTestId("menu-item"), {
+            timeout: 3000,
+        });
+
+        await user.click(checkboxItems[5]);
+
+        await user.click(screen.getByTestId("registration-button"));
 
         await waitFor(() => {
             expect(screen.getByTestId("sign-up-error")).toBeInTheDocument();
@@ -140,16 +166,15 @@ describe("Sign Up Route Test", function() {
         await user.click(showPasswordIcon);
         
         await waitFor(() => {
-            expect(screen.getByRole("password-input")).toHaveAttribute("type", "text");
+            expect(screen.getByTestId("password-input").querySelector('input')).toHaveAttribute("type", "text");
         });
     });
 
     it("Should show password is too short error message", async function() {
         const { container } = render(<SignUp />);
-        let form = screen.getByTestId("default-form");
 
-        await user.type(screen.getByRole("password-input"), "foo");
-        
+        fireEvent.change(screen.getByTestId("password-input").querySelector('input') as HTMLInputElement, { target: { value: "foo"}});
+
         waitFor(() => {
             expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password is too short");
         }); 
@@ -157,9 +182,8 @@ describe("Sign Up Route Test", function() {
 
     it("Should show password must contain a number message", async function() {
         const { container } = render(<SignUp />);
-        let form = screen.getByTestId("default-form");
 
-        await user.type(screen.getByRole("password-input"), "foobaroni$#");
+        fireEvent.change(screen.getByTestId("password-input").querySelector('input') as HTMLInputElement, { target: { value: "foobaroni$#"}});
         
         await waitFor(() => {
             expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain a number");
@@ -168,9 +192,8 @@ describe("Sign Up Route Test", function() {
 
     it("Should show password must contain a lower case letter message", async function() {
         const { container } = render(<SignUp />);
-        let form = screen.getByTestId("default-form");
 
-        await user.type(screen.getByRole("password-input"), "FOOBARONI$#%34");
+        fireEvent.change(screen.getByTestId("password-input").querySelector('input') as HTMLInputElement, { target: { value: "FOOBARONI$#%34"}})
         
         await waitFor(() => {
             expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain a lowercase letter");
@@ -179,10 +202,9 @@ describe("Sign Up Route Test", function() {
 
     it("Should show password must contain an uppercase letter message", async function() {
         const { container } = render(<SignUp />);
-        let form = screen.getByTestId("default-form");
 
-        await user.type(screen.getByRole("password-input"), "foobaroni$34238$#$!");
-        
+        fireEvent.change(screen.getByTestId("password-input").querySelector('input') as HTMLInputElement, { target: { value: "foobaroni$34238$#$!"}})
+
         await waitFor(() => {
             expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain an uppercase letter");
         }); 
@@ -190,10 +212,9 @@ describe("Sign Up Route Test", function() {
 
     it("Should show password must contain a special character message", async function() {
         const { container } = render(<SignUp />);
-        let form = screen.getByTestId("default-form");
 
-        await user.type(screen.getByRole("password-input"), "FOobaroni434");
-        
+        fireEvent.change(screen.getByTestId("password-input").querySelector('input') as HTMLInputElement, { target: { value: "FOobaroni434"}})
+
         await waitFor(() => {
             expect(screen.getByTestId("invalid-password-message").innerHTML).toEqual("Password must contain a special character from the following: ~ ` ! # $ % ^ &amp; * € £ @ + = - [ ] ' ; , / { } ( ) | \" : &lt; &gt; ? . _");
         }); 
