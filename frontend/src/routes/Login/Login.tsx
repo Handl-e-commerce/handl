@@ -112,6 +112,7 @@ function Login(): JSX.Element {
             <Button 
                 onClick={handleLogin}
                 role="login-button" 
+                variant="contained"
                 disabled={isBusy || email.length === 0 || password.length === 0}
             >
                 Login

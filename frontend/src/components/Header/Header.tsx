@@ -56,6 +56,7 @@ function Header(): JSX.Element {
             {loggedIn && 
                 <Box>
                     <Button
+                        variant="contained"
                         onClick={handleDropdownClick}
                         endIcon={<KeyboardArrowDown />}
                     >
