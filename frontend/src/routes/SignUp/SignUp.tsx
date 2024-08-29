@@ -460,6 +460,7 @@ function SignUp(): JSX.Element {
                 placeholder="Password"
                 name="password"
                 data-testid="password-input"
+                inputProps={{ maxLength: 32 }}
                 onChange={(e) => {
                     validPassword(e.target.value);
                     setPassword(e.target.value);

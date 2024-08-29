@@ -15,6 +15,10 @@ describe("Contact Us Tests", function() {
         await user.type(screen.getByPlaceholderText("Message"), "Foo bar is very annoyed by you! This is no good man!");
         
         await waitFor(() => {
+            expect(screen.getByDisplayValue("Foo")).toBeInTheDocument();
+            expect(screen.getByDisplayValue("Bar")).toBeInTheDocument();
+            expect(screen.getByDisplayValue("foo.bar@gmail.com")).toBeInTheDocument();
+            expect(screen.getByDisplayValue("Foo bar is very annoyed by you! This is no good man!")).toBeInTheDocument();
             expect(screen.getByText("Submit")).not.toBeDisabled;
         });
         

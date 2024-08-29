@@ -72,6 +72,7 @@ function Login(): JSX.Element {
                     type="email"
                     placeholder="Business Email"
                     name="business_email"
+                    variant="outlined"
                     className="login-input"
                     role="reset-password-email-input"
                     onChange={(e) => setEmail(e.target.value)}
@@ -94,6 +95,7 @@ function Login(): JSX.Element {
                 type="email"
                 placeholder="Business Email"
                 name="business_email"
+                variant="outlined"
                 className="login-input"
                 onChange={(e) => setEmail(e.target.value)}
             />
@@ -101,6 +103,7 @@ function Login(): JSX.Element {
                 type={showPassword ? 'text':'password'}
                 placeholder="Password"
                 name="password"
+                variant="outlined"
                 className="login-input"
                 onChange={(e) => setPassword(e.target.value)}
             />
