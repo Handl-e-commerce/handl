@@ -23,6 +23,7 @@ function Results(): JSX.Element {
     const [loadingData, setLoadingData] = useState<boolean>(true);
     // Setting it to 393 to match iPhone Plus widths
     const isMobile: boolean = width <= 430;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const data: Vendor[] = useMemo(() => vendors, [loadingData]);
     let loggedIn: boolean = useLoginStatus();
 

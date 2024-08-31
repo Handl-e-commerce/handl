@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
+// TODO: (LOW) Implement contact us functionality for submitting messages
+// import { fetchWrapper } from "../../utils/fetch-wrapper";
 
-const envVariables = process.env;
-const {
-    REACT_APP_SERVER_URI,
-} = envVariables;
+// const envVariables = process.env;
+// const {
+//     REACT_APP_SERVER_URI,
+// } = envVariables;
 
 
 function ContactUs(): JSX.Element {
@@ -14,8 +16,8 @@ function ContactUs(): JSX.Element {
     const [message, setMessage] = useState<string>("");
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
-    // TODO: (LOW) Implement contact us functionality for submitting messages
-    function handleSubmitMessage(): void {
+    async function handleSubmitMessage(): Promise<void> {
+        // await fetchWrapper(REACT_APP_SERVER_URI + `/users/contact-us`, 'POST', {});
         setIsSubmit(true);
     };
 
@@ -34,7 +36,7 @@ function ContactUs(): JSX.Element {
     }
 
     return (
-        <div>
+        <Box>
             <h1>Contact Us</h1>
             <div>First Name</div>
             <TextField 
@@ -74,7 +76,7 @@ function ContactUs(): JSX.Element {
                 onChange={(e) => setMessage(e.target.value)}
             />
             <Button onClick={handleSubmitMessage} disabled={!isDisabled()} variant="contained">Submit</Button>
-        </div>
+        </Box>
     );
 };
 
