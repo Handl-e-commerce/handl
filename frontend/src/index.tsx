@@ -10,7 +10,33 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#000000',
+    },
+    secondary: {
+      main: '#9c27b0',
+    },
+    background: {
+      paper: '#F2F2F7',
+      default: '#F2F2F7',
+    },
+    text: {
+      primary: '#3C3C43',
+      secondary: '#3C3C43',
+      disabled: '#ffffff',
+    },
+  },
+  components: {
+    MuiButton: {
+      defaultProps: {
+        color: "primary"
+      }
+    },
+  }
+});
 
 root.render(
   <React.StrictMode>
