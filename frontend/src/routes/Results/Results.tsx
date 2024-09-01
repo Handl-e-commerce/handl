@@ -4,7 +4,7 @@ import { Vendor } from "../../types/types";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { CategoryDropDown } from "../../components/CategoryDropDown/CategoryDropDown";
-import { Box, Button, Chip, Modal, Typography  } from '@mui/material';
+import { Box, Button, Chip, Modal, Paper, Typography  } from '@mui/material';
 import { Table } from "../../components/Table/Table";
 
 const envVariables = process.env;
@@ -106,17 +106,14 @@ function Results(): JSX.Element {
 
     if (!loggedIn) {
         return (
-            <Modal
-                open={!loggedIn}
-                aria-labelledby="results-modal"
-            >
-                <Box sx={{display: "flex", flexDirection: 'column', alignItems: 'center'}}>
+            <Paper elevation={24} sx={{width: 'fit-content', padding: 5, background: '#F2F2F7'}}>
+                <Box sx={{}}>
                     <Typography id="modal-title" variant="h4" component="h4" sx={{textAlign: 'center'}}>Login or Sign up to get full access to our data!</Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2, textAlign: 'center' }}>Get access to hundreds of wholesalers and distributors today!</Typography>
                     <Button onClick={redirectSignUp} variant="contained">Sign Up</Button>
                     <Button onClick={redirectLogin} variant="outlined">Login</Button>
                 </Box>
-            </Modal>
+            </Paper>
         );
     };
 
