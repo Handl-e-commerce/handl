@@ -5,7 +5,7 @@ import { cookieParser, deleteCookie } from "../../utils/cookie-util";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { Box, Button, Menu, MenuItem } from "@mui/material";
 import { KeyboardArrowDown, Logout } from "@mui/icons-material";
-import svg from '../../static/5_SVG.svg';
+import svg from '../../static/5_SVG-cropped.svg';
 
 const envVariables = process.env;
 const {
@@ -57,7 +57,7 @@ function Header(): JSX.Element {
             marginBottom: '14px'
         }}>
             <a href={location.origin} target="_self">
-                <img src={svg} alt="Handl Logo" width={"250px"} height={"250px"}/>
+                <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
             </a>
             {loggedIn && 
                 <Box>
@@ -65,6 +65,10 @@ function Header(): JSX.Element {
                         variant="contained"
                         onClick={handleDropdownClick}
                         endIcon={<KeyboardArrowDown />}
+                        sx={{
+                            bgcolor: '#3B4B59',
+                            color: '#F2E5D1'
+                        }}
                     >
                         Hi, {cookieObject?.firstName}!
                     </Button>
@@ -84,8 +88,8 @@ function Header(): JSX.Element {
                     </Menu>
                 </Box>
             }
-            {!isLoginOrSignUpPage && !loggedIn && <Button variant="contained" onClick={redirectSignUp}>Sign Up</Button>}
-            {!isLoginOrSignUpPage && !loggedIn && <Button variant="outlined" onClick={redirectLogin}>Login</Button>}
+            {!isLoginOrSignUpPage && !loggedIn && <Button variant="contained" sx={{color: 'secondary.main', background: '#3B4B59', marginRight: "4px"}} onClick={redirectSignUp}>Sign Up</Button>}
+            {!isLoginOrSignUpPage && !loggedIn && <Button variant="outlined" sx={{color: 'secondary.main', borderColor: 'secondary.main', marginLeft: "4px", marginRight: "20px"}} onClick={redirectLogin}>Login</Button>}
             {isLandingPage && <SearchBar />}
         </header>
     );

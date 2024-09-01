@@ -14,10 +14,10 @@ const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#000000',
+      main: '#363636',
     },
     secondary: {
-      main: '#9c27b0',
+      main: '#F2E5D1',
     },
     background: {
       default: '#F2F2F7',
@@ -31,9 +31,17 @@ const theme = createTheme({
   components: {
     MuiButton: {
       defaultProps: {
-        color: "primary"
+        color: "primary",
       }
     },
+    MuiCssBaseline: {
+      styleOverrides: () => `
+        button {
+          width: 90px;
+          height: 32px;
+        }
+      `
+    }
   }
 });
 

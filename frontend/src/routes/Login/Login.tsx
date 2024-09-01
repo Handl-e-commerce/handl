@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { addCookie, cookieParser } from "../../utils/cookie-util";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, Container, InputAdornment, SxProps, TextField, Typography, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const envVariables = process.env;
@@ -88,38 +88,93 @@ function Login(): JSX.Element {
         )
     };
 
+    const containerSx: SxProps = {
+        height: '100%',
+        marginBottom: '7px',
+        display: 'flex',
+        flexDirection: 'column',
+        width: '95%',
+        alignItems: 'center',
+    };
+
+    const boxSx: SxProps = {
+        border: '1px solid',
+        borderColor: 'primary.main',
+        borderRadius: '8px',
+        padding: '7px'
+    }
+
+    const textFieldSx: SxProps = {
+        width: '90%',
+        marginTop: '24px',
+        marginBottom: '24px',
+    };
+
+    const ButtonSx: SxProps = {
+        width: '90%',
+        marginTop: '24px',
+        marginBottom: '24px',
+    };
+
     return (
-        <Box sx={{height: '100%'}}>
+        <Container sx={containerSx}
+        >
             <h1>Login to Handl</h1>
-            <TextField 
-                type="email"
-                placeholder="Business Email"
-                name="business_email"
-                variant="outlined"
-                className="login-input"
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-                type={showPassword ? 'text':'password'}
-                placeholder="Password"
-                name="password"
-                variant="outlined"
-                className="login-input"
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            {showPassword ? <VisibilityOff onClick={() => setShowPassword(!showPassword)} data-testid="hide-password-switch"/> : <Visibility onClick={() => setShowPassword(!showPassword)} data-testid="show-password-switch"/>}
-            {hasError && <div className="error-message">The email or password you entered was incorrect</div>}
-            <Button 
-                onClick={handleLogin}
-                role="login-button" 
-                variant="contained"
-                disabled={isBusy || email.length === 0 || password.length === 0}
-            >
-                Login
-            </Button>
-            <div onClick={() => setIsForgotPassword(true)}>Forgot password?</div>
-            <Button onClick={redirectSignUp}>Sign up for an account</Button>
-        </Box>
+            <Box sx={boxSx}>
+                <TextField 
+                    type="email"
+                    placeholder="Business Email"
+                    name="business_email"
+                    variant="outlined"
+                    sx={textFieldSx}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <TextField
+                    type={showPassword ? 'text':'password'}
+                    placeholder="Password"
+                    name="password"
+                    variant="outlined"
+                    sx={textFieldSx}
+                    onChange={(e) => setPassword(e.target.value)}
+                    InputProps={{
+                            endAdornment: 
+                            <InputAdornment position="start">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    edge='end'
+                                    sx={{width: '40px', alignItems: 'center'}}
+                                >
+                                    {showPassword ? <VisibilityOff data-testid="hide-password-switch"/> : <Visibility data-testid="show-password-switch"/>} 
+                                </IconButton>
+                            </InputAdornment>
+                    }}
+                />
+                {/* {showPassword ? 
+                    <VisibilityOff onClick={() => setShowPassword(!showPassword)} data-testid="hide-password-switch"/> : 
+                    <Visibility onClick={() => setShowPassword(!showPassword)} data-testid="show-password-switch"/>
+                } */}
+                {hasError && 
+                    <div className="error-message">The email or password you entered was incorrect</div>
+                }
+                <Button 
+                    onClick={handleLogin}
+                    role="login-button" 
+                    variant="contained"
+                    disabled={isBusy || email.length === 0 || password.length === 0}
+                    sx={ButtonSx}
+                >
+                    Login
+                </Button>
+                <Typography
+                    style={{cursor: 'pointer', textAlign: 'left', paddingLeft: '27px', width: '90%'}}
+                    onClick={() => setIsForgotPassword(true)}
+                >
+                    <u>Forgot password?</u>
+                </Typography>
+                <Button variant='outlined' sx={ButtonSx} onClick={redirectSignUp}><u>Sign up for an account</u></Button>
+            </Box>
+        </Container>
     );
 };
 
