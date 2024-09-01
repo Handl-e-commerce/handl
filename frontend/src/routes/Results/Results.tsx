@@ -106,7 +106,7 @@ function Results(): JSX.Element {
 
     if (!loggedIn) {
         return (
-            <Paper elevation={24} sx={{width: 'fit-content', padding: 5, background: '#F2F2F7'}}>
+            <Paper elevation={24} sx={{width: 'fit-content', padding: 5, background: '#F2F2F7', height: '100%'}}>
                 <Box sx={{}}>
                     <Typography id="modal-title" variant="h4" component="h4" sx={{textAlign: 'center'}}>Login or Sign up to get full access to our data!</Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2, textAlign: 'center' }}>Get access to hundreds of wholesalers and distributors today!</Typography>

@@ -36,7 +36,7 @@ function ContactUs(): JSX.Element {
     }
 
     return (
-        <Box>
+        <Box sx={{height: '100%'}}>
             <h1>Contact Us</h1>
             <div>First Name</div>
             <TextField 

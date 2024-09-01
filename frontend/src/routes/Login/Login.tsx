@@ -60,13 +60,13 @@ function Login(): JSX.Element {
     if (isForgotPassword) {
         if (submittedResetRequest) {
             return (
-                <div>
+                <div style={{height: '100%'}}>
                     We've sent a password reset link to your email.
                 </div>
             )
         }
         return (
-            <Box>
+            <Box sx={{height: '100%'}}>
                 <div>Enter the email associated with your account</div>
                 <TextField 
                     type="email"
@@ -89,7 +89,7 @@ function Login(): JSX.Element {
     };
 
     return (
-        <Box>
+        <Box sx={{height: '100%'}}>
             <h1>Login to Handl</h1>
             <TextField 
                 type="email"

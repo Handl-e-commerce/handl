@@ -6,7 +6,7 @@ function Footer(): JSX.Element {
 
     return (
         <footer style={{
-            position: 'fixed',
+            position: 'relative',
             bottom: 0,
             width: '100%',
             background: "#242425",
