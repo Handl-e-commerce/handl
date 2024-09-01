@@ -5,8 +5,7 @@ function Home(): JSX.Element {
 
     // TODO: (LOW) Implement dynamic route creation for redirects and populating of categories
     return (
-        <div>
-            Welcome to Handl!
+        <div style={{height: '100%'}}>
             <div data-testid="most-viewed-categories-container">
                 <div>Most Viewed Categories</div>
                 <div>

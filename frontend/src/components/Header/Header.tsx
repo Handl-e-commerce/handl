@@ -48,11 +48,17 @@ function Header(): JSX.Element {
     };
 
     return (
-        <header data-testid='header'>
+        <header data-testid='header' style={{
+            position: 'relative',
+            top: 0,
+            width: '100%',
+            background: "#242425",
+            color: '#F2E5D1',
+            marginBottom: '14px'
+        }}>
             <a href={location.origin} target="_self">
                 <img src={svg} alt="Handl Logo" width={"250px"} height={"250px"}/>
             </a>
-            {isLandingPage && <SearchBar />}
             {loggedIn && 
                 <Box>
                     <Button
@@ -80,6 +86,7 @@ function Header(): JSX.Element {
             }
             {!isLoginOrSignUpPage && !loggedIn && <Button variant="contained" onClick={redirectSignUp}>Sign Up</Button>}
             {!isLoginOrSignUpPage && !loggedIn && <Button variant="outlined" onClick={redirectLogin}>Login</Button>}
+            {isLandingPage && <SearchBar />}
         </header>
     );
 };

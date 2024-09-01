@@ -33,8 +33,14 @@ function SearchBar(): JSX.Element {
             placeholder={searchParams.get("search-params")?.toString() ?? "Search here"}
             onChange={(e) => handleChange(e)}
             onKeyUp={handleKeyPress} 
-            style={{
-                margin: 8
+            sx={{
+                marginTop: '7px',
+                marginBottom: '7px',
+                paddingLeft: '16px',
+                bgcolor: 'Background',
+                borderRadius: 25,
+                width: '95%',
+                '& fieldset': { border: 'none'},
             }}
         />
     );
