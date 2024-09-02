@@ -509,6 +509,7 @@ function SignUp(): JSX.Element {
                         <InputAdornment position="start">
                             <IconButton
                                 aria-label="toggle password visibility"
+                                data-testid='password-toggle-icon'
                                 onClick={() => setShowPassword(!showPassword)}
                                 edge='end'
                                 sx={{width: '40px', alignItems: 'center'}}

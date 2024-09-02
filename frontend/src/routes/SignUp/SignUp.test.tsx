@@ -19,7 +19,7 @@ describe("Sign Up Route Test", function() {
         let form = screen.getByTestId("default-form");
 
         expect(form).toBeDefined();
-        expect(form.childNodes.length).toEqual(14);
+        expect(form.childNodes.length).toEqual(10);
         expect(screen.getByTestId("registration-button")).toBeDisabled();
     });
 
@@ -160,10 +160,8 @@ describe("Sign Up Route Test", function() {
 
     it("Should show the password whenever show password icon is clicked", async function() {
         const { container } = render(<SignUp />);
-        let form = screen.getByTestId("default-form");
-        let showPasswordIcon = form.children[12];
 
-        await user.click(showPasswordIcon);
+        await user.click(screen.getByTestId('password-toggle-icon'));
         
         await waitFor(() => {
             expect(screen.getByTestId("password-input").querySelector('input')).toHaveAttribute("type", "text");
