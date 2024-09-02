@@ -42,6 +42,7 @@ function SearchBar(): JSX.Element {
                 borderRadius: 25,
                 width: '95%',
                 '& fieldset': { border: 'none'},
+                '& input': {padding: '5px 7px'}
             }}
         />
     );
