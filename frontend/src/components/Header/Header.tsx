@@ -3,7 +3,7 @@ import { SearchBar } from "../SearchBar/SearchBar";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { cookieParser, deleteCookie } from "../../utils/cookie-util";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
-import { Box, Button, Container, Menu, MenuItem, SxProps } from "@mui/material";
+import { Button, Menu, MenuItem, SxProps } from "@mui/material";
 import { KeyboardArrowDown, Logout } from "@mui/icons-material";
 import svg from '../../static/5_SVG-cropped.svg';
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
