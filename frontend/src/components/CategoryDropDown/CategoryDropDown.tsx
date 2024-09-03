@@ -5,6 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from '@mui/material/Checkbox';
+import { Typography } from "@mui/material";
 
 interface ICategoryDropDownProps {
     categories: string[];
@@ -22,17 +23,27 @@ function CategoryDropDown({categories, selectedCategories, setSelectedCategories
     };
 
     return (
-        <FormControl sx={{ m: 1, width: 200 }}>
-            <InputLabel id="categories-multiple-checkbox-label">Categories</InputLabel>
+        <FormControl sx={{ m: 1, width: 140, textAlign: 'left' }}>
             <Select
                 multiple
-                value={selectedCategories}
+                displayEmpty
+                value={selectedCategories.sort()}
                 onChange={handleChange}
                 onClose={handleQuery}
-                renderValue={(selected) => selected.join(', ')}
+                renderValue={() => <Typography variant='body1' component='div'>Categories</Typography>}
                 SelectDisplayProps={{
                     // @ts-ignore
                     "data-testid" : "categories-multiple-checkbox-select"
+                }}
+                sx={{
+                    background: '#E5E5EA', 
+                    '& .MuiSelect-select': {
+                        paddingTop: '7px',
+                        paddingLeft: '10px',
+                        paddingBottom: '7px'
+                    },
+                    display: 'flex',
+                    justifyContent: 'center'
                 }}
             >
                 {categories.map((subcategory, i) => (
