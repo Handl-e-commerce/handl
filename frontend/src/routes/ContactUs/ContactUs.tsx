@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, Container, SxProps, TextField } from "@mui/material";
 // TODO: (LOW) Implement contact us functionality for submitting messages
 // import { fetchWrapper } from "../../utils/fetch-wrapper";
 
@@ -35,48 +35,80 @@ function ContactUs(): JSX.Element {
         )
     }
 
+    const containerSx: SxProps = {
+        height: '100%',
+        marginBottom: '7px',
+        display: 'flex',
+        flexDirection: 'column',
+        width: '95%',
+        alignItems: 'center',
+    };
+
+    const boxSx: SxProps = {
+        border: '1px solid',
+        borderColor: 'primary.main',
+        borderRadius: '8px',
+        padding: '7px'
+    }
+
+    const textFieldSx: SxProps = {
+        width: '90%',
+        marginTop: '12px',
+        marginBottom: '12px',
+    };
+
+    const buttonSx: SxProps = {
+        width: '90%',
+        marginTop: '12px',
+        marginBottom: '12px',
+    };
+
     return (
-        <Box sx={{height: '100%'}}>
+        <Container sx={{height: '100%'}}>
             <h1>Contact Us</h1>
-            <div>First Name</div>
-            <TextField 
-                type="text"
-                required
-                placeholder="First Name"
-                name="firstName"
-                variant="outlined"
-                onChange={(e) => setFirstName(e.target.value)}
-            />
-            <div>Last Name</div>
-            <TextField
-                type="text"
-                required
-                placeholder="Last Name"
-                name="lastName"
-                variant="outlined"
-                onChange={(e) => setLastName(e.target.value)}
-            />
-            <div>Email</div>
-            <TextField 
-                type="email"
-                required
-                placeholder="Email"
-                name="email"
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <div>Message</div>
-            <TextField 
-                type="text"
-                multiline
-                required
-                placeholder="Message"
-                inputProps={{ maxLength: 1500 }}
-                variant="outlined"
-                name="message"
-                onChange={(e) => setMessage(e.target.value)}
-            />
-            <Button onClick={handleSubmitMessage} disabled={!isDisabled()} variant="contained">Submit</Button>
-        </Box>
+            <Box sx={boxSx}>
+                <TextField 
+                    type="text"
+                    required
+                    placeholder="First Name"
+                    name="firstName"
+                    variant="outlined"
+                    onChange={(e) => setFirstName(e.target.value)}
+                    sx={textFieldSx}
+                />
+                <TextField
+                    type="text"
+                    required
+                    placeholder="Last Name"
+                    name="lastName"
+                    variant="outlined"
+                    onChange={(e) => setLastName(e.target.value)}
+                    sx={textFieldSx}
+                />
+                <TextField 
+                    type="email"
+                    required
+                    placeholder="Email"
+                    name="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    sx={textFieldSx}
+                />
+                <TextField 
+                    type="text"
+                    multiline
+                    helperText={`${message.length}/1500`}
+                    minRows={3}
+                    required
+                    placeholder="Message"
+                    inputProps={{ maxLength: 1500 }}
+                    variant="outlined"
+                    name="message"
+                    onChange={(e) => setMessage(e.target.value)}
+                    sx={{...textFieldSx,}}
+                />
+                <Button sx={buttonSx} onClick={handleSubmitMessage} disabled={!isDisabled()} variant="contained">Submit</Button>
+            </Box>
+        </Container>
     );
 };
 

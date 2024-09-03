@@ -34,14 +34,6 @@ const theme = createTheme({
         color: "primary",
       }
     },
-    MuiCssBaseline: {
-      styleOverrides: () => `
-        button {
-          width: 90px;
-          height: 32px;
-        }
-      `
-    }
   }
 });
 
