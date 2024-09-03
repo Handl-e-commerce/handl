@@ -3,10 +3,9 @@ import { SearchBar } from "../SearchBar/SearchBar";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { cookieParser, deleteCookie } from "../../utils/cookie-util";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
-import { Button, Menu, MenuItem, SxProps } from "@mui/material";
+import { Button, Menu, MenuItem, SxProps, Grid } from "@mui/material";
 import { KeyboardArrowDown, Logout } from "@mui/icons-material";
 import svg from '../../static/5_SVG-cropped.svg';
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 const envVariables = process.env;
 const {
@@ -80,14 +79,14 @@ function Header(): JSX.Element {
             color: '#F2E5D1',
             marginBottom: '14px'
         }}>
-            <Grid2 container>
-                <Grid2 xs={6} sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline'}}>
+            <Grid container>
+                <Grid item xs={6} sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline'}}>
                     <a href={location.origin} target="_self">
                         <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
                     </a>
-                </Grid2>
+                </Grid>
                 {loggedIn && 
-                    <Grid2 xs={6} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
+                    <Grid item xs={6} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
                         <Button
                             variant="contained"
                             onClick={handleDropdownClick}
@@ -110,17 +109,17 @@ function Header(): JSX.Element {
                                 <Logout/>
                             </MenuItem>
                         </Menu>
-                    </Grid2>
+                    </Grid>
                 }
-                <Grid2 xs={6} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
+                <Grid item xs={6} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
                     {!isLoginOrSignUpPage && !loggedIn && <Button variant="contained" sx={signupButtonSx} onClick={redirectSignUp}>Sign Up</Button>}
                     {!isLoginOrSignUpPage && !loggedIn && <Button variant="outlined" sx={loginButtonSx} onClick={redirectLogin}>Login</Button>}
-                </Grid2>
-            </Grid2>
+                </Grid>
+            </Grid>
             {isLandingPage && 
-                <Grid2 xs={12}>
+                <Grid item xs={12}>
                     <SearchBar />
-                </Grid2>
+                </Grid>
             }
         </header>
     );
