@@ -19,7 +19,7 @@ function Password(): JSX.Element {
     useEffect(() => {
         let ignore = false;
         if (!ignore) {
-            // verifyResetToken();
+            verifyResetToken();
         };
         return () => { ignore = true };
     }, []);
