@@ -356,12 +356,12 @@ function SignUp(): JSX.Element {
     }
 
     const textFieldSx: SxProps = {
-        width: '70%',
+        width: '80%',
         marginTop: '7px',
     };
 
     const buttonSx: SxProps = {
-        width: '70%',
+        width: '80%',
         height: '7.5%',
         marginTop: '7px',
         marginBottom: '7px',
@@ -457,7 +457,7 @@ function SignUp(): JSX.Element {
                         name="City"
                         data-testid="city-input"
                         onChange={(e) => setCity(e.target.value)}
-                        sx={{width: '30%',}}
+                        sx={{width: '35%',}}
                     />
                     <FormControl sx={{ width: '20%'}}>
                         <Select
@@ -487,7 +487,7 @@ function SignUp(): JSX.Element {
                         name="zipcode"
                         data-testid="zipcode-input"
                         onChange={(e) => setZipcode(e.target.value)}
-                        sx={{ width: '20%' }}
+                        sx={{ width: '25%' }}
                     />
                 </Box>
                 <TextField
@@ -505,23 +505,24 @@ function SignUp(): JSX.Element {
                         setPassword(e.target.value);
                     }}
                     InputProps={{
-                        endAdornment: 
-                        <InputAdornment position="start">
-                            <IconButton
-                                aria-label="toggle password visibility"
-                                data-testid='password-toggle-icon'
-                                onClick={() => setShowPassword(!showPassword)}
-                                edge='end'
-                                sx={{width: '40px', alignItems: 'center'}}
-                            >
-                                {showPassword ? <VisibilityOff data-testid="hide-password-switch"/> : <Visibility data-testid="show-password-switch"/>} 
-                            </IconButton>
-                        </InputAdornment>
+                        endAdornment: (
+                            <InputAdornment position="start">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    data-testid='password-toggle-icon'
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    edge='end'
+                                    sx={{width: '40px', alignItems: 'center'}}
+                                >
+                                    {showPassword ? <VisibilityOff data-testid="hide-password-switch"/> : <Visibility data-testid="show-password-switch"/>} 
+                                </IconButton>
+                            </InputAdornment>
+                        )
                     }}
                     sx={textFieldSx}
-                />
-                <Button className="create-account-button" variant="contained" disabled={!canSubmit()} onClick={createAccount} data-testid="registration-button" sx={buttonSx}>Register</Button>
+                    />
                 {invalidPasswordMessage !== "" && <div data-testid="invalid-password-message">{invalidPasswordMessage}</div>}
+                <Button className="create-account-button" variant="contained" disabled={!canSubmit()} onClick={createAccount} data-testid="registration-button" sx={buttonSx}>Register</Button>
                 {signUpSuccess === false ? <div className="sign-up-error" data-testid="sign-up-error">User already exists.</div> : null}
             </Box>
         </Container>

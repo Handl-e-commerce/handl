@@ -56,38 +56,7 @@ function Login(): JSX.Element {
             setIsBusy(false);
         };
     };
-
-    if (isForgotPassword) {
-        if (submittedResetRequest) {
-            return (
-                <div style={{height: '100%'}}>
-                    We've sent a password reset link to your email.
-                </div>
-            )
-        }
-        return (
-            <Box sx={{height: '100%'}}>
-                <div>Enter the email associated with your account</div>
-                <TextField 
-                    type="email"
-                    placeholder="Business Email"
-                    name="business_email"
-                    variant="outlined"
-                    className="login-input"
-                    role="reset-password-email-input"
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <Button 
-                    onClick={handlePasswordResetRequest}
-                    disabled={isBusy || email.length === 0}
-                >
-                    Request Password Reset
-                </Button>
-                {/* TODO: (MEDIUM) add captcha here to prevent bot requests */}
-            </Box>
-        )
-    };
-
+    
     const containerSx: SxProps = {
         height: '100%',
         marginBottom: '7px',
@@ -115,6 +84,43 @@ function Login(): JSX.Element {
         marginTop: '24px',
         marginBottom: '24px',
     };
+
+    if (isForgotPassword) {
+        if (submittedResetRequest) {
+            return (
+                <div style={{height: '100%'}}>
+                    We've sent a password reset link to your email.
+                </div>
+            )
+        }
+        return (
+            <Container sx={containerSx}>
+                <h3>Enter the email associated with your account</h3>
+                <Box sx={boxSx}>
+                    <TextField 
+                        type="email"
+                        placeholder="Business Email"
+                        name="business_email"
+                        variant="outlined"
+                        className="login-input"
+                        role="reset-password-email-input"
+                        sx={textFieldSx}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Button 
+                        onClick={handlePasswordResetRequest}
+                        variant='contained'
+                        disabled={isBusy || email.length === 0}
+                        sx={ButtonSx}
+                    >
+                        Request Password Reset
+                    </Button>
+                    {/* TODO: (MEDIUM) add captcha here to prevent bot requests */}
+                </Box>
+            </Container>
+        )
+    };
+
 
     return (
         <Container sx={containerSx}
@@ -150,10 +156,6 @@ function Login(): JSX.Element {
                             </InputAdornment>
                     }}
                 />
-                {/* {showPassword ? 
-                    <VisibilityOff onClick={() => setShowPassword(!showPassword)} data-testid="hide-password-switch"/> : 
-                    <Visibility onClick={() => setShowPassword(!showPassword)} data-testid="show-password-switch"/>
-                } */}
                 {hasError && 
                     <div className="error-message">The email or password you entered was incorrect</div>
                 }
