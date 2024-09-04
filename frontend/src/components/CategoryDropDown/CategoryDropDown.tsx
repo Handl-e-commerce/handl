@@ -43,7 +43,8 @@ function CategoryDropDown({categories, selectedCategories, setSelectedCategories
                         paddingBottom: '7px'
                     },
                     display: 'flex',
-                    justifyContent: 'center'
+                    justifyContent: 'center',
+                    marginLeft: '7px'
                 }}
             >
                 {categories.map((subcategory, i) => (

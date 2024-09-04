@@ -4,7 +4,7 @@ import { Vendor } from "../../types/types";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { CategoryDropDown } from "../../components/CategoryDropDown/CategoryDropDown";
-import { Box, Button, Chip, Container, Paper, Typography  } from '@mui/material';
+import { Box, Button, Chip, Container, Grid, Paper, Typography  } from '@mui/material';
 import { Table } from "../../components/Table/Table";
 
 const envVariables = process.env;
@@ -17,7 +17,7 @@ function Results(): JSX.Element {
     let location = window.location;
 
     const [vendors, setVendors] = useState<Vendor[]>([]);
-    const [categories, setCategories] = useState<string[]>([]);
+    const [categories, setCategories] = useState<string[]>();
     const [selectedCategories, setSelectedCategories] = useState<string[]>(queryParams.get("categories")?.split(",") ?? []);
     const [width, setWidth] = useState<number>(window.innerWidth);
     const [loadingData, setLoadingData] = useState<boolean>(true);
@@ -122,12 +122,18 @@ function Results(): JSX.Element {
     return (
         <>
             <SearchBar isLandingPage={false} data-testid="search-bar"/>
-            {categories.length > 0 && <CategoryDropDown 
-                categories={categories}
-                selectedCategories={selectedCategories}
-                setSelectedCategories={setSelectedCategories}
-                handleQuery={handleQuery}
-            />}
+            <Grid container spacing={3}>
+                {categories &&
+                    <Grid item xs={1}> 
+                        <CategoryDropDown 
+                            categories={categories}
+                            selectedCategories={selectedCategories}
+                            setSelectedCategories={setSelectedCategories}
+                            handleQuery={handleQuery}
+                        />
+                    </Grid>
+                }
+            </Grid>
             {queryParams.get("search-params") ? <div onClick={handleRemoveSearchVal}>{queryParams.get("search-params")}</div> : null}
             <div data-testid="chips-container">
                 {selectedCategories.map((category) => <Chip key={category} label={category} onDelete={() => handleRemoveCategoryChip(category)} />)}
