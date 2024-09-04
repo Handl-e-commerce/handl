@@ -118,7 +118,7 @@ function Header(): JSX.Element {
             </Grid>
             {isLandingPage && 
                 <Grid item xs={12}>
-                    <SearchBar />
+                    <SearchBar isLandingPage={isLandingPage}/>
                 </Grid>
             }
         </header>

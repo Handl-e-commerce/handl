@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 describe("SearhBar Test", function() {
     const user = userEvent.setup();
     it("Enter command for input field should be disabled because input field is empty", async function() {
-        const { container } = render(<SearchBar />);
+        const { container } = render(<SearchBar isLandingPage={true}/>);
         let searchBar = screen.getByPlaceholderText('Search here');
 
         expect(searchBar).toBeRequired;
@@ -17,7 +17,7 @@ describe("SearhBar Test", function() {
     });
     
     it("Should change the url search params when user presses enter", async function() {
-        const { container } = render(<SearchBar />);
+        const { container } = render(<SearchBar isLandingPage={true}/>);
         
         let searchBar = screen.getByPlaceholderText('Search here');
         expect(searchBar).toBeRequired;

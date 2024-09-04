@@ -121,7 +121,7 @@ function Results(): JSX.Element {
 
     return (
         <>
-            <SearchBar data-testid="search-bar"/>
+            <SearchBar isLandingPage={false} data-testid="search-bar"/>
             {categories.length > 0 && <CategoryDropDown 
                 categories={categories}
                 selectedCategories={selectedCategories}
