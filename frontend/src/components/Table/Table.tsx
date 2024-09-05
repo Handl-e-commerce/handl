@@ -1,12 +1,14 @@
 import React, { useMemo } from "react";
 import {
     MaterialReactTable,
+    MRT_TablePagination,
     useMaterialReactTable,
     type MRT_ColumnDef,  
 } from 'material-react-table';
 import { Vendor } from "../../types/types";
 import { ExpandedRow } from "../ExpandedRow/ExpandedRow";
 import { NoEncryption } from "@mui/icons-material";
+import { Box } from "@mui/material";
 
 interface IMTableProps {
     isMobile: boolean;
@@ -18,6 +20,7 @@ function Table({ isMobile, data }: IMTableProps): JSX.Element {
         {
             accessorKey: "name",
             header: "Name",
+            size: 50
         },
         {
             accessorKey: "description",
@@ -26,10 +29,12 @@ function Table({ isMobile, data }: IMTableProps): JSX.Element {
         {
             accessorKey: "categories",
             header: "Categories",
+            size: 100
         },
         {
             accessorKey: "state",
             header: "State",
+            size: 10
         },
         {
             accessorKey: "email",
@@ -65,7 +70,7 @@ function Table({ isMobile, data }: IMTableProps): JSX.Element {
         columns,
         data,
         initialState: { columnVisibility: {
-            description: !isMobile,
+            description: false,
             categories: !isMobile,
             state: !isMobile,
             email: false,
@@ -81,6 +86,10 @@ function Table({ isMobile, data }: IMTableProps): JSX.Element {
         muiExpandButtonProps: ({ row, table }) => ({
           onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //set only this row to be expanded
         }),
+        enableBottomToolbar: false,
+        muiTableContainerProps: {
+            
+        },
         muiTableHeadCellProps: {
             sx: {
                 background: '#363636',
@@ -88,7 +97,7 @@ function Table({ isMobile, data }: IMTableProps): JSX.Element {
                 '& .MuiButtonBase-root': {
                     color: 'white'
                 },
-                '& .css-tcv2st-MuiButtonBase-root-MuiTableSortLabel-root.Mui-active .MuiTableSortLabel-icon ': {
+                '& .MuiTableSortLabel-root': {
                     color: 'white',
                 },
             }
@@ -98,10 +107,17 @@ function Table({ isMobile, data }: IMTableProps): JSX.Element {
                 background: '#F2F2F7',
                 border: '1px solid #F5F5F5'
             }
-        }
+        },
     });
     
-    return <MaterialReactTable table={table} />
+    return (
+        <Box>
+            <MaterialReactTable table={table} />
+            <MRT_TablePagination table={table} sx={{
+                fontSize: '12px'
+            }}/>
+        </Box>
+    )
 };
 
 export { Table };
