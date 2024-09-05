@@ -6,6 +6,7 @@ import {
 } from 'material-react-table';
 import { Vendor } from "../../types/types";
 import { ExpandedRow } from "../ExpandedRow/ExpandedRow";
+import { NoEncryption } from "@mui/icons-material";
 
 interface IMTableProps {
     isMobile: boolean;
@@ -80,6 +81,24 @@ function Table({ isMobile, data }: IMTableProps): JSX.Element {
         muiExpandButtonProps: ({ row, table }) => ({
           onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //set only this row to be expanded
         }),
+        muiTableHeadCellProps: {
+            sx: {
+                background: '#363636',
+                color: 'white',
+                '& .MuiButtonBase-root': {
+                    color: 'white'
+                },
+                '& .css-tcv2st-MuiButtonBase-root-MuiTableSortLabel-root.Mui-active .MuiTableSortLabel-icon ': {
+                    color: 'white',
+                },
+            }
+        },
+        muiTableBodyCellProps: {
+            sx: {
+                background: '#F2F2F7',
+                border: '1px solid #F5F5F5'
+            }
+        }
     });
     
     return <MaterialReactTable table={table} />
