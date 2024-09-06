@@ -26,6 +26,7 @@ function Results(): JSX.Element {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const data: Vendor[] = useMemo(() => vendors, [loadingData]);
     let loggedIn: boolean = useLoginStatus();
+    let searchParam = queryParams.get("search-params");
 
     useEffect(() => {
         let ignore = false;
@@ -134,9 +135,18 @@ function Results(): JSX.Element {
                     </Grid>
                 }
             </Grid>
-            {queryParams.get("search-params") ? <div onClick={handleRemoveSearchVal}>{queryParams.get("search-params")}</div> : null}
+            {searchParam ? <Chip key={searchParam} label={searchParam} sx={{ margin: '4px 1px' }} onDelete={handleRemoveSearchVal}/> : null}
             <div data-testid="chips-container">
-                {selectedCategories.map((category) => <Chip key={category} label={category} onDelete={() => handleRemoveCategoryChip(category)} />)}
+                {selectedCategories.map(
+                    (category) => (
+                        <Chip 
+                            key={category}
+                            label={category}
+                            sx={{ margin: '4px 1px' }}
+                            onDelete={() => handleRemoveCategoryChip(category)}
+                        />
+                    )
+                )}
             </div>
             <Table isMobile={isMobile} data={data} data-testid="table"/>
         </Container>
