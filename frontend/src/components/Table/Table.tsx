@@ -87,6 +87,11 @@ function Table({ isMobile, data }: IMTableProps): JSX.Element {
           onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //set only this row to be expanded
         }),
         enableBottomToolbar: false,
+        muiPaginationProps: {
+            rowsPerPageOptions: [10, 25, 50, 100],
+            showFirstButton: false,
+            showLastButton: false,
+        },
         muiTableContainerProps: {
             
         },
