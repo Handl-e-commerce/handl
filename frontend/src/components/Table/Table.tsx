@@ -7,8 +7,7 @@ import {
 } from 'material-react-table';
 import { Vendor } from "../../types/types";
 import { ExpandedRow } from "../ExpandedRow/ExpandedRow";
-import { NoEncryption } from "@mui/icons-material";
-import { Box } from "@mui/material";
+import { Container } from "@mui/material";
 
 interface IMTableProps {
     isMobile: boolean;
@@ -29,7 +28,7 @@ function Table({ isMobile, data }: IMTableProps): JSX.Element {
         {
             accessorKey: "categories",
             header: "Categories",
-            size: 100
+            size: 150
         },
         {
             accessorKey: "state",
@@ -87,13 +86,21 @@ function Table({ isMobile, data }: IMTableProps): JSX.Element {
           onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //set only this row to be expanded
         }),
         enableBottomToolbar: false,
+        layoutMode: 'grid',
+        displayColumnDefOptions: {
+            'mrt-row-expand': {
+                size: 1
+            }
+        },
         muiPaginationProps: {
             rowsPerPageOptions: [10, 25, 50, 100],
             showFirstButton: false,
             showLastButton: false,
         },
-        muiTableContainerProps: {
-            
+        muiTablePaperProps: {
+            sx: {
+                width: '100%'
+            }
         },
         muiTableHeadCellProps: {
             sx: {
@@ -105,7 +112,7 @@ function Table({ isMobile, data }: IMTableProps): JSX.Element {
                 '& .MuiTableSortLabel-root': {
                     color: 'white',
                 },
-            }
+            },
         },
         muiTableBodyCellProps: {
             sx: {
@@ -116,12 +123,27 @@ function Table({ isMobile, data }: IMTableProps): JSX.Element {
     });
     
     return (
-        <Box>
-            <MaterialReactTable table={table} />
-            <MRT_TablePagination table={table} sx={{
-                fontSize: '12px'
-            }}/>
-        </Box>
+        <Container sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingLeft: '1px', paddingRight: '1px'}}>
+                <MaterialReactTable table={table} />
+                <MRT_TablePagination table={table} sx={{
+                    '& .MuiTablePagination-root .MuiBox-root': {
+                        fontSize: '12px',
+                        display: 'flex',
+                        width: '100%',
+                        justifyContent: 'space-between',
+                        '& .MuiBox-root': {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            '& .MuiFormLabel-root': {
+                                position: 'absolute',
+                                top: '1px',
+                                background: '#F7F7F7',
+    
+                            },
+                        }
+                    }
+                }}/>
+        </Container>
     )
 };
 

@@ -120,7 +120,7 @@ function Results(): JSX.Element {
     };
 
     return (
-        <>
+        <Container sx={{paddingLeft: '1px', paddingRight: '1px'}}>
             <SearchBar isLandingPage={false} data-testid="search-bar"/>
             <Grid container spacing={3}>
                 {categories &&
@@ -139,7 +139,7 @@ function Results(): JSX.Element {
                 {selectedCategories.map((category) => <Chip key={category} label={category} onDelete={() => handleRemoveCategoryChip(category)} />)}
             </div>
             <Table isMobile={isMobile} data={data} data-testid="table"/>
-        </>
+        </Container>
     )
 };
 
