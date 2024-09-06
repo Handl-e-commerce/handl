@@ -5,7 +5,7 @@ import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { CategoryDropDown } from "../../components/CategoryDropDown/CategoryDropDown";
 import { Box, Button, Chip, Container, Grid, Paper, Typography  } from '@mui/material';
-import { Table } from "../../components/Table/Table";
+import { Test } from "../../components/Table/Test";
 
 const envVariables = process.env;
 const {
@@ -120,7 +120,7 @@ function Results(): JSX.Element {
     };
 
     return (
-        <Container sx={{paddingLeft: '1px', paddingRight: '1px'}}>
+        <Container sx={{paddingLeft: '1px', paddingRight: '1px', height: '100%'}}>
             <SearchBar isLandingPage={false} data-testid="search-bar"/>
             <Grid container spacing={3}>
                 {categories &&
@@ -138,7 +138,8 @@ function Results(): JSX.Element {
             <div data-testid="chips-container">
                 {selectedCategories.map((category) => <Chip key={category} label={category} onDelete={() => handleRemoveCategoryChip(category)} />)}
             </div>
-            <Table isMobile={isMobile} data={data} data-testid="table"/>
+            <Test isMobile={isMobile} data={data}/>
+            {/* <Table isMobile={isMobile} data={data} data-testid="table"/> */}
         </Container>
     )
 };
