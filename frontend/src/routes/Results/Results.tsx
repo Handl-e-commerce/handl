@@ -4,7 +4,7 @@ import { Vendor } from "../../types/types";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { CategoryDropDown } from "../../components/CategoryDropDown/CategoryDropDown";
-import { Box, Button, Chip, Container, Grid, Paper, Typography  } from '@mui/material';
+import { Box, Button, Chip, Container, Grid, Paper, SxProps, Typography  } from '@mui/material';
 import { Test } from "../../components/Table/Test";
 
 const envVariables = process.env;
@@ -105,9 +105,19 @@ function Results(): JSX.Element {
         location.replace(location.origin + "/login?");
     };
 
+    const containerSx: SxProps = {
+        paddingLeft: '1px', 
+        paddingRight: '1px', 
+        height: '100%', 
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: loggedIn ? 'center' : 'none',
+        justifyContent: loggedIn ? 'none' : 'center',
+    }
+
     if (!loggedIn) {
         return (
-            <Container sx={{height: '100%', display: 'flex', justifyContent: 'center'}}>
+            <Container sx={containerSx}>
                 <Paper elevation={24} sx={{width: 'fit-content', padding: 5, background: '#F2F2F7', height: 'fit-content'}}>
                     <Box sx={{}}>
                         <Typography id="modal-title" variant="h4" component="h4" sx={{textAlign: 'center'}}>Login or Sign up to get full access to our data!</Typography>
@@ -121,7 +131,7 @@ function Results(): JSX.Element {
     };
 
     return (
-        <Container sx={{paddingLeft: '1px', paddingRight: '1px', height: '100%'}}>
+        <Container sx={containerSx}>
             <SearchBar isLandingPage={false} data-testid="search-bar"/>
             <Grid container spacing={3}>
                 {categories &&

@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, SxProps } from "@mui/material";
 import { Vendor } from "../../types/types";
 
 interface ITableProps {
@@ -8,10 +8,25 @@ interface ITableProps {
 };
 
 function Test({isMobile, data}: ITableProps): JSX.Element {
+    const tableContainerSx: SxProps = {
+        overflowY: 'scroll',
+        maxHeight: '90%',
+        maxWidth: '95%',
+        background: '#F2F2F7',
+    }
+
+    const tableHeadSx: SxProps = {
+        background: '#363636',
+        '& .MuiTableCell-root': {
+            color: 'white',
+            fontWeight: 'bold',
+        },
+    }
+
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: '95%'}} aria-label="Results Table">
-                <TableHead>
+        <TableContainer className="HideScrollbar" component={Paper} sx={tableContainerSx}>
+            <Table aria-label="Results Table">
+                <TableHead sx={tableHeadSx}>
                     <TableRow>
                         <TableCell>Name</TableCell>
                         {!isMobile && <TableCell>Categories</TableCell>}
