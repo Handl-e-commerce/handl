@@ -67,10 +67,9 @@ function Login(): JSX.Element {
     };
 
     const boxSx: SxProps = {
-        border: '1px solid',
-        borderColor: 'primary.main',
         borderRadius: '8px',
-        padding: '7px'
+        padding: '7px',
+        boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)'
     }
 
     const textFieldSx: SxProps = {

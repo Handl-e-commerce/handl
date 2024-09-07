@@ -349,10 +349,9 @@ function SignUp(): JSX.Element {
     };
 
     const boxSx: SxProps = {
-        border: '1px solid',
-        borderColor: 'primary.main',
         borderRadius: '8px',
-        padding: '7px'
+        padding: '7px',
+        boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)'
     }
 
     const textFieldSx: SxProps = {
@@ -364,7 +363,7 @@ function SignUp(): JSX.Element {
         width: '80%',
         height: '7.5%',
         marginTop: '7px',
-        marginBottom: '7px',
+        marginBottom: '24px',
     };
 
     return (
