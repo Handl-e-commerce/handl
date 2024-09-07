@@ -58,6 +58,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
         alignItems: 'center',
         maxHeight: '75%',
         maxWidth: '95%',
+        borderRadius: '4px',
         boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)'
     }
 
@@ -65,8 +66,6 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
         overflowY: 'scroll',
         background: '#F2F2F7',
         borderBottom: 'none',
-        borderTopLeftRadius: '4px',
-        borderTopRightRadius: '4px',
         boxShadow: 'none'
     };
 
@@ -74,7 +73,6 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
         width: '100%',
         minHeight: '52px',
         background: '#E5E5EA',
-        borderRadius: '4px',
         color: '#3C3C43',
     };
 
