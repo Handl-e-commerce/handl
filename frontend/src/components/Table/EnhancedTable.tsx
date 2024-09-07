@@ -70,6 +70,14 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
         boxShadow: 'none'
     };
 
+    const paginationSx: SxProps = {
+        width: '100%',
+        minHeight: '52px',
+        background: '#E5E5EA',
+        borderRadius: '4px',
+        color: '#3C3C43',
+    };
+
     return (
         <Box sx={boxSx}>
             <TableContainer className="HideScrollbar" component={Paper} sx={tableContainerSx}>
@@ -97,16 +105,8 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
-                sx={{
-                    width: '100%',
-                    minHeight: '52px',
-                    background: '#E5E5EA',
-                    borderRadius: '4px',
-                    color: '#3C3C43',
-                    '& .MuiToolbar-root-MuiTablePagination-toolbar': {
-                        width: '100%'
-                    }
-                }}
+                labelRowsPerPage='Rows per page'
+                sx={paginationSx}
             />
         </Box>
     )
