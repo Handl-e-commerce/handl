@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { Vendor } from "../../types/types";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { CategoryDropDown } from "../../components/CategoryDropDown/CategoryDropDown";
-import { Box, Button, Chip, Container, Grid, Paper, SxProps, Typography  } from '@mui/material';
+import { Box, Button, Chip, CircularProgress, Container, Grid, Paper, SxProps, Typography  } from '@mui/material';
 import { EnhancedTable } from "../../components/Table/EnhancedTable";
 
 const envVariables = process.env;
@@ -156,8 +156,7 @@ function Results(): JSX.Element {
                     )
                 )}
             </div>
-            <EnhancedTable isMobile={isMobile} data={vendors} loadingData={loadingData}/>
-            {/* <Table isMobile={isMobile} data={data} data-testid="table"/> */}
+            {loadingData ? <CircularProgress/> : <EnhancedTable isMobile={isMobile} data={vendors} loadingData={loadingData}/>}
         </Container>
     )
 };

@@ -24,6 +24,7 @@ interface HeadCell {
 function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhancedTableProps) {
     const tableHeadSx: SxProps = {
         background: '#363636',
+        height: '36px',
     };
 
     const createSortHandler =
