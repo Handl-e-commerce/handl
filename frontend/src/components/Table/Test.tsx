@@ -1,6 +1,7 @@
 import React from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, SxProps } from "@mui/material";
 import { Vendor } from "../../types/types";
+import { EnhancedTableHead } from "./EnhancedTableHead";
 
 type Order = 'asc' | 'desc';
 
@@ -12,9 +13,7 @@ interface ITableProps {
 function Test({isMobile, data}: ITableProps): JSX.Element {
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof Vendor>('name');
-    const [selected, setSelected] = React.useState<readonly number[]>([]);
     const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -26,28 +25,22 @@ function Test({isMobile, data}: ITableProps): JSX.Element {
         }
         return 0;
     }
-      
-    function getComparator<Key extends keyof any>(
-        order: Order,
-        orderBy: Key,
-    ): (
-        a: { [key in Key]: number | string },
-        b: { [key in Key]: number | string },
-    ) => number {
-        return order === 'desc' ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy);
+
+    const handleRequestSort = (
+        event: React.MouseEvent<unknown>,
+        property: keyof Vendor,
+      ) => {
+        const isAsc = orderBy === property && order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        setOrderBy(property);
     };
 
-    function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
-        const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-        stabilizedThis.sort((a, b) => {
-          const order = comparator(a[0], b[0]);
-          if (order !== 0) {
-            return order;
-          }
-          return a[1] - b[1];
-        });
-        return stabilizedThis.map((el) => el[0]);
-    };
+    const visibleRows = React.useMemo(() => 
+        data.slice().sort(
+            (a, b) => order === 'desc' ? descendingComparator(a, b, orderBy) : -descendingComparator(a, b, orderBy)
+        ),
+        [order, orderBy, page, rowsPerPage]
+    );
 
     const tableContainerSx: SxProps = {
         overflowY: 'scroll',
@@ -56,26 +49,12 @@ function Test({isMobile, data}: ITableProps): JSX.Element {
         background: '#F2F2F7',
     };
 
-    const tableHeadSx: SxProps = {
-        background: '#363636',
-        '& .MuiTableCell-root': {
-            color: 'white',
-            fontWeight: 'bold',
-        },
-    };
-
     return (
         <TableContainer className="HideScrollbar" component={Paper} sx={tableContainerSx}>
             <Table aria-label="Results Table">
-                <TableHead sx={tableHeadSx}>
-                    <TableRow>
-                        <TableCell>Name</TableCell>
-                        {!isMobile && <TableCell>Categories</TableCell>}
-                        {!isMobile && <TableCell>State</TableCell>}
-                    </TableRow>
-                </TableHead>
+                <EnhancedTableHead isMobile={isMobile} order={order} orderBy={orderBy} onRequestSort={handleRequestSort}/>
                 <TableBody>
-                    {data.map((vendor) => (
+                    {visibleRows.map((vendor) => (
                         <TableRow 
                             key={vendor.uuid}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
