@@ -34,6 +34,32 @@ const theme = createTheme({
         color: "primary",
       }
     },
+    MuiTableSortLabel: {
+     styleOverrides: {
+      root: {
+        color: 'white',
+        fontWeight: 'bold',
+        paddingLeft: '7px',
+        '&$icon': {
+          opacity: 1,
+          color: 'white'
+        },
+        '&:hover': {
+          color: 'white',
+          '&&$icon': {
+            opacity: 1,
+            color: 'white'
+          },
+        },
+        '&.Mui-active': {
+          color: 'white',
+          '& .MuiTableSortLabel-icon': {
+            color: 'white !important',
+          },
+        },
+      }
+     } 
+    }
   }
 });
 

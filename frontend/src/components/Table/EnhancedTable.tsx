@@ -45,7 +45,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
 
     const tableContainerSx: SxProps = {
         overflowY: 'scroll',
-        maxHeight: '90%',
+        maxHeight: '75%',
         maxWidth: '95%',
         background: '#F2F2F7',
     };

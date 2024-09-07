@@ -1,6 +1,7 @@
 import React from "react";
 import { Vendor } from "../../types/types";
 import { TableHead, TableRow, TableCell, TableSortLabel, Box, SxProps } from "@mui/material";
+import { KeyboardArrowUpOutlined, KeyboardArrowDownOutlined } from "@mui/icons-material";
 import { visuallyHidden } from '@mui/utils';
 
 type Order = 'asc' | 'desc';
@@ -23,22 +24,6 @@ interface HeadCell {
 function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhancedTableProps) {
     const tableHeadSx: SxProps = {
         background: '#363636',
-        '& .MuiTableCell-root': {
-            color: 'white',
-            fontWeight: 'bold',
-            paddingLeft: '7px',
-        },
-        '& .MuiTableSortLabel-root': {
-            color: 'white',
-            fontWeight: 'bold',
-            paddingLeft: '7px',
-        },
-        '& .MuiButtonBase-root-MuiTableSortLabel-root.Mui-active': {
-            color: 'white',
-            '& .MuiTableSortLabel-icon': {
-                color: 'white',
-            }
-        },
     };
 
     const createSortHandler =
@@ -85,9 +70,10 @@ function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhance
                         sortDirection={orderBy === column.id ? order : false}
                     >
                         <TableSortLabel
-                        active={orderBy === column.id}
-                        direction={orderBy === column.id ? order : 'asc'}
-                        onClick={createSortHandler(column.id)}
+                            active={orderBy === column.id}
+                            direction={orderBy === column.id ? order : 'asc'}
+                            onClick={createSortHandler(column.id)}
+                            IconComponent={orderBy === column.id ? KeyboardArrowUpOutlined : KeyboardArrowDownOutlined }
                         >
                         {column.label}
                         {orderBy === column.id ? (
