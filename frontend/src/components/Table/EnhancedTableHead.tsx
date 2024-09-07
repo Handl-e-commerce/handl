@@ -33,8 +33,11 @@ function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhance
             fontWeight: 'bold',
             paddingLeft: '7px',
         },
-        '& .MuiSvgIcon-root': {
+        '& .MuiButtonBase-root-MuiTableSortLabel-root.Mui-active': {
             color: 'white',
+            '& .MuiTableSortLabel-icon': {
+                color: 'white',
+            }
         },
     };
 

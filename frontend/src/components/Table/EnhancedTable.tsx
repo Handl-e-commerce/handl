@@ -8,9 +8,10 @@ type Order = 'asc' | 'desc';
 interface ITableProps {
     isMobile: boolean;
     data: Vendor[];
+    loadingData: boolean;
 };
 
-function Test({isMobile, data}: ITableProps): JSX.Element {
+function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Element {
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof Vendor>('name');
     const [page, setPage] = React.useState(0);
@@ -39,7 +40,7 @@ function Test({isMobile, data}: ITableProps): JSX.Element {
         data.slice().sort(
             (a, b) => order === 'desc' ? descendingComparator(a, b, orderBy) : -descendingComparator(a, b, orderBy)
         ),
-        [order, orderBy, page, rowsPerPage]
+        [order, orderBy, page, rowsPerPage, loadingData]
     );
 
     const tableContainerSx: SxProps = {
@@ -70,4 +71,4 @@ function Test({isMobile, data}: ITableProps): JSX.Element {
     )
 };
 
-export { Test };
+export { EnhancedTable };

@@ -5,7 +5,7 @@ import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { CategoryDropDown } from "../../components/CategoryDropDown/CategoryDropDown";
 import { Box, Button, Chip, Container, Grid, Paper, SxProps, Typography  } from '@mui/material';
-import { Test } from "../../components/Table/Test";
+import { EnhancedTable } from "../../components/Table/EnhancedTable";
 
 const envVariables = process.env;
 const {
@@ -23,8 +23,6 @@ function Results(): JSX.Element {
     const [loadingData, setLoadingData] = useState<boolean>(true);
     // Setting it to 393 to match iPhone Plus widths
     const isMobile: boolean = width <= 430;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const data: Vendor[] = useMemo(() => vendors, [loadingData]);
     let loggedIn: boolean = useLoginStatus();
     let searchParam = queryParams.get("search-params");
 
@@ -158,7 +156,7 @@ function Results(): JSX.Element {
                     )
                 )}
             </div>
-            <Test isMobile={isMobile} data={data}/>
+            <EnhancedTable isMobile={isMobile} data={vendors} loadingData={loadingData}/>
             {/* <Table isMobile={isMobile} data={data} data-testid="table"/> */}
         </Container>
     )
