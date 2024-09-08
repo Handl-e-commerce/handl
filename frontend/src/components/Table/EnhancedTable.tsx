@@ -2,6 +2,7 @@ import React from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, SxProps, TablePagination, Box } from "@mui/material";
 import { Vendor } from "../../types/types";
 import { EnhancedTableHead } from "./EnhancedTableHead";
+import { EnhancedRow } from "./EnhancedRow";
 
 type Order = 'asc' | 'desc';
 
@@ -57,7 +58,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
         flexDirection: 'column',
         alignItems: 'center',
         maxHeight: '75%',
-        maxWidth: '95%',
+        maxWidth: '100%',
         borderRadius: '4px',
         boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)'
     }
@@ -83,14 +84,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
                     <EnhancedTableHead isMobile={isMobile} order={order} orderBy={orderBy} onRequestSort={handleRequestSort}/>
                     <TableBody>
                         {visibleRows.map((vendor) => (
-                            <TableRow 
-                                key={vendor.uuid}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component='th' scope='row'>{vendor.name}</TableCell>
-                                {!isMobile && <TableCell>{vendor.categories}</TableCell>}
-                                {!isMobile && <TableCell>{vendor.state}</TableCell>}
-                            </TableRow>
+                            <EnhancedRow key={vendor.uuid} isMobile={isMobile} data={vendor}/>
                         ))}
                     </TableBody>
                 </Table>

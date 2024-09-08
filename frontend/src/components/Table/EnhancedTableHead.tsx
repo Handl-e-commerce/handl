@@ -63,6 +63,7 @@ function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhance
     return (
         <TableHead sx={tableHeadSx}>
             <TableRow>
+                <TableCell />
                 {columns.map((column) => (
                     <TableCell
                         key={column.id}

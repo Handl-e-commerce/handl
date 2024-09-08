@@ -81,7 +81,7 @@ function Table({ isMobile, data }: IMTableProps): JSX.Element {
             phoneNumber: false,
         }},
         enableExpandAll: false,
-        renderDetailPanel: ({ row }) => <ExpandedRow row={row} />,
+        // renderDetailPanel: ({ row }) => <ExpandedRow row={row} />,
         muiExpandButtonProps: ({ row, table }) => ({
           onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //set only this row to be expanded
         }),
