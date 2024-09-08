@@ -32,12 +32,14 @@ function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhance
             onRequestSort(event, property);
     };
 
-    const columns: readonly HeadCell[] = isMobile ? [
+    type CustomHeadCell = HeadCell & { width: string };
+    const columns: readonly CustomHeadCell[] = isMobile ? [
         {
             id: 'name',
             numeric: false,
             disablePadding: true,
             label: 'Name',
+            width: '84%'
         },
     ] : [
         {
@@ -45,18 +47,21 @@ function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhance
           numeric: false,
           disablePadding: true,
           label: 'Name',
+          width: '25%'
         },
         {
           id: 'categories',
           numeric: false,
           disablePadding: false,
           label: 'Categories',
+          width: '70%'
         },
         {
           id: 'state',
           numeric: false,
           disablePadding: false,
           label: 'State',
+          width: '5%'
         },
     ];
 
@@ -70,6 +75,7 @@ function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhance
                         align={column.numeric ? 'right' : 'left'}
                         padding={column.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === column.id ? order : false}
+                        sx={{ width: column.width}}
                     >
                         <TableSortLabel
                             active={orderBy === column.id}
