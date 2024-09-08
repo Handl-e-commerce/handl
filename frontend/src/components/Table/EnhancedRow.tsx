@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Vendor } from "../../types/types";
-import { TableRow, TableCell, IconButton, Collapse, Box, Typography } from "@mui/material";
+import { TableRow, TableCell, IconButton, Collapse, Box } from "@mui/material";
 import { KeyboardArrowUp, KeyboardArrowDown } from "@mui/icons-material";
 import { ExpandedRow } from "../ExpandedRow/ExpandedRow";
 
