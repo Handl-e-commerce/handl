@@ -109,19 +109,19 @@ function Results(): JSX.Element {
         height: '100%', 
         display: 'flex',
         flexDirection: 'column',
-        alignItems: loggedIn ? 'center' : 'none',
+        alignItems: 'center',
         justifyContent: loggedIn ? 'none' : 'center',
     }
 
     if (!loggedIn) {
         return (
-            <Container sx={containerSx}>
+            <Container sx={{...containerSx, width: '95%'}}>
                 <Paper elevation={24} sx={{width: 'fit-content', padding: 5, background: '#F2F2F7', height: 'fit-content'}}>
                     <Box sx={{}}>
                         <Typography id="modal-title" variant="h4" component="h4" sx={{textAlign: 'center'}}>Login or Sign up to get full access to our data!</Typography>
                         <Typography id="modal-modal-description" sx={{ mt: 2, textAlign: 'center' }}>Get access to hundreds of wholesalers and distributors today!</Typography>
-                        <Button onClick={redirectSignUp} variant="contained">Sign Up</Button>
-                        <Button onClick={redirectLogin} variant="outlined">Login</Button>
+                        <Button onClick={redirectSignUp} variant="contained" sx={{ marginTop: '7px', marginRight: '4px' }}>Sign Up</Button>
+                        <Button onClick={redirectLogin} variant="outlined" sx={{ marginTop: '7px', marginLeft: '4px' }}>Login</Button>
                     </Box>
                 </Paper>
             </Container>
