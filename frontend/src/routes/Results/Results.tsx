@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { Vendor } from "../../types/types";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { CategoryDropDown } from "../../components/CategoryDropDown/CategoryDropDown";
-import { Box, Button, Chip, Modal, Typography  } from '@mui/material';
-import { Table } from "../../components/Table/Table";
+import { Box, Button, Chip, CircularProgress, Container, Grid, Paper, SxProps, Typography  } from '@mui/material';
+import { EnhancedTable } from "../../components/Table/EnhancedTable";
 
 const envVariables = process.env;
 const {
@@ -17,14 +17,14 @@ function Results(): JSX.Element {
     let location = window.location;
 
     const [vendors, setVendors] = useState<Vendor[]>([]);
-    const [categories, setCategories] = useState<string[]>([]);
+    const [categories, setCategories] = useState<string[]>();
     const [selectedCategories, setSelectedCategories] = useState<string[]>(queryParams.get("categories")?.split(",") ?? []);
     const [width, setWidth] = useState<number>(window.innerWidth);
     const [loadingData, setLoadingData] = useState<boolean>(true);
     // Setting it to 393 to match iPhone Plus widths
     const isMobile: boolean = width <= 430;
-    const data: Vendor[] = useMemo(() => vendors, [loadingData]);
     let loggedIn: boolean = useLoginStatus();
+    let searchParam = queryParams.get("search-params");
 
     useEffect(() => {
         let ignore = false;
@@ -103,37 +103,61 @@ function Results(): JSX.Element {
         location.replace(location.origin + "/login?");
     };
 
+    const containerSx: SxProps = {
+        paddingLeft: '1px', 
+        paddingRight: '1px', 
+        height: '100%', 
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: loggedIn ? 'none' : 'center',
+    }
+
     if (!loggedIn) {
         return (
-            <Modal
-                open={!loggedIn}
-                aria-labelledby="results-modal"
-            >
-                <Box>
-                    <Typography id="modal-title" variant="h3" component="h3">Login or Sign up to get full access to our data!</Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>Get access to hundreds of wholesalers and distributors today!</Typography>
-                    <Button onClick={redirectSignUp}>Sign Up</Button>
-                    <Button onClick={redirectLogin}>Login</Button>
-                </Box>
-            </Modal>
+            <Container sx={{...containerSx, width: '95%'}}>
+                <Paper elevation={24} sx={{width: 'fit-content', padding: 5, background: '#F2F2F7', height: 'fit-content'}}>
+                    <Box sx={{}}>
+                        <Typography id="modal-title" variant="h4" component="h4" sx={{textAlign: 'center'}}>Login or Sign up to get full access to our data!</Typography>
+                        <Typography id="modal-modal-description" sx={{ mt: 2, textAlign: 'center' }}>Get access to hundreds of wholesalers and distributors today!</Typography>
+                        <Button onClick={redirectSignUp} variant="contained" sx={{ marginTop: '7px', marginRight: '4px' }}>Sign Up</Button>
+                        <Button onClick={redirectLogin} variant="outlined" sx={{ marginTop: '7px', marginLeft: '4px' }}>Login</Button>
+                    </Box>
+                </Paper>
+            </Container>
         );
     };
 
     return (
-        <>
-            <SearchBar data-testid="search-bar"/>
-            {categories.length > 0 && <CategoryDropDown 
-                categories={categories}
-                selectedCategories={selectedCategories}
-                setSelectedCategories={setSelectedCategories}
-                handleQuery={handleQuery}
-            />}
-            {queryParams.get("search-params") ? <div onClick={handleRemoveSearchVal}>{queryParams.get("search-params")}</div> : null}
+        <Container sx={containerSx}>
+            <SearchBar isLandingPage={false} data-testid="search-bar"/>
+            <Grid container spacing={3}>
+                {categories &&
+                    <Grid item xs={1}> 
+                        <CategoryDropDown 
+                            categories={categories}
+                            selectedCategories={selectedCategories}
+                            setSelectedCategories={setSelectedCategories}
+                            handleQuery={handleQuery}
+                        />
+                    </Grid>
+                }
+            </Grid>
+            {searchParam ? <Chip key={searchParam} label={searchParam} sx={{ margin: '4px 1px' }} onDelete={handleRemoveSearchVal}/> : null}
             <div data-testid="chips-container">
-                {selectedCategories.map((category) => <Chip key={category} label={category} onDelete={() => handleRemoveCategoryChip(category)} />)}
+                {selectedCategories.map(
+                    (category) => (
+                        <Chip 
+                            key={category}
+                            label={category}
+                            sx={{ margin: '4px 1px' }}
+                            onDelete={() => handleRemoveCategoryChip(category)}
+                        />
+                    )
+                )}
             </div>
-            <Table isMobile={isMobile} data={data} data-testid="table"/>
-        </>
+            {loadingData ? <CircularProgress/> : <EnhancedTable isMobile={isMobile} data={vendors} loadingData={loadingData}/>}
+        </Container>
     )
 };
 

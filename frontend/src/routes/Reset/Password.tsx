@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { cookieParser, deleteCookie } from "../../utils/cookie-util";
-import { Button, Box, TextField } from "@mui/material";
+import { Button, Box, TextField, SxProps, Typography } from "@mui/material";
 
 const envVariables = process.env;
 const {
@@ -74,13 +74,13 @@ function Password(): JSX.Element {
         return !(validPassword(newPassword).result || validPassword(confirmationPassword).result) || newPassword !== confirmationPassword;
     };
 
-    if (status === undefined) {
-        <div>Validating your information</div>
+    if (!status) {
+        <Typography id='success-message' variant='subtitle1' component='p' sx={{margin: '10px'}}>Validating your information</Typography>
     };
 
     if (status === 401) {
         return (
-            <div>{message}</div>
+            <Typography id='success-message' variant='subtitle1' component='p' sx={{margin: '10px'}}>{message}</Typography>
         )
     };
 
@@ -90,15 +90,28 @@ function Password(): JSX.Element {
 
     if (submitted && status === 201) {
         return (
-            <>
-                <h2>We've successfully reset your password.</h2>
-                <p>We will send you a confirmation email shortly.</p>
-            </>
+            <Box sx={{height: '100%'}}>
+                <Typography id='success-title' variant='h4' component='h4' sx={{margin: '10px'}}>We've successfully reset your password.</Typography>
+                <Typography id='success-message' variant='subtitle1' component='p' sx={{margin: '10px'}}>We will send you a confirmation email shortly.</Typography>
+            </Box>
         );
     };
 
+    const textFieldSx: SxProps = {
+        width: '90%',
+        marginTop: '12px',
+        marginBottom: '12px',
+    };
+
+    const buttonSx: SxProps = {
+        width: '90%',
+        marginTop: '12px',
+        marginBottom: '12px',
+        padding: '25px',
+    };
+
     return (
-        <Box component="form" role="password-reset-form">
+        <Box component="form" role="password-reset-form" sx={{height: '100%'}}>
             <h2>Enter your new password below</h2>
             <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                 <TextField 
@@ -109,7 +122,7 @@ function Password(): JSX.Element {
                     onChange={(e) => setNewPassword(e.target.value)}
                     error={!(validPassword(newPassword).result)}
                     helperText={validPassword(newPassword).message}
-                    style={{width: "15%"}}
+                    sx={textFieldSx}
                 />
                 <TextField
                     id="confirmation-password-input"
@@ -119,14 +132,14 @@ function Password(): JSX.Element {
                     onChange={(e) => setConfirmationPassword(e.target.value)}
                     error={newPassword !== confirmationPassword}
                     helperText={newPassword !== confirmationPassword ? "Passwords do not match" : null}
-                    style={{width: "15%"}}
+                    sx={textFieldSx}
                 />
                 <Button 
                     variant="contained" 
                     role="password-reset-button"
-                    onClick={submitPasswordReset} 
-                    style={{width: "15%"}}
+                    onClick={submitPasswordReset}
                     disabled={submitDisabled()}
+                    sx={buttonSx}
                 >
                     Reset Password
                 </Button>

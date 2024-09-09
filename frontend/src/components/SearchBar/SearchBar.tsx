@@ -1,7 +1,11 @@
 import React, { useState } from "react";
-import { TextField } from "@mui/material";
+import { SxProps, TextField } from "@mui/material";
 
-function SearchBar(): JSX.Element {
+interface ISearchBarProps {
+    isLandingPage: boolean;
+}
+
+function SearchBar({isLandingPage}: ISearchBarProps): JSX.Element {
     let searchParams = new URL(document.location.toString()).searchParams;
     const [searchInput, setSearchInput] = useState("");
 
@@ -22,6 +26,18 @@ function SearchBar(): JSX.Element {
         }
     };
 
+    const textfieldSx: SxProps = {
+        marginTop: isLandingPage ? '7px' : 0,
+        marginBottom: isLandingPage ? '7px' : 0,
+        paddingLeft: '16px',
+        bgcolor: '#E5E5EA',
+        color: '#E0E0E0',
+        borderRadius: 25,
+        width: '95%',
+        '& fieldset': { border: 'none'},
+        '& input': {padding: '5px 7px'}
+    }
+
     return (
         <TextField
             type="text"
@@ -33,9 +49,7 @@ function SearchBar(): JSX.Element {
             placeholder={searchParams.get("search-params")?.toString() ?? "Search here"}
             onChange={(e) => handleChange(e)}
             onKeyUp={handleKeyPress} 
-            style={{
-                margin: 8
-            }}
+            sx={textfieldSx}
         />
     );
 };

@@ -3,9 +3,9 @@ import { SearchBar } from "../SearchBar/SearchBar";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { cookieParser, deleteCookie } from "../../utils/cookie-util";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
-import { Box, Button, Menu, MenuItem } from "@mui/material";
+import { Button, Menu, MenuItem, SxProps, Grid } from "@mui/material";
 import { KeyboardArrowDown, Logout } from "@mui/icons-material";
-import svg from '../../static/5_SVG.svg';
+import svg from '../../static/5_SVG-cropped.svg';
 
 const envVariables = process.env;
 const {
@@ -47,38 +47,80 @@ function Header(): JSX.Element {
         setMenuAnchor(null);
     };
 
+    const dropdownButtonSx: SxProps = {
+        margin: '7px',
+        bgcolor: '#3B4B59',
+        color: '#F2E5D1',
+        width: 'fit-content',
+        height: 'fit-content',
+    };
+
+    const signupButtonSx: SxProps = {
+        color: 'secondary.main',
+        background: '#3B4B59',
+        marginRight: "4px",
+        width: 'fit-content',
+    };
+
+    const loginButtonSx: SxProps = {
+        color: 'secondary.main',
+        borderColor: 'secondary.main',
+        marginLeft: "4px",
+        marginRight: "20px",
+        width: 'fit-content',
+    };
+
     return (
-        <header data-testid='header'>
-            <a href={location.origin} target="_self">
-                <img src={svg} alt="Handl Logo" width={"250px"} height={"250px"}/>
-            </a>
-            {isLandingPage && <SearchBar />}
-            {loggedIn && 
-                <Box>
-                    <Button
-                        onClick={handleDropdownClick}
-                        endIcon={<KeyboardArrowDown />}
-                    >
-                        Hi, {cookieObject?.firstName}!
-                    </Button>
-                    <Menu
-                        anchorEl={menuAnchor}
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                        open={Boolean(menuAnchor)}
-                        onClose={handleDropdownClose}
-                    >
-                        <MenuItem onClick={handleLogout}>
-                            Logout
-                            <Logout/>
-                        </MenuItem>
-                    </Menu>
-                </Box>
+        <header data-testid='header' style={{
+            position: 'relative',
+            top: 0,
+            width: '100%',
+            background: "#242425",
+            color: '#F2E5D1',
+            marginBottom: '14px'
+        }}>
+            <Grid container>
+                <Grid item xs={6} sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline'}}>
+                    <a href={location.origin} target="_self">
+                        <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
+                    </a>
+                </Grid>
+                {loggedIn && 
+                    <Grid item xs={6} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
+                        <Button
+                            variant="contained"
+                            onClick={handleDropdownClick}
+                            endIcon={<KeyboardArrowDown />}
+                            sx={dropdownButtonSx}
+                        >
+                            Hi, {cookieObject?.firstName}!
+                        </Button>
+                        <Menu
+                            anchorEl={menuAnchor}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left',
+                            }}
+                            open={Boolean(menuAnchor)}
+                            onClose={handleDropdownClose}
+                        >
+                            <MenuItem onClick={handleLogout}>
+                                Logout
+                                <Logout/>
+                            </MenuItem>
+                        </Menu>
+                    </Grid>
+                }
+                <Grid item xs={6} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
+                    {!isLoginOrSignUpPage && !loggedIn && <Button variant="contained" sx={signupButtonSx} onClick={redirectSignUp}>Sign Up</Button>}
+                    {!isLoginOrSignUpPage && !loggedIn && <Button variant="outlined" sx={loginButtonSx} onClick={redirectLogin}>Login</Button>}
+                </Grid>
+            </Grid>
+            {isLandingPage && 
+                <Grid item xs={12}>
+                    <SearchBar isLandingPage={isLandingPage}/>
+                </Grid>
             }
-            {!isLoginOrSignUpPage && !loggedIn && <Button variant="contained" onClick={redirectSignUp}>Sign Up</Button>}
-            {!isLoginOrSignUpPage && !loggedIn && <Button variant="outlined" onClick={redirectLogin}>Login</Button>}
         </header>
     );
 };

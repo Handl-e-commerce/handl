@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
-import { Box, Button, FormControl, ListItemText, MenuItem, Select, TextField } from "@mui/material";
+import { Box, Button, Container, FormControl, IconButton, InputAdornment, ListItemText, MenuItem, Select, SxProps, TextField } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const envVariables = process.env;
@@ -19,7 +19,7 @@ function SignUp(): JSX.Element {
     const [phoneNumber, setPhoneNumber] = useState<string>("");
     const [address, setAddress] = useState<string>("");
     const [city, setCity] = useState<string>("");
-    const [state, setState] = useState<string>("");
+    const [state, setState] = useState<string>("--");
     const [zipcode, setZipcode] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [invalidPasswordMessage, setInvalidPasswordMessage] = useState<string>("");
@@ -339,138 +339,192 @@ function SignUp(): JSX.Element {
         )
     };
 
+    const containerSx: SxProps = {
+        height: '100%',
+        marginBottom: '7px',
+        display: 'flex',
+        flexDirection: 'column',
+        width: '95%',
+        alignItems: 'center',
+    };
+
+    const boxSx: SxProps = {
+        borderRadius: '8px',
+        padding: '7px',
+        boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)'
+    }
+
+    const textFieldSx: SxProps = {
+        width: '80%',
+        marginTop: '7px',
+    };
+
+    const buttonSx: SxProps = {
+        width: '80%',
+        height: '7.5%',
+        marginTop: '7px',
+        marginBottom: '24px',
+    };
+
     return (
-        <Box className="sign-up-container" data-testid="default-form">
+        <Container sx={containerSx}>
             <h1>Sign Up Free</h1>
-            <div>Already a member? <a href={location.origin + "/login?"}>{"Login ->"}</a></div>
-            <TextField 
-                type="email"
-                value={email}
-                variant="outlined"
-                required
-                hiddenLabel
-                placeholder="Business Email"
-                name="business_email"
-                data-testid="email-input"
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField 
-                type="text"
-                value={businessName}
-                variant="outlined"
-                required
-                hiddenLabel
-                placeholder="Business Name"
-                name="business_name"
-                data-testid="business-name-input"
-                onChange={(e) => setBusinessName(e.target.value)}
-            />
-            <TextField 
-                type="text"
-                value={firstName}
-                variant="outlined"
-                required
-                hiddenLabel
-                placeholder="First Name"
-                name="first_name"
-                data-testid="first-name-input"
-                onChange={(e) => setFirstName(e.target.value)}
-            />
-            <TextField 
-                type="text"
-                value={lastName}
-                variant="outlined"
-                required
-                hiddenLabel
-                placeholder="Last Name"
-                name="last_name"
-                data-testid="last-name-input"
-                onChange={(e) => setLastName(e.target.value)}
-            />
-            <TextField 
-                type="tel"
-                value={phoneNumber}
-                variant="outlined"
-                required
-                hiddenLabel
-                onKeyDown={(e) => enforceFormat(e)}
-                onKeyUp={(e) => formatToPhone(e)}
-                placeholder="Phone Number"
-                name="phone number"
-                data-testid="phone-number-input"
-                onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-            <TextField 
-                type="text"
-                value={address}
-                variant="outlined"
-                required
-                hiddenLabel
-                placeholder="Address"
-                name="Address"
-                data-testid="address-input"
-                onChange={(e) => setAddress(e.target.value)}
-            />
-            <TextField 
-                type="text"
-                value={city}
-                variant="outlined"
-                required
-                hiddenLabel
-                placeholder="City"
-                name="City"
-                data-testid="city-input"
-                onChange={(e) => setCity(e.target.value)}
-            />
-            <FormControl sx={{ width: 70 }}>
-                <Select
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
-                    renderValue={() => state}
-                    SelectDisplayProps={{
-                        // @ts-ignore
-                        "data-testid" : "state-selector"
+            <Box className="sign-up-container" data-testid="default-form" sx={boxSx}>
+                <div>Already a member? <a href={location.origin + "/login?"}>{"Login ->"}</a></div>
+                <TextField 
+                    type="email"
+                    value={email}
+                    variant="outlined"
+                    required
+                    hiddenLabel
+                    placeholder="Business Email"
+                    name="business_email"
+                    data-testid="email-input"
+                    onChange={(e) => setEmail(e.target.value)}
+                    sx={textFieldSx}
+                />
+                <TextField 
+                    type="text"
+                    value={businessName}
+                    variant="outlined"
+                    required
+                    hiddenLabel
+                    placeholder="Business Name"
+                    name="business_name"
+                    data-testid="business-name-input"
+                    onChange={(e) => setBusinessName(e.target.value)}
+                    sx={textFieldSx}
+                />
+                <TextField 
+                    type="text"
+                    value={firstName}
+                    variant="outlined"
+                    required
+                    hiddenLabel
+                    placeholder="First Name"
+                    name="first_name"
+                    data-testid="first-name-input"
+                    onChange={(e) => setFirstName(e.target.value)}
+                    sx={textFieldSx}
+                />
+                <TextField 
+                    type="text"
+                    value={lastName}
+                    variant="outlined"
+                    required
+                    hiddenLabel
+                    placeholder="Last Name"
+                    name="last_name"
+                    data-testid="last-name-input"
+                    onChange={(e) => setLastName(e.target.value)}
+                    sx={textFieldSx}
+                />
+                <TextField 
+                    type="tel"
+                    value={phoneNumber}
+                    variant="outlined"
+                    required
+                    hiddenLabel
+                    onKeyDown={(e) => enforceFormat(e)}
+                    onKeyUp={(e) => formatToPhone(e)}
+                    placeholder="Phone Number"
+                    name="phone number"
+                    data-testid="phone-number-input"
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    sx={textFieldSx}
+                />
+                <TextField 
+                    type="text"
+                    value={address}
+                    variant="outlined"
+                    required
+                    hiddenLabel
+                    placeholder="Address"
+                    name="Address"
+                    data-testid="address-input"
+                    onChange={(e) => setAddress(e.target.value)}
+                    sx={textFieldSx}
+                />
+                <Box sx={{marginTop: '7px'}}>
+                    <TextField 
+                        type="text"
+                        value={city}
+                        variant="outlined"
+                        required
+                        hiddenLabel
+                        placeholder="City"
+                        name="City"
+                        data-testid="city-input"
+                        onChange={(e) => setCity(e.target.value)}
+                        sx={{width: '35%',}}
+                    />
+                    <FormControl sx={{ width: '20%'}}>
+                        <Select
+                            value={state}
+                            onChange={(e) => setState(e.target.value)}
+                            renderValue={() => state}
+                            SelectDisplayProps={{
+                                // @ts-ignore
+                                "data-testid" : "state-selector"
+                            }}
+                        >
+                            {states.map((state) => (
+                                <MenuItem key={state.abbreviation} value={state.abbreviation} data-testid="menu-item">
+                                    <ListItemText primary={state.abbreviation}/>
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <TextField 
+                        type="text"
+                        value={zipcode}
+                        variant="outlined"
+                        required
+                        hiddenLabel
+                        placeholder="Zipcode"
+                        onKeyDown={(e) => enforceFormat(e)}
+                        name="zipcode"
+                        data-testid="zipcode-input"
+                        onChange={(e) => setZipcode(e.target.value)}
+                        sx={{ width: '25%' }}
+                    />
+                </Box>
+                <TextField
+                    type={showPassword ? 'text':'password'}
+                    value={password}
+                    variant="outlined"
+                    required
+                    hiddenLabel
+                    placeholder="Password"
+                    name="password"
+                    data-testid="password-input"
+                    inputProps={{ maxLength: 32 }}
+                    onChange={(e) => {
+                        validPassword(e.target.value);
+                        setPassword(e.target.value);
                     }}
-                >
-                    {states.map((state) => (
-                        <MenuItem key={state.abbreviation} value={state.abbreviation} data-testid="menu-item">
-                            <ListItemText primary={state.abbreviation}/>
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <TextField 
-                type="text"
-                value={zipcode}
-                variant="outlined"
-                required
-                hiddenLabel
-                placeholder="Zipcode"
-                onKeyDown={(e) => enforceFormat(e)}
-                name="zipcode"
-                data-testid="zipcode-input"
-                onChange={(e) => setZipcode(e.target.value)}
-            />
-            <TextField
-                type={showPassword ? 'text':'password'}
-                value={password}
-                variant="outlined"
-                required
-                hiddenLabel
-                placeholder="Password"
-                name="password"
-                data-testid="password-input"
-                inputProps={{ maxLength: 32 }}
-                onChange={(e) => {
-                    validPassword(e.target.value);
-                    setPassword(e.target.value);
-                }}
-            />
-            {showPassword ? <VisibilityOff onClick={() => setShowPassword(!showPassword)}/> : <Visibility onClick={() => setShowPassword(!showPassword)}/>}
-            {invalidPasswordMessage !== "" && <div data-testid="invalid-password-message">{invalidPasswordMessage}</div>}
-            <Button className="create-account-button" variant="contained" disabled={!canSubmit()} onClick={createAccount} data-testid="registration-button">Register</Button>
-            {signUpSuccess === false ? <div className="sign-up-error" data-testid="sign-up-error">User already exists.</div> : null}
-        </Box>
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="start">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    data-testid='password-toggle-icon'
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    edge='end'
+                                    sx={{width: '40px', alignItems: 'center'}}
+                                >
+                                    {showPassword ? <VisibilityOff data-testid="hide-password-switch"/> : <Visibility data-testid="show-password-switch"/>} 
+                                </IconButton>
+                            </InputAdornment>
+                        )
+                    }}
+                    sx={textFieldSx}
+                    />
+                {invalidPasswordMessage !== "" && <div data-testid="invalid-password-message">{invalidPasswordMessage}</div>}
+                <Button className="create-account-button" variant="contained" disabled={!canSubmit()} onClick={createAccount} data-testid="registration-button" sx={buttonSx}>Register</Button>
+                {signUpSuccess === false ? <div className="sign-up-error" data-testid="sign-up-error">User already exists.</div> : null}
+            </Box>
+        </Container>
     );
 };
 
