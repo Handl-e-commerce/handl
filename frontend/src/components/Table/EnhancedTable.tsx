@@ -80,7 +80,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
             fontSize: '10px',
             position: 'absolute',
             top: '-15%',
-            left: isMobile ? '5%' : '3.25%',
+            left: isMobile ? '5%' : '2.5%',
             color: '#858585',
             zIndex: 1
         },
