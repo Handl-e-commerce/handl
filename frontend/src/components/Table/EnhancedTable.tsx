@@ -16,7 +16,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof Vendor>('name');
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(25);
     
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
         if (b[orderBy] < a[orderBy]) {
@@ -75,6 +75,26 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
         minHeight: '52px',
         background: '#E5E5EA',
         color: '#3C3C43',
+        '& .MuiTablePagination-selectLabel': {
+            fontWeight: 'bold',
+            fontSize: '10px',
+            position: 'absolute',
+            top: '-15%',
+            left: isMobile ? '5%' : '3.25%',
+            color: '#858585',
+            zIndex: 1
+        },
+        '& .MuiTablePagination-input': {
+            position: 'absolute',
+            width: '80px',
+            marginLeft: 0,
+        },
+        '& .MuiTablePagination-select': {
+            border: '1px solid #D9D9D9',
+            borderRadius: '4px',
+            paddingRight: '35px !important',
+            fontWeight: 'bold'
+        },
     };
 
     return (
