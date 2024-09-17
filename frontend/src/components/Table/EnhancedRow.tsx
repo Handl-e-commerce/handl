@@ -18,7 +18,7 @@ function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
                 key={data.uuid}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 }}}
             >
-                <TableCell>
+                <TableCell sx={{ padding: 0 }}>
                     <IconButton
                         aria-label="expand row"
                         size="small"
@@ -32,9 +32,9 @@ function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
                 {!isMobile && <TableCell>{data.state}</TableCell>}
             </TableRow>
             <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                <TableCell style={{ padding: '0px 20px' }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{ margin: 1 }}>
+                        <Box sx={{ margin: 1, ml: 4, mr: 4}}>
                             <ExpandedRow row={data} isMobile={isMobile}/>
                         </Box>
                     </Collapse>

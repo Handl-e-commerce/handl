@@ -80,21 +80,28 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
             fontSize: '10px',
             position: 'absolute',
             top: '-15%',
-            left: isMobile ? '5%' : '2.5%',
+            left: isMobile ? '1.45rem' : '2rem',
             color: '#858585',
-            zIndex: 1
+            zIndex: 1,
+            background: '#E5E5EA',
         },
         '& .MuiTablePagination-input': {
             position: 'absolute',
-            width: '80px',
+            width: '90px',
             marginLeft: 0,
         },
         '& .MuiTablePagination-select': {
             border: '1px solid #D9D9D9',
             borderRadius: '4px',
-            paddingRight: '35px !important',
+            paddingRight: '40px !important',
+            color: '#3C3C43',
             fontWeight: 'bold'
         },
+        '& .MuiTablePagination-displayedRows': {
+            position: 'absolute',
+            left: isMobile ? '7.125rem' : '7.5rem',
+            fontWeight: 'bold',
+        }
     };
 
     return (
@@ -110,13 +117,14 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[10, 25, 50, 100]}
-                component="div"
+                rowsPerPageOptions={[10, 25, 50, 100, { label: 'All', value: -1 }]}
+                colSpan={3}
                 count={data.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+                component="div"
                 labelRowsPerPage='Rows per page'
                 sx={paginationSx}
             />
