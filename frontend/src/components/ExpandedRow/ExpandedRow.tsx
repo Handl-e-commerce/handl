@@ -12,8 +12,8 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
     return (
         <Container style={{ display: "flex", flexDirection: 'column', paddingLeft: 0, marginLeft: '-10px'}} aria-roledescription="Expanded Row Container">
             <Typography
-                variant={isMobile ? "h5" : "h4"}
-                component={isMobile ? "h5" : "h4"}
+                variant={isMobile ? "h6" : "h4"}
+                component={isMobile ? "h6" : "h4"}
                 sx={{ marginBottom: '10px'}}
                 aria-roledescription="Company Name Heading"
             >

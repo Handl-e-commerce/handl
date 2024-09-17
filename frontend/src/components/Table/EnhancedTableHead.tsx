@@ -39,7 +39,7 @@ function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhance
             numeric: false,
             disablePadding: true,
             label: 'Name',
-            width: '84%'
+            width: '100%'
         },
     ] : [
         {
@@ -52,14 +52,14 @@ function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhance
         {
           id: 'categories',
           numeric: false,
-          disablePadding: false,
+          disablePadding: true,
           label: 'Categories',
-          width: '70%'
+          width: '60%'
         },
         {
           id: 'state',
           numeric: false,
-          disablePadding: false,
+          disablePadding: true,
           label: 'State',
           width: '5%'
         },
@@ -67,7 +67,11 @@ function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhance
 
     return (
         <TableHead sx={tableHeadSx}>
-            <TableRow>
+            <TableRow sx={{
+                '& .MuiTableCell-root': {
+                    padding: '1px'
+                }
+            }}>
                 <TableCell />
                 {columns.map((column) => (
                     <TableCell
@@ -75,13 +79,14 @@ function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhance
                         align={column.numeric ? 'right' : 'left'}
                         padding={column.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === column.id ? order : false}
-                        sx={{ width: column.width}}
+                        sx={{ width: column.width }}
                     >
                         <TableSortLabel
                             active={orderBy === column.id}
                             direction={orderBy === column.id ? order : 'asc'}
                             onClick={createSortHandler(column.id)}
                             IconComponent={orderBy === column.id ? KeyboardArrowUpOutlined : KeyboardArrowDownOutlined }
+                            sx={{ paddingLeft: 0 }}
                         >
                         {column.label}
                         {orderBy === column.id ? (

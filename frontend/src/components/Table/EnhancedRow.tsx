@@ -37,7 +37,7 @@ function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
                 {!isMobile && <TableCell>{data.state}</TableCell>}
             </TableRow>
             <TableRow>
-                <TableCell style={{ padding: '0px 20px' }} colSpan={6}>
+                <TableCell style={{ padding: isMobile ? 0 : '0px 10px' }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box sx={{ margin: 1, ml: 4, mr: 4}}>
                             <ExpandedRow row={data} isMobile={isMobile}/>
