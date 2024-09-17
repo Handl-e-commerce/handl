@@ -70,7 +70,7 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                         >
                             Contact Information
                         </Typography>
-                        <a href={row.website} style={{marginBottom: '3px'}}>
+                        <a href={row.website} style={{marginBottom: '3px'}} target='_blank'>
                             <Web style={{ verticalAlign: "middle", marginRight: '7px' }}/>
                             {row.website}
                         </a>

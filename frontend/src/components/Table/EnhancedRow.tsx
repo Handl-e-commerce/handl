@@ -16,9 +16,14 @@ function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
         <>
             <TableRow
                 key={data.uuid}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 }}}
+                sx={{ 
+                    '&:last-child td, &:last-child th': { border: 0 },
+                    '& .MuiTableCell-root': {
+                        padding: '1px'
+                    }
+                }}
             >
-                <TableCell sx={{ padding: 0 }}>
+                <TableCell sx={{ paddingRight: '3px !important' }}>
                     <IconButton
                         aria-label="expand row"
                         size="small"
