@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, SxProps, TablePagination, Box } from "@mui/material";
+import { Table, TableBody, TableContainer, Paper, SxProps, TablePagination, Box } from "@mui/material";
 import { Vendor } from "../../types/types";
 import { EnhancedTableHead } from "./EnhancedTableHead";
 import { EnhancedRow } from "./EnhancedRow";
