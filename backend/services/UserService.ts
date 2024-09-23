@@ -494,7 +494,7 @@ class UserService implements IUserService {
         const url = process.env.NODE_ENV === "local_dev" ? "http://localhost:3000" : process.env.VERIFICATION_LINK;
         const verificationLink: string = url + `/verify?token=${token}&userId=${userId}`;
         const fraudPreventionLink: string = url + `/cancel-registration/?userId=${userId}`;
-        const filePath = path.resolve("../backend/email-templates/VerifyEmail/VerifyEmail.html");
+        const filePath = path.resolve("email-templates/VerifyEmail/VerifyEmail.html");
         const source = fs.readFileSync(filePath, "utf-8").toString();
         const template = handlebars.compile(source);
         const replacements = {
@@ -512,7 +512,7 @@ class UserService implements IUserService {
             html: htmlToSend,
             attachments: [{
                 filename: "handl-email-logo-narrow.png",
-                path: path.resolve("../backend/email-templates/handl-email-logo-narrow.png"),
+                path: path.resolve("email-templates/handl-email-logo-narrow.png"),
                 cid: "companyLogo",
             }],
         };
@@ -543,7 +543,7 @@ class UserService implements IUserService {
      */
     private GeneratePasswordResetConfirmationEmail(name: string, email: string): void {
         // eslint-disable-next-line
-        const filePath = path.resolve("../backend/email-templates/PasswordResetConfirmation/PasswordResetConfirmation.html");
+        const filePath = path.resolve("email-templates/PasswordResetConfirmation/PasswordResetConfirmation.html");
         const source = fs.readFileSync(filePath, "utf-8").toString();
         const template = handlebars.compile(source);
         const replacements = {
@@ -559,7 +559,7 @@ class UserService implements IUserService {
             html: htmlToSend,
             attachments: [{
                 filename: "handl-email-logo-narrow.png",
-                path: path.resolve("../backend/email-templates/handl-email-logo-narrow.png"),
+                path: path.resolve("email-templates/handl-email-logo-narrow.png"),
                 cid: "companyLogo",
             }],
         };
@@ -591,7 +591,7 @@ class UserService implements IUserService {
      * @param {string} token
      */
     private GeneratePasswordResetEmail(name: string, email: string, userId: string, token: string): void {
-        const filePath = path.resolve("../backend/email-templates/ResetPassword/ResetPassword.html");
+        const filePath = path.resolve("email-templates/ResetPassword/ResetPassword.html");
         const source = fs.readFileSync(filePath, "utf-8").toString();
         const template = handlebars.compile(source);
         const url = process.env.NODE_ENV === "local_dev" ? "http://localhost:3000" : process.env.VERIFICATION_LINK;
@@ -611,7 +611,7 @@ class UserService implements IUserService {
             html: htmlToSend,
             attachments: [{
                 filename: "handl-email-logo-narrow.png",
-                path: path.resolve("../backend/email-templates/handl-email-logo-narrow.png"),
+                path: path.resolve("email-templates/handl-email-logo-narrow.png"),
                 cid: "companyLogo",
             }],
         };
@@ -641,7 +641,7 @@ class UserService implements IUserService {
      * @param {string} email
      */
     private GenerateDeletionConfirmationEmail(name: string, email: string): void {
-        const filePath = path.resolve("../backend/email-templates/DeletionConfirmation/DeletionConfirmation.html");
+        const filePath = path.resolve("email-templates/DeletionConfirmation/DeletionConfirmation.html");
         const source = fs.readFileSync(filePath, "utf-8").toString();
         const template = handlebars.compile(source);
         const replacements = {
@@ -657,7 +657,7 @@ class UserService implements IUserService {
             html: htmlToSend,
             attachments: [{
                 filename: "handl-email-logo-narrow.png",
-                path: path.resolve("../backend/email-templates/handl-email-logo-narrow.png"),
+                path: path.resolve("email-templates/handl-email-logo-narrow.png"),
                 cid: "companyLogo",
             }],
         };
