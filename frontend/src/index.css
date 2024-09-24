@@ -5,7 +5,7 @@ html, body, #root {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 110%;
+  min-height: 50rem;
   width: 100%;
 }
 

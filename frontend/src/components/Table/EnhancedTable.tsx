@@ -116,7 +116,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[10, 25, 50, 100, { label: 'All', value: -1 }]}
+                rowsPerPageOptions={[25, 50, 100, 200, { label: 'All', value: -1 }]}
                 colSpan={3}
                 count={data.length}
                 rowsPerPage={rowsPerPage}

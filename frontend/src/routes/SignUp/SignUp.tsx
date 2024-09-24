@@ -340,7 +340,7 @@ function SignUp(): JSX.Element {
     };
 
     const containerSx: SxProps = {
-        height: '100%',
+        minHeight: '56rem',
         marginBottom: '7px',
         display: 'flex',
         flexDirection: 'column',
