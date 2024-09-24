@@ -8,6 +8,8 @@ function Footer(): JSX.Element {
         <footer style={{
             position: 'relative',
             bottom: 0,
+            marginTop: '1.5rem',
+            padding: '10px',
             width: '100%',
             background: "#242425",
             color: '#F2E5D1'
