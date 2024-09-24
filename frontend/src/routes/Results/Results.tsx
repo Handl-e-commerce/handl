@@ -106,7 +106,7 @@ function Results(): JSX.Element {
     const containerSx: SxProps = {
         paddingLeft: '1px', 
         paddingRight: '1px', 
-        minHeight: '50rem', 
+        minHeight: '62.5rem', 
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
