@@ -32,8 +32,8 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                     </Typography>
                     <Typography variant={isMobile ? 'body2' : 'body1'} component='p' paddingRight={'10px'}>{row.description}</Typography>
                 </Box>
-                <Box sx={{display: 'flex', justifyContent: 'space-evenly',}}>
-                    <Box>
+                <Box sx={{display: 'flex', justifyContent: 'space-evenly',}} aria-roledescription="Company Profile">
+                    <Box sx={{marginRight: '15px'}}>
                         <Box sx={{marginBottom: '10px'}} aria-roledescription="People Box">
                             <Typography
                                 variant={"h6"}
@@ -61,7 +61,7 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                             ))}
                         </Box>
                     </Box>
-                    <Box sx={{marginBottom: '10px'}} aria-roledescription="Contact Information Box">
+                    <Box sx={{marginBottom: '10px', marginLeft: '15px'}} aria-roledescription="Contact Information Box">
                         <Typography
                             variant={"h6"}
                             component={"h6"}
