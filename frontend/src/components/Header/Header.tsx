@@ -93,13 +93,13 @@ function Header(): JSX.Element {
             marginBottom: '14px'
         }}>
             <Grid container>
-                <Grid item xs={5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline'}}>
+                <Grid item xs={5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '0rem' : '3rem'}}>
                     <a href={location.origin} target="_self">
                         <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
                     </a>
                 </Grid>
                 {loggedIn && 
-                    <Grid item xs={6} ml={isMobile ? '1.75rem' : '7.25rem'} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
+                    <Grid item xs={6} ml={isMobile ? '1rem' : '6.25rem'} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
                         <Button
                             variant="contained"
                             onClick={handleDropdownClick}
@@ -124,7 +124,7 @@ function Header(): JSX.Element {
                         </Menu>
                     </Grid>
                 }
-                <Grid item xs={isMobile ? 6 : 5} ml={isMobile ? 0 : '8rem'} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
+                <Grid item xs={6} ml={isMobile ? '2rem' : '7rem'} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
                     {!isLoginOrSignUpPage && !loggedIn && <Button variant="contained" sx={signupButtonSx} onClick={redirectSignUp}>Sign Up</Button>}
                     {!isLoginOrSignUpPage && !loggedIn && <Button variant="outlined" sx={loginButtonSx} onClick={redirectLogin}>Login</Button>}
                 </Grid>
