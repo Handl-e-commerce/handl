@@ -22,7 +22,7 @@ function Results(): JSX.Element {
     const [width, setWidth] = useState<number>(window.innerWidth);
     const [loadingData, setLoadingData] = useState<boolean>(true);
     // Setting it to 393 to match iPhone Plus widths
-    const isMobile: boolean = width <= 430;
+    const isMobile: boolean = width <= 393;
     let loggedIn: boolean = useLoginStatus();
     let searchParam = queryParams.get("search-params");
 
@@ -106,7 +106,7 @@ function Results(): JSX.Element {
     const containerSx: SxProps = {
         paddingLeft: '1px', 
         paddingRight: '1px', 
-        height: '100%', 
+        minHeight: '62.5rem', 
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

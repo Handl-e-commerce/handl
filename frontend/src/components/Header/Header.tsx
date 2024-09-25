@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { cookieParser, deleteCookie } from "../../utils/cookie-util";
@@ -16,9 +16,22 @@ function Header(): JSX.Element {
     const cookieObject = cookieParser();
     const location = window.location;
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+    const [width, setWidth] = useState<number>(window.innerWidth);
+    const isMobile: boolean = width <= 393;
     let isLandingPage: boolean = location.pathname === "/";
     let isLoginOrSignUpPage: boolean = location.pathname === "/login" || location.pathname === "/sign-up";
     let loggedIn = useLoginStatus();
+
+    useEffect(() => {
+        window.addEventListener('resize', handleWindowSizeChange);
+        return () => {
+            window.removeEventListener('resize', handleWindowSizeChange);
+        }
+    }, []);
+
+    function handleWindowSizeChange(): void {
+        setWidth(window.innerWidth);
+    };
 
     function redirectSignUp(): void {
         // redirect to sign up route
@@ -80,13 +93,13 @@ function Header(): JSX.Element {
             marginBottom: '14px'
         }}>
             <Grid container>
-                <Grid item xs={6} sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline'}}>
+                <Grid item xs={5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '0rem' : '3rem'}}>
                     <a href={location.origin} target="_self">
                         <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
                     </a>
                 </Grid>
                 {loggedIn && 
-                    <Grid item xs={6} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
+                    <Grid item xs={6} ml={isMobile ? '1rem' : '6.25rem'} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
                         <Button
                             variant="contained"
                             onClick={handleDropdownClick}
@@ -111,7 +124,7 @@ function Header(): JSX.Element {
                         </Menu>
                     </Grid>
                 }
-                <Grid item xs={6} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
+                <Grid item xs={6} ml={isMobile ? '2rem' : '7rem'} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
                     {!isLoginOrSignUpPage && !loggedIn && <Button variant="contained" sx={signupButtonSx} onClick={redirectSignUp}>Sign Up</Button>}
                     {!isLoginOrSignUpPage && !loggedIn && <Button variant="outlined" sx={loginButtonSx} onClick={redirectLogin}>Login</Button>}
                 </Grid>

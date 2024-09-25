@@ -58,7 +58,7 @@ function Login(): JSX.Element {
     };
     
     const containerSx: SxProps = {
-        height: '100%',
+        minHeight: '61.95rem',
         marginBottom: '7px',
         display: 'flex',
         flexDirection: 'column',

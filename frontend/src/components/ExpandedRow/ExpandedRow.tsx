@@ -12,13 +12,13 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
     return (
         <Container style={{ display: "flex", flexDirection: 'column', paddingLeft: 0, marginLeft: '-10px'}} aria-roledescription="Expanded Row Container">
             <Typography
-                variant={isMobile ? "h5" : "h4"}
-                component={isMobile ? "h5" : "h4"}
+                variant={isMobile ? "h6" : "h4"}
+                component={isMobile ? "h6" : "h4"}
                 sx={{ marginBottom: '10px'}}
                 aria-roledescription="Company Name Heading"
             >
                 {row.name}
-                <div style={{borderBottom: '1px solid #3C3C43', width: isMobile ? '115%': '106%' , marginLeft: isMobile ? "-2%" : '-1%' }}/>
+                <div style={{borderBottom: '1px solid #3C3C43', width: isMobile ? '114%': '107%' , marginLeft: isMobile ? "-4.5%" : '-1.5%' }}/>
             </Typography>
             <Box sx={{display: 'flex', flexDirection: 'column'}}>
                 <Box sx={{marginBottom: '10px'}} aria-roledescription="About Box">
@@ -32,8 +32,8 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                     </Typography>
                     <Typography variant={isMobile ? 'body2' : 'body1'} component='p' paddingRight={'10px'}>{row.description}</Typography>
                 </Box>
-                <Box sx={{display: 'flex', justifyContent: 'space-evenly',}}>
-                    <Box>
+                <Box sx={{display: 'flex', justifyContent: 'space-evenly',}} aria-roledescription="Company Profile">
+                    <Box sx={{marginRight: '15px'}}>
                         <Box sx={{marginBottom: '10px'}} aria-roledescription="People Box">
                             <Typography
                                 variant={"h6"}
@@ -61,7 +61,7 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                             ))}
                         </Box>
                     </Box>
-                    <Box sx={{marginBottom: '10px'}} aria-roledescription="Contact Information Box">
+                    <Box sx={{marginBottom: '10px', marginLeft: '15px'}} aria-roledescription="Contact Information Box">
                         <Typography
                             variant={"h6"}
                             component={"h6"}
@@ -70,7 +70,7 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                         >
                             Contact Information
                         </Typography>
-                        <a href={row.website} style={{marginBottom: '3px'}}>
+                        <a href={row.website} style={{marginBottom: '3px'}} target='_blank' rel="noreferrer">
                             <Web style={{ verticalAlign: "middle", marginRight: '7px' }}/>
                             {row.website}
                         </a>

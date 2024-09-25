@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, SxProps, TablePagination, Box } from "@mui/material";
+import { Table, TableBody, TableContainer, Paper, SxProps, TablePagination, Box } from "@mui/material";
 import { Vendor } from "../../types/types";
 import { EnhancedTableHead } from "./EnhancedTableHead";
 import { EnhancedRow } from "./EnhancedRow";
@@ -16,7 +16,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof Vendor>('name');
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(25);
     
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
         if (b[orderBy] < a[orderBy]) {
@@ -57,7 +57,6 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        maxHeight: '75%',
         width: '97%',
         borderRadius: '4px',
         boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)'
@@ -75,6 +74,33 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
         minHeight: '52px',
         background: '#E5E5EA',
         color: '#3C3C43',
+        '& .MuiTablePagination-selectLabel': {
+            fontWeight: 'bold',
+            fontSize: '10px',
+            position: 'absolute',
+            top: '-15%',
+            left: isMobile ? '1.45rem' : '2rem',
+            color: '#858585',
+            zIndex: 1,
+            background: '#E5E5EA',
+        },
+        '& .MuiTablePagination-input': {
+            position: 'absolute',
+            width: '90px',
+            marginLeft: 0,
+        },
+        '& .MuiTablePagination-select': {
+            border: '1px solid #D9D9D9',
+            borderRadius: '4px',
+            paddingRight: '40px !important',
+            color: '#3C3C43',
+            fontWeight: 'bold'
+        },
+        '& .MuiTablePagination-displayedRows': {
+            position: 'absolute',
+            left: isMobile ? '7.125rem' : '7.5rem',
+            fontWeight: 'bold',
+        }
     };
 
     return (
@@ -90,13 +116,14 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[10, 25, 50, 100]}
-                component="div"
+                rowsPerPageOptions={[25, 50, 100, 200, { label: 'All', value: -1 }]}
+                colSpan={3}
                 count={data.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+                component="div"
                 labelRowsPerPage='Rows per page'
                 sx={paginationSx}
             />
