@@ -18,7 +18,7 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                 aria-roledescription="Company Name Heading"
             >
                 {row.name}
-                <div style={{borderBottom: '1px solid #3C3C43', width: isMobile ? '115%': '106%' , marginLeft: isMobile ? "-2%" : '-1%' }}/>
+                <div style={{borderBottom: '1px solid #3C3C43', width: isMobile ? '114%': '107%' , marginLeft: isMobile ? "-4.5%" : '-1.5%' }}/>
             </Typography>
             <Box sx={{display: 'flex', flexDirection: 'column'}}>
                 <Box sx={{marginBottom: '10px'}} aria-roledescription="About Box">
