@@ -6,6 +6,7 @@ import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { Button, Menu, MenuItem, SxProps, Grid } from "@mui/material";
 import { KeyboardArrowDown, Logout } from "@mui/icons-material";
 import svg from '../../static/5_SVG-cropped.svg';
+import { useMobile } from "../../hooks/useMobile";
 
 const envVariables = process.env;
 const {
@@ -16,22 +17,10 @@ function Header(): JSX.Element {
     const cookieObject = cookieParser();
     const location = window.location;
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
-    const [width, setWidth] = useState<number>(window.innerWidth);
-    const isMobile: boolean = width <= 393;
+    const isMobile: boolean = useMobile();
     let isLandingPage: boolean = location.pathname === "/";
     let isLoginOrSignUpPage: boolean = location.pathname === "/login" || location.pathname === "/sign-up";
     let loggedIn = useLoginStatus();
-
-    useEffect(() => {
-        window.addEventListener('resize', handleWindowSizeChange);
-        return () => {
-            window.removeEventListener('resize', handleWindowSizeChange);
-        }
-    }, []);
-
-    function handleWindowSizeChange(): void {
-        setWidth(window.innerWidth);
-    };
 
     function redirectSignUp(): void {
         // redirect to sign up route
@@ -72,7 +61,7 @@ function Header(): JSX.Element {
         color: 'secondary.main',
         background: '#3B4B59',
         marginRight: "4px",
-        width: 'fit-content',
+        width: '95px',
     };
 
     const loginButtonSx: SxProps = {
@@ -93,13 +82,13 @@ function Header(): JSX.Element {
             marginBottom: '14px'
         }}>
             <Grid container>
-                <Grid item xs={5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '0rem' : '3rem'}}>
+                <Grid item xs={5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '0rem' : '2rem'}}>
                     <a href={location.origin} target="_self">
                         <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
                     </a>
                 </Grid>
                 {loggedIn && 
-                    <Grid item xs={6} ml={isMobile ? '1rem' : '6.25rem'} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
+                    <Grid item xs={6} ml={isMobile ? '1rem' : '2.75rem'} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
                         <Button
                             variant="contained"
                             onClick={handleDropdownClick}
@@ -124,7 +113,7 @@ function Header(): JSX.Element {
                         </Menu>
                     </Grid>
                 }
-                <Grid item xs={6} ml={isMobile ? '2rem' : '7rem'} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
+                <Grid item xs={6} ml={isMobile ? '2rem' : '3rem'} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
                     {!isLoginOrSignUpPage && !loggedIn && <Button variant="contained" sx={signupButtonSx} onClick={redirectSignUp}>Sign Up</Button>}
                     {!isLoginOrSignUpPage && !loggedIn && <Button variant="outlined" sx={loginButtonSx} onClick={redirectLogin}>Login</Button>}
                 </Grid>

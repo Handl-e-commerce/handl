@@ -32,7 +32,7 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                     </Typography>
                     <Typography variant={isMobile ? 'body2' : 'body1'} component='p' paddingRight={'10px'}>{row.description}</Typography>
                 </Box>
-                <Box sx={{display: 'flex', justifyContent: 'space-evenly',}} aria-roledescription="Company Profile">
+                <Box sx={{display: 'flex', justifyContent: 'flex-start', alignItems: 'baseline'}} aria-roledescription="Company Profile">
                     <Box sx={{marginRight: '15px'}}>
                         <Box sx={{marginBottom: '10px'}} aria-roledescription="People Box">
                             <Typography
