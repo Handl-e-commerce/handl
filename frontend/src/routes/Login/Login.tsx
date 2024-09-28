@@ -3,6 +3,7 @@ import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { addCookie, cookieParser } from "../../utils/cookie-util";
 import { Box, Button, Container, InputAdornment, SxProps, TextField, Typography, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const envVariables = process.env;
 const {
@@ -17,6 +18,7 @@ function Login(): JSX.Element {
     const [password, setPassword] = useState<string>("");
     const [isBusy, setIsBusy] = useState<boolean>(false);
     const [hasError, setHasError] = useState<boolean>(false);
+    const [isHuman, setIsHuman] = useState<boolean>(false);
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
     function redirectSignUp(): void {
@@ -87,9 +89,9 @@ function Login(): JSX.Element {
     if (isForgotPassword) {
         if (submittedResetRequest) {
             return (
-                <div style={{height: '100%'}}>
+                <Container sx={containerSx}>
                     We've sent a password reset link to your email.
-                </div>
+                </Container>
             )
         }
         return (
@@ -106,15 +108,15 @@ function Login(): JSX.Element {
                         sx={textFieldSx}
                         onChange={(e) => setEmail(e.target.value)}
                     />
+                    <ReCAPTCHA sitekey="6LeVD1IqAAAAAPhxTFvHoE8FLvqY7-mCSQLMV6Xq" onChange={() => setIsHuman(true)}/>
                     <Button 
                         onClick={handlePasswordResetRequest}
                         variant='contained'
-                        disabled={isBusy || email.length === 0}
+                        disabled={isBusy || email.length === 0 || !isHuman}
                         sx={ButtonSx}
                     >
                         Request Password Reset
                     </Button>
-                    {/* TODO: (MEDIUM) add captcha here to prevent bot requests */}
                 </Box>
             </Container>
         )
