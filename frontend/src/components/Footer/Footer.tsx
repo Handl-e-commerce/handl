@@ -10,6 +10,7 @@ function Footer(): JSX.Element {
             bottom: 0,
             marginTop: '1.5rem',
             padding: '10px',
+            height: '250px',
             width: '100%',
             background: "#242425",
             color: '#F2E5D1'
