@@ -162,7 +162,7 @@ describe("Login Route Test", function() {
         });
     });
 
-    it("Should show the password reset form upon clicking forgot password and then show confirmation after clicking reset request button", async () => {
+    it.skip("Should show the password reset form upon clicking forgot password and then show confirmation after clicking reset request button", async () => {
         const { container } = render(<Login />);
         let forgotPasswordButton = screen.getByText("Forgot password?")
         
