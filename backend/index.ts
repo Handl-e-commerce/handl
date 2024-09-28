@@ -16,7 +16,7 @@ const whitelist = [
     "https://handl-951cd.web.app",
     "https://thehandl.com",
     "https://dev.thehandl.com",
-    "self"
+    "self",
 ];
 const corsOptions = {
     // eslint-disable-next-line
