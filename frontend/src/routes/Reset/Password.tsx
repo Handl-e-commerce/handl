@@ -111,7 +111,7 @@ function Password(): JSX.Element {
     };
 
     return (
-        <Box component="form" role="password-reset-form" sx={{height: '100%'}}>
+        <Box component="form" role="password-reset-form" sx={{height: '70rem'}}>
             <h2>Enter your new password below</h2>
             <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                 <TextField 
