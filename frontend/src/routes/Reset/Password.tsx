@@ -90,7 +90,7 @@ function Password(): JSX.Element {
 
     if (submitted && status === 201) {
         return (
-            <Box sx={{height: '100%'}}>
+            <Box sx={{height: '70rem'}}>
                 <Typography id='success-title' variant='h4' component='h4' sx={{margin: '10px'}}>We've successfully reset your password.</Typography>
                 <Typography id='success-message' variant='subtitle1' component='p' sx={{margin: '10px'}}>We will send you a confirmation email shortly.</Typography>
             </Box>
