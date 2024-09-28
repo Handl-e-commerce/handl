@@ -11,7 +11,13 @@ const PORT = process.env.PORT;
 
 const app: Express = express();
 
-const whitelist = ["http://localhost:3000", "https://handl-951cd.web.app", "https://thehandl.com", "self"];
+const whitelist = [
+    "http://localhost:3000",
+    "https://handl-951cd.web.app",
+    "https://thehandl.com",
+    "https://dev.thehandl.com",
+    "self"
+];
 const corsOptions = {
     // eslint-disable-next-line
     origin: function(origin: string, callback: any) {
