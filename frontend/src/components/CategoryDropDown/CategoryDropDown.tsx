@@ -1,10 +1,5 @@
 import React from "react";
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import ListItemText from '@mui/material/ListItemText';
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Checkbox from '@mui/material/Checkbox';
+import { FormControl, ListItemText, MenuItem, Select, SelectChangeEvent, Checkbox} from '@mui/material';
 import { Typography } from "@mui/material";
 
 interface ICategoryDropDownProps {

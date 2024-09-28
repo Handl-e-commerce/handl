@@ -1,26 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import fba from '../../static/FBA.jpg';
 import clothing from '../../static/Clothing.jpg';
 import health from '../../static/Health & Beauty.jpg';
 import electronics from '../../static/Electronics.jpg';
 import { Container, Grid, Typography, TypographyOwnProps } from "@mui/material";
+import { useMobile } from "../../hooks/useMobile";
 
 
 function Home(): JSX.Element {
     let location = window.location;
-    const [width, setWidth] = useState<number>(window.innerWidth);
-    const isMobile: boolean = width <= 393;
-
-    useEffect(() => {
-        window.addEventListener('resize', handleWindowSizeChange);
-        return () => {
-            window.removeEventListener('resize', handleWindowSizeChange);
-        }
-    }, []);
-
-    function handleWindowSizeChange(): void {
-        setWidth(window.innerWidth);
-    };
+    let isMobile: boolean = useMobile();
 
     const styles = {
         grid: {

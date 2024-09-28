@@ -6,6 +6,7 @@ import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { CategoryDropDown } from "../../components/CategoryDropDown/CategoryDropDown";
 import { Box, Button, Chip, CircularProgress, Container, Grid, Paper, SxProps, Typography  } from '@mui/material';
 import { EnhancedTable } from "../../components/Table/EnhancedTable";
+import { useMobile } from "../../hooks/useMobile";
 
 const envVariables = process.env;
 const {
@@ -19,10 +20,8 @@ function Results(): JSX.Element {
     const [vendors, setVendors] = useState<Vendor[]>([]);
     const [categories, setCategories] = useState<string[]>();
     const [selectedCategories, setSelectedCategories] = useState<string[]>(queryParams.get("categories")?.split(",") ?? []);
-    const [width, setWidth] = useState<number>(window.innerWidth);
     const [loadingData, setLoadingData] = useState<boolean>(true);
-    // Setting it to 393 to match iPhone Plus widths
-    const isMobile: boolean = width <= 393;
+    let isMobile: boolean = useMobile();
     let loggedIn: boolean = useLoginStatus();
     let searchParam = queryParams.get("search-params");
 
@@ -34,17 +33,6 @@ function Results(): JSX.Element {
         };
         return () => { ignore = true };
     }, []);
-
-    useEffect(() => {
-        window.addEventListener('resize', handleWindowSizeChange);
-        return () => {
-            window.removeEventListener('resize', handleWindowSizeChange);
-        }
-    }, []);
-
-    function handleWindowSizeChange(): void {
-        setWidth(window.innerWidth);
-    };
 
     async function getData(): Promise<void> {
         setLoadingData(true);
