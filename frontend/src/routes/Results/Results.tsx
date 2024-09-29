@@ -82,6 +82,7 @@ function Results(): JSX.Element {
     function handleClearAll(): void {
         setSelectedCategories([]);
         queryParams.delete("categories");
+        queryParams.delete("search-params");
         getData();
     };
 
@@ -137,7 +138,7 @@ function Results(): JSX.Element {
                     </Grid>
                 }
                 <Grid item sm={isMobile ? undefined : 1.4}>
-                    {selectedCategories.length > 0 && 
+                    {selectedCategories.length > 0 || searchParam && 
                         <Button 
                             sx={{
                                 textTransform: 'none',
