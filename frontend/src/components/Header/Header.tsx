@@ -61,7 +61,7 @@ function Header(): JSX.Element {
         color: 'secondary.main',
         background: '#3B4B59',
         marginRight: "4px",
-        width: '95px',
+        width: '100px',
     };
 
     const loginButtonSx: SxProps = {

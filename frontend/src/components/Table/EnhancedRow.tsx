@@ -32,9 +32,9 @@ function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
                         {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
                     </IconButton>
                 </TableCell>
-                <TableCell component='th' scope='row'>{data.name}</TableCell>
-                {!isMobile && <TableCell>{data.categories}</TableCell>}
-                {!isMobile && <TableCell>{data.state}</TableCell>}
+                <TableCell component='th' scope='row' onClick={() => setOpen(!open)}>{data.name}</TableCell>
+                {!isMobile && <TableCell onClick={() => setOpen(!open)}>{data.categories}</TableCell>}
+                {!isMobile && <TableCell onClick={() => setOpen(!open)}>{data.state}</TableCell>}
             </TableRow>
             <TableRow>
                 <TableCell style={{ padding: isMobile ? 0 : '0px 10px' }} colSpan={6}>
