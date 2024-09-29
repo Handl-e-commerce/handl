@@ -41,12 +41,11 @@ function SearchBar({isLandingPage}: ISearchBarProps): JSX.Element {
     return (
         <TextField
             type="text"
-            value={searchParams.get("search-params")?.toString() ?? searchInput}
             name="search_params"
             variant="outlined"
             required
             hiddenLabel
-            placeholder={searchParams.get("search-params")?.toString() ?? "Search here"}
+            placeholder={searchParams.get("search-params")?.toString() ?? "Search Handl"}
             onChange={(e) => handleChange(e)}
             onKeyUp={handleKeyPress} 
             sx={textfieldSx}
