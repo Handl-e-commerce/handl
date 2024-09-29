@@ -35,7 +35,10 @@ function CategoryDropDown({categories, selectedCategories, setSelectedCategories
                     '& .MuiSelect-select': {
                         paddingTop: '7px',
                         paddingLeft: '10px',
-                        paddingBottom: '7px'
+                        paddingBottom: '7px',
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': {
+                        border: 'none'
                     },
                     display: 'flex',
                     justifyContent: 'center',

@@ -67,7 +67,39 @@ describe("Results Route Test", () => {
 
         await waitFor(() => {
             expect(chipContainer.childElementCount).toEqual(2);
-        })
+        });
+    }, 7500);
+    
+    it("Should remove all query chips when clicking clear all button", async () => {
+        const { container } = await act( async () => render(<Results />));
+        let dropdown = await waitFor(() => screen.getByTestId("categories-multiple-checkbox-select"), {
+            timeout: 3000
+        });
+        expect(dropdown).toBeInTheDocument();
+
+        await user.click(dropdown);
+
+        let checkboxItems = await waitFor(async () => await screen.findAllByTestId("menu-item"), {
+            timeout: 3000,
+        });
+                
+        await user.click(checkboxItems[0]);
+        await user.click(checkboxItems[1]);
+        await user.click(checkboxItems[2]);
+        await user.click(checkboxItems[3]);
+        await user.keyboard("{esc}")
+        
+        await waitFor(() => {
+            expect(screen.getByText("Clear All")).toBeInTheDocument();
+        });
+        
+        let chipContainer = await screen.findByTestId("chips-container");
+
+        await user.click(screen.getByText("Clear All"));
+
+        await waitFor(() => {
+            expect(chipContainer.childElementCount).toEqual(0);
+        });
     }, 7500);
     
 

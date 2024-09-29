@@ -79,6 +79,12 @@ function Results(): JSX.Element {
         getData();
     };
 
+    function handleClearAll(): void {
+        setSelectedCategories([]);
+        queryParams.delete("categories");
+        getData();
+    };
+
     function redirectSignUp(): void {
         // redirect to sign up route
         window.history.pushState({}, "", location.origin + "/sign-up?");
@@ -98,7 +104,7 @@ function Results(): JSX.Element {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: loggedIn ? 'none' : 'center',
+        justifyContent: loggedIn ? 'none' : isMobile ? 'none' : 'center',
     }
 
     if (!loggedIn) {
@@ -119,9 +125,9 @@ function Results(): JSX.Element {
     return (
         <Container sx={containerSx}>
             <SearchBar isLandingPage={false} data-testid="search-bar"/>
-            <Grid container spacing={3}>
+            <Grid container spacing={1}>
                 {categories &&
-                    <Grid item xs={1}> 
+                    <Grid item sm={isMobile ? undefined : 1.4}> 
                         <CategoryDropDown 
                             categories={categories}
                             selectedCategories={selectedCategories}
@@ -130,9 +136,22 @@ function Results(): JSX.Element {
                         />
                     </Grid>
                 }
+                <Grid item sm={isMobile ? undefined : 1.4}>
+                    {selectedCategories.length > 0 && 
+                        <Button 
+                            sx={{
+                                textTransform: 'none',
+                                background: '#E5E5EA',
+                                margin: 1,
+                                padding: '7px 8px'
+                            }}
+                            onClick={handleClearAll}
+                        >Clear All</Button>
+                    }
+                </Grid>
             </Grid>
             {searchParam ? <Chip key={searchParam} label={searchParam} sx={{ margin: '4px 1px' }} onDelete={handleRemoveSearchVal}/> : null}
-            <div data-testid="chips-container">
+            <Box sx={{ width: '95%', marginBottom: '7px'}} data-testid="chips-container">
                 {selectedCategories.map(
                     (category) => (
                         <Chip 
@@ -143,7 +162,7 @@ function Results(): JSX.Element {
                         />
                     )
                 )}
-            </div>
+            </Box>
             {loadingData ? <CircularProgress/> : <EnhancedTable isMobile={isMobile} data={vendors} loadingData={loadingData}/>}
         </Container>
     )
