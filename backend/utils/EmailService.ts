@@ -222,11 +222,11 @@ class EmailService {
      */
     public GenerateSupportEmail(firstName: string, lastName: string, email: string, message: string): void {
         const mailOptions = {
-            from: `Support Form Email - ${uuidv4().toString()}`,
+            from: "Contact Us Form <support@thehandl.com>",
             to: "support@thehandl.com",
-            subject: "Please verify your email - The Handl Team",
+            subject: `Support Form Email - ${uuidv4().toString()} - from ${email}`,
             replyTo: email,
-            text: `From: ${firstName} ${lastName}:\n Message: ${message}`,
+            text: `From: ${firstName} ${lastName}\nEmail: ${email}\nMessage: ${message}`,
         };
 
         const transporter = nodemailer.createTransport({
