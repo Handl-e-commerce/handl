@@ -242,7 +242,7 @@ userRouter.put("/delete/:id", async (req: Request, res: Response, next: NextFunc
     }
 });
 
-userRouter.post("/", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.post("/contact", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const firstName: string = req.body.firstName;
         const lastName: string = req.body.lastName;
