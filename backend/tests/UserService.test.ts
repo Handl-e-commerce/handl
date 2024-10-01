@@ -3,7 +3,6 @@ import {UserService} from "../services/UserService";
 import {IUserDetails} from "../interfaces/IUserDetails";
 import {User} from "../db/models/User";
 import {AuthToken} from "../db/models/AuthToken";
-import { EncryptionUtil } from "../utils/EncryptionUtil";
 
 const sendMailMock = jest.fn().mockReturnValue("Sent mock email!");
 
