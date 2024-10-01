@@ -4,8 +4,10 @@ import * as fs from "fs";
 import * as path from "path";
 import {v4 as uuidv4} from "uuid";
 
+/**
+ * Email Service Utility Class
+ */
 class EmailService {
-    
     /**
    * Utility method meant for just sending a verification email to a user
    * @param {string} name
@@ -13,7 +15,7 @@ class EmailService {
    * @param {string} token
    * @param {string} email
    */
-     public GenerateVerificationEmail(name: string, userId: string, token: string, email: string): void {
+    public GenerateVerificationEmail(name: string, userId: string, token: string, email: string): void {
         const url = process.env.NODE_ENV === "local_dev" ?
             "http://localhost:3000" :
             process.env.NODE_ENV === "production" ?
@@ -211,14 +213,20 @@ class EmailService {
         });
     }
 
+    /**
+     * Utility method meant for sending a secure email to our support email with their message
+     * @param {string} firstName
+     * @param {string} lastName
+     * @param {string} email
+     * @param {string} message
+     */
     public GenerateSupportEmail(firstName: string, lastName: string, email: string, message: string): void {
-        
         const mailOptions = {
             from: `Support Form Email - ${uuidv4().toString()}`,
             to: "support@thehandl.com",
             subject: "Please verify your email - The Handl Team",
             replyTo: email,
-            text: `From: ${firstName} ${lastName}:\n Message: ${message}`
+            text: `From: ${firstName} ${lastName}:\n Message: ${message}`,
         };
 
         const transporter = nodemailer.createTransport({
@@ -239,6 +247,6 @@ class EmailService {
             }
         });
     }
-};
+}
 
-export {EmailService}
+export {EmailService};

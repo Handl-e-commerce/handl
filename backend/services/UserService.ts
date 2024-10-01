@@ -7,21 +7,20 @@ import {Vendor} from "../db/models/Vendor";
 import {AuthToken} from "../db/models/AuthToken";
 import {Op} from "sequelize";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
-import { EmailService } from "../utils/EmailService";
+import {EmailService} from "../utils/EmailService";
 
 /**
  * User Service Class
  */
 class UserService implements IUserService {
     // private encryptionUtil: EncryptionUtil;
-    private emailService: EmailService
+    private emailService: EmailService;
     /**
      * constructor where we inject services and utils
      */
     constructor() {
         // this.encryptionUtil = new EncryptionUtil();
         this.emailService = new EmailService();
-
     }
     /**
      * Method to create a user in our database and sends generated token for user email verification
@@ -465,6 +464,13 @@ class UserService implements IUserService {
         }
     }
 
+    /**
+     * Utility method to send us the emails that users will write to submit to us
+     * @param {string} firstName
+     * @param {string} lastName
+     * @param {string} email
+     * @param {string} message
+     */
     public async SendSupportMessage(
         firstName: string,
         lastName: string,

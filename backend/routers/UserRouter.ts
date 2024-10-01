@@ -244,10 +244,10 @@ userRouter.put("/delete/:id", async (req: Request, res: Response, next: NextFunc
 
 userRouter.post("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        let firstName: string = req.body.firstName;
-        let lastName: string = req.body.lastName;
-        let email: string = req.body.email;
-        let message: string = req.body.message;
+        const firstName: string = req.body.firstName;
+        const lastName: string = req.body.lastName;
+        const email: string = req.body.email;
+        const message: string = req.body.message;
         const userService: UserService = new UserService();
         await userService.SendSupportMessage(firstName, lastName, email, message);
         return res.status(201).send();
