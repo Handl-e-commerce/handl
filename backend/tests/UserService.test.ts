@@ -297,6 +297,11 @@ describe("UserService Tests", function() {
     expect(sendMailMock).toHaveBeenCalledTimes(2);
     expect(sendMailMock).toHaveBeenCalled();
   });
+
+  it("Should send contact us email when hit", async () => {
+    await userService.SendSupportMessage("Foo", "Bar", "foobar@gmail.com", "Test Message");
+    expect(sendMailMock).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe("UserService Verification Token Tests", () => {
