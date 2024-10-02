@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Box, Button, Container, SxProps, TextField } from "@mui/material";
-// TODO: (LOW) Implement contact us functionality for submitting messages
-// import { fetchWrapper } from "../../utils/fetch-wrapper";
+import { fetchWrapper } from "../../utils/fetch-wrapper";
 
-// const envVariables = process.env;
-// const {
-//     REACT_APP_SERVER_URI,
-// } = envVariables;
+const envVariables = process.env;
+const {
+    REACT_APP_SERVER_URI,
+} = envVariables;
 
 
 function ContactUs(): JSX.Element {
@@ -17,7 +16,12 @@ function ContactUs(): JSX.Element {
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
     async function handleSubmitMessage(): Promise<void> {
-        // await fetchWrapper(REACT_APP_SERVER_URI + `/users/contact-us`, 'POST', {});
+        await fetchWrapper(REACT_APP_SERVER_URI + `/users/contact`, 'POST', {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            message: message
+        });
         setIsSubmit(true);
     };
 
@@ -25,14 +29,6 @@ function ContactUs(): JSX.Element {
         if (firstName === "" || lastName === "" || email === "" || message === "")
             return false;
         return true;
-    }
-
-    if (isSubmit) {
-        return (
-            <div>
-                Thanks for you message! We'll respond to you soon!
-            </div>
-        )
     }
 
     const containerSx: SxProps = {
@@ -61,6 +57,14 @@ function ContactUs(): JSX.Element {
         marginTop: '12px',
         marginBottom: '12px',
     };
+
+    if (isSubmit) {
+        return (
+            <Container sx={containerSx}>
+                Thanks for you message! We'll respond to you soon!
+            </Container>
+        )
+    }
 
     return (
         <Container sx={containerSx}>

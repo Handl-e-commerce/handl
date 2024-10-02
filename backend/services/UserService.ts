@@ -6,25 +6,21 @@ import * as argon2 from "argon2";
 import {Vendor} from "../db/models/Vendor";
 import {AuthToken} from "../db/models/AuthToken";
 import {Op} from "sequelize";
-import * as nodemailer from "nodemailer";
-import * as handlebars from "handlebars";
-import * as fs from "fs";
-import * as path from "path";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
-// TODO: (HIGH) Figure out what to do with Encryption Util
-// import {EncryptionUtil} from "../utils/EncryptionUtil";
+import {EmailService} from "../utils/EmailService";
 
 /**
  * User Service Class
  */
 class UserService implements IUserService {
     // private encryptionUtil: EncryptionUtil;
-
+    private emailService: EmailService;
     /**
      * constructor where we inject services and utils
      */
     constructor() {
         // this.encryptionUtil = new EncryptionUtil();
+        this.emailService = new EmailService();
     }
     /**
      * Method to create a user in our database and sends generated token for user email verification
@@ -65,7 +61,7 @@ class UserService implements IUserService {
                     tokenExpiration: new Date(Date.now() + 1000*60*30),
                 });
 
-                this.GenerateVerificationEmail(userDetails.firstName, userId, token, userDetails.email);
+                this.emailService.GenerateVerificationEmail(userDetails.firstName, userId, token, userDetails.email);
 
                 return {
                     id: userId,
@@ -170,7 +166,7 @@ class UserService implements IUserService {
                 },
             });
 
-            this.GeneratePasswordResetConfirmationEmail(user.firstName, user.email);
+            this.emailService.GeneratePasswordResetConfirmationEmail(user.firstName, user.email);
 
             return {
                 id: userId,
@@ -210,7 +206,7 @@ class UserService implements IUserService {
                     email: email,
                 },
             });
-            this.GeneratePasswordResetEmail(user.firstName, user.email, user.uuid, token);
+            this.emailService.GeneratePasswordResetEmail(user.firstName, user.email, user.uuid, token);
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);
@@ -240,7 +236,7 @@ class UserService implements IUserService {
                 },
             });
 
-            this.GenerateDeletionConfirmationEmail(user.firstName, user.email);
+            this.emailService.GenerateDeletionConfirmationEmail(user.firstName, user.email);
 
             return {
                 id: userId,
@@ -460,8 +456,29 @@ class UserService implements IUserService {
             });
 
             if (user) {
-                this.GenerateVerificationEmail(user.firstName, userId, token, user.email);
+                this.emailService.GenerateVerificationEmail(user.firstName, userId, token, user.email);
             }
+        } catch (err) {
+            const error = err as Error;
+            throw Error(error.message);
+        }
+    }
+
+    /**
+     * Utility method to send us the emails that users will write to submit to us
+     * @param {string} firstName
+     * @param {string} lastName
+     * @param {string} email
+     * @param {string} message
+     */
+    public async SendSupportMessage(
+        firstName: string,
+        lastName: string,
+        email: string,
+        message: string,
+    ): Promise<void> {
+        try {
+            this.emailService.GenerateSupportEmail(firstName, lastName, email, message);
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);
@@ -480,212 +497,6 @@ class UserService implements IUserService {
             token += chars[Math.floor(Math.random() * chars.length)];
         }
         return token;
-    }
-
-    // TODO: (LOW) Refactor these methods into utility class called EmailService
-    /**
-   * Utility method meant for just sending a verification email to a user
-   * @param {string} name
-   * @param {string} userId
-   * @param {string} token
-   * @param {string} email
-   */
-    private GenerateVerificationEmail(name: string, userId: string, token: string, email: string): void {
-        const url = process.env.NODE_ENV === "local_dev" ?
-            "http://localhost:3000" :
-            process.env.NODE_ENV === "production" ?
-                process.env.VERIFICATION_LINK : process.env.DEV_VERIFICATION_LINK;
-        const verificationLink: string = url + `/verify?token=${token}&userId=${userId}`;
-        const fraudPreventionLink: string = url + `/cancel-registration/?userId=${userId}`;
-        const filePath = path.resolve("email-templates/VerifyEmail/VerifyEmail.html");
-        const source = fs.readFileSync(filePath, "utf-8").toString();
-        const template = handlebars.compile(source);
-        const replacements = {
-            name: name,
-            verificationLink: verificationLink,
-            fraudPreventionLink: fraudPreventionLink,
-        };
-        const htmlToSend = template(replacements);
-
-        const mailOptions = {
-            from: "The Handl Team <support@thehandl.com>",
-            to: email,
-            subject: "Please verify your email - The Handl Team",
-            replyTo: "support@thehandl.com",
-            html: htmlToSend,
-            attachments: [{
-                filename: "handl-email-logo-narrow.png",
-                path: path.resolve("email-templates/handl-email-logo-narrow.png"),
-                cid: "companyLogo",
-            }],
-        };
-
-        const transporter = nodemailer.createTransport({
-            host: "smtp.zoho.com",
-            port: 465,
-            secure: true, // use SSL
-            auth: {
-                user: "support@thehandl.com",
-                pass: process.env.ZOHO_MAIL_PASSWORD as string,
-            },
-        });
-
-        transporter.sendMail(mailOptions, (err, res)=>{
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("The email was sent successfully: ", res);
-            }
-        });
-    }
-
-    /**
-     * Utility method meant for sending a secure email letting them know that we've successfully reset their password
-     * @param {string} name
-     * @param {string} email
-     */
-    private GeneratePasswordResetConfirmationEmail(name: string, email: string): void {
-        // eslint-disable-next-line
-        const filePath = path.resolve("email-templates/PasswordResetConfirmation/PasswordResetConfirmation.html");
-        const source = fs.readFileSync(filePath, "utf-8").toString();
-        const template = handlebars.compile(source);
-        const replacements = {
-            name: name,
-        };
-        const htmlToSend = template(replacements);
-
-        const mailOptions = {
-            from: "The Handl Team <support@thehandl.com>",
-            to: email,
-            subject: "Password Reset Confirmation - Handl",
-            replyTo: "support@thehandl.com",
-            html: htmlToSend,
-            attachments: [{
-                filename: "handl-email-logo-narrow.png",
-                path: path.resolve("email-templates/handl-email-logo-narrow.png"),
-                cid: "companyLogo",
-            }],
-        };
-
-        const transporter = nodemailer.createTransport({
-            host: "smtp.zoho.com",
-            port: 465,
-            secure: true, // use SSL
-            auth: {
-                user: "support@thehandl.com",
-                pass: process.env.ZOHO_MAIL_PASSWORD as string,
-            },
-        });
-
-        transporter.sendMail(mailOptions, (err, res)=>{
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("The email was sent successfully: ", res);
-            }
-        });
-    }
-
-    /**
-     * Utility method meant for sending a secure email and link to let a uer reset their password
-     * @param {string} name
-     * @param {string} email
-     * @param {string} userId
-     * @param {string} token
-     */
-    private GeneratePasswordResetEmail(name: string, email: string, userId: string, token: string): void {
-        const filePath = path.resolve("email-templates/ResetPassword/ResetPassword.html");
-        const source = fs.readFileSync(filePath, "utf-8").toString();
-        const template = handlebars.compile(source);
-        const url = process.env.NODE_ENV === "local_dev" ?
-            "http://localhost:3000" :
-            process.env.NODE_ENV === "production" ?
-                process.env.VERIFICATION_LINK :
-                process.env.DEV_VERIFICATION_LINK;
-        const verificationLink: string = url + `/reset/redirect?token=${token}&userId=${userId}`;
-
-        const replacements = {
-            name: name,
-            verificationLink: verificationLink,
-        };
-        const htmlToSend = template(replacements);
-
-        const mailOptions = {
-            from: "The Handl Team <support@thehandl.com>",
-            to: email,
-            subject: "Password Reset Confirmation - Handl",
-            replyTo: "support@thehandl.com",
-            html: htmlToSend,
-            attachments: [{
-                filename: "handl-email-logo-narrow.png",
-                path: path.resolve("email-templates/handl-email-logo-narrow.png"),
-                cid: "companyLogo",
-            }],
-        };
-
-        const transporter = nodemailer.createTransport({
-            host: "smtp.zoho.com",
-            port: 465,
-            secure: true, // use SSL
-            auth: {
-                user: "support@thehandl.com",
-                pass: process.env.ZOHO_MAIL_PASSWORD as string,
-            },
-        });
-
-        transporter.sendMail(mailOptions, (err, res)=>{
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("The email was sent successfully: ", res);
-            }
-        });
-    }
-
-    /**
-     * Utility method meant for sending a secure email letting the user know we've deleted their account
-     * @param {string} name
-     * @param {string} email
-     */
-    private GenerateDeletionConfirmationEmail(name: string, email: string): void {
-        const filePath = path.resolve("email-templates/DeletionConfirmation/DeletionConfirmation.html");
-        const source = fs.readFileSync(filePath, "utf-8").toString();
-        const template = handlebars.compile(source);
-        const replacements = {
-            name: name,
-        };
-        const htmlToSend = template(replacements);
-
-        const mailOptions = {
-            from: "The Handl Team <support@thehandl.com>",
-            to: email,
-            subject: "Account Deletion Confirmation - Handl",
-            replyTo: "support@thehandl.com",
-            html: htmlToSend,
-            attachments: [{
-                filename: "handl-email-logo-narrow.png",
-                path: path.resolve("email-templates/handl-email-logo-narrow.png"),
-                cid: "companyLogo",
-            }],
-        };
-
-        const transporter = nodemailer.createTransport({
-            host: "smtp.zoho.com",
-            port: 465,
-            secure: true, // use SSL
-            auth: {
-                user: "support@thehandl.com",
-                pass: process.env.ZOHO_MAIL_PASSWORD as string,
-            },
-        });
-
-        transporter.sendMail(mailOptions, (err, res)=>{
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("The email was sent successfully: ", res);
-            }
-        });
     }
 }
 

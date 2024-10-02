@@ -242,4 +242,18 @@ userRouter.put("/delete/:id", async (req: Request, res: Response, next: NextFunc
     }
 });
 
+userRouter.post("/contact", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const firstName: string = req.body.firstName;
+        const lastName: string = req.body.lastName;
+        const email: string = req.body.email;
+        const message: string = req.body.message;
+        const userService: UserService = new UserService();
+        await userService.SendSupportMessage(firstName, lastName, email, message);
+        return res.status(201).send();
+    } catch (err: unknown) {
+        return next(err as Error);
+    }
+});
+
 export {userRouter};
