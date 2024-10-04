@@ -1,5 +1,7 @@
 import {DataTypes, QueryInterface} from "sequelize";
 import {v4 as uuidv4} from "uuid";
+import * as fs from "fs";
+import { parse } from 'csv';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -726,6 +728,18 @@ module.exports = {
         data.forEach((item) => {
             item.uuid = uuidv4().toString();
         });
+        const csvData = [];
+        fs.createReadStream("./ASD_Vendors_List_Seed_Data_August_2024.csv")
+            .pipe((parse({ delimiter: "|", from_line: 2})))
+            .on("data", () => {
+
+            })
+            .on("end", () => {
+                console.log("Finished parsing data.");
+            })
+            .on("error", (error) => {
+                console.log(error.message);
+            });
         return await queryInterface.bulkInsert("Vendors", data, {});
     },
 
