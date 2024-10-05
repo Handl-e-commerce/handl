@@ -3128,7 +3128,7 @@ module.exports = {
           email: "eastb@eastbcorps.com  "
         },
         {
-          name: "0",
+          name: "Edge Imports",
           description: "At Edge Imports, we aspire to be the leaders in consumer product design, where innovative products are paired with sharp packaging. Most importantly, we do this for affordable prices. Our most notable brands, iEdge, TrendLogic, Tekniq and Trend Zone feature chic consumer electronics that enable users to accessorize like never before. Over the last 8 years, Edge Imports has created 5 unique brands with over 800 SKUs across all product lines. We feature products in consumer electronics, housewares, automotive, pet, hardware/tools, ceramics, and storage containers. Our distribution stretches across the United States, Canada, Mexico, and South America in grocery stores, department stores, discount stores, and more.",
           website: "http://www.edgeimports.net",
           keywords: "iphone, type c, charging cable, cellphone accessories, charging accessories, consumer electronics, impulse, micro usb, micro, earbuds, headphones, bluetooth, tws, true wireless, car mount, phone holder, phone cases, aux cable, audio",
