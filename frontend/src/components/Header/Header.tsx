@@ -55,6 +55,7 @@ function Header(): JSX.Element {
         color: '#F2E5D1',
         width: 'fit-content',
         height: 'fit-content',
+        textTransform: 'none',
     };
 
     const signupButtonSx: SxProps = {
