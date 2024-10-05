@@ -329,16 +329,6 @@ function SignUp(): JSX.Element {
         return true;
     };
 
-    if(signUpSuccess) {
-        return (
-            <div className="sign-up-container" data-testid="successful-registration">
-                <h1>You've successfully signed up for Handl!</h1>
-                <div>We've just sent you a verification email. Click the link in the email to confirm your email!</div>
-                <div>The link expires in 30 mins</div>
-            </div>
-        )
-    };
-
     const containerSx: SxProps = {
         minHeight: '56rem',
         marginBottom: '7px',
@@ -366,6 +356,16 @@ function SignUp(): JSX.Element {
         marginBottom: '24px',
     };
 
+    if(signUpSuccess) {
+        return (
+            <Container sx={containerSx} data-testid="successful-registration">
+                <h1>You've successfully signed up for Handl!</h1>
+                <div>We've just sent you a verification email. Click the link in the email to confirm your email!</div>
+                <div>The link expires in 30 mins</div>
+            </Container>
+        )
+    };
+
     return (
         <Container sx={containerSx}>
             <h1>Sign Up Free</h1>
@@ -380,7 +380,7 @@ function SignUp(): JSX.Element {
                     placeholder="Business Email"
                     name="business_email"
                     data-testid="email-input"
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value.toLocaleLowerCase())}
                     sx={textFieldSx}
                 />
                 <TextField 

@@ -134,7 +134,7 @@ function Login(): JSX.Element {
                     name="business_email"
                     variant="outlined"
                     sx={textFieldSx}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value.toLocaleLowerCase())}
                 />
                 <TextField
                     type={showPassword ? 'text':'password'}
