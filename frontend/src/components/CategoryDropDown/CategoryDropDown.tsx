@@ -1,5 +1,5 @@
 import React from "react";
-import { FormControl, ListItemText, MenuItem, Select, SelectChangeEvent, Checkbox} from '@mui/material';
+import { FormControl, ListItemText, MenuItem, Select, SelectChangeEvent, Checkbox, SxProps, MenuProps} from '@mui/material';
 import { Typography } from "@mui/material";
 import { useMobile } from "../../hooks/useMobile";
 
@@ -20,6 +20,43 @@ function CategoryDropDown({categories, selectedCategories, setSelectedCategories
         setSelectedCategories(typeof value === 'string' ? value.split(',') : value,);
     };
 
+    const selectSx: SxProps = {
+        background: '#E5E5EA',
+        '& .MuiSelect-select': {
+            paddingTop: '7px',
+            paddingLeft: '10px',
+            paddingBottom: '7px',
+        },
+        '& .MuiOutlinedInput-notchedOutline': {
+            border: 'none'
+        },
+        display: 'flex',
+        justifyContent: 'center',
+        marginLeft: '7px'
+    };
+
+    const menuProps: Partial<MenuProps> = {
+        sx: {
+            width: isMobile ? '80%' : '100%'
+        },
+        MenuListProps: {
+            sx: {
+                background: '#E5E5EA',
+            }
+        }
+    };
+
+    const checkmarkSx: SxProps = {
+        width: isMobile ? '32px' : '48px',
+        height: isMobile ? '32px' : '48px',
+    };
+
+    const listItemTextSx: SxProps = {
+        '& .MuiTypography-root': {
+            fontSize: isMobile ? '.75rem' : '1rem'
+        }
+    };
+
     return (
         <FormControl sx={{ m: 1, width: 140, textAlign: 'left' }}>
             <Select
@@ -34,32 +71,13 @@ function CategoryDropDown({categories, selectedCategories, setSelectedCategories
                     // @ts-ignore
                     "data-testid" : "categories-multiple-checkbox-select",
                 }}
-                MenuProps={{
-                    MenuListProps: {
-                        sx: {
-                            background: '#E5E5EA',
-                        }
-                    }
-                }}
-                sx={{
-                    background: '#E5E5EA', 
-                    '& .MuiSelect-select': {
-                        paddingTop: '7px',
-                        paddingLeft: '10px',
-                        paddingBottom: '7px',
-                    },
-                    '& .MuiOutlinedInput-notchedOutline': {
-                        border: 'none'
-                    },
-                    display: 'flex',
-                    justifyContent: 'center',
-                    marginLeft: '7px'
-                }}
+                MenuProps={menuProps}
+                sx={selectSx}
             >
                 {categories.map((subcategory, i) => (
-                    <MenuItem key={subcategory} value={subcategory} data-testid="menu-item">
-                        <Checkbox checked={selectedCategories.indexOf(subcategory) > -1} />
-                        <ListItemText primary={subcategory} />
+                    <MenuItem key={subcategory} value={subcategory} data-testid="menu-item" sx={{ padding: '6px 6px'}}>
+                        <Checkbox checked={selectedCategories.indexOf(subcategory) > -1} sx={checkmarkSx}/>
+                        <ListItemText primary={subcategory} sx={listItemTextSx}/>
                     </MenuItem>
                 ))}
             </Select>
