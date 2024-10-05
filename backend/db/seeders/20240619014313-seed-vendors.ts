@@ -11627,14 +11627,14 @@ module.exports = {
                 email: "service@zuckerfeather.com",
             },
         ];
-  /* eslint-enable */
         data.forEach((item: any) => {
             item.uuid = uuidv4().toString();
             item.createdAt = new Date(Date.now());
             item.updatedAt = new Date(Date.now());
             item.people = (item.people as string).split(",");
         });
-
+        
+    /* eslint-enable */
         return await queryInterface.bulkInsert("Vendors", data, {});
     },
 
