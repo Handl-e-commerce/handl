@@ -23,11 +23,10 @@ function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
                     }
                 }}
             >
-                <TableCell sx={{ paddingRight: '3px !important' }}>
+                <TableCell sx={{ paddingRight: '3px !important' }} onClick={() => setOpen(!open)}>
                     <IconButton
                         aria-label="expand row"
                         size="small"
-                        onClick={() => setOpen(!open)}
                     >
                         {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
                     </IconButton>
