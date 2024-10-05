@@ -1,6 +1,7 @@
 import React from "react";
 import { FormControl, ListItemText, MenuItem, Select, SelectChangeEvent, Checkbox} from '@mui/material';
 import { Typography } from "@mui/material";
+import { useMobile } from "../../hooks/useMobile";
 
 interface ICategoryDropDownProps {
     categories: string[];
@@ -10,6 +11,8 @@ interface ICategoryDropDownProps {
 }
 
 function CategoryDropDown({categories, selectedCategories, setSelectedCategories, handleQuery}: ICategoryDropDownProps): JSX.Element {
+    const isMobile = useMobile();
+    
     function handleChange(event: SelectChangeEvent<typeof categories>) {
         const {
           target: { value },
@@ -20,6 +23,7 @@ function CategoryDropDown({categories, selectedCategories, setSelectedCategories
     return (
         <FormControl sx={{ m: 1, width: 140, textAlign: 'left' }}>
             <Select
+                autoWidth={!isMobile}
                 multiple
                 displayEmpty
                 value={selectedCategories.sort()}
@@ -28,7 +32,14 @@ function CategoryDropDown({categories, selectedCategories, setSelectedCategories
                 renderValue={() => <Typography variant='body1' component='div'>Categories</Typography>}
                 SelectDisplayProps={{
                     // @ts-ignore
-                    "data-testid" : "categories-multiple-checkbox-select"
+                    "data-testid" : "categories-multiple-checkbox-select",
+                }}
+                MenuProps={{
+                    MenuListProps: {
+                        sx: {
+                            background: '#E5E5EA'
+                        }
+                    }
                 }}
                 sx={{
                     background: '#E5E5EA', 
@@ -48,7 +59,7 @@ function CategoryDropDown({categories, selectedCategories, setSelectedCategories
                 {categories.map((subcategory, i) => (
                     <MenuItem key={subcategory} value={subcategory} data-testid="menu-item">
                         <Checkbox checked={selectedCategories.indexOf(subcategory) > -1} />
-                        <ListItemText primary={subcategory}/>
+                        <ListItemText primary={subcategory} sx={{fontSize: '5px'}}/>
                     </MenuItem>
                 ))}
             </Select>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
+import { Box, Container } from "@mui/material";
 
 const envVariables = process.env;
 const {
@@ -40,10 +41,10 @@ function Verify(): JSX.Element {
     }
 
     return (
-        <div data-testid="verify-container">
-            <div className={isVerified ? "verified" : "not-verified"}>{responseMessage}</div>
-            {!isVerified && <div>Please click <a onClick={() => handleResendVerification(userId)}>here</a> to resend verification link</div>}
-        </div>
+        <Container sx={{minHeight: '66rem'}} data-testid="verify-container">
+            <Box className={isVerified ? "verified" : "not-verified"}>{responseMessage}</Box>
+            {!isVerified && <Box>Please click <a onClick={() => handleResendVerification(userId)}>here</a> to resend verification link</Box>}
+        </Container>
     )
 };
 
