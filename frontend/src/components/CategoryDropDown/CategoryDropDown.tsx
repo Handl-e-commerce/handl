@@ -37,7 +37,7 @@ function CategoryDropDown({categories, selectedCategories, setSelectedCategories
                 MenuProps={{
                     MenuListProps: {
                         sx: {
-                            background: '#E5E5EA'
+                            background: '#E5E5EA',
                         }
                     }
                 }}
@@ -59,7 +59,7 @@ function CategoryDropDown({categories, selectedCategories, setSelectedCategories
                 {categories.map((subcategory, i) => (
                     <MenuItem key={subcategory} value={subcategory} data-testid="menu-item">
                         <Checkbox checked={selectedCategories.indexOf(subcategory) > -1} />
-                        <ListItemText primary={subcategory} sx={{fontSize: '5px'}}/>
+                        <ListItemText primary={subcategory} />
                     </MenuItem>
                 ))}
             </Select>
