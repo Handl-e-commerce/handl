@@ -34,14 +34,14 @@ describe("VendorService tests", () => {
         let vendorService = new VendorService();
         let results = await vendorService.GetVendors(undefined, undefined, ["NY", "TX"]);
         expect(results).toBeDefined();
-        expect(results.length).toEqual(135);
+        expect(results.length).toEqual(158);
     });
     
     it("Should be case insensitive when querying states", async () => {
         let vendorService = new VendorService();
         let results = await vendorService.GetVendors(undefined, undefined, ["ny", "tx"]);
         expect(results).toBeDefined();
-        expect(results.length).toEqual(135);
+        expect(results.length).toEqual(158);
     });
 
     it("Should return only rows that match the search param and states", async () => {
