@@ -46,18 +46,12 @@ function Results(): JSX.Element {
     };
 
     async function handleQuery(): Promise<void> {
-        if (selectedCategories.length === 0)
-            queryParams.delete("categories");
-        if (selectedStates.length === 0)
-            queryParams.delete("states");
-        else {
-            queryParams.delete("categories");
-            queryParams.delete("states");
-            let categories: string = selectedCategories.join(",");
-            let states: string = selectedStates.join(",");
-            if (categories.length > 0) queryParams.set("categories", categories);
-            if (states.length  > 0) queryParams.set("states", states);
-        };
+        queryParams.delete("categories");
+        queryParams.delete("states");
+        let categories: string = selectedCategories.join(",");
+        let states: string = selectedStates.join(",");
+        if (categories.length > 0) queryParams.set("categories", categories);
+        if (states.length  > 0) queryParams.set("states", states);
         await getData();
     };
 
