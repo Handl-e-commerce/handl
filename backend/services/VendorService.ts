@@ -10,19 +10,50 @@ class VendorService implements IVendorService {
      * Returns the total number of items found using the query and the results fixed by limit and offset
      * @param {string[] | null | undefined} categories
      * @param {string[] | null | undefined} searchVal
+     * @param {string[] | null | undefined} states
      * @return {Vendor[]}
      */
     public async GetVendors(
         categories: string[] | null | undefined,
-        searchVal: string | null | undefined
+        searchVal: string | null | undefined,
+        states: string[] | null | undefined,
     ): Promise<Vendor[]> {
         try {
-            const vendorResults: Vendor[] = await Vendor.findAll({
-                where: searchVal ? {
-                    name: {
-                        [Op.iLike]: `%${searchVal}%`,
+            let whereClause = {};
+            if (searchVal) {
+                whereClause = {
+                    ...whereClause,
+                    [Op.or]: [
+                        {
+                            name: {
+                                [Op.iLike]: `%${searchVal}%`,
+                            },
+                        },
+                        {
+                            description: {
+                                [Op.iLike]: `%${searchVal}%`,
+                            },
+                        },
+                        {
+                            keywords: {
+                                [Op.iLike]: `%${searchVal}%`,
+                            },
+                        },
+                    ],
+                };
+            }
+            if (states) {
+                const properStates: string[] = states.map((state) => state.toUpperCase());
+                whereClause = {
+                    ...whereClause,
+                    state: {
+                        [Op.or]: properStates,
                     },
-                }: {},
+                };
+            }
+
+            const vendorResults: Vendor[] = await Vendor.findAll({
+                where: whereClause,
                 include: [{
                     model: VendorCategories,
                     where: categories ? {

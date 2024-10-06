@@ -3,21 +3,22 @@ import { FormControl, ListItemText, MenuItem, Select, SelectChangeEvent, Checkbo
 import { Typography } from "@mui/material";
 import { useMobile } from "../../hooks/useMobile";
 
-interface ICategoryDropDownProps {
-    categories: string[];
-    selectedCategories: string[];
-    setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
+interface IQueryDropDownProps {
+    name: string;
+    data: string[];
+    selectedData: string[];
+    setSelectedData: React.Dispatch<React.SetStateAction<string[]>>;
     handleQuery: () => void;
 }
 
-function CategoryDropDown({categories, selectedCategories, setSelectedCategories, handleQuery}: ICategoryDropDownProps): JSX.Element {
+function QueryDropDown({name, data, selectedData, setSelectedData, handleQuery}: IQueryDropDownProps): JSX.Element {
     const isMobile = useMobile();
     
-    function handleChange(event: SelectChangeEvent<typeof categories>) {
+    function handleChange(event: SelectChangeEvent<typeof data>) {
         const {
           target: { value },
         } = event;
-        setSelectedCategories(typeof value === 'string' ? value.split(',') : value,);
+        setSelectedData(typeof value === 'string' ? value.split(',') : value,);
     };
 
     const selectSx: SxProps = {
@@ -37,7 +38,7 @@ function CategoryDropDown({categories, selectedCategories, setSelectedCategories
 
     const menuProps: Partial<MenuProps> = {
         sx: {
-            width: isMobile ? '80%' : '100%'
+            width: isMobile ? '80%' : '130%',
         },
         MenuListProps: {
             sx: {
@@ -60,24 +61,23 @@ function CategoryDropDown({categories, selectedCategories, setSelectedCategories
     return (
         <FormControl sx={{ m: 1, width: 140, textAlign: 'left' }}>
             <Select
-                autoWidth={!isMobile}
                 multiple
                 displayEmpty
-                value={selectedCategories.sort()}
+                value={selectedData.sort()}
                 onChange={handleChange}
                 onClose={handleQuery}
-                renderValue={() => <Typography variant='body1' component='div'>Categories</Typography>}
+                renderValue={() => <Typography variant='body1' component='div'>{name}</Typography>}
                 SelectDisplayProps={{
                     // @ts-ignore
-                    "data-testid" : "categories-multiple-checkbox-select",
+                    "data-testid" : `${name.toLowerCase()}-multiple-checkbox-select`,
                 }}
                 MenuProps={menuProps}
                 sx={selectSx}
             >
-                {categories.map((subcategory, i) => (
-                    <MenuItem key={subcategory} value={subcategory} data-testid="menu-item" sx={{ padding: '6px 6px'}}>
-                        <Checkbox checked={selectedCategories.indexOf(subcategory) > -1} sx={checkmarkSx}/>
-                        <ListItemText primary={subcategory} sx={listItemTextSx}/>
+                {data.map((datum, i) => (
+                    <MenuItem key={datum} value={datum} data-testid="menu-item" sx={{ padding: '6px 6px'}}>
+                        <Checkbox checked={selectedData.indexOf(datum) > -1} sx={checkmarkSx}/>
+                        <ListItemText primary={datum} sx={listItemTextSx}/>
                     </MenuItem>
                 ))}
             </Select>
@@ -85,4 +85,4 @@ function CategoryDropDown({categories, selectedCategories, setSelectedCategories
     );
 };
 
-export { CategoryDropDown };
+export { QueryDropDown };

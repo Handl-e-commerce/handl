@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { Vendor } from "../../types/types";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
-import { CategoryDropDown } from "../../components/CategoryDropDown/CategoryDropDown";
 import { Box, Button, Chip, CircularProgress, Container, Grid, Paper, SxProps, Typography  } from '@mui/material';
 import { EnhancedTable } from "../../components/Table/EnhancedTable";
 import { useMobile } from "../../hooks/useMobile";
+import { QueryDropDown } from "../../components/QueryDropDown/QueryDropDown";
+import { states } from "../../utils/constants";
 
 const envVariables = process.env;
 const {
@@ -20,6 +21,7 @@ function Results(): JSX.Element {
     const [vendors, setVendors] = useState<Vendor[]>([]);
     const [categories, setCategories] = useState<string[]>();
     const [selectedCategories, setSelectedCategories] = useState<string[]>(queryParams.get("categories")?.split(",") ?? []);
+    const [selectedStates, setSelectedStates] = useState<string[]>(queryParams.get("states")?.split(",") ?? []);
     const [loadingData, setLoadingData] = useState<boolean>(true);
     let isMobile: boolean = useMobile();
     let loggedIn: boolean = useLoginStatus();
@@ -46,10 +48,15 @@ function Results(): JSX.Element {
     async function handleQuery(): Promise<void> {
         if (selectedCategories.length === 0)
             queryParams.delete("categories");
+        if (selectedStates.length === 0)
+            queryParams.delete("states");
         else {
             queryParams.delete("categories");
+            queryParams.delete("states");
             let categories: string = selectedCategories.join(",");
-            queryParams.set("categories", categories);
+            let states: string = selectedStates.join(",");
+            if (categories.length > 0) queryParams.set("categories", categories);
+            if (states.length  > 0) queryParams.set("states", states);
         };
         await getData();
     };
@@ -79,10 +86,21 @@ function Results(): JSX.Element {
         getData();
     };
 
+    function handleRemoveStateChip(state: string): void {
+        let filteredStates = selectedStates.filter(val => val !== state);
+        setSelectedStates(filteredStates);
+        queryParams.delete("states");
+        let states: string = filteredStates.join(",");
+        states.length > 0 ? queryParams.set("states", states) : queryParams.delete("states");
+        getData();
+    }
+
     function handleClearAll(): void {
         setSelectedCategories([]);
+        setSelectedStates([]);
         queryParams.delete("categories");
         queryParams.delete("search-params");
+        queryParams.delete("states");
         getData();
     };
 
@@ -129,16 +147,26 @@ function Results(): JSX.Element {
             <Grid container spacing={1}>
                 {categories &&
                     <Grid item sm={isMobile ? undefined : 1.4}> 
-                        <CategoryDropDown 
-                            categories={categories}
-                            selectedCategories={selectedCategories}
-                            setSelectedCategories={setSelectedCategories}
+                        <QueryDropDown 
+                            name="Categories"
+                            data={categories}
+                            selectedData={selectedCategories}
+                            setSelectedData={setSelectedCategories}
                             handleQuery={handleQuery}
                         />
                     </Grid>
                 }
                 <Grid item sm={isMobile ? undefined : 1.4}>
-                    {(selectedCategories.length > 0 || searchParam) && 
+                    <QueryDropDown 
+                        name="States"
+                        data={states.map((state) => state.abbreviation).filter((val) => val !== "--")}
+                        selectedData={selectedStates}
+                        setSelectedData={setSelectedStates}
+                        handleQuery={handleQuery}
+                    />
+                </Grid>
+                <Grid item sm={isMobile ? undefined : 1.4}>
+                    {(selectedCategories.length > 0 || selectedStates.length > 0 || searchParam) && 
                         <Button 
                             sx={{
                                 textTransform: 'none',
@@ -160,6 +188,16 @@ function Results(): JSX.Element {
                             label={category}
                             sx={{ margin: '4px 1px' }}
                             onDelete={() => handleRemoveCategoryChip(category)}
+                        />
+                    )
+                )}
+                {selectedStates.map(
+                    (state) => (
+                        <Chip 
+                            key={state}
+                            label={state}
+                            sx={{ margin: '4px 1px' }}
+                            onDelete={() => handleRemoveStateChip(state)}
                         />
                     )
                 )}
