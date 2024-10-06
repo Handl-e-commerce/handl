@@ -7,6 +7,7 @@ import { Box, Button, Chip, CircularProgress, Container, Grid, Paper, SxProps, T
 import { EnhancedTable } from "../../components/Table/EnhancedTable";
 import { useMobile } from "../../hooks/useMobile";
 import { QueryDropDown } from "../../components/QueryDropDown/QueryDropDown";
+import { states } from "../../utils/constants";
 
 const envVariables = process.env;
 const {
@@ -158,7 +159,7 @@ function Results(): JSX.Element {
                 <Grid item sm={isMobile ? undefined : 1.4}>
                     <QueryDropDown 
                         name="States"
-                        data={states}
+                        data={states.map((state) => state.abbreviation).filter((val) => val !== "--")}
                         selectedData={selectedStates}
                         setSelectedData={setSelectedStates}
                         handleQuery={handleQuery}
@@ -207,56 +208,3 @@ function Results(): JSX.Element {
 };
 
 export { Results };
-
-const states = [
-    'AL',
-    'AK',
-    'AZ',
-    'AR',
-    'CA',
-    'CO',
-    'CT',
-    'DE',
-    'FL',
-    'GA',
-    'HI',
-    'ID',
-    'IL',
-    'IN',
-    'IA',
-    'KS',
-    'KY',
-    'LA',
-    'ME',
-    'MD',
-    'MA',
-    'MI',
-    'MN',
-    'MS',
-    'MO',
-    'MT',
-    'NE',
-    'NV',
-    'NH',
-    'NJ',
-    'NM',
-    'NY',
-    'NC',
-    'ND',
-    'OH',
-    'OK',
-    'OR',
-    'PA',
-    'RI',
-    'SC',
-    'SD',
-    'TN',
-    'TX',
-    'UT',
-    'VT',
-    'VA',
-    'WA',
-    'WV',
-    'WI',
-    'WY'
-];
