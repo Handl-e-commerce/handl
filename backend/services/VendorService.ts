@@ -23,21 +23,31 @@ class VendorService implements IVendorService {
             if (searchVal) {
                 whereClause = {
                     ...whereClause,
-                    [Op.or]: {
-                        name: {
-                            [Op.iLike]: `%${searchVal}%`,
+                    [Op.or]: [
+                        {
+                            name: {
+                                [Op.iLike]: `%${searchVal}%`,
+                            }
                         },
-                        description: {
-                            [Op.iLike]: `%${searchVal}%`,
+                        {
+                            description: {
+                                [Op.iLike]: `%${searchVal}%`,
+                            },
                         },
-                    },
+                        {
+                            keywords: {
+                                [Op.iLike]: `%${searchVal}%`,
+                            }
+                        }
+                    ],
                 };
             }
             if (states) {
+                const properStates: string[] = states.map((state) => state.toUpperCase());
                 whereClause = {
                     ...whereClause,
                     state: {
-                        [Op.or]: states,
+                        [Op.or]: properStates,
                     },
                 };
             }
