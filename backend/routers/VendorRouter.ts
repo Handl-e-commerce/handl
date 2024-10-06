@@ -7,12 +7,16 @@ const vendorRouter = express.Router();
 vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
         let categories = null;
+        let states = null;
         if (req.query.categories) {
             categories = (req.query.categories as string).split(",");
         }
+        if (req.query.states) {
+            states = (req.query.states as string).split(",");
+        }
         const searchVal: string = req.query["search-params"] as string;
         const vendorService: VendorService = new VendorService();
-        const vendors = await vendorService.GetVendors(categories, searchVal);
+        const vendors = await vendorService.GetVendors(categories, searchVal, states);
         return res.status(200).json({
             result: vendors,
         });
