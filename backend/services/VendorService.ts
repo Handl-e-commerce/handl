@@ -27,7 +27,7 @@ class VendorService implements IVendorService {
                         {
                             name: {
                                 [Op.iLike]: `%${searchVal}%`,
-                            }
+                            },
                         },
                         {
                             description: {
@@ -37,8 +37,8 @@ class VendorService implements IVendorService {
                         {
                             keywords: {
                                 [Op.iLike]: `%${searchVal}%`,
-                            }
-                        }
+                            },
+                        },
                     ],
                 };
             }
