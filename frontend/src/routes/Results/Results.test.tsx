@@ -114,8 +114,7 @@ describe("Results Route Test", () => {
         await waitFor(() => {
             expect(chipContainer.childElementCount).toEqual(0);
         });
-    }, 7500);
-    
+    }, 7500);    
 
     it("Should render you must sign in first in order to access our data modal if user isn't signed up", async () => {
         server.use(
