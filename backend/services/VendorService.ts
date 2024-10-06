@@ -20,6 +20,7 @@ class VendorService implements IVendorService {
     ): Promise<Vendor[]> {
         try {
             let whereClause = {};
+            const includeClause = [];
             if (searchVal) {
                 whereClause = {
                     ...whereClause,
@@ -51,17 +52,20 @@ class VendorService implements IVendorService {
                     },
                 };
             }
-
-            const vendorResults: Vendor[] = await Vendor.findAll({
-                where: whereClause,
-                include: [{
+            if (categories) {
+                includeClause.push({
                     model: VendorCategories,
-                    where: categories ? {
+                    where: {
                         CategorySubcategory: {
                             [Op.or]: categories,
                         },
-                    } : {},
-                }],
+                    },
+                });
+            }
+
+            const vendorResults: Vendor[] = await Vendor.findAll({
+                where: whereClause,
+                include: includeClause,
             });
 
             return vendorResults;
