@@ -482,5 +482,10 @@ export const handlers = [
        return new HttpResponse(body, {
             status: 200
        }); 
+    }),
+    http.post(REACT_APP_SERVER_URI + `/users/contact`, ({request, params, cookies}) => {
+        return new HttpResponse(null, {
+            status: 201
+        });
     })
 ];
