@@ -44,7 +44,9 @@
     "build": "react-scripts build",
     "test": "jest --collectCoverage=true",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && firebase deploy --only hosting"
+    "deploy:dev": "npm run deploy:dev:image && npm run deploy:dev:container",
+    "deploy:dev:image": "gcloud builds submit --tag gcr.io/handl-425522/handl-frontend-dev:latest .",
+    "deploy:dev:container": "gcloud run deploy dev-frontend --image gcr.io/handl-425522/handl-frontend-dev:latest --platform managed --region us-central1 --allow-unauthenticated --set-env-vars=[REACT_APP_SERVER_URI=https://dev.api.thehandl.com]"
   },
   "eslintConfig": {
     "extends": [
