@@ -16,6 +16,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/react-google-recaptcha": "^2.1.9",
+    "env-cmd": "^10.1.0",
     "material-react-table": "^2.13.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -40,13 +41,16 @@
     "undici": "^6.7.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "env-cmd -f .env.local react-scripts start",
     "build": "react-scripts build",
     "test": "jest --collectCoverage=true",
     "eject": "react-scripts eject",
     "deploy:dev": "npm run deploy:dev:image && npm run deploy:dev:container",
     "deploy:dev:image": "gcloud builds submit --tag gcr.io/handl-425522/handl-frontend-dev:latest .",
-    "deploy:dev:container": "gcloud run deploy dev-frontend --image gcr.io/handl-425522/handl-frontend-dev:latest --platform managed --region us-central1 --allow-unauthenticated --set-env-vars=[REACT_APP_SERVER_URI=https://dev.api.thehandl.com]"
+    "deploy:dev:container": "gcloud run deploy dev-frontend --image gcr.io/handl-425522/handl-frontend-dev:latest --platform managed --region us-central1 --allow-unauthenticated",
+    "deploy:prod": "npm run deploy:prod:image && npm run deploy:prod:container",
+    "deploy:prod:image": "gcloud builds submit --tag gcr.io/handl-425522/handl-frontend-prod:latest .",
+    "deploy:prod:container": "gcloud run deploy prod-frontend --image gcr.io/handl-425522/handl-frontend-prod:latest --platform managed --region us-central1 --allow-unauthenticated"
   },
   "eslintConfig": {
     "extends": [
