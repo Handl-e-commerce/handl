@@ -47,10 +47,10 @@
     "eject": "react-scripts eject",
     "deploy:dev": "npm run deploy:dev:image && npm run deploy:dev:container",
     "deploy:dev:image": "gcloud builds submit --tag gcr.io/handl-425522/handl-frontend-dev:latest .",
-    "deploy:dev:container": "gcloud run deploy dev-frontend --image gcr.io/handl-425522/handl-frontend-dev:latest --platform managed --region us-central1 --allow-unauthenticated",
+    "deploy:dev:container": "gcloud run deploy dev-frontend --image gcr.io/handl-425522/handl-frontend-dev:latest --platform managed --region us-central1 --allow-unauthenticated --port 80",
     "deploy:prod": "npm run deploy:prod:image && npm run deploy:prod:container",
     "deploy:prod:image": "gcloud builds submit --tag gcr.io/handl-425522/handl-frontend-prod:latest .",
-    "deploy:prod:container": "gcloud run deploy prod-frontend --image gcr.io/handl-425522/handl-frontend-prod:latest --platform managed --region us-central1 --allow-unauthenticated"
+    "deploy:prod:container": "gcloud run deploy prod-frontend --image gcr.io/handl-425522/handl-frontend-prod:latest --platform managed --region us-central1 --allow-unauthenticated --port 80"
   },
   "eslintConfig": {
     "extends": [
