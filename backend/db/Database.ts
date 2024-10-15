@@ -23,7 +23,7 @@ class Database implements IDatabase {
         let database: string = process.env.SQL_DATABASE_LOCAL_DEV as string;
 
         if (environment === "production") {
-            host = `/cloudsql/${process.env.SQL_HOST}`;
+            host = `/cloudsql/${process.env.SQL_HOST_PROD}`;
             port = Number(process.env.SQL_PORT);
             logging = console.log;
             database = process.env.SQL_DATABASE_PROD as string;

@@ -10,7 +10,13 @@
     "build": "npm run lint && tsc",
     "build:watch": "tsc --watch",
     "test": "jest --collectCoverage=true",
-    "deploy": "gcloud run deploy --source ."
+    "deploy": "gcloud run deploy --source .",
+    "deploy:dev": "npm run deploy:dev:image && npm run deploy:dev:container",
+    "deploy:dev:image": "gcloud builds submit --tag gcr.io/handl-425522/handl-backend-dev:latest .",
+    "deploy:dev:container": "gcloud run deploy dev-backend --image gcr.io/handl-425522/handl-backend-dev:latest --platform managed --region us-central1 --allow-unauthenticated",
+    "deploy:prod": "npm run deploy:prod:image && npm run deploy:prod:container",
+    "deploy:prod:image": "gcloud builds submit --tag gcr.io/handl-425522/handl-backend-prod:latest .",
+    "deploy:prod:container": "gcloud run deploy prod-backend --image gcr.io/handl-425522/handl-backend-prod:latest --platform managed --region us-central1 --allow-unauthenticated"
   },
   "keywords": [],
   "author": "",
