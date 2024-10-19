@@ -60,7 +60,7 @@ function Home(): JSX.Element {
                     </Typography>
                 </Grid>
                 <Grid item xs={styles.grid.xs}>
-                    <a href={location.origin + '/results?categories=amazon-fba'} target="_self">
+                    <a href={location.origin + '/results?search-params=fba'} target="_self">
                         <img src={fba} alt="" style={styles.image} />
                     </a>
                     <Typography variant={'h6'} component={'div'} fontSize={'20px'}>Amazon FBA</Typography>
@@ -78,7 +78,7 @@ function Home(): JSX.Element {
                     <Typography variant={'h6'} component={'div'} fontSize={'20px'}>Clothing</Typography>
                 </Grid>
                 <Grid item xs={styles.grid.xs}>
-                    <a href={location.origin + '/results?categories=electronics'} target="_self">
+                    <a href={location.origin + '/results?categories=Cameras+%2F+Tablets+%2F+Drones+%2F+MP3+Players+%2F+Home+%2F+Entertainment+Audio+etc.%2CCell+Phone+Accessories+%2F+Wearables+%2F+Headphones+%2F+Speakers'} target="_self">
                         <img src={electronics} alt="" style={styles.image} />
                     </a>
                     <Typography variant={'h6'} component={'div'} fontSize={'20px'}>Electronics</Typography>
@@ -96,7 +96,7 @@ function Home(): JSX.Element {
                     </Typography>
                 </Grid>
                 <Grid item xs={styles.grid.xs}>
-                    <a href={location.origin + '/results?categories=amazon-fba'} target="_self">
+                    <a href={location.origin + '/results?search-params=fba'} target="_self">
                         <img src={fba} alt="" style={styles.image} />
                     </a>
                     <Typography variant={'h6'} component={'div'} fontSize={'20px'}>Amazon FBA</Typography>
@@ -114,7 +114,7 @@ function Home(): JSX.Element {
                     <Typography variant={'h6'} component={'div'} fontSize={'20px'}>Clothing</Typography>
                 </Grid>
                 <Grid item xs={styles.grid.xs}>
-                    <a href={location.origin + '/results?categories=electronics'} target="_self">
+                    <a href={location.origin + '/results?categories=Cameras+%2F+Tablets+%2F+Drones+%2F+MP3+Players+%2F+Home+%2F+Entertainment+Audio+etc.%2CCell+Phone+Accessories+%2F+Wearables+%2F+Headphones+%2F+Speakers'} target="_self">
                         <img src={electronics} alt="" style={styles.image} />
                     </a>
                     <Typography variant={'h6'} component={'div'} fontSize={'20px'}>Electronics</Typography>
