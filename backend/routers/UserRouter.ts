@@ -5,6 +5,7 @@ import {UserService} from "../services/UserService";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
 import {User} from "../db/models/User";
 import {Vendor} from "../db/models/Vendor";
+import {VerificationService} from "../services/VerificationService";
 
 const userRouter = express.Router();
 
@@ -251,6 +252,19 @@ userRouter.post("/contact", async (req: Request, res: Response, next: NextFuncti
         const userService: UserService = new UserService();
         await userService.SendSupportMessage(firstName, lastName, email, message);
         return res.status(201).send();
+    } catch (err: unknown) {
+        return next(err as Error);
+    }
+});
+
+userRouter.post("/recaptcha/verify", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const token: string = req.body.token;
+        const verificationService: VerificationService = new VerificationService();
+        const success = await verificationService.VerifyCaptcha(token);
+        return res.status(201).json({
+            success: success,
+        });
     } catch (err: unknown) {
         return next(err as Error);
     }
