@@ -8,7 +8,7 @@ import {AuthToken} from "../db/models/AuthToken";
 import {Op} from "sequelize";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
 import {EmailService} from "../utils/EmailService";
-import { VerificationService } from "./VerificationService";
+import {VerificationService} from "./VerificationService";
 
 /**
  * User Service Class
