@@ -8,20 +8,23 @@ import {AuthToken} from "../db/models/AuthToken";
 import {Op} from "sequelize";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
 import {EmailService} from "../utils/EmailService";
+import { VerificationService } from "./VerificationService";
 
 /**
  * User Service Class
  */
 class UserService implements IUserService {
-    // private encryptionUtil: EncryptionUtil;
     private emailService: EmailService;
+    private verificationService: VerificationService;
+
     /**
      * constructor where we inject services and utils
      */
     constructor() {
-        // this.encryptionUtil = new EncryptionUtil();
         this.emailService = new EmailService();
+        this.verificationService = new VerificationService();
     }
+
     /**
      * Method to create a user in our database and sends generated token for user email verification
      * @param {IUserDetails} userDetails
@@ -38,7 +41,7 @@ class UserService implements IUserService {
             });
 
             const hashedPassword: string = await argon2.hash(userDetails.password);
-            const token: string = this.GenerateToken(128);
+            const token: string = this.verificationService.GenerateToken(128);
             const hashedToken: string = await argon2.hash(token);
 
             if (!userExists) {
@@ -196,7 +199,7 @@ class UserService implements IUserService {
                 throw new Error("User does not exist.");
             }
 
-            const token = this.GenerateToken(128);
+            const token = this.verificationService.GenerateToken(128);
             const hashedToken: string = await argon2.hash(token);
             await user.update({
                 verificationToken: hashedToken,
@@ -326,145 +329,6 @@ class UserService implements IUserService {
     }
 
     /**
-   * Method to verify that the user's long term log in cookies are still valid and user can be logged in
-   * Is also used to verify that user has access to user actions such as My Account, etc.
-   * If false, then cookies will be deleted from client side.
-   * @param {string} selector
-   * @param {string} validator
-   * @param {string} userId
-   * @return {Promise<boolean>}
-   */
-    public async VerifyUser(selector: string, validator: string, userId: string): Promise<boolean> {
-        try {
-            const auth: AuthToken | null = await AuthToken.findOne({
-                where: {
-                    selector: selector,
-                },
-            });
-
-            if (auth === null) {
-                return false;
-            }
-
-            if (!(await argon2.verify(auth.validator, validator))) {
-                return false;
-            }
-
-            if (userId != auth.UserUuid) {
-                return false;
-            }
-
-            return true;
-        } catch (err) {
-            const error = err as Error;
-            throw Error(error.message);
-        }
-    }
-
-    /**
-   * Verifies that the token the user pass after clicking verification link from email is valid
-   * @param {string} userId
-   * @param {string} token
-   * @param {string} isPasswordReset
-   * @return {boolean}
-   */
-    public async VerifyToken(userId: string, token: string, isPasswordReset: boolean): Promise<{
-        result: boolean,
-        message: string,
-    }> {
-        try {
-            const user: User | null = await User.findOne({
-                where: {
-                    uuid: userId,
-                },
-            });
-            if (user === null || user === undefined) {
-                return {
-                    result: false,
-                    message: "Something went wrong. Please try again later.",
-                };
-            }
-
-            if (user.isVerified && !isPasswordReset) {
-                return {
-                    result: true,
-                    message: "Your email is already verified.",
-                };
-            }
-
-            if (!user.verificationToken) {
-                return {
-                    result: false,
-                    message: "Verification token does not exist. Please request for a new one to be sent to you.",
-                };
-            }
-
-            if (Date.now() > Number(user.tokenExpiration)) {
-                return {
-                    result: false,
-                    message: "The verification token has expired. Please request for a new one to be sent to you.",
-                };
-            }
-
-            if (!(await argon2.verify(user.verificationToken, token))) {
-                return {
-                    result: false,
-                    message: "The verification token is not valid. Please request for a new one to be sent to you.",
-                };
-            }
-
-            await User.update({
-                isVerified: true,
-                verificationToken: undefined,
-                tokenExpiration: undefined,
-            }, {
-                where: {
-                    uuid: userId,
-                },
-            });
-
-            return {
-                result: true,
-                message: "Successfully verified email.",
-            };
-        } catch (err) {
-            const error = err as Error;
-            throw Error(error.message);
-        }
-    }
-
-    /**
-   * Utility method to very quickly send new access token to verify email account
-   * @param {string} userId
-   */
-    public async SendNewVerificationToken(userId: string): Promise<void> {
-        try {
-            const token = this.GenerateToken(128);
-            await User.update({
-                verificationToken: token,
-                tokenExpiration: new Date(Date.now() + 1000*60*30),
-            }, {
-                where: {
-                    uuid: userId,
-                },
-            });
-
-            const user: User | null = await User.findOne({
-                where: {
-                    uuid: userId,
-                },
-            });
-
-            if (user) {
-                this.emailService.GenerateVerificationEmail(user.firstName, userId, token, user.email);
-            }
-        } catch (err) {
-            const error = err as Error;
-            throw Error(error.message);
-        }
-    }
-
-    /**
      * Utility method to send us the emails that users will write to submit to us
      * @param {string} firstName
      * @param {string} lastName
@@ -483,20 +347,6 @@ class UserService implements IUserService {
             const error = err as Error;
             throw Error(error.message);
         }
-    }
-
-    /**
-   * Generates a random security token used for verification
-   * @param {number} n
-   * @return {string}
-   */
-    private GenerateToken(n: number): string {
-        const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        let token = "";
-        for (let i = 0; i < n; i++) {
-            token += chars[Math.floor(Math.random() * chars.length)];
-        }
-        return token;
     }
 }
 

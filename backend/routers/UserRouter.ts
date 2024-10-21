@@ -2,10 +2,10 @@ const express = require("express");
 import {NextFunction, Request, Response} from "express";
 import {IUserDetails} from "../interfaces/IUserDetails";
 import {UserService} from "../services/UserService";
+import {VerificationService} from "../services/VerificationService";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
 import {User} from "../db/models/User";
 import {Vendor} from "../db/models/Vendor";
-import {VerificationService} from "../services/VerificationService";
 
 const userRouter = express.Router();
 
@@ -79,11 +79,11 @@ userRouter.post("/password/reset/verify", async (req: Request, res: Response, ne
     try {
         const userId: string = req.body.userId;
         const token: string = req.body.token;
-        const userService: UserService = new UserService();
+        const verificationService: VerificationService = new VerificationService();
         const verificationResult: {
             result: boolean;
             message: string;
-        } = await userService.VerifyToken(userId, token, true);
+        } = await verificationService.VerifyToken(userId, token, true);
         if (verificationResult.result) {
             return res.status(201).json({
                 message: verificationResult.message,
@@ -146,8 +146,8 @@ userRouter.post("/login/verify", async (req: Request, res: Response, next: NextF
     try {
         const cookies = req.cookies;
         const userId: string = req.body.userId;
-        const userService: UserService = new UserService();
-        const isVerified: boolean = await userService.VerifyUser(cookies.selector, cookies.validator, userId);
+        const verificationService: VerificationService = new VerificationService();
+        const isVerified: boolean = await verificationService.VerifyUser(cookies.selector, cookies.validator, userId);
         if (isVerified) {
             return res.status(201).send();
         } else {
@@ -199,11 +199,11 @@ userRouter.post("/registration/verify", async (req: Request, res: Response, next
     try {
         const userId: string = req.body.userId;
         const token: string = req.body.token;
-        const userService: UserService = new UserService();
+        const verificationService: VerificationService = new VerificationService();
         const verificationResult: {
             result: boolean;
             message: string;
-        } = await userService.VerifyToken(userId, token, false);
+        } = await verificationService.VerifyToken(userId, token, false);
         if (verificationResult.result) {
             return res.status(201).json({
                 message: verificationResult.message,
@@ -221,8 +221,8 @@ userRouter.post("/registration/verify", async (req: Request, res: Response, next
 userRouter.post("/registration/verify/new-token", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userId: string = req.body.userId;
-        const userService: UserService = new UserService();
-        await userService.SendNewVerificationToken(userId);
+        const verificationService: VerificationService = new VerificationService();
+        await verificationService.SendNewVerificationToken(userId);
         return res.status(201).send();
     } catch (err: unknown) {
         return next(err as Error);
