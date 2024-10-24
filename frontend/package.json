@@ -17,7 +17,6 @@
     "@types/react-dom": "^18.3.0",
     "@types/react-google-recaptcha": "^2.1.9",
     "env-cmd": "^10.1.0",
-    "google-auth-library": "^9.14.2",
     "material-react-table": "^2.13.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -48,7 +47,7 @@
     "eject": "react-scripts eject",
     "deploy:dev": "npm run deploy:dev:image && npm run deploy:dev:container",
     "deploy:dev:image": "gcloud builds submit --tag gcr.io/handl-425522/handl-frontend-dev:latest .",
-    "deploy:dev:container": "gcloud run deploy dev-frontend --image gcr.io/handl-425522/handl-frontend-dev:latest --platform managed --region us-central1 --allow-unauthenticated --port 80",
+    "deploy:dev:container": "gcloud run deploy dev-frontend --image gcr.io/handl-425522/handl-frontend-dev:latest --platform managed --region us-central1 --allow-unauthenticated --port 80 --service-account dev-frontend-identity",
     "deploy:prod": "npm run deploy:prod:image && npm run deploy:prod:container",
     "deploy:prod:image": "gcloud builds submit --tag gcr.io/handl-425522/handl-frontend-prod:latest .",
     "deploy:prod:container": "gcloud run deploy prod-frontend --image gcr.io/handl-425522/handl-frontend-prod:latest --platform managed --region us-central1 --allow-unauthenticated --port 80"
