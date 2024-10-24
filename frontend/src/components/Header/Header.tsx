@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { cookieParser, deleteCookie } from "../../utils/cookie-util";
@@ -7,11 +7,6 @@ import { Button, Menu, MenuItem, SxProps, Grid } from "@mui/material";
 import { KeyboardArrowDown, Logout } from "@mui/icons-material";
 import svg from '../../static/5_SVG-cropped.svg';
 import { useMobile } from "../../hooks/useMobile";
-
-const envVariables = process.env;
-const {
-    REACT_APP_SERVER_URI,
-} = envVariables;
 
 function Header(): JSX.Element {
     const cookieObject = cookieParser();
@@ -37,7 +32,7 @@ function Header(): JSX.Element {
     async function handleLogout() {
         deleteCookie("loggedIn");
         deleteCookie("userId");
-        await fetchWrapper(REACT_APP_SERVER_URI + `/users/logout`, "POST");
+        await fetchWrapper(`/users/logout`, "POST");
         redirectLogin();
     };
 

@@ -2,11 +2,6 @@ import { useState, useEffect } from "react";
 import { cookieParser, deleteCookie } from "../utils/cookie-util";
 import { fetchWrapper } from "../utils/fetch-wrapper";
 
-const envVariables = process.env;
-const {
-    REACT_APP_SERVER_URI,
-} = envVariables;
-
 const cookieObject = cookieParser();
 
 function useLoginStatus(): boolean {
@@ -21,7 +16,7 @@ function useLoginStatus(): boolean {
     }, []);
     
     async function verifyUserLogin() {
-        const response: Response = await fetchWrapper(REACT_APP_SERVER_URI + `/users/login/verify`, "POST", {
+        const response: Response = await fetchWrapper(`/users/login/verify`, "POST", {
             userId: cookieObject.userId
         });
         if (response.status === 201) {

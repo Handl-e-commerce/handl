@@ -2,11 +2,6 @@ import React, { useEffect, useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { Box, Container } from "@mui/material";
 
-const envVariables = process.env;
-const {
-    REACT_APP_SERVER_URI,
-} = envVariables;
-
 function Verify(): JSX.Element {
     let queryParams = new URL(document.location.toString()).searchParams;
     let token: string = queryParams.get("token") as string;
@@ -25,7 +20,7 @@ function Verify(): JSX.Element {
     }, []);
 
     async function handleEmailVerification(token: string, userId: string) {
-        const response: Response = await fetchWrapper(REACT_APP_SERVER_URI + `/users/registration/verify`, "POST", {
+        const response: Response = await fetchWrapper(`/users/registration/verify`, "POST", {
             token: token,
             userId: userId
         });
@@ -37,7 +32,7 @@ function Verify(): JSX.Element {
     };
 
     async function handleResendVerification(userId: string) {
-        const response: Response = await fetchWrapper(REACT_APP_SERVER_URI + `/users/registration/verify/new-token`, "POST", {userId: userId});
+        const response: Response = await fetchWrapper(`/users/registration/verify/new-token`, "POST", {userId: userId});
     }
 
     return (
