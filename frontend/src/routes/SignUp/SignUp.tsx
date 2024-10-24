@@ -4,11 +4,6 @@ import { Box, Button, Container, FormControl, IconButton, InputAdornment, ListIt
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { states } from "../../utils/constants";
 
-const envVariables = process.env;
-const {
-    REACT_APP_SERVER_URI,
-} = envVariables;
-
 function SignUp(): JSX.Element {
     let location = window.location;
     
@@ -68,7 +63,7 @@ function SignUp(): JSX.Element {
 
     async function createAccount() {
         setIsBusy(true);
-        const response: Response = await fetchWrapper(REACT_APP_SERVER_URI + `/users/register`, "POST", {
+        const response: Response = await fetchWrapper(`/users/register`, "POST", {
             email: email,
             businessName: businessName,
             firstName: firstName,

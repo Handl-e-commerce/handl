@@ -7,7 +7,6 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 const envVariables = process.env;
 const {
-    REACT_APP_SERVER_URI,
     REACT_APP_SITE_KEY,
 } = envVariables;
 
@@ -29,14 +28,14 @@ function Login(): JSX.Element {
     };
 
     function handlePasswordResetRequest(): void {
-        fetchWrapper(REACT_APP_SERVER_URI + "/users/password/reset/request", "POST", {
+        fetchWrapper("/users/password/reset/request", "POST", {
             email: email
         });
         setSubmittedResetRequest(true);
     };
 
     async function handleRecaptchaVerification(token: string): Promise<boolean> {
-        const response = await fetchWrapper(REACT_APP_SERVER_URI + "/users/recaptcha/verify", "POST", {
+        const response = await fetchWrapper("/users/recaptcha/verify", "POST", {
             token: token
         });
         const data = await response.json();
@@ -45,7 +44,7 @@ function Login(): JSX.Element {
 
     async function handleLogin(): Promise<void> {
         setIsBusy(true);
-        const response: Response = await fetchWrapper(REACT_APP_SERVER_URI + `/users/login`, "POST", {
+        const response: Response = await fetchWrapper(`/users/login`, "POST", {
             email: email,
             password: password
         });

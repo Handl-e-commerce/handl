@@ -17,6 +17,7 @@
     "@types/react-dom": "^18.3.0",
     "@types/react-google-recaptcha": "^2.1.9",
     "env-cmd": "^10.1.0",
+    "google-auth-library": "^9.14.2",
     "material-react-table": "^2.13.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

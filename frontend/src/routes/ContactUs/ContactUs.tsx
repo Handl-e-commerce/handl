@@ -2,12 +2,6 @@ import React, { useState } from "react";
 import { Box, Button, Container, SxProps, TextField } from "@mui/material";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 
-const envVariables = process.env;
-const {
-    REACT_APP_SERVER_URI,
-} = envVariables;
-
-
 function ContactUs(): JSX.Element {
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
@@ -16,7 +10,7 @@ function ContactUs(): JSX.Element {
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
     async function handleSubmitMessage(): Promise<void> {
-        await fetchWrapper(REACT_APP_SERVER_URI + `/users/contact`, 'POST', {
+        await fetchWrapper(`/users/contact`, 'POST', {
             firstName: firstName,
             lastName: lastName,
             email: email,
