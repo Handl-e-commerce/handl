@@ -14,22 +14,7 @@ vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
             cookies.validator,
             cookies.userId
         );
-        if (isVerified) {
-            let categories = null;
-            let states = null;
-            if (req.query.categories) {
-                categories = (req.query.categories as string).split(",");
-            }
-            if (req.query.states) {
-                states = (req.query.states as string).split(",");
-            }
-            const searchVal: string = req.query["search-params"] as string;
-            const vendorService: VendorService = new VendorService();
-            const vendors = await vendorService.GetVendors(categories, searchVal, states);
-            return res.status(200).json({
-                result: vendors,
-            });
-        } else {
+        if (!isVerified) {
             return res.status(401)
                 .cookie("selector", "", {
                     maxAge: Number(new Date(1)),
@@ -44,7 +29,21 @@ vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
                     httpOnly: true,
                 })
                 .send();
+        };
+        let categories = null;
+        let states = null;
+        if (req.query.categories) {
+            categories = (req.query.categories as string).split(",");
         }
+        if (req.query.states) {
+            states = (req.query.states as string).split(",");
+        }
+        const searchVal: string = req.query["search-params"] as string;
+        const vendorService: VendorService = new VendorService();
+        const vendors = await vendorService.GetVendors(categories, searchVal, states);
+        return res.status(200).json({
+            result: vendors,
+        });
     } catch (err: unknown) {
         return next(err as Error);
     }
@@ -60,12 +59,6 @@ vendorRouter.get("/categories", async (req: Request, res: Response, next: NextFu
             cookies.userId
         );
         if (isVerified) {
-            const vendorService: VendorService = new VendorService();
-            const categories = await vendorService.GetCategories();
-            return res.status(200).json({
-                result: categories,
-            });
-        } else {
             return res.status(401)
                 .cookie("selector", "", {
                     maxAge: Number(new Date(1)),
@@ -80,7 +73,12 @@ vendorRouter.get("/categories", async (req: Request, res: Response, next: NextFu
                     httpOnly: true,
                 })
                 .send();
-        }
+        };
+        const vendorService: VendorService = new VendorService();
+        const categories = await vendorService.GetCategories();
+        return res.status(200).json({
+            result: categories,
+        });
     } catch (err: unknown) {
         return next(err as Error);
     }
