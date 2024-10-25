@@ -24,9 +24,11 @@ function Results(): JSX.Element {
 
     useEffect(() => {
         let ignore = false;
-        if ((!ignore && loggedIn) || loadingData) {
+        if (!ignore && loggedIn) {
             handleQuery();
-            getCategories();
+            if (!categories) {
+                getCategories();
+            };
         };
         return () => { ignore = true };
     }, []);
