@@ -25,9 +25,32 @@ userRouter.post("/register", async (req: Request, res: Response, next: NextFunct
 
 userRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId: string = req.params.id;
+        const cookies = req.cookies;
+        const verificationService: VerificationService = new VerificationService();
+        const isVerified: boolean = await verificationService.VerifyUser(
+            cookies.selector,
+            cookies.validator,
+            cookies.userId
+        );
+        if (!isVerified) {
+            return res.status(401)
+                .cookie("selector", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .cookie("validator", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .send();
+            
+        };
         const userService: UserService = new UserService();
-        const user: User = await userService.GetUserByUserId(userId);
+        const user: User = await userService.GetUserByUserId(cookies.userId);
         return res.status(200).json({
             user: user,
         });
@@ -38,9 +61,32 @@ userRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) =
 
 userRouter.get("/:id/vendors", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId: string = req.params.id;
+        const cookies = req.cookies;
+        const verificationService: VerificationService = new VerificationService();
+        const isVerified: boolean = await verificationService.VerifyUser(
+            cookies.selector,
+            cookies.validator,
+            cookies.userId
+        );
+        if (!isVerified) {
+            return res.status(401)
+                .cookie("selector", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .cookie("validator", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .send();
+            
+        };
         const userService: UserService = new UserService();
-        const savedVendors: Vendor[] = await userService.GetSavedVendors(userId);
+        const savedVendors: Vendor[] = await userService.GetSavedVendors(cookies.userId);
         return res.status(200).json({
             savedVendors: savedVendors,
         });
@@ -64,17 +110,6 @@ userRouter.put("/:id/password", async (req: Request, res: Response, next: NextFu
     }
 });
 
-userRouter.post("/password/reset/request", async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const email: string = req.body.email as string;
-        const userService: UserService = new UserService();
-        await userService.RequestUserPasswordReset(email);
-        return res.status(201).send();
-    } catch (err: unknown) {
-        return next(err as Error);
-    }
-});
-
 userRouter.post("/password/reset/verify", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userId: string = req.body.userId;
@@ -93,6 +128,17 @@ userRouter.post("/password/reset/verify", async (req: Request, res: Response, ne
                 message: verificationResult.message,
             });
         }
+    } catch (err: unknown) {
+        return next(err as Error);
+    }
+});
+
+userRouter.post("/password/reset/request", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const email: string = req.body.email as string;
+        const userService: UserService = new UserService();
+        await userService.RequestUserPasswordReset(email);
+        return res.status(201).send();
     } catch (err: unknown) {
         return next(err as Error);
     }
@@ -136,35 +182,6 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
             return res.status(401).json({
                 message: "Unable to authenticate user",
             });
-        }
-    } catch (err: unknown) {
-        return next(err as Error);
-    }
-});
-
-userRouter.post("/login/verify", async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const cookies = req.cookies;
-        const userId: string = req.body.userId;
-        const verificationService: VerificationService = new VerificationService();
-        const isVerified: boolean = await verificationService.VerifyUser(cookies.selector, cookies.validator, userId);
-        if (isVerified) {
-            return res.status(201).send();
-        } else {
-            return res.status(401)
-                .cookie("selector", "", {
-                    maxAge: Number(new Date(1)),
-                    sameSite: "none",
-                    secure: true,
-                    httpOnly: true,
-                })
-                .cookie("validator", "", {
-                    maxAge: Number(new Date(1)),
-                    sameSite: "none",
-                    secure: true,
-                    httpOnly: true,
-                })
-                .send();
         }
     } catch (err: unknown) {
         return next(err as Error);
@@ -231,6 +248,29 @@ userRouter.post("/registration/verify/new-token", async (req: Request, res: Resp
 
 userRouter.put("/delete/:id", async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const cookies = req.cookies;
+        const verificationService: VerificationService = new VerificationService();
+        const isVerified: boolean = await verificationService.VerifyUser(
+            cookies.selector,
+            cookies.validator,
+            cookies.userId
+        );
+        if (isVerified) {
+            return res.status(401)
+                .cookie("selector", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .cookie("validator", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .send();
+        };
         const userId: string = req.params.id;
         const userService: UserService = new UserService();
         const result: IGenericQueryResult = await userService.DeleteUser(userId);
