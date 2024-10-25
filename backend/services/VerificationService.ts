@@ -2,11 +2,10 @@ import {IVerificationService} from "../interfaces/IVerificationService";
 import {AuthToken} from "../db/models/AuthToken";
 import {User} from "../db/models/User";
 import * as argon2 from "argon2";
-import { EmailService } from "../utils/EmailService";
+import {EmailService} from "../utils/EmailService";
 
 /** Verification Service Class */
 class VerificationService implements IVerificationService {
-    
     private emailService: EmailService;
 
     /**
@@ -15,7 +14,7 @@ class VerificationService implements IVerificationService {
     constructor() {
         this.emailService = new EmailService();
     }
-    
+
     /**
      * Verifies that the token recieved from the ReCaptcha service is from a human and not a bot
      * by calculating the score that the user is a human
@@ -52,13 +51,21 @@ class VerificationService implements IVerificationService {
    * Method to verify that the user's long term log in cookies are still valid and user can be logged in
    * Is also used to verify that user has access to user actions such as My Account, etc.
    * If false, then cookies will be deleted from client side.
-   * @param {string} selector
-   * @param {string} validator
+   * @param {string | undefined} selector
+   * @param {string | undefined} validator
    * @param {string} userId
    * @return {Promise<boolean>}
    */
-    public async VerifyUser(selector: string, validator: string, userId: string): Promise<boolean> {
+    public async VerifyUser(
+        selector: string | undefined,
+        validator: string | undefined,
+        userId: string
+    ): Promise<boolean> {
         try {
+            if (!selector || !validator) {
+                return false;
+            }
+
             const auth: AuthToken | null = await AuthToken.findOne({
                 where: {
                     selector: selector,
@@ -156,7 +163,7 @@ class VerificationService implements IVerificationService {
         }
     }
 
-        /**
+    /**
    * Utility method to very quickly send new access token to verify email account
    * @param {string} userId
    */
