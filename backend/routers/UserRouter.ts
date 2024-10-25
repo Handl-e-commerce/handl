@@ -47,8 +47,7 @@ userRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) =
                     httpOnly: true,
                 })
                 .send();
-            
-        };
+        }
         const userService: UserService = new UserService();
         const user: User = await userService.GetUserByUserId(cookies.userId);
         return res.status(200).json({
@@ -83,8 +82,7 @@ userRouter.get("/:id/vendors", async (req: Request, res: Response, next: NextFun
                     httpOnly: true,
                 })
                 .send();
-            
-        };
+        }
         const userService: UserService = new UserService();
         const savedVendors: Vendor[] = await userService.GetSavedVendors(cookies.userId);
         return res.status(200).json({
@@ -299,7 +297,7 @@ userRouter.put("/delete/:id", async (req: Request, res: Response, next: NextFunc
                     httpOnly: true,
                 })
                 .send();
-        };
+        }
         const userId: string = req.params.id;
         const userService: UserService = new UserService();
         const result: IGenericQueryResult = await userService.DeleteUser(userId);

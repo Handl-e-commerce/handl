@@ -29,7 +29,7 @@ vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
                     httpOnly: true,
                 })
                 .send();
-        };
+        }
         let categories = null;
         let states = null;
         if (req.query.categories) {
@@ -73,7 +73,7 @@ vendorRouter.get("/categories", async (req: Request, res: Response, next: NextFu
                     httpOnly: true,
                 })
                 .send();
-        };
+        }
         const vendorService: VendorService = new VendorService();
         const categories = await vendorService.GetCategories();
         return res.status(200).json({
