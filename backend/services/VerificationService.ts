@@ -2,7 +2,7 @@ import {IVerificationService} from "../interfaces/IVerificationService";
 import {AuthToken} from "../db/models/AuthToken";
 import {User} from "../db/models/User";
 import * as argon2 from "argon2";
-import {EmailService} from "../utils/EmailService";
+import {EmailService} from "./EmailService";
 
 /** Verification Service Class */
 class VerificationService implements IVerificationService {

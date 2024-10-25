@@ -7,7 +7,7 @@ import {Vendor} from "../db/models/Vendor";
 import {AuthToken} from "../db/models/AuthToken";
 import {Op} from "sequelize";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
-import {EmailService} from "../utils/EmailService";
+import {EmailService} from "./EmailService";
 import {VerificationService} from "./VerificationService";
 
 /**
