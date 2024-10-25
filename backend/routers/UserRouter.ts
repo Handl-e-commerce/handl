@@ -168,9 +168,14 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
                     secure: true,
                     httpOnly: true,
                 })
+                .cookie("userId", loginStatus.userId, {
+                    expires: new Date(Date.now() + (1000*60*60*24*90)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
                 .json({
                     message: "Successfully authenticated user",
-                    userId: loginStatus.userId,
                     loggedIn: "true",
                     expires: new Date(Date.now() + (1000*60*60*24*90)),
                     firstName: loginStatus.firstName,
