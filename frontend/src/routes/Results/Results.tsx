@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { Vendor } from "../../types/types";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
@@ -8,11 +8,6 @@ import { EnhancedTable } from "../../components/Table/EnhancedTable";
 import { useMobile } from "../../hooks/useMobile";
 import { QueryDropDown } from "../../components/QueryDropDown/QueryDropDown";
 import { states } from "../../utils/constants";
-
-const envVariables = process.env;
-const {
-    REACT_APP_SERVER_URI,
-} = envVariables;
 
 function Results(): JSX.Element {
     let queryParams = new URL(document.location.toString()).searchParams;
@@ -39,7 +34,7 @@ function Results(): JSX.Element {
     async function getData(): Promise<void> {
         setLoadingData(true);
         window.history.pushState("", "", `/results?${queryParams.toString()}`);
-        const response = await fetchWrapper(REACT_APP_SERVER_URI + `/vendors?${queryParams.toString()}`, 'GET');
+        const response = await fetchWrapper(`/vendors?${queryParams.toString()}`, 'GET');
         const data: Vendor[] = (await response.json()).result;
         setVendors(data);
         setLoadingData(false);
@@ -56,7 +51,7 @@ function Results(): JSX.Element {
     };
 
     async function getCategories(): Promise<void> {
-        const response = await fetchWrapper(REACT_APP_SERVER_URI + '/vendors/categories', 'GET');
+        const response = await fetchWrapper('/vendors/categories', 'GET');
         const data: { subcategory: string }[] = (await response.json()).result;
         let categories: string[] = [];
         data.forEach((val, i) => {

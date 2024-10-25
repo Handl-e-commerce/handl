@@ -8,11 +8,13 @@ describe("Home Route Test", () => {
         const { container } = render(<Home />);
         let mostViewedCategories = screen.getByTestId("most-viewed-categories-container");
         // We start from 1 because the very first child is just a div element without any anchors and is a header
-        for (let i = 1; i < mostViewedCategories.children.length; i++) {
+        expect(mostViewedCategories.children[1].children[0]).toHaveAttribute("href", expect.stringContaining(window.location.origin + "/results?search-params="));
+        for (let i = 2; i < mostViewedCategories.children.length; i++) {
             expect(mostViewedCategories.children[i].children[0]).toHaveAttribute("href", expect.stringContaining(window.location.origin + "/results?categories="));
         }
         let featuredCategories = screen.getByTestId("featured-categories-container");
-        for (let i = 1; i < featuredCategories.children.length; i++) {
+        expect(featuredCategories.children[1].children[0]).toHaveAttribute("href", expect.stringContaining(window.location.origin + "/results?search-params="));
+        for (let i = 2; i < featuredCategories.children.length; i++) {
             expect(featuredCategories.children[i].children[0]).toHaveAttribute("href", expect.stringContaining(window.location.origin + "/results?categories="));
         }
     });

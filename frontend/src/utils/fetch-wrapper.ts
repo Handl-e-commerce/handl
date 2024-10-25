@@ -1,4 +1,9 @@
-async function fetchWrapper(url: string, method: string, body?: any): Promise<Response> {
+const envVariables = process.env;
+const {
+    REACT_APP_SERVER_URI,
+} = envVariables;
+
+async function fetchWrapper(route: string, method: string, body?: any): Promise<Response> {
     let httpOptions: RequestInit;
     const httpMethodsWithBody = [
         "POST",
@@ -15,7 +20,7 @@ async function fetchWrapper(url: string, method: string, body?: any): Promise<Re
             "Content-Type": "application/json",
             "Access-Control-Origin": window.location.origin,
             "Access-Control-Allow-Origin": window.location.origin,
-            "Accept": "application/json"
+            "Accept": "application/json",
         },
         redirect: "follow",
         referrerPolicy: "no-referrer",
@@ -23,6 +28,7 @@ async function fetchWrapper(url: string, method: string, body?: any): Promise<Re
     if (httpMethodsWithBody.includes(method.toUpperCase())) {
         httpOptions.body = JSON.stringify(body);
     };
+    let url: string = REACT_APP_SERVER_URI + route; 
     return await fetch(url, httpOptions);
 };
 

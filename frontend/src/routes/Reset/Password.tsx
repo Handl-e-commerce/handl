@@ -3,11 +3,6 @@ import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { cookieParser, deleteCookie } from "../../utils/cookie-util";
 import { Button, Box, TextField, SxProps, Typography } from "@mui/material";
 
-const envVariables = process.env;
-const {
-    REACT_APP_SERVER_URI,
-} = envVariables;
-
 function Password(): JSX.Element {
     let cookieObject = cookieParser();
     const [status, setStatus] = useState<number>();
@@ -29,7 +24,7 @@ function Password(): JSX.Element {
             setStatus(500);
         };
 
-        const response: Response = await fetchWrapper(REACT_APP_SERVER_URI + `/users/password/reset/verify`, "POST", {
+        const response: Response = await fetchWrapper(`/users/password/reset/verify`, "POST", {
             userId: cookieObject.userId as string,
             token: cookieObject.token as string,
         });
@@ -41,7 +36,7 @@ function Password(): JSX.Element {
 
     async function submitPasswordReset() {
         let userId: string = cookieObject.userId as string;
-        const response: Response = await fetchWrapper(REACT_APP_SERVER_URI + `/users/${userId}/password`, "PUT", {
+        const response: Response = await fetchWrapper(`/users/${userId}/password`, "PUT", {
             newPassword: newPassword
         });
         const data = await response.json();

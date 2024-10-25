@@ -66,6 +66,20 @@ class VendorService implements IVendorService {
             const vendorResults: Vendor[] = await Vendor.findAll({
                 where: whereClause,
                 include: includeClause,
+                attributes: [
+                    "uuid",
+                    "name",
+                    "description",
+                    "website",
+                    "categories",
+                    "people",
+                    "address",
+                    "city",
+                    "state",
+                    "zipcode",
+                    "phoneNumber",
+                    "email",
+                ],
             });
 
             return vendorResults;
