@@ -19,7 +19,7 @@ function Verify(): JSX.Element {
 
     }, []);
 
-    async function handleEmailVerification(token: string, userId: string) {
+    async function handleEmailVerification(token: string, userId: string): Promise<void> {
         const response: Response = await fetchWrapper(`/users/registration/verify`, "POST", {
             token: token,
             userId: userId
@@ -31,8 +31,8 @@ function Verify(): JSX.Element {
         }
     };
 
-    async function handleResendVerification(userId: string) {
-        const response: Response = await fetchWrapper(`/users/registration/verify/new-token`, "POST", {userId: userId});
+    async function handleResendVerification(userId: string): Promise<void> {
+        await fetchWrapper(`/users/registration/verify/new-token`, "POST", {userId: userId});
     }
 
     return (
