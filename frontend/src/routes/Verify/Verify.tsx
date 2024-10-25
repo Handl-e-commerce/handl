@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { Box, Container } from "@mui/material";
 
+// TODO: (MEDIUM) Next on TODO list is to investigate why this is 500ing on the server in dev
 function Verify(): JSX.Element {
     let queryParams = new URL(document.location.toString()).searchParams;
     let token: string = queryParams.get("token") as string;

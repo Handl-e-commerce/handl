@@ -191,35 +191,6 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
     }
 });
 
-userRouter.post("/login/verify", async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const cookies = req.cookies;
-        const userId: string = req.body.userId;
-        const verificationService: VerificationService = new VerificationService();
-        const isVerified: boolean = await verificationService.VerifyUser(cookies.selector, cookies.validator, userId);
-        if (isVerified) {
-            return res.status(201).send();
-        } else {
-            return res.status(401)
-                .cookie("selector", "", {
-                    maxAge: Number(new Date(1)),
-                    sameSite: "none",
-                    secure: true,
-                    httpOnly: true,
-                })
-                .cookie("validator", "", {
-                    maxAge: Number(new Date(1)),
-                    sameSite: "none",
-                    secure: true,
-                    httpOnly: true,
-                })
-                .send();
-        }
-    } catch (err: unknown) {
-        return next(err as Error);
-    }
-});
-
 userRouter.post("/logout", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const cookies = req.cookies;
@@ -238,12 +209,19 @@ userRouter.post("/logout", async (req: Request, res: Response, next: NextFunctio
                 secure: true,
                 httpOnly: true,
             })
+            .cookie("userId", "", {
+                maxAge: Number(new Date(1)),
+                sameSite: "none",
+                secure: true,
+                httpOnly: true,
+            })
             .send();
     } catch (err: unknown) {
         return next(err as Error);
     }
 });
 
+// TODO: (MEDIUM) Next on TODO list is to investigate why this is 500ing on the server in dev
 userRouter.post("/registration/verify", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userId: string = req.body.userId;

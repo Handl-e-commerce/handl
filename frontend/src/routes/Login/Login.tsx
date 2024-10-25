@@ -51,7 +51,6 @@ function Login(): JSX.Element {
         if (response.status === 201) {
             let data = await response.json();
             addCookie("loggedIn", data.loggedIn, data.expires);
-            addCookie("userId", data.userId, data.expires);
             addCookie("firstName", data.firstName, data.expires);
             setHasError(false);
             setIsBusy(false);

@@ -31,7 +31,7 @@ function Header(): JSX.Element {
 
     async function handleLogout() {
         deleteCookie("loggedIn");
-        deleteCookie("userId");
+        deleteCookie("firstName");
         await fetchWrapper(`/users/logout`, "POST");
         redirectLogin();
     };
