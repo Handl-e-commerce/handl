@@ -58,7 +58,7 @@ vendorRouter.get("/categories", async (req: Request, res: Response, next: NextFu
             cookies.validator,
             cookies.userId
         );
-        if (isVerified) {
+        if (!isVerified) {
             return res.status(401)
                 .cookie("selector", "", {
                     maxAge: Number(new Date(1)),
