@@ -2,51 +2,37 @@ import { describe, expect, it } from '@jest/globals';
 import { render, screen, act, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Results } from './Results';
-import { server } from "../../../__mocks__/server";
-import { http, HttpResponse } from 'msw';
 import userEvent from '@testing-library/user-event';
 
-jest.mock('../../utils/cookie-util', () => {
-    const originalModule = jest.requireActual('../../utils/cookie-util');
-  
-    //Mock the default export and named export 'foo'
+let mockUseLoginStatus = jest.fn();
+jest.mock("../../hooks/useLoggedInStatus", () => {
+    const originalModule = jest.requireActual("../../hooks/useLoggedInStatus");
     return {
-      __esModule: true,
-      ...originalModule,
-      cookieParser: jest.fn(() => ({
-        "loggedIn": "true"
-      }))
+        __esModule: true,
+        ...originalModule,
+        useLoginStatus: jest.fn(() => mockUseLoginStatus()),
     };
 });
 
-const envVariables = process.env;
-const {
-    REACT_APP_SERVER_URI,
-} = envVariables;
-
 beforeEach(() => {
-    server.use(
-        http.post(REACT_APP_SERVER_URI + `/users/login/verify`, ({ request, params, cookies }) => {
-            return new HttpResponse(null, { status: 201 });
-        })
-    );
+    mockUseLoginStatus.mockReturnValue(true);
 });
 
 describe("Results Route Test", () => {
     const user = userEvent.setup();
     it("Should render only category query chips and remove them when closing them", async () => {
-        const { container } = await act( async () => render(<Results />));
-        let dropdown = await waitFor(() => screen.getByTestId("categories-multiple-checkbox-select"), {
+        await act(async () => render(<Results />));
+        let categoryDropdown = await waitFor(() => screen.getByTestId("categories-multiple-checkbox-select"), {
             timeout: 3000
         });
-        expect(dropdown).toBeInTheDocument();
+        expect(categoryDropdown).toBeInTheDocument();
 
-        await user.click(dropdown);
+        await user.click(categoryDropdown);
 
-        let checkboxItems = await waitFor(async () => await screen.findAllByTestId("menu-item"), {
+        let checkboxItems = await waitFor(async () => await screen.findAllByTestId("categories-menu-item"), {
             timeout: 3000,
         });
-                
+
         await user.click(checkboxItems[0]);
         await user.click(checkboxItems[1]);
         await user.click(checkboxItems[2]);
@@ -54,24 +40,57 @@ describe("Results Route Test", () => {
         await user.keyboard("{esc}")
         
         await waitFor(() => {
-            expect(screen.getAllByText("Fashion Jewelry / Watches").length).toEqual(2);
-            expect(screen.getAllByText("Handbags").length).toEqual(2);
-            expect(screen.getAllByText("Hats / Scarves").length).toEqual(2);
-            expect(screen.getAllByText("Small Leather Goods (Belts/Wallets/etc)").length).toEqual(2);
+            expect(screen.getByTestId("Fashion Jewelry / Watches-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("Handbags-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("Hats / Scarves-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("Small Leather Goods (Belts/Wallets/etc)-chip")).toBeInTheDocument();
         });
         
         let chipContainer = await screen.findByTestId("chips-container");
         expect(chipContainer.childElementCount).toEqual(4);
         await user.click(chipContainer.children[0].children[1]);
-        await user.click(chipContainer.children[1].children[1]);
+        await user.click(chipContainer.children[0].children[1]);
+        await user.click(chipContainer.children[0].children[1]);
+        await user.click(chipContainer.children[0].children[1]);
 
         await waitFor(() => {
-            expect(chipContainer.childElementCount).toEqual(2);
+            expect(chipContainer.childElementCount).toEqual(0);
+        });
+    }, 7500);
+
+    it("Should render only state query chips and remove them when closing them", async () => {
+        await act(async () => render(<Results />));
+        let statesDropdown = await waitFor(() => screen.getByTestId("states-multiple-checkbox-select"), {
+            timeout: 3000
+        });
+        expect(statesDropdown).toBeInTheDocument();
+
+        await user.click(statesDropdown);
+
+        let checkboxItems = await waitFor(async () => await screen.findAllByTestId("states-menu-item"), {
+            timeout: 3000,
+        });
+        await user.click(checkboxItems[4]);
+        await user.click(checkboxItems[5]);
+        await user.keyboard("{esc}")
+        
+        await waitFor(() => {
+            expect(screen.getByTestId("CA-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("CO-chip")).toBeInTheDocument();
+        });
+        
+        let chipContainer = await screen.findByTestId("chips-container");
+        expect(chipContainer.childElementCount).toEqual(2);
+        await user.click(chipContainer.children[0].children[1]);
+        await user.click(chipContainer.children[0].children[1]);
+
+        await waitFor(() => {
+            expect(chipContainer.childElementCount).toEqual(0);
         });
     }, 7500);
     
     it("Should remove all query chips when clicking clear all button", async () => {
-        const { container } = await act( async () => render(<Results />));
+        await act(async () => render(<Results />));
         let categoryDropdown = await waitFor(() => screen.getByTestId("categories-multiple-checkbox-select"), {
             timeout: 3000
         });
@@ -83,7 +102,7 @@ describe("Results Route Test", () => {
 
         await user.click(categoryDropdown);
 
-        let categoryItems = await waitFor(async () => await screen.findAllByTestId("menu-item"), {
+        let categoryItems = await waitFor(async () => await screen.findAllByTestId("categories-menu-item"), {
             timeout: 3000,
         });
         await user.click(categoryItems[0]);
@@ -91,40 +110,38 @@ describe("Results Route Test", () => {
         await user.click(categoryItems[2]);
         await user.click(categoryItems[3]);
         await user.keyboard("{esc}");
-
-        user.click(statesDropdown);
-        let stateItems = await waitFor(async () => await screen.findAllByTestId("menu-item"), {
+        await user.click(statesDropdown);
+        
+        let statesItems = await waitFor(async () => await screen.findAllByTestId("states-menu-item"), {
             timeout: 3000,
         });
+        await user.click(statesItems[4]);
+        await user.click(statesItems[5]);
+        await user.keyboard("{esc}")
 
-        await user.click(stateItems[0]);
-        await user.click(stateItems[1]);
-        await user.click(stateItems[2]);
-        await user.click(stateItems[3]);
-        await user.keyboard("{esc}");
-        
         await waitFor(() => {
-            expect(screen.getByText("Clear All")).toBeInTheDocument();
+            let chipContainer = screen.getByTestId("chips-container");
+            expect(chipContainer.childElementCount).toEqual(6);
+            expect(screen.getByTestId("Fashion Jewelry / Watches-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("Handbags-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("Hats / Scarves-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("Small Leather Goods (Belts/Wallets/etc)-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("CA-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("CO-chip")).toBeInTheDocument();
         });
-        
-        let chipContainer = await screen.findByTestId("chips-container");
 
+        expect(screen.getByText("Clear All")).toBeInTheDocument();
         await user.click(screen.getByText("Clear All"));
 
-        await waitFor(() => {
+        await waitFor(async () => {
+            let chipContainer = await screen.findByTestId("chips-container");
             expect(chipContainer.childElementCount).toEqual(0);
         });
-    }, 7500);    
+    }, 7500);
 
     it("Should render you must sign in first in order to access our data modal if user isn't signed up", async () => {
-        server.use(
-            http.post(REACT_APP_SERVER_URI + `/users/login/verify`, ({ request, params, cookies }) => {
-                return new HttpResponse(null, {
-                    status: 401
-                });
-            }),
-        );
-        const { container } = await act( async () => render(<Results />));
+        mockUseLoginStatus.mockReturnValueOnce(false);
+        await act(async () => render(<Results />));
         
         await waitFor(() => {
             expect(screen.getByText("Login or Sign up to get full access to our data!")).toBeInTheDocument();

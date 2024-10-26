@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { Box, Container } from "@mui/material";
 
+// TODO: (MEDIUM) Next on TODO list is to investigate why this is 500ing on the server in dev
 function Verify(): JSX.Element {
     let queryParams = new URL(document.location.toString()).searchParams;
     let token: string = queryParams.get("token") as string;
@@ -19,7 +20,7 @@ function Verify(): JSX.Element {
 
     }, []);
 
-    async function handleEmailVerification(token: string, userId: string) {
+    async function handleEmailVerification(token: string, userId: string): Promise<void> {
         const response: Response = await fetchWrapper(`/users/registration/verify`, "POST", {
             token: token,
             userId: userId
@@ -31,8 +32,8 @@ function Verify(): JSX.Element {
         }
     };
 
-    async function handleResendVerification(userId: string) {
-        const response: Response = await fetchWrapper(`/users/registration/verify/new-token`, "POST", {userId: userId});
+    async function handleResendVerification(userId: string): Promise<void> {
+        await fetchWrapper(`/users/registration/verify/new-token`, "POST", {userId: userId});
     }
 
     return (

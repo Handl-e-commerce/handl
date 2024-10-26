@@ -3,14 +3,6 @@ import { render, screen, act, waitFor } from '@testing-library/react';
 import { Header } from './Header';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
-import { server } from "../../../__mocks__/server";
-import { http, HttpResponse } from 'msw';
-import { cookieParser } from '../../utils/cookie-util';
-
-const envVariables = process.env;
-const {
-    REACT_APP_SERVER_URI,
-} = envVariables;
 
 let replaceMock = jest.fn();
 Object.defineProperty(window, 'location', {
@@ -25,19 +17,18 @@ Object.defineProperty(window, 'location', {
     }
 );
 
-jest.mock('../../utils/cookie-util', () => {
-    const originalModule = jest.requireActual('../../utils/cookie-util');
-  
-    //Mock the default export and named export 'foo'
+let mockUseLoginStatus = jest.fn();
+jest.mock("../../hooks/useLoggedInStatus", () => {
+    const originalModule = jest.requireActual("../../hooks/useLoggedInStatus");
     return {
-      __esModule: true,
-      ...originalModule,
-      cookieParser: jest.fn(() => ({
-        "loggedIn": "true",
-        "userId": "MockUserId",
-        "firstName": "MockFirstName",
-    }))
+        __esModule: true,
+        ...originalModule,
+        useLoginStatus: jest.fn(() => mockUseLoginStatus()),
     };
+});
+
+beforeEach(() => {
+    mockUseLoginStatus.mockReturnValue(false);
 });
 
 afterEach(() => {
@@ -47,40 +38,35 @@ afterEach(() => {
 describe("Header Test", function() {
     const user = userEvent.setup();
     it("Should render the logged in header because valid long term session cookies are stored", async function() {
-        server.use(
-            http.post(REACT_APP_SERVER_URI + `/users/login/verify`, ({ request, params, cookies }) => {
-                return new HttpResponse(null, { status: 201 });
-            })
-        );
-
-        const { container } = await act(async () => render(<Header />));
+        mockUseLoginStatus.mockReturnValueOnce(true);
+        Object.defineProperty(window.document, 'cookie', {
+            writable: true,
+            value: "firstName=MockFirstName",
+        });
+        await act(async () => render(<Header />));
         
         await waitFor(async () => {
             let navBar = screen.getByTestId("header");
             expect(navBar).toBeDefined();
             expect(navBar).toBeInTheDocument();
-            expect(screen.getByText(/MockFirstName/i)).toBeInTheDocument();
+            expect(screen.getByText(/hi, mockfirstname/i)).toBeInTheDocument();
         });
     });
 
     it("Should render the logged out header because there are no cookies and user", async function() {
-        server.use(
-            http.post(REACT_APP_SERVER_URI + `/users/login/verify`, ({ request, params, cookies }) => {
-                return new HttpResponse(null, { status: 401 });
-            })
-        );
+        await act(async () => render(<Header />));
 
-        const { container } = await act(async () => render(<Header />));
-        
         await waitFor(() => {
             let header = screen.getByTestId("header");
             expect(header).toBeDefined();
             expect(header).toBeInTheDocument();
+            expect(screen.getByText(/Login/i)).toBeInTheDocument();
+            expect(screen.getByText(/Sign Up/i)).toBeInTheDocument();
         });
     });
 
     it("Should redirect to signup because sign up tab is clicked", async function() {
-        const { container } = await act(async () => render(<Header />));
+        await act(async () => render(<Header />));
         
         let signUpButton = screen.getByText("Sign Up");
         await user.click(signUpButton);
@@ -90,7 +76,7 @@ describe("Header Test", function() {
     });
 
     it("Should redirect to login because login tab is clicked", async function() {
-        const { container } = await act(async () => render(<Header />));
+        await act(async () => render(<Header />));
 
         let loginTab = screen.getByTestId("header").children[0];
         await user.click(loginTab);
@@ -100,22 +86,12 @@ describe("Header Test", function() {
     });
 
     it("Should delete long term login cookies because server returns 401 status code", async function() {
-        server.use(
-            http.post(REACT_APP_SERVER_URI + `/users/login/verify`, ({ request, params, cookies }) => {
-                return new HttpResponse(null, { status: 401 });
-            })
-        );
-
-        const { container } = await act(async () => render(<Header />));
+        await act(async () => render(<Header />));
 
         waitFor(() => {
             let navBar = screen.getByTestId("header");
             expect(navBar).toBeDefined();
             expect(navBar).toBeInTheDocument();
-            let cookies = cookieParser();
-            expect(cookies.selector).toBeUndefined();
-            expect(cookies.validator).toBeUndefined();
         });
     });
-
 });

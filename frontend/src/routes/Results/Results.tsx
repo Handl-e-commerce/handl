@@ -24,9 +24,11 @@ function Results(): JSX.Element {
 
     useEffect(() => {
         let ignore = false;
-        if ((!ignore && loggedIn) || loadingData) {
+        if (!ignore && loggedIn) {
             handleQuery();
-            getCategories();
+            if (!categories) {
+                getCategories();
+            };
         };
         return () => { ignore = true };
     }, []);
@@ -82,7 +84,7 @@ function Results(): JSX.Element {
         let states: string = filteredStates.join(",");
         states.length > 0 ? queryParams.set("states", states) : queryParams.delete("states");
         getData();
-    }
+    };
 
     function handleClearAll(): void {
         setSelectedCategories([]);
@@ -172,21 +174,23 @@ function Results(): JSX.Element {
             <Box sx={{ width: '95%', marginBottom: '7px'}} data-testid="chips-container">
                 {selectedCategories.map(
                     (category) => (
-                        <Chip 
+                        <Chip
                             key={category}
                             label={category}
                             sx={{ margin: '4px 1px' }}
                             onDelete={() => handleRemoveCategoryChip(category)}
+                            data-testid={`${category}-chip`}
                         />
                     )
                 )}
                 {selectedStates.map(
                     (state) => (
-                        <Chip 
+                        <Chip
                             key={state}
                             label={state}
                             sx={{ margin: '4px 1px' }}
                             onDelete={() => handleRemoveStateChip(state)}
+                            data-testid={`${state}-chip`}
                         />
                     )
                 )}
