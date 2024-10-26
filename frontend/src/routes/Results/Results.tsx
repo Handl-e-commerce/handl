@@ -21,7 +21,7 @@ function Results(): JSX.Element {
     let isMobile: boolean = useMobile();
     let loggedIn: boolean = useLoginStatus();
     let searchParam = queryParams.get("search-params");
-    
+
     useEffect(() => {
         let ignore = false;
         if (!ignore && loggedIn) {
