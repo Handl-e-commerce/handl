@@ -40,11 +40,6 @@ export const handlers = [
             status: 201,
         });
     }),
-    http.post(REACT_APP_SERVER_URI + `/users/login/verify`, ({ request, params, cookies }) => {
-        return new HttpResponse(null, {
-            status: 401
-        });
-    }),
     http.post(REACT_APP_SERVER_URI + `/users/register`, ({}) => {
         let body = JSON.stringify({
             message: "Successfully authenticated user"
