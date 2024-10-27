@@ -9,7 +9,6 @@ interface IExpandedRowProps {
 };
 
 function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
-    const googleMapsUrl: string = "https://www.google.com/maps/search/?api=1&query=";
     const styles = {
         container: {
             display: "flex",
@@ -38,7 +37,36 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
         contactInformation: {
             marginLeft: isMobile ? 0 : 10
         },
+        icon: {
+            verticalAlign: "middle",
+            marginRight: '7px'
+        }
     };
+
+    function companyAddress(): JSX.Element {
+        const googleMapsUrl: string = "https://www.google.com/maps/search/?api=1&";
+        if (row.address && row.city && row.state && row.zipcode) {
+            const params = new URLSearchParams({
+                query: row.address + ", " + row.city + ", " + row.state + ", " + row.zipcode
+            });
+            return (
+                <Typography variant={isMobile ? 'body2' : 'body1'} component='pre' sx={styles.contactInfoRow}>
+                    <Place style={{ verticalAlign: "middle", marginRight: '7px' }} />
+                    <Link href={googleMapsUrl + params} target="_blank" rel="noreferrer">
+                        {row.address + ", " + row.city + ", " + row.state + ", " + row.zipcode}
+                    </Link>
+                </Typography>    
+            )
+        }
+        
+        return (
+            <Typography variant={isMobile ? 'body2' : 'body1'} component='pre' sx={styles.contactInfoRow}>
+                <Place style={{ verticalAlign: "middle", marginRight: '7px' }} />
+                {row.address + ", " + row.city + ", " + row.state + ", " + row.zipcode}
+            </Typography>
+        )
+
+    }
 
     return (
         <Container sx={styles.container} aria-roledescription="Expanded Row Container">
@@ -101,22 +129,25 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                         >
                             Contact Information
                         </Typography>
-                        {row.website && <Link href={row.website} style={styles.contactInfoRow} underline="none" target="_blank" rel="noreferrer">
-                            <Web style={{ verticalAlign: "middle", marginRight: '7px' }}/>
-                            {row.website}
-                        </Link>}
-                        {row.phoneNumber && <Typography variant={isMobile ? 'body2' : 'body1'} component='p' sx={styles.contactInfoRow}>
-                            <Phone style={{ verticalAlign: "middle", marginRight: '7px' }}/>
-                            {row.phoneNumber}
-                        </Typography>}
-                        {row.email && <Typography variant={isMobile ? 'body2' : 'body1'} component='p' sx={styles.contactInfoRow}>
-                            <Email style={{ verticalAlign: "middle", marginRight: '7px' }}/>
-                            {row.email}
-                        </Typography>}
-                        <Typography variant={isMobile ? 'body2' : 'body1'} component='pre' sx={styles.contactInfoRow}>
-                            <Place style={{ verticalAlign: "middle", marginRight: '7px' }} />
-                            {row.address + ", " + row.city + ", " + row.state + ", " + row.zipcode}
-                        </Typography>
+                        {row.website && 
+                            <Link href={row.website} style={styles.contactInfoRow} target="_blank" rel="noreferrer">
+                                <Web style={styles.icon}/>
+                                {row.website}
+                            </Link>
+                        }
+                        {row.phoneNumber && 
+                            <Typography variant={isMobile ? 'body2' : 'body1'} component='p' sx={styles.contactInfoRow}>
+                                <Phone style={styles.icon}/>
+                                {row.phoneNumber}
+                            </Typography>
+                        }
+                        {row.email && 
+                            <Typography variant={isMobile ? 'body2' : 'body1'} component='p' sx={styles.contactInfoRow}>
+                                <Email style={styles.icon}/>
+                                {row.email}
+                            </Typography>
+                        }
+                        {companyAddress()}
                     </Box>
                 </Box>
             </Box>
