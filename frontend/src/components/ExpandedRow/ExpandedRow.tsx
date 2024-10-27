@@ -1,6 +1,6 @@
 import React from "react";
 import { Vendor } from "../../types/types";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, Link, SxProps, Typography } from "@mui/material";
 import { Place, Web, Phone, Email } from "@mui/icons-material";
 
 interface IExpandedRowProps {
@@ -9,8 +9,39 @@ interface IExpandedRowProps {
 };
 
 function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
+    const googleMapsUrl: string = "https://www.google.com/maps/search/?api=1&query=";
+    const styles = {
+        container: {
+            display: "flex",
+            flexDirection: 'column',
+            paddingLeft: 0,
+            marginLeft: '-10px'
+        },
+        allCompanyInfo: {
+            display: 'flex',
+            flexDirection: 'column',
+        },
+        companyProfile: {
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'baseline',
+            width: isMobile ? '90%' : '100%',
+            marginBottom: '10px',
+        },
+        contactInfoRow: {
+            marginBottom: '3px'
+        },
+        peopleCategories: {
+            marginRight: isMobile ? 0 : 10
+        },
+        contactInformation: {
+            marginLeft: isMobile ? 0 : 10
+        },
+    };
+
     return (
-        <Container style={{ display: "flex", flexDirection: 'column', paddingLeft: 0, marginLeft: '-10px'}} aria-roledescription="Expanded Row Container">
+        <Container sx={styles.container} aria-roledescription="Expanded Row Container">
             <Typography
                 variant={isMobile ? "h6" : "h4"}
                 component={isMobile ? "h6" : "h4"}
@@ -18,9 +49,9 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                 aria-roledescription="Company Name Heading"
             >
                 {row.name}
-                <div style={{borderBottom: '1px solid #3C3C43', width: isMobile ? '114%': '107%' , marginLeft: isMobile ? "-4.5%" : '-1.5%' }}/>
+                <div style={{borderBottom: '1px solid #3C3C43'}}/>
             </Typography>
-            <Box sx={{display: 'flex', flexDirection: 'column'}}>
+            <Box sx={styles.allCompanyInfo} aria-roledescription="All Company Info Box">
                 <Box sx={{marginBottom: '10px'}} aria-roledescription="About Box">
                     <Typography
                         variant={"h6"}
@@ -32,8 +63,8 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                     </Typography>
                     <Typography variant={isMobile ? 'body2' : 'body1'} component='p' paddingRight={'10px'}>{row.description}</Typography>
                 </Box>
-                <Box sx={{display: 'flex', justifyContent: 'flex-start', alignItems: 'baseline'}} aria-roledescription="Company Profile">
-                    <Box sx={{marginRight: '15px'}}>
+                <Box sx={styles.companyProfile} aria-roledescription="Company Profile">
+                    <Box sx={styles.peopleCategories} aria-roledescription="People Categories Box">
                         <Box sx={{marginBottom: '10px'}} aria-roledescription="People Box">
                             <Typography
                                 variant={"h6"}
@@ -61,7 +92,7 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                             ))}
                         </Box>
                     </Box>
-                    <Box sx={{marginBottom: '10px', marginLeft: '15px'}} aria-roledescription="Contact Information Box">
+                    <Box sx={styles.contactInformation} aria-roledescription="Contact Information Box">
                         <Typography
                             variant={"h6"}
                             component={"h6"}
@@ -70,21 +101,21 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                         >
                             Contact Information
                         </Typography>
-                        <a href={row.website} style={{marginBottom: '3px'}} target='_blank' rel="noreferrer">
+                        {row.website && <Link href={row.website} style={styles.contactInfoRow} underline="none" target="_blank" rel="noreferrer">
                             <Web style={{ verticalAlign: "middle", marginRight: '7px' }}/>
                             {row.website}
-                        </a>
-                        <Typography variant={isMobile ? 'body2' : 'body1'} component='p' sx={{marginBottom: '3px'}}>
+                        </Link>}
+                        {row.phoneNumber && <Typography variant={isMobile ? 'body2' : 'body1'} component='p' sx={styles.contactInfoRow}>
                             <Phone style={{ verticalAlign: "middle", marginRight: '7px' }}/>
                             {row.phoneNumber}
-                        </Typography>
-                        <Typography variant={isMobile ? 'body2' : 'body1'} component='p' sx={{marginBottom: '3px'}}>
+                        </Typography>}
+                        {row.email && <Typography variant={isMobile ? 'body2' : 'body1'} component='p' sx={styles.contactInfoRow}>
                             <Email style={{ verticalAlign: "middle", marginRight: '7px' }}/>
                             {row.email}
-                        </Typography>
-                        <Typography variant={isMobile ? 'body2' : 'body1'} component='pre' sx={{marginBottom: '3px'}}>
+                        </Typography>}
+                        <Typography variant={isMobile ? 'body2' : 'body1'} component='pre' sx={styles.contactInfoRow}>
                             <Place style={{ verticalAlign: "middle", marginRight: '7px' }} />
-                            {row.address + ", " + row.city + '\n\t' + row.state + ", " + row.zipcode}
+                            {row.address + ", " + row.city + ", " + row.state + ", " + row.zipcode}
                         </Typography>
                     </Box>
                 </Box>
