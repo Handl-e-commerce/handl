@@ -58,15 +58,28 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                 </Typography>    
             )
         }
+
+        let address = "";
+        if (row.address) {
+            address = row.address + ", ";
+        };
+        if (row.city) {
+            address = address + row.city + ", ";
+        };
+        if (row.state) {
+            address = address + row.state;
+        };
+        if (row.zipcode) {
+            address = address + ", " + row.zipcode;
+        };
         
         return (
             <Typography variant={isMobile ? 'body2' : 'body1'} component='pre' sx={styles.contactInfoRow}>
                 <Place style={{ verticalAlign: "middle", marginRight: '7px' }} />
-                {row.address + ", " + row.city + ", " + row.state + ", " + row.zipcode}
+                {address}
             </Typography>
-        )
-
-    }
+        );
+    };
 
     return (
         <Container sx={styles.container} aria-roledescription="Expanded Row Container">
