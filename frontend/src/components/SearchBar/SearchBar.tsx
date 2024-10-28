@@ -3,9 +3,10 @@ import { SxProps, TextField } from "@mui/material";
 
 interface ISearchBarProps {
     isLandingPage: boolean;
+    sx?: SxProps;
 }
 
-function SearchBar({isLandingPage}: ISearchBarProps): JSX.Element {
+function SearchBar({isLandingPage, sx}: ISearchBarProps): JSX.Element {
     let searchParams = new URL(document.location.toString()).searchParams;
     const [searchInput, setSearchInput] = useState("");
 
@@ -35,8 +36,9 @@ function SearchBar({isLandingPage}: ISearchBarProps): JSX.Element {
         borderRadius: 25,
         width: '95%',
         '& fieldset': { border: 'none'},
-        '& input': {padding: '5px 7px'}
-    }
+        '& input': {padding: '5px 7px'},
+        ...sx
+    };
 
     return (
         <TextField
