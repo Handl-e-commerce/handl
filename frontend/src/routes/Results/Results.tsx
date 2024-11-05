@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { Vendor } from "../../types/types";
-import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { Box, Button, Chip, CircularProgress, Container, Grid, Paper, SxProps, Typography  } from '@mui/material';
 import { EnhancedTable } from "../../components/Table/EnhancedTable";
@@ -134,7 +133,6 @@ function Results(): JSX.Element {
 
     return (
         <Container sx={containerSx}>
-            <SearchBar isLandingPage={false} data-testid="search-bar"/>
             <Grid container spacing={1}>
                 {categories &&
                     <Grid item sm={isMobile ? undefined : 1.4}> 

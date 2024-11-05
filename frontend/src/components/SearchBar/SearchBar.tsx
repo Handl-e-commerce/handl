@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { SxProps, TextField } from "@mui/material";
 
 interface ISearchBarProps {
-    isLandingPage: boolean;
     sx?: SxProps;
 }
 
-function SearchBar({isLandingPage, sx}: ISearchBarProps): JSX.Element {
+function SearchBar({sx}: ISearchBarProps): JSX.Element {
     let searchParams = new URL(document.location.toString()).searchParams;
     const [searchInput, setSearchInput] = useState("");
 
@@ -28,8 +27,6 @@ function SearchBar({isLandingPage, sx}: ISearchBarProps): JSX.Element {
     };
 
     const textfieldSx: SxProps = {
-        marginTop: isLandingPage ? '7px' : 0,
-        marginBottom: isLandingPage ? '7px' : 0,
         paddingLeft: '16px',
         bgcolor: '#E5E5EA',
         color: '#E0E0E0',

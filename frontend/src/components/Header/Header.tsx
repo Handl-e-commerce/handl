@@ -3,10 +3,46 @@ import { SearchBar } from "../SearchBar/SearchBar";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { cookieParser, deleteCookie } from "../../utils/cookie-util";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
-import { Button, Menu, MenuItem, SxProps, Grid, Container } from "@mui/material";
+import { Button, Menu, MenuItem, SxProps, Grid, Box } from "@mui/material";
 import { KeyboardArrowDown, Logout } from "@mui/icons-material";
 import svg from '../../static/5_SVG-cropped.svg';
 import { useMobile } from "../../hooks/useMobile";
+
+const headerStyles: React.CSSProperties = {
+    position: 'relative',
+    top: 0,
+    height: 'fit-content',
+    width: '100%',
+    background: "#242425",
+    color: '#F2E5D1',
+    borderBottom: 'solid 1px primary.main',
+    paddingBottom: '.625rem',
+};
+
+const dropdownButtonSx: SxProps = {
+    marginRight: '.75rem',
+    fontWeight: 'bold',
+    background: '#3B4B59',
+    color: '#F2E5D1',
+    width: 'fit-content',
+    height: 'fit-content',
+    textTransform: 'none',
+};
+
+const signupButtonSx: SxProps = {
+    color: 'secondary.main',
+    background: '#3B4B59',
+    marginRight: "4px",
+    width: '100px',
+};
+
+const loginButtonSx: SxProps = {
+    color: 'secondary.main',
+    borderColor: 'secondary.main',
+    marginLeft: "4px",
+    marginRight: "20px",
+    width: 'fit-content',
+};
 
 function Header(): JSX.Element {
     const cookieObject = cookieParser();
@@ -44,84 +80,90 @@ function Header(): JSX.Element {
         setMenuAnchor(null);
     };
 
-    const headerStyles: React.CSSProperties = {
-        position: 'relative',
-        top: 0,
-        height: '8rem',
-        width: '100%',
-        background: "#242425",
-        color: '#F2E5D1',
-        // borderBottom: 'solid 1px #F2E5D1'
+    function headerMenu(): JSX.Element | undefined {
+        const menuSx: SxProps = {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'end',
+            // marginLeft: isMobile ? 0 : loggedIn ? '2.5rem' : '3rem',
+        };
+        let xs = isMobile ? 6 : undefined; 
+        
+        if (loggedIn) {
+            return (
+                <Grid item xs={xs} sx={menuSx}>
+                    <Button
+                        variant="contained"
+                        onClick={handleDropdownClick}
+                        endIcon={<KeyboardArrowDown />}
+                        sx={dropdownButtonSx}
+                    >
+                        Hi, {cookieObject?.firstName}!
+                    </Button>
+                    <Menu
+                        anchorEl={menuAnchor}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                        open={Boolean(menuAnchor)}
+                        onClose={handleDropdownClose}
+                    >
+                        <MenuItem onClick={handleLogout}>
+                            Logout
+                            <Logout/>
+                        </MenuItem>
+                    </Menu>
+                </Grid>
+            )
+        }
+        else if (!isLoginOrSignUpPage) {
+            return (
+                <Grid item xs={xs} sx={menuSx}>
+                    <Button variant="contained" sx={signupButtonSx} onClick={redirectSignUp}>Sign Up</Button>
+                    <Button variant="outlined" sx={loginButtonSx} onClick={redirectLogin}>Login</Button>
+                </Grid>
+            );
+        };
+        return;
     };
 
-    const dropdownButtonSx: SxProps = {
-        margin: '7px',
-        fontWeight: 'bold',
-        background: '#3B4B59',
-        // background: '#3D8E72',
-        // background: '#12715B',
-        color: '#F2E5D1',
-        width: 'fit-content',
-        height: 'fit-content',
-        textTransform: 'none',
-    };
-
-    const signupButtonSx: SxProps = {
-        color: 'secondary.main',
-        background: '#3B4B59',
-        marginRight: "4px",
-        width: '100px',
-    };
-
-    const loginButtonSx: SxProps = {
-        color: 'secondary.main',
-        borderColor: 'secondary.main',
-        marginLeft: "4px",
-        marginRight: "20px",
-        width: 'fit-content',
-    };
+    function gridLayout(): JSX.Element {
+        if (isMobile) {
+            return (
+                <>
+                    <Grid container pt={2} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Grid xs={6} item sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '0rem' : '2rem'}}>
+                            <a href={location.origin} target="_self">
+                                <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
+                            </a>
+                        </Grid>
+                        {headerMenu()}
+                    </Grid>
+                    {!isLoginOrSignUpPage && <SearchBar />}
+                </>
+            );
+        }
+        return (
+            <Grid container pt={2} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                <Grid item sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '0rem' : '2rem'}}>
+                    <a href={location.origin} target="_self">
+                        <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
+                    </a>
+                </Grid>
+                <Grid item xs={9}>
+                    {!isLoginOrSignUpPage && <SearchBar />}
+                </Grid>
+                {headerMenu()}
+            </Grid>
+        );
+    }
 
     return (
         <header data-testid='header' style={headerStyles}>
-            <Container>
-                <Grid container pt={2}>
-                    <Grid item xs={5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '0rem' : '2rem'}}>
-                        <a href={location.origin} target="_self">
-                            <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
-                        </a>
-                    </Grid>
-                    {loggedIn && 
-                        <Grid item xs={6} ml={isMobile ? '1rem' : '2.75rem'} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
-                            <Button
-                                variant="contained"
-                                onClick={handleDropdownClick}
-                                endIcon={<KeyboardArrowDown />}
-                                sx={dropdownButtonSx}
-                            >
-                                Hi, {cookieObject?.firstName}!
-                            </Button>
-                            <Menu
-                                anchorEl={menuAnchor}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'left',
-                                }}
-                                open={Boolean(menuAnchor)}
-                                onClose={handleDropdownClose}
-                            >
-                                <MenuItem onClick={handleLogout}>
-                                    Logout
-                                    <Logout/>
-                                </MenuItem>
-                            </Menu>
-                        </Grid>
-                    }
-                    <Grid item xs={6} ml={isMobile ? '2rem' : '3rem'} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
-                        {!isLoginOrSignUpPage && !loggedIn && <Button variant="contained" sx={signupButtonSx} onClick={redirectSignUp}>Sign Up</Button>}
-                        {!isLoginOrSignUpPage && !loggedIn && <Button variant="outlined" sx={loginButtonSx} onClick={redirectLogin}>Login</Button>}
-                    </Grid>
-                </Grid>
-            </Container>
+            <Box>
+                {gridLayout()}
+            </Box>
         </header>
     );
 };
