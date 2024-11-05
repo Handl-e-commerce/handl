@@ -15,7 +15,7 @@ const headerStyles: React.CSSProperties = {
     width: '100%',
     background: "#242425",
     color: '#F2E5D1',
-    borderBottom: 'solid 1px primary.main',
+    borderBottom: '.5px solid #F2E5D1',
     paddingBottom: '.625rem',
 };
 
@@ -85,7 +85,7 @@ function Header(): JSX.Element {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'end',
-            // marginLeft: isMobile ? 0 : loggedIn ? '2.5rem' : '3rem',
+            marginLeft: isMobile ? 0 : loggedIn ? '2.5rem' : '1rem',
         };
         let xs = isMobile ? 6 : undefined; 
         
@@ -145,17 +145,13 @@ function Header(): JSX.Element {
             );
         }
         return (
-            <Grid container pt={2} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                <Grid item sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '0rem' : '2rem'}}>
-                    <a href={location.origin} target="_self">
-                        <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
-                    </a>
-                </Grid>
-                <Grid item xs={9}>
-                    {!isLoginOrSignUpPage && <SearchBar />}
-                </Grid>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <a href={location.origin} target="_self">
+                    <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
+                </a>
+                {!isLoginOrSignUpPage && <SearchBar sx={{ maxWidth: '70%', margin: '0px, 7px' }}/>}
                 {headerMenu()}
-            </Grid>
+            </Box>
         );
     }
 

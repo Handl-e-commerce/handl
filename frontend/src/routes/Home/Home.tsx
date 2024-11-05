@@ -1,23 +1,15 @@
 import React from "react";
-import './Home.css';
 import fba from '../../static/FBA.jpg';
 import clothing from '../../static/Clothing.jpg';
 import health from '../../static/Health & Beauty.jpg';
 import electronics from '../../static/Electronics.jpg';
-import { Box, Button, Container, Grid, SxProps, Typography, TypographyOwnProps } from "@mui/material";
+import { Box, Container, Grid, SxProps, Typography, TypographyOwnProps } from "@mui/material";
 import { useMobile } from "../../hooks/useMobile";
-import { SearchBar } from "../../components/SearchBar/SearchBar";
-import zIndex from "@mui/material/styles/zIndex";
+import { Banner } from "../../components/Banner/Banner";
 
 function Home(): JSX.Element {
     let location = window.location;
     let isMobile: boolean = useMobile();
-
-    function redirectResults(): void {
-        // redirect to results page
-        window.history.pushState({}, "", location.origin + "/results?");
-        location.replace(location.origin + "/results?");
-    };
 
     const styles = {
         grid: {
@@ -36,82 +28,17 @@ function Home(): JSX.Element {
                 component: 'h4' as React.ElementType<any, keyof React.JSX.IntrinsicElements>
             },
         },
-        banner: {
-            color: '#F2E5D1',
-            background: '#242425',
-            padding: isMobile ? 1.25 : 2,
-            position: 'relative',
-            zIndex: 0,
-            height: '30rem',
-            width: '100%',
+        gridContainer: { 
+            borderTop: '1.5px solid #E5E5EA',
+            marginTop: '10px'
         },
-        bannerInfo: {
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            textAlign: 'center',
-            position: 'relative',
-            zIndex: 2,
-            padding: 5,
-            background: '#242425',
-            height: '27rem',
-        },
-        aboutUs: { 
-            padding: 7,
-            display: 'flex',
-            flexDirection: 'column',
-            textAlign: 'center',
-            justifyContent: 'center',
-            alignItems: 'center',
-            color: '#F2E5D1',
-            background: '#3B4B59',
-            // background: '#4C9E80',
-            // background: '#12715B',
-            height: '30rem',
-            width: '100%',
-            marginBottom: '1rem',
-        }
-    };
-
-    const buttonSx: SxProps = {
-        width: '80%',
-        background: '#E5E5EA',
-        marginBottom: '14px',
-        borderRadius: '5px',
-        fontWeight: 'bold',
-        textTransform: 'none',
-        fontSize: '1rem'
     };
 
     return (
         <Box sx={{minHeight: '60rem', textAlign: isMobile ? 'center' : 'left', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <Box sx={styles.banner} aria-roledescription="Home Screen Banner">
-                <Container className={'gradient-border'} sx={{ padding: '1px !important'}}>
-                    <Box sx={styles.bannerInfo} aria-roledescription="Home Screen Banner Content">
-                        <Typography variant={ isMobile ? "h5" : "h3"}>
-                            Handl is the world's #1 place to find and connect with ecommerce wholesale, retail, and distribution buyers and sellers.
-                        </Typography>
-                        <Typography variant={ isMobile ? "subtitle2" : "h6" }>
-                            Search below to find hundreds of buyers and sellers!
-                        </Typography>
-                        <SearchBar isLandingPage={true} sx={{ width: '70%', marginTop: 3 }}/>
-                    </Box>
-                </Container>
-            </Box>
-            <Box sx={styles.aboutUs} aria-roledescription="Home Screen Brief About Us">
-                <Container>
-                    <Typography variant={ isMobile ? "h6" : "h4"} m={1}>
-                        Handl is the world's fastest growing B2B directory for ecommerce wholesalers, distributors, and retailers.
-                    </Typography>
-                    <Typography variant={ isMobile ? "body2" : "h5"} m={1}>
-                        Click below to view our entire directory!
-                    </Typography>
-                    <Button sx={buttonSx} onClick={redirectResults}>View our entire directory of wholesalers and distributors</Button>
-                </Container>
-            </Box>
+            <Banner />
             <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <Grid container spacing={"5px"} mb={'24px'} data-testid="most-viewed-categories-container">
+                <Grid container spacing={"5px"} mb={'24px'} data-testid="most-viewed-categories-container" sx={styles.gridContainer}>
                     <Grid item xs={12}>
                         <Typography 
                             variant={styles.font.heading.variant}
@@ -147,7 +74,7 @@ function Home(): JSX.Element {
                         <Typography variant={'h6'} component={'div'} fontSize={'20px'}>Electronics</Typography>
                     </Grid>
                 </Grid>
-                <Grid container spacing={'5px'} mb={'24px'} data-testid="featured-categories-container">
+                <Grid container spacing={'5px'} mb={'24px'} data-testid="featured-categories-container" sx={styles.gridContainer}>
                     <Grid item xs={12}>
                     <Typography 
                             variant={styles.font.heading.variant}
