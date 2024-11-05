@@ -1,5 +1,5 @@
 import { useMobile } from "../../hooks/useMobile";
-import { Box, Button, SxProps, Typography, TypographyOwnProps } from "@mui/material";
+import { Box, Button, SxProps, Typography } from "@mui/material";
 import { ArrowForward } from '@mui/icons-material';
 
 // <Container>

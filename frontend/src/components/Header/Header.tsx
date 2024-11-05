@@ -49,7 +49,6 @@ function Header(): JSX.Element {
     const location = window.location;
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
     const isMobile: boolean = useMobile();
-    let isLandingPage: boolean = location.pathname === "/";
     let isLoginOrSignUpPage: boolean = location.pathname === "/login" || location.pathname === "/sign-up";
     let loggedIn = useLoginStatus();
 

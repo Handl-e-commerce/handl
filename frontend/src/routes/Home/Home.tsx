@@ -3,7 +3,7 @@ import fba from '../../static/FBA.jpg';
 import clothing from '../../static/Clothing.jpg';
 import health from '../../static/Health & Beauty.jpg';
 import electronics from '../../static/Electronics.jpg';
-import { Box, Container, Grid, SxProps, Typography, TypographyOwnProps } from "@mui/material";
+import { Box, Container, Grid, Typography, TypographyOwnProps } from "@mui/material";
 import { useMobile } from "../../hooks/useMobile";
 import { Banner } from "../../components/Banner/Banner";
 
