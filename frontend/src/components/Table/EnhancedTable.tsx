@@ -36,6 +36,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
 
     function handleChangePage(event: unknown, newPage: number): void {
         setPage(newPage);
+        window.scrollTo(0, 0);
     };
 
     function handleChangeRowsPerPage(event: React.ChangeEvent<HTMLInputElement>): void {
