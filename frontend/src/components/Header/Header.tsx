@@ -85,7 +85,7 @@ function Header(): JSX.Element {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'end',
-            marginLeft: isMobile ? 0 : loggedIn ? '2.5rem' : '1rem',
+            marginLeft: isMobile ? 0 : loggedIn ? '0' : '.5rem',
         };
         let xs = isMobile ? 6 : undefined; 
         
