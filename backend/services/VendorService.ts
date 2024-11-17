@@ -3,6 +3,7 @@ import {Vendor} from "../db/models/Vendor";
 import {Op} from "sequelize";
 import {VendorCategories} from "../db/models/VendorCategories";
 import {Category} from "../db/models/Category";
+import {Keyword} from "../db/models/Keyword";
 
 /** Vendor Service Class */
 class VendorService implements IVendorService {
@@ -23,7 +24,6 @@ class VendorService implements IVendorService {
             const includeClause = [];
             if (searchVal) {
                 whereClause = {
-                    ...whereClause,
                     [Op.or]: [
                         {
                             name: {
@@ -101,6 +101,32 @@ class VendorService implements IVendorService {
                 ],
                 attributes: ["subcategory"],
             });
+        } catch (err) {
+            const error = err as Error;
+            throw new Error(error.message);
+        }
+    }
+
+    /**
+     * Returns a list of 10 max best predictions for predictive search
+     * @param {string} searchVal
+     * @return {string[]}
+     */
+    public async GetPredictions(searchVal: string): Promise<string[]> {
+        try {
+            const results: string[] = [];
+            await Keyword.findAll({
+                where: {
+                    keyword: {
+                        [Op.iLike]: `%${searchVal}%`,
+                    },
+                },
+                limit: 10,
+                attributes: [
+                    "keyword",
+                ],
+            });
+            return results;
         } catch (err) {
             const error = err as Error;
             throw new Error(error.message);
