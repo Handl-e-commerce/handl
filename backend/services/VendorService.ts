@@ -114,18 +114,21 @@ class VendorService implements IVendorService {
      */
     public async GetPredictions(searchVal: string): Promise<string[]> {
         try {
-            const results: string[] = [];
-            await Keyword.findAll({
+            const results: string[] = (await Keyword.findAll({
                 where: {
                     keyword: {
-                        [Op.iLike]: `%${searchVal}%`,
+                        [Op.iLike]: `${searchVal.toLocaleLowerCase()}%`,
                     },
                 },
                 limit: 10,
                 attributes: [
                     "keyword",
                 ],
-            });
+                order: [
+                    ["keyword", "ASC"],
+                ],
+            })).map((row) => row.dataValues.keyword);
+
             return results;
         } catch (err) {
             const error = err as Error;

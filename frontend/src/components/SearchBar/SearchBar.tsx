@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FormControl, IconButton, InputAdornment, OutlinedInput, SxProps } from "@mui/material";
 import { Cancel } from "@mui/icons-material";
+import { fetchWrapper } from "../../utils/fetch-wrapper";
 
 interface ISearchBarProps {
     isLandingPage: boolean;
@@ -10,15 +11,12 @@ function SearchBar({isLandingPage}: ISearchBarProps): JSX.Element {
     let searchParams = new URL(document.location.toString()).searchParams;
     const [searchInput, setSearchInput] = useState('');
 
-    // TODO: (HIGH) API Call to fetch suggestions/predictions for predictive search goes here
-    useEffect(() => {
-        console.log(searchInput);
-    }, [searchInput]);
-
-    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    async function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         e.preventDefault();
         if (e.target) {
             setSearchInput(e.target.value);
+            if (e.target.value)
+                await getSearchSuggestions(e.target.value);
         }
     };
 
@@ -41,11 +39,11 @@ function SearchBar({isLandingPage}: ISearchBarProps): JSX.Element {
         }
     };
 
-    async function getSearchSuggestions(value: string): Promise<string[] | undefined> {
-        if (value)
-            return;
-        // Fetch suggestions
-        return []
+    async function getSearchSuggestions(value: string): Promise<string[]> {
+            const response = await fetchWrapper(`/vendors/predictions?search-params=${value}`, 'GET');
+            const predictions = (await response.json()).result;
+            console.log(predictions)
+            return predictions;
     };
 
     const textfieldSx: SxProps = {

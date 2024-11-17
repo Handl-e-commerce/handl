@@ -84,4 +84,40 @@ vendorRouter.get("/categories", async (req: Request, res: Response, next: NextFu
     }
 });
 
+vendorRouter.get("/predictions", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const cookies = req.cookies;
+        const verificationService: VerificationService = new VerificationService();
+        const isVerified: boolean = await verificationService.VerifyUser(
+            cookies.selector,
+            cookies.validator,
+            cookies.userId
+        );
+        if (!isVerified) {
+            return res.status(401)
+                .cookie("selector", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .cookie("validator", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .send();
+        }
+        const searchVal: string = req.query["search-params"] as string;
+        const vendorService: VendorService = new VendorService();
+        const predictions = await vendorService.GetPredictions(searchVal);
+        return res.status(200).json({
+            result: predictions,
+        });
+    } catch (err: unknown) {
+        return next(err as Error);
+    }
+});
+
 export {vendorRouter};
