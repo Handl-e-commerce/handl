@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FormControl, IconButton, InputAdornment, OutlinedInput, SxProps } from "@mui/material";
+import { FormControl, IconButton, InputAdornment, Autocomplete, OutlinedInput, SxProps, TextField } from "@mui/material";
 import { Cancel } from "@mui/icons-material";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 
@@ -9,41 +9,43 @@ interface ISearchBarProps {
 
 function SearchBar({isLandingPage}: ISearchBarProps): JSX.Element {
     let searchParams = new URL(document.location.toString()).searchParams;
-    const [searchInput, setSearchInput] = useState('');
+    const [searchInput, setSearchInput] = useState<string>('');
+    const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
+    const [hasArrowKey, setHasArrowKey] = useState<boolean>(false);
 
-    async function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        e.preventDefault();
-        if (e.target) {
-            setSearchInput(e.target.value);
-            if (e.target.value)
-                await getSearchSuggestions(e.target.value);
+    useEffect(() => {
+        if (searchInput == "")
+            setSearchSuggestions([]);
+    }, [searchInput])
+
+    async function handleChange(e: React.SyntheticEvent<Element, Event>) {
+        let inputEvent = e as React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+        inputEvent.preventDefault();
+        if (inputEvent.target) {
+            console.log(inputEvent.target.value);
+            setSearchInput(inputEvent.target.value);
+            if (inputEvent.target.value)
+                await getSearchSuggestions(inputEvent.target.value);
         }
-    };
-
-    function clearSearchBar(): void {
-        setSearchInput('');
-        searchParams.delete("search-params");
-        if (!isLandingPage) {
-            window.history.replaceState("", "", `/results?${searchParams.toString()}`);
-            window.location.replace(window.location.origin + "/results?" + searchParams.toString());
-        };
     };
 
     function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>): void {
         if (e.key === 'Enter') {
             if (searchInput !== "" && searchInput !== undefined && searchInput !== null) {
                 searchParams.set("search-params", searchInput);
-                window.history.replaceState("", "", `/results?${searchParams.toString()}`);
+                window.history.pushState("", "", `/results?${searchParams.toString()}`);
                 window.location.replace(window.location.origin + "/results?" + searchParams.toString());
             }
         }
+        if (e.key === 'Escape') {
+            setSearchInput('');
+        }
     };
 
-    async function getSearchSuggestions(value: string): Promise<string[]> {
+    async function getSearchSuggestions(value: string): Promise<void> {
             const response = await fetchWrapper(`/vendors/predictions?search-params=${value}`, 'GET');
             const predictions = (await response.json()).result;
-            console.log(predictions)
-            return predictions;
+            setSearchSuggestions(predictions);
     };
 
     const textfieldSx: SxProps = {
@@ -59,25 +61,26 @@ function SearchBar({isLandingPage}: ISearchBarProps): JSX.Element {
 
     return (
         <FormControl sx={{ width: "700px" }}>
-            <OutlinedInput
-                type="text"
-                name="search_params"
-                required
-                placeholder={searchParams.get("search-params")?.toString() ?? "Search Handl"}
-                value={searchInput}
-                onChange={(e) => handleChange(e)}
-                onKeyUp={handleKeyPress} 
-                sx={textfieldSx}
-                endAdornment={
-                    <InputAdornment position="end">
-                        <IconButton
-                            onClick={clearSearchBar}
-                            edge='end'
-                        >
-                            {searchInput ? <Cancel /> : null}
-                        </IconButton>
-                    </InputAdornment>
-                }
+            <Autocomplete
+                freeSolo
+                autoComplete
+                id="search-bar-autocomplete-component"
+                options={searchSuggestions}
+                sx={{ 
+                    '&.MuiAutocomplete-root .MuiOutlinedInput-root': { padding: '0px' },
+                    ...textfieldSx 
+                }}
+                onInputChange={handleChange}
+                onKeyUp={handleKeyPress}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        InputProps={{
+                            ...params.InputProps,
+                            type: 'search',
+                        }}
+                    />
+                )}
             />
         </FormControl>
     );
