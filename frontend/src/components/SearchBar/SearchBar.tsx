@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FormControl, IconButton, InputAdornment, Autocomplete, OutlinedInput, SxProps, TextField } from "@mui/material";
-import { Cancel } from "@mui/icons-material";
+import { FormControl, Autocomplete, SxProps, TextField } from "@mui/material";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 
 interface ISearchBarProps {
@@ -9,9 +8,8 @@ interface ISearchBarProps {
 
 function SearchBar({isLandingPage}: ISearchBarProps): JSX.Element {
     let searchParams = new URL(document.location.toString()).searchParams;
-    const [searchInput, setSearchInput] = useState<string>('');
+    const [searchInput, setSearchInput] = useState<string>(searchParams.get('search-params')?.toString() ?? '');
     const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
-    const [hasArrowKey, setHasArrowKey] = useState<boolean>(false);
 
     useEffect(() => {
         if (searchInput == "")
@@ -79,6 +77,7 @@ function SearchBar({isLandingPage}: ISearchBarProps): JSX.Element {
                             ...params.InputProps,
                             type: 'search',
                         }}
+                        placeholder={searchParams.get('search-params')?.toString() ?? 'Search Handl'}
                     />
                 )}
             />
