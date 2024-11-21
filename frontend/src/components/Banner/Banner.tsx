@@ -1,33 +1,17 @@
 import { useMobile } from "../../hooks/useMobile";
-import { Box, Button, SxProps, Typography } from "@mui/material";
-import { ArrowForward } from '@mui/icons-material';
-
-// <Container>
-//     <Box sx={styles.aboutUs} aria-roledescription="Home Screen Brief About Us">
-//         <Typography variant={ isMobile ? "h6" : "h4"} m={1}>
-//            
-//         </Typography>
-//         <Typography variant={ isMobile ? "body2" : "h5"} m={1}>
-//             
-//         </Typography>
-//         <Button sx={buttonSx} onClick={redirectResults}>View our entire directory of wholesalers and distributors</Button>
-//     </Box>
-// </Container>
+import { Box, Typography } from "@mui/material";
+import png from '../../static/Banner All Horizontal.png';
+import svg from '../../static/Banner All Horizontal.svg';
 
 function Banner(): JSX.Element {
     let location = window.location;
     let isMobile: boolean = useMobile();
 
-    function redirectResults(): void {
-        // redirect to results page
-        window.history.pushState({}, "", location.origin + "/results?");
-        location.replace(location.origin + "/results?");
-    };
-
     const styles = {
         banner: {
             display: 'flex',
             flexDirection: isMobile ? 'column-reverse' : 'row',
+            // flexDirection: 'column-reverse',
             color: '#F2E5D1',
             background: '#242425',
             position: 'relative',
@@ -36,10 +20,11 @@ function Banner(): JSX.Element {
         bannerInfo: {
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
+            // justifyContent: 'center',
             textAlign: isMobile ? 'center' : 'left',
             position: 'relative',
-            padding: 5,
+            padding: '10px',
+            paddingLeft: '17px',
             background: '#242425',
             width: isMobile ? '100%' : '50%',
         },
@@ -60,16 +45,12 @@ function Banner(): JSX.Element {
             borderTop: '1.5px solid #E5E5EA',
             marginTop: '10px'
         },
-    };
-    
-    const buttonSx: SxProps = {
-        padding: '7px 16px',
-        color: 'secondary.main',
-        background: '#3B4B59',
-        marginRight: "4px",
-        borderRadius: '5px',
-        textTransform: 'none',
-        fontSize: '1rem'
+        imageBox: {
+            display: 'flex',
+            justifyContent: 'center',
+            height: '50%',
+            width: isMobile ? '100%' : '50%',
+        }
     };
     
     return (
@@ -83,19 +64,10 @@ function Banner(): JSX.Element {
                     <br/>
                     <br/>
                     Handl is the world's fastest growing B2B directory for manufacturers, distributors, wholesalers, and retailers. 
-                    <br/>
-                    <br/>
-                    <Button
-                        sx={buttonSx}
-                        onClick={redirectResults}
-                        endIcon={<ArrowForward />}
-                    >
-                        View our entire directory
-                    </Button>
                 </Typography>
             </Box>
-            <Box>
-                Image goes here
+            <Box sx={styles.imageBox}>
+                <img src={svg} alt="Handl Banner" width={'100%'} style={{ padding: '10px' }}/>
             </Box>
         </Box>
     )

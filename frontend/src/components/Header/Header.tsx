@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { SearchBar } from "../SearchBar/SearchBar";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { cookieParser, deleteCookie } from "../../utils/cookie-util";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
@@ -139,7 +138,6 @@ function Header(): JSX.Element {
                         </Grid>
                         {headerMenu()}
                     </Grid>
-                    {!isLoginOrSignUpPage && <SearchBar />}
                 </>
             );
         }
@@ -148,7 +146,6 @@ function Header(): JSX.Element {
                 <a href={location.origin} target="_self">
                     <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
                 </a>
-                {!isLoginOrSignUpPage && <SearchBar sx={{ maxWidth: '70%', margin: '0px, 7px' }}/>}
                 {headerMenu()}
             </Box>
         );
