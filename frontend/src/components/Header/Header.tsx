@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { cookieParser, deleteCookie } from "../../utils/cookie-util";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
-import { Button, Menu, MenuItem, SxProps, Grid, Box } from "@mui/material";
+import { Button, Menu, MenuItem, SxProps, Grid, Box, Typography } from "@mui/material";
 import { KeyboardArrowDown, Logout } from "@mui/icons-material";
 import svg from '../../static/5_SVG-cropped.svg';
 import { useMobile } from "../../hooks/useMobile";
@@ -143,9 +143,13 @@ function Header(): JSX.Element {
         }
         return (
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <a href={location.origin} target="_self">
-                    <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
-                </a>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <a href={location.origin} target="_self">
+                        <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
+                    </a>
+                    <Typography>Categories</Typography>
+                    <Typography>About</Typography>
+                </Box>
                 {headerMenu()}
             </Box>
         );

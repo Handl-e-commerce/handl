@@ -1,6 +1,6 @@
 import { useMobile } from "../../hooks/useMobile";
 import { Box, Typography } from "@mui/material";
-import png from '../../static/Banner All Horizontal.png';
+import png from '../../static/Banner Square.png';
 import svg from '../../static/Banner All Horizontal.svg';
 
 function Banner(): JSX.Element {
@@ -67,7 +67,7 @@ function Banner(): JSX.Element {
                 </Typography>
             </Box>
             <Box sx={styles.imageBox}>
-                <img src={svg} alt="Handl Banner" width={'100%'} style={{ padding: '10px' }}/>
+                <img src={isMobile ? png : svg} alt="Handl Banner" width={'100%'} style={{ padding: '10px' }}/>
             </Box>
         </Box>
     )
