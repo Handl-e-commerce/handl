@@ -4,7 +4,6 @@ import png from '../../static/Banner Square.png';
 import svg from '../../static/Banner All Horizontal.svg';
 
 function Banner(): JSX.Element {
-    let location = window.location;
     let isMobile: boolean = useMobile();
 
     const styles = {
@@ -23,8 +22,9 @@ function Banner(): JSX.Element {
             // justifyContent: 'center',
             textAlign: isMobile ? 'center' : 'left',
             position: 'relative',
-            padding: '10px',
-            paddingLeft: '17px',
+            padding: isMobile ? null : '10px',
+            paddingBottom: '2rem',
+            paddingLeft: isMobile ? null : '2rem',
             background: '#242425',
             width: isMobile ? '100%' : '50%',
         },

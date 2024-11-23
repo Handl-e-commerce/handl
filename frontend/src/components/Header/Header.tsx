@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { cookieParser, deleteCookie } from "../../utils/cookie-util";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
-import { Button, Menu, MenuItem, SxProps, Grid, Box, Typography } from "@mui/material";
+import { Button, Menu, MenuItem, SxProps, Grid, Box, Link } from "@mui/material";
 import { KeyboardArrowDown, Logout } from "@mui/icons-material";
 import svg from '../../static/5_SVG-cropped.svg';
 import { useMobile } from "../../hooks/useMobile";
@@ -20,7 +20,8 @@ const headerStyles: React.CSSProperties = {
 
 const dropdownButtonSx: SxProps = {
     marginRight: '.75rem',
-    fontWeight: 'bold',
+    fontWeight: 600,
+    fontSize: '16px',
     background: '#3B4B59',
     color: '#F2E5D1',
     width: 'fit-content',
@@ -46,10 +47,35 @@ const loginButtonSx: SxProps = {
 function Header(): JSX.Element {
     const cookieObject = cookieParser();
     const location = window.location;
-    const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+    const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
+    const [categoriesMenuAnchor, setCategoriesMenuAnchor] = useState<null | HTMLElement>(null);
+    const [categories, setCategories] = useState<string[]>();
+    
     const isMobile: boolean = useMobile();
+
     let isLoginOrSignUpPage: boolean = location.pathname === "/login" || location.pathname === "/sign-up";
     let loggedIn = useLoginStatus();
+    let queryParams = new URL(document.location.toString()).searchParams;
+
+    async function getCategories(): Promise<void> {
+        const response = await fetchWrapper('/vendors/categories', 'GET');
+        const data: { subcategory: string }[] = (await response.json()).result;
+        let categories: string[] = [];
+        data.forEach((val, i) => {
+            categories.push(val.subcategory);
+        });
+        setCategories(categories);
+    };
+
+    useEffect(() => {
+        let ignore = false;
+        if (!ignore) {
+            if (!categories) {
+                getCategories();
+            };
+        };
+        return () => { ignore = true };
+    }, []);
 
     function redirectSignUp(): void {
         // redirect to sign up route
@@ -70,15 +96,7 @@ function Header(): JSX.Element {
         redirectLogin();
     };
 
-    function handleDropdownClick(event: React.MouseEvent<HTMLElement>): void {
-        setMenuAnchor(event.currentTarget);
-    };
-
-    function handleDropdownClose(): void {
-        setMenuAnchor(null);
-    };
-
-    function headerMenu(): JSX.Element | undefined {
+    function userHeaderMenu(): JSX.Element | undefined {
         const menuSx: SxProps = {
             display: 'flex',
             alignItems: 'center',
@@ -92,20 +110,20 @@ function Header(): JSX.Element {
                 <Grid item xs={xs} sx={menuSx}>
                     <Button
                         variant="contained"
-                        onClick={handleDropdownClick}
+                        onClick={(e: React.MouseEvent<HTMLElement>) => setUserMenuAnchor(e.currentTarget)}
                         endIcon={<KeyboardArrowDown />}
                         sx={dropdownButtonSx}
                     >
                         Hi, {cookieObject?.firstName}!
                     </Button>
                     <Menu
-                        anchorEl={menuAnchor}
+                        anchorEl={userMenuAnchor}
                         anchorOrigin={{
                             vertical: 'bottom',
                             horizontal: 'left',
                         }}
-                        open={Boolean(menuAnchor)}
-                        onClose={handleDropdownClose}
+                        open={Boolean(userMenuAnchor)}
+                        onClose={() => setUserMenuAnchor(null)}
                     >
                         <MenuItem onClick={handleLogout}>
                             Logout
@@ -126,6 +144,51 @@ function Header(): JSX.Element {
         return;
     };
 
+    function categoriesMenu(): JSX.Element {
+        const menuSx: SxProps = {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'end',
+        };
+
+        return (
+            <Grid item sx={menuSx}>
+                <Button
+                    variant="contained"
+                    onClick={(e: React.MouseEvent<HTMLElement>) => setCategoriesMenuAnchor(e.currentTarget)}
+                    endIcon={<KeyboardArrowDown />}
+                    sx={{...dropdownButtonSx, background: 'none', boxShadow: 'none'}}
+                >
+                    Categories
+                </Button>
+                <Menu
+                    anchorEl={categoriesMenuAnchor}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={Boolean(categoriesMenuAnchor)}
+                    onClose={() => setCategoriesMenuAnchor(null)}
+                >
+                    {categories && categories.map((category, i) => (
+                        <MenuItem
+                            key={category}
+                            value={category}
+                            sx={{ padding: '6px 6px'}}
+                            onClick={(e) => {
+                                queryParams.set("categories", (e.target as HTMLElement).innerText);
+                                window.history.pushState({}, "", `${location.origin}/results?${queryParams.toString()}`);
+                                location.replace(`${location.origin}/results?${queryParams.toString()}`);
+                            }}
+                        >
+                            {category}
+                        </MenuItem>
+                    ))}
+                </Menu>
+            </Grid>
+        )
+    };
+
     function gridLayout(): JSX.Element {
         if (isMobile) {
             return (
@@ -136,21 +199,21 @@ function Header(): JSX.Element {
                                 <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
                             </a>
                         </Grid>
-                        {headerMenu()}
+                        {userHeaderMenu()}
                     </Grid>
                 </>
             );
         }
         return (
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', paddingLeft: '1rem' }}>
                     <a href={location.origin} target="_self">
                         <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
                     </a>
-                    <Typography>Categories</Typography>
-                    <Typography>About</Typography>
+                    {categoriesMenu()}
+                    <Link href={location.origin + "/about-us"} target="_self" underline="none" color='#F2E5D1' sx={{ fontSize: '16px', fontWeight: 600 }}>About</Link>
                 </Box>
-                {headerMenu()}
+                {userHeaderMenu()}
             </Box>
         );
     }

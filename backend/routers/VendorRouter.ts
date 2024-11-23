@@ -51,29 +51,6 @@ vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
 
 vendorRouter.get("/categories", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const cookies = req.cookies;
-        const verificationService: VerificationService = new VerificationService();
-        const isVerified: boolean = await verificationService.VerifyUser(
-            cookies.selector,
-            cookies.validator,
-            cookies.userId
-        );
-        if (!isVerified) {
-            return res.status(401)
-                .cookie("selector", "", {
-                    maxAge: Number(new Date(1)),
-                    sameSite: "none",
-                    secure: true,
-                    httpOnly: true,
-                })
-                .cookie("validator", "", {
-                    maxAge: Number(new Date(1)),
-                    sameSite: "none",
-                    secure: true,
-                    httpOnly: true,
-                })
-                .send();
-        }
         const vendorService: VendorService = new VendorService();
         const categories = await vendorService.GetCategories();
         return res.status(200).json({
