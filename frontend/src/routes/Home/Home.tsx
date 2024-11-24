@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import fba from '../../static/FBA.jpg';
 import clothing from '../../static/Clothing.jpg';
 import health from '../../static/Health & Beauty.jpg';
 import electronics from '../../static/Electronics.jpg';
-import { Box, Container, Grid, Typography, TypographyOwnProps } from "@mui/material";
+import { Box, Container, Grid, Link, List, Typography, TypographyOwnProps } from "@mui/material";
 import { useMobile } from "../../hooks/useMobile";
 import { Banner } from "../../components/Banner/Banner";
+import { fetchWrapper } from "../../utils/fetch-wrapper";
 
 function Home(): JSX.Element {
+    const [categories, setCategories] = useState<JSX.Element[][]>();
     let location = window.location;
     let isMobile: boolean = useMobile();
 
@@ -33,6 +35,57 @@ function Home(): JSX.Element {
             marginTop: '10px'
         },
     };
+
+    async function getCategories(): Promise<void> {
+        const response = await fetchWrapper('/vendors/categories', 'GET');
+        const data: { subcategory: string }[] = (await response.json()).result;
+        let breakpoint = 20;
+        let numTranches = Math.ceil(data.length / 20);
+        let column: JSX.Element[] = [];
+        let matrix: JSX.Element[][] = [];
+        let passes = 0;
+        data.forEach((val, i) => {
+            if (i % breakpoint === 0 && i > 0 && !isMobile) {
+                matrix.push(column);
+                column = [];
+                passes++;
+            };
+            let queryRoute = new URLSearchParams({ 'categories': val.subcategory});
+            column.push(
+                <List key={val.subcategory}>
+                    <Link
+                        href={`${location.origin}/results?${queryRoute.toString()}`} 
+                        target="_self"
+                        underline="none"
+                        color='primary.main'
+                        sx={{ 
+                            fontSize: '16px',
+                            fontWeight: 600
+                        }}
+                    >
+                        {val.subcategory}
+                    </Link>
+                </List>
+            );
+            if (i === data.length - 1 && passes !== numTranches && !isMobile) {
+                matrix.push(column);
+            };
+        });
+        if (isMobile) {
+            matrix.push(column);
+        };
+        setCategories(matrix);
+    };
+
+    useEffect(() => {
+        let ignore = false;
+        if (!ignore) {
+            if (!categories) {
+                getCategories();
+            };
+        };
+        return () => { ignore = true };
+    }, []);
 
     return (
         <Box sx={{minHeight: '60rem', textAlign: isMobile ? 'center' : 'left', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -109,6 +162,23 @@ function Home(): JSX.Element {
                         </a>
                         <Typography variant={'h6'} component={'div'} fontSize={'20px'}>Electronics</Typography>
                     </Grid>
+                </Grid>
+                <Grid container spacing={'5px'} sx={styles.gridContainer}>
+                    <Grid item xs={12}>
+                        <Typography 
+                        variant={styles.font.heading.variant}
+                        component={styles.font.heading.component}
+                        fontSize={styles.font.heading.fontSize}
+                        fontWeight={styles.font.heading.fontWeight}
+                    >
+                        All Categories
+                    </Typography>
+                    </Grid>
+                    {categories && categories.map((column, i) => (
+                        <Grid key={i} item xs={styles.grid.xs} sx={{ marginRight: '0rem'}}>
+                            {column}
+                        </Grid>
+                    ))}
                 </Grid>
             </Container>
         </Box>
