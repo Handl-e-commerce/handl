@@ -58,12 +58,10 @@ function UserHeaderMenu({ sx }: IUserHeaderMenuProps): JSX.Element {
         await fetchWrapper(`/users/logout`, "POST");
         redirectLogin();
     };
-
-    let xs = isMobile ? 6 : undefined; 
     
     if (loggedIn) {
         return (
-            <Grid item xs={xs} sx={menuSx}>
+            <Grid item sx={menuSx}>
                 <Button
                     variant="contained"
                     onClick={(e: React.MouseEvent<HTMLElement>) => setUserMenuAnchor(e.currentTarget)}
@@ -91,13 +89,13 @@ function UserHeaderMenu({ sx }: IUserHeaderMenuProps): JSX.Element {
     }
     else if (!isLoginOrSignUpPage) {
         return (
-            <Grid item xs={xs} sx={menuSx}>
+            <Grid item sx={menuSx}>
                 <Button variant="contained" sx={signupButtonSx} onClick={redirectSignUp}>Sign Up</Button>
                 <Button variant="outlined" sx={loginButtonSx} onClick={redirectLogin}>Login</Button>
             </Grid>
         );
     };
-    return (<></>);
+    return (<Grid item xs={6} />);
 };
 
 export { UserHeaderMenu };

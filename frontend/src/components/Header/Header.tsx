@@ -4,6 +4,7 @@ import svg from '../../static/5_SVG-cropped.svg';
 import { useMobile } from "../../hooks/useMobile";
 import { CategoriesMenu } from "../CategoriesMenu/CategoriesMenu";
 import { UserHeaderMenu } from "../UserHeaderMenu/UserHeaderMenu";
+import { MobileDrawer } from "../MobileDrawer/MobileDrawer";
 
 const headerStyles: React.CSSProperties = {
     position: 'relative',
@@ -36,13 +37,16 @@ function Header(): JSX.Element {
             return (
                 <>
                     <Grid container pt={1} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Grid xs={6} item sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '0rem' : '2rem'}}>
+                        <MobileDrawer>
+                            <CategoriesMenu sx={dropdownButtonSx}/>
+                            <Link href={location.origin + "/about-us"} target="_self" underline="none" color='#F2E5D1' sx={{ fontSize: '16px', fontWeight: 600, paddingLeft: '16px' }}>About</Link>
+                        </MobileDrawer>
+                        <Grid item sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '0rem' : '2rem'}}>
                             <a href={location.origin} target="_self">
                                 <img src={svg} alt="Handl Logo" width={"140px"} height={"75px"} style={{padding: '10px'}}/>
                             </a>
                         </Grid>
                         <UserHeaderMenu sx={dropdownButtonSx} />
-                        <CategoriesMenu sx={dropdownButtonSx} />
                     </Grid>
                 </>
             );
