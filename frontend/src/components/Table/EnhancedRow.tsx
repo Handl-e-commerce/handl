@@ -12,6 +12,10 @@ interface IEnhancedRowProps {
 function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
     const [open, setOpen] = useState<boolean>(false)
 
+    function formatValue(value: string): string {
+        return value === '' ? 'N/A' : value;
+    }
+
     return (
         <>
             <TableRow
@@ -32,8 +36,9 @@ function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
                     </IconButton>
                 </TableCell>
                 <TableCell component='th' scope='row' onClick={() => setOpen(!open)}>{data.name}</TableCell>
-                {!isMobile && <TableCell onClick={() => setOpen(!open)}>{data.categories}</TableCell>}
-                {!isMobile && <TableCell onClick={() => setOpen(!open)}>{data.state}</TableCell>}
+                {!isMobile && <TableCell onClick={() => setOpen(!open)}>{formatValue(data.email)}</TableCell>}
+                {!isMobile && <TableCell onClick={() => setOpen(!open)}>{formatValue(data.phoneNumber)}</TableCell>}
+                {!isMobile && <TableCell onClick={() => setOpen(!open)}>{formatValue(data.state)}</TableCell>}
             </TableRow>
             <TableRow>
                 <TableCell style={{ padding: isMobile ? 0 : '0px 10px' }} colSpan={6}>
