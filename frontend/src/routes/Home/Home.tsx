@@ -185,7 +185,6 @@ function Home(): JSX.Element {
                         <Typography variant={'h6'} component={'div'} fontSize={'20px'}>Electronics</Typography>
                     </Grid>
                 </Grid>
-                {createCategoriesList()}
             </Container>
         </Box>
     )
