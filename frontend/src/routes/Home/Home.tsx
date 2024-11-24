@@ -77,6 +77,28 @@ function Home(): JSX.Element {
         setCategories(matrix);
     };
 
+    function createCategoriesList(): JSX.Element {
+        return (
+            <Grid container spacing={'5px'} sx={styles.gridContainer}>
+                <Grid item xs={12}>
+                    <Typography 
+                    variant={styles.font.heading.variant}
+                    component={styles.font.heading.component}
+                    fontSize={styles.font.heading.fontSize}
+                    fontWeight={styles.font.heading.fontWeight}
+                >
+                    All Categories
+                </Typography>
+                </Grid>
+                {categories && categories.map((column, i) => (
+                    <Grid key={i} item xs={styles.grid.xs} sx={{ marginRight: '0rem'}}>
+                        {column}
+                    </Grid>
+                ))}
+            </Grid>
+        );
+    };
+
     useEffect(() => {
         let ignore = false;
         if (!ignore) {
@@ -163,23 +185,7 @@ function Home(): JSX.Element {
                         <Typography variant={'h6'} component={'div'} fontSize={'20px'}>Electronics</Typography>
                     </Grid>
                 </Grid>
-                <Grid container spacing={'5px'} sx={styles.gridContainer}>
-                    <Grid item xs={12}>
-                        <Typography 
-                        variant={styles.font.heading.variant}
-                        component={styles.font.heading.component}
-                        fontSize={styles.font.heading.fontSize}
-                        fontWeight={styles.font.heading.fontWeight}
-                    >
-                        All Categories
-                    </Typography>
-                    </Grid>
-                    {categories && categories.map((column, i) => (
-                        <Grid key={i} item xs={styles.grid.xs} sx={{ marginRight: '0rem'}}>
-                            {column}
-                        </Grid>
-                    ))}
-                </Grid>
+                {createCategoriesList()}
             </Container>
         </Box>
     )
