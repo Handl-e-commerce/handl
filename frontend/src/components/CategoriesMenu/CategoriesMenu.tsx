@@ -56,7 +56,7 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
                     horizontal: 'left',
                 }}
                 sx={{
-                    height: '70%'
+                    height: '100%'
                 }}
                 open={Boolean(categoriesMenuAnchor)}
                 onClose={() => setCategoriesMenuAnchor(null)}
