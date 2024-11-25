@@ -38,8 +38,8 @@ function Header(): JSX.Element {
                 <>
                     <Grid container pt={1} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                         <MobileDrawer>
-                            <CategoriesMenu sx={dropdownButtonSx}/>
-                            <Link href={location.origin + "/about-us"} target="_self" underline="none" color='#F2E5D1' sx={{ fontSize: '16px', fontWeight: 600, paddingLeft: '16px' }}>About</Link>
+                            <CategoriesMenu sx={{...dropdownButtonSx, fontSize: '20px'}}/>
+                            <Link href={location.origin + "/about-us"} target="_self" underline="none" color='#F2E5D1' sx={{ fontSize: '20px', fontWeight: 600, paddingLeft: '16px' }}>About</Link>
                         </MobileDrawer>
                         <Grid item sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '0rem' : '2rem'}}>
                             <a href={location.origin} target="_self">

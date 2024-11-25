@@ -65,7 +65,10 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
                     <MenuItem
                         key={category}
                         value={category}
-                        sx={{ padding: '6px 6px'}}
+                        sx={{ 
+                            padding: '6px 6px',
+                            borderBottom: '1px solid rgb(36, 36, 37, 0.3)'
+                        }}
                         onClick={(e) => {
                             queryParams.set("categories", (e.target as HTMLElement).innerText);
                             window.history.pushState({}, "", `${location.origin}/results?${queryParams.toString()}`);
