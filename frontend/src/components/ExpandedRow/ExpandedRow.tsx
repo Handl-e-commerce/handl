@@ -41,7 +41,7 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
         },
         icon: {
             verticalAlign: "middle",
-            marginRight: '7px'
+            marginRight: '7px',
         }
     };
 
@@ -77,7 +77,7 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
         
         if (address !== "") {
             return (
-                <Typography variant={isMobile ? 'body2' : 'body1'} component='pre' sx={styles.contactInfoRow}>
+                <Typography variant={isMobile ? 'body2' : 'body1'} component='pre' sx={styles.contactInfoRow} color='#3C8DBC'>
                     <Place style={{ verticalAlign: "middle", marginRight: '7px' }} />
                     {address}
                 </Typography>
@@ -147,8 +147,8 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                             Contact Information
                         </Typography>
                         {row.website && 
-                            <Link href={row.website} style={styles.contactInfoRow} sx={{ fontSize : '1rem' }} target="_blank" rel="noreferrer">
-                                <Web style={styles.icon}/>
+                            <Link href={row.website} style={styles.contactInfoRow} sx={{ fontSize : '1rem' }} target="_blank" rel="noreferrer" color='#3C8DBC'>
+                                <Web style={styles.icon} />
                                 {row.website}
                             </Link>
                         }

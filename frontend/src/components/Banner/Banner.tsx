@@ -9,23 +9,21 @@ function Banner(): JSX.Element {
     const styles = {
         banner: {
             display: 'flex',
+            alignItems: 'center',
             flexDirection: isMobile ? 'column-reverse' : 'row',
-            // flexDirection: 'column-reverse',
             color: '#F2E5D1',
-            background: '#242425',
+            background: '#2F2F30',
             position: 'relative',
             width: '100%',
         },
         bannerInfo: {
             display: 'flex',
             flexDirection: 'column',
-            // justifyContent: 'center',
             textAlign: isMobile ? 'center' : 'left',
             position: 'relative',
             padding: isMobile ? null : '10px',
             paddingBottom: '2rem',
             paddingLeft: isMobile ? null : '2rem',
-            background: '#242425',
             width: isMobile ? '100%' : '50%',
         },
         aboutUs: { 

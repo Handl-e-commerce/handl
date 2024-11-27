@@ -50,10 +50,10 @@ function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhance
           width: '25%'
         },
         {
-            id: 'email',
+            id: 'website',
             numeric: false,
             disablePadding: true,
-            label: 'Email',
+            label: 'Website',
             width: '30%'
         },
         {

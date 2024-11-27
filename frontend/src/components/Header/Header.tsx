@@ -55,7 +55,7 @@ function Header(): JSX.Element {
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', paddingLeft: '1rem' }}>
                     <a href={location.origin} target="_self">
-                        <img src={svg} alt="Handl Logo" width={"200px"} height={"75px"} style={{padding: '10px'}}/>
+                        <img src={svg} alt="Handl Logo" width={"140px"} height={"75px"} style={{padding: '10px'}}/>
                     </a>
                     <CategoriesMenu sx={dropdownButtonSx} />
                     <Link href={location.origin + "/about-us"} target="_self" underline="none" color='#F2E5D1' sx={{ fontSize: '16px', fontWeight: 600 }}>About</Link>

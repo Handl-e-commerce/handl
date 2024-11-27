@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Vendor } from "../../types/types";
-import { TableRow, TableCell, IconButton, Collapse, Box } from "@mui/material";
+import { TableRow, TableCell, IconButton, Collapse, Box, Link } from "@mui/material";
 import { KeyboardArrowUp, KeyboardArrowDown } from "@mui/icons-material";
 import { ExpandedRow } from "../ExpandedRow/ExpandedRow";
 
@@ -36,7 +36,16 @@ function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
                     </IconButton>
                 </TableCell>
                 <TableCell component='th' scope='row' onClick={() => setOpen(!open)}>{data.name}</TableCell>
-                {!isMobile && <TableCell onClick={() => setOpen(!open)}>{formatValue(data.email)}</TableCell>}
+                {!isMobile && <TableCell onClick={() => setOpen(!open)}>{
+                    <Link
+                        href={data.website} 
+                        target="_self"
+                        underline="none"
+                        color='#3C8DBC'
+                    >
+                        {formatValue(data.website.toLocaleLowerCase())}
+                    </Link>
+                }</TableCell>}
                 {!isMobile && <TableCell onClick={() => setOpen(!open)}>{formatValue(data.phoneNumber)}</TableCell>}
                 {!isMobile && <TableCell onClick={() => setOpen(!open)}>{formatValue(data.state)}</TableCell>}
             </TableRow>
