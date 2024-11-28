@@ -452,7 +452,7 @@ export const handlers = [
             "state": "NV",
             "zipcode": "89121",
             "phoneNumber": "702-358-3882",
-            "email": "N/A",
+            "email": "Coming Soon",
         },
         {
             "uuid": "da5bda5b-9076-4a70-bc4e-5ef3f1e86fbf",

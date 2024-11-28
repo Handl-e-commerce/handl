@@ -61,14 +61,14 @@ function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhance
           numeric: false,
           disablePadding: true,
           label: 'Phone Number',
-          width: '30%'
+          width: '25%'
         },
         {
           id: 'state',
           numeric: false,
           disablePadding: true,
           label: 'State',
-          width: '5%'
+          width: '10%'
         },
     ];
 

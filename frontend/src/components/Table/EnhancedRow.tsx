@@ -13,7 +13,7 @@ function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
     const [open, setOpen] = useState<boolean>(false)
 
     function formatValue(value: string): string {
-        return value === '' ? 'N/A' : value;
+        return value === '' ? 'Coming soon' : value;
     }
 
     return (
