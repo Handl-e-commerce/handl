@@ -1,7 +1,8 @@
 import { useMobile } from "../../hooks/useMobile";
-import { Box, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import png from '../../static/Banner Square.png';
 import svg from '../../static/Banner All Horizontal.svg';
+import BannerSquare from '../../static/Banner_Square.png';
 import ManufacturerSingle from '../../static/Manufacturer_Single.png';
 import DistributorSingle from '../../static/Distributor_Single.png';
 import WholesalerSingle from '../../static/Wholesaler_Single.png';
@@ -9,6 +10,13 @@ import RetailerSingle from '../../static/Retailer_Single.png';
 
 function Banner(): JSX.Element {
     let isMobile: boolean = useMobile();
+
+    const singleBannerImages = [
+        ManufacturerSingle,
+        DistributorSingle,
+        WholesalerSingle,
+        RetailerSingle
+    ];
 
     const styles = {
         banner: {
@@ -58,44 +66,31 @@ function Banner(): JSX.Element {
     const mobileBanner = () => (
         <>
             <Box sx={styles.bannerInfo} aria-roledescription="Home Screen Banner Content">
-                <Typography fontSize={'3.5rem'}>
-                    Sourcing made easy.
+                <Typography fontSize={'1.5rem'} fontWeight={600}>
+                    Source faster with the best B2B directory
                 </Typography>
-                <Typography variant={ isMobile ? "subtitle2" : "subtitle1" } pr={'1rem'}>
-                    Sourcing sucks. So we built Handl to help connect manufacturers, distributors, wholesalers, and retailers together without friction and wondering how to get in touch.
-                    <br/>
-                    <br/>
-                    Handl is the world's fastest growing B2B directory for manufacturers, distributors, wholesalers, and retailers. 
-                </Typography>
+                <br/>
+                <br/>
+                <Typography>Connect with Manufactuers, Distributors, Wholesalers, and Retailers</Typography>
             </Box>
             <Box sx={styles.imageBox}>
-                <img src={png} alt="Handl Banner" width={'100%'} style={{ padding: '10px' }}/>
+                <img src={BannerSquare} alt="Handl Banner" width={'100%'} style={{ padding: '10px' }}/>
             </Box>
         </>
     );
 
     const desktopBanner = () => (
-        <>
+        <Container sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={styles.bannerInfo} aria-roledescription="Home Screen Banner Content">
-                <Typography fontSize={'3.5rem'}>
-                    Sourcing made easy.
+                <Typography fontSize={'2.5rem'} justifySelf={'baseline'} fontWeight={600} marginBottom={'1rem'}>
+                    Source faster with the best B2B directory
                 </Typography>
-                <Typography variant={ isMobile ? "subtitle2" : "subtitle1" } pr={'1rem'}>
-                    Sourcing sucks. So we built Handl to help connect manufacturers, distributors, wholesalers, and retailers together without friction and wondering how to get in touch.
-                    <br/>
-                    <br/>
-                    Handl is the world's fastest growing B2B directory for manufacturers, distributors, wholesalers, and retailers. 
-                </Typography>
+                <Typography>Connect with Manufactuers, Distributors, Wholesalers, and Retailers</Typography>
             </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', width: '25%', alignItems: 'center' }}>
-                <img src={ManufacturerSingle} width={'75%'} style={{ padding: '10px' }}/>
-                <img src={DistributorSingle} width={'75%'} style={{ padding: '10px' }}/>
+            <Box sx={styles.imageBox}>
+                <img src={singleBannerImages[Math.floor(Math.random() * 4)]} alt="Handl Banner" width={'70%'} style={{ padding: '10px', paddingBottom: '23px' }}/>
             </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', width: '25%', alignItems: 'center' }}>
-                <img src={WholesalerSingle} width={'75%'} style={{ padding: '10px' }}/>
-                <img src={RetailerSingle} width={'75%'} style={{ padding: '10px' }}/>
-            </Box>
-        </>
+        </Container>
     );
     
     return (
