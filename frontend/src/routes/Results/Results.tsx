@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { Vendor } from "../../types/types";
-import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { Box, Button, Chip, CircularProgress, Container, Grid, Paper, SxProps, Typography  } from '@mui/material';
 import { EnhancedTable } from "../../components/Table/EnhancedTable";
@@ -121,7 +120,7 @@ function Results(): JSX.Element {
         return (
             <Container sx={{...containerSx, width: '95%'}}>
                 <Paper elevation={24} sx={{width: 'fit-content', padding: 5, background: '#F2F2F7', height: 'fit-content'}}>
-                    <Box sx={{}}>
+                    <Box>
                         <Typography id="modal-title" variant="h4" component="h4" sx={{textAlign: 'center'}}>Login or Sign up to get full access to our data!</Typography>
                         <Typography id="modal-modal-description" sx={{ mt: 2, textAlign: 'center' }}>Get access to hundreds of wholesalers and distributors today!</Typography>
                         <Button onClick={redirectSignUp} variant="contained" sx={{ marginTop: '7px', marginRight: '4px' }}>Sign Up</Button>
@@ -134,7 +133,6 @@ function Results(): JSX.Element {
 
     return (
         <Container sx={containerSx}>
-            <SearchBar isLandingPage={false} data-testid="search-bar"/>
             <Grid container spacing={1}>
                 {categories &&
                     <Grid item sm={isMobile ? undefined : 1.4}> 

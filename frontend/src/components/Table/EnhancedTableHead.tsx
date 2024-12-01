@@ -50,18 +50,25 @@ function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhance
           width: '25%'
         },
         {
-          id: 'categories',
+            id: 'website',
+            numeric: false,
+            disablePadding: true,
+            label: 'Website',
+            width: '30%'
+        },
+        {
+          id: 'phoneNumber',
           numeric: false,
           disablePadding: true,
-          label: 'Categories',
-          width: '60%'
+          label: 'Phone Number',
+          width: '25%'
         },
         {
           id: 'state',
           numeric: false,
           disablePadding: true,
           label: 'State',
-          width: '5%'
+          width: '10%'
         },
     ];
 

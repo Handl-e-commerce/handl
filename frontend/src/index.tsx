@@ -28,6 +28,9 @@ const theme = createTheme({
       disabled: '#ffffff',
     },
   },
+  typography: {
+    fontFamily: 'Inter',
+  },
   components: {
     MuiButton: {
       defaultProps: {
@@ -59,6 +62,13 @@ const theme = createTheme({
         },
       }
      } 
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          background: '#E5E5E5'
+        }
+      }
     }
   }
 });

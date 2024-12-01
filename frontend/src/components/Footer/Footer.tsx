@@ -1,5 +1,5 @@
 import React from "react";
-import svg from '../../static/5_SVG-cropped.svg';
+import goldLogoTransparent from '../../static/Gold_Logo_Transparent_Image.png';
 import { LinkedIn, Reddit } from "@mui/icons-material";
 import { Box, Link, SxProps, Typography } from "@mui/material";
 
@@ -26,7 +26,7 @@ function Footer(): JSX.Element {
             color: '#F2E5D1'
         }}>
             <a href={location.origin} target="_self">
-                <img src={svg} alt="Handl Logo" width={"100px"} height={"70px"}/>
+                <img src={goldLogoTransparent} alt="Handl Logo" width={"110px"} height={"40px"}/>
             </a>
             <Box sx={{display: 'flex', justifyContent: 'center'}}>
                 <Typography m={1}>

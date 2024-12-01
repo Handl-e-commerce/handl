@@ -32,18 +32,20 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
             marginBottom: '3px'
         },
         peopleCategories: {
-            marginRight: isMobile ? 0 : 10
+            marginRight: isMobile ? 0 : 10,
+            width: isMobile ? '100%' : '50%',
         },
         contactInformation: {
-            marginLeft: isMobile ? 0 : 10
+            marginLeft: isMobile ? 0 : 10,
+            width: isMobile ? '100%' : '50%',
         },
         icon: {
             verticalAlign: "middle",
-            marginRight: '7px'
+            marginRight: '7px',
         }
     };
 
-    function companyAddress(): JSX.Element {
+    function companyAddress(): JSX.Element | undefined {
         const googleMapsUrl: string = "https://www.google.com/maps/search/?api=1&";
         if (row.address && row.city && row.state && row.zipcode) {
             const params = new URLSearchParams({
@@ -61,24 +63,26 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
 
         let address = "";
         if (row.address) {
-            address = row.address + ", ";
+            address = row.address.trim() + ", ";
         };
         if (row.city) {
-            address = address + row.city + ", ";
+            address = address + row.city.trim() + ", ";
         };
         if (row.state) {
-            address = address + row.state;
+            address = address + row.state.trim();
         };
         if (row.zipcode) {
-            address = address + ", " + row.zipcode;
+            address = address + ", " + row.zipcode.trim();
         };
         
-        return (
-            <Typography variant={isMobile ? 'body2' : 'body1'} component='pre' sx={styles.contactInfoRow}>
-                <Place style={{ verticalAlign: "middle", marginRight: '7px' }} />
-                {address}
-            </Typography>
-        );
+        if (address !== "") {
+            return (
+                <Typography variant={isMobile ? 'body2' : 'body1'} component='pre' sx={styles.contactInfoRow} color='#3C8DBC'>
+                    <Place style={{ verticalAlign: "middle", marginRight: '7px' }} />
+                    {address}
+                </Typography>
+            );
+        };
     };
 
     return (
@@ -143,8 +147,8 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                             Contact Information
                         </Typography>
                         {row.website && 
-                            <Link href={row.website} style={styles.contactInfoRow} target="_blank" rel="noreferrer">
-                                <Web style={styles.icon}/>
+                            <Link href={row.website} style={styles.contactInfoRow} sx={{ fontSize : '1rem' }} target="_blank" rel="noreferrer" color='#3C8DBC'>
+                                <Web style={styles.icon} />
                                 {row.website}
                             </Link>
                         }
