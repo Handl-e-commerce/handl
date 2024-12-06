@@ -11,6 +11,7 @@ class Vendor extends Model<InferAttributes<Vendor>, InferCreationAttributes<Vend
     declare website: string;
     declare keywords: string;
     declare categories: string;
+    declare subcategories: string;
     declare people: string;
     declare address: string;
     declare city: string;
@@ -45,6 +46,10 @@ Vendor.init({
         allowNull: true,
     },
     categories: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    subcategories: {
         type: DataTypes.STRING,
         allowNull: true,
     },
