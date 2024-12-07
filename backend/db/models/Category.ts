@@ -6,8 +6,8 @@ import {Database} from "../Database";
  */
 class Category extends Model<InferAttributes<Category>, InferCreationAttributes<Category>> {
     declare id: number;
+    declare category: string;
     declare subcategory: string;
-    declare parentcategory: string;
 }
 Category.init({
     id: {
@@ -15,17 +15,17 @@ Category.init({
         allowNull: false,
         unique: true,
         autoIncrement: true,
+        primaryKey: true,
+    },
+    category: {
+        type: DataTypes.STRING,
+        unique: false,
+        allowNull: true,
     },
     subcategory: {
         type: DataTypes.STRING,
-        primaryKey: true,
-        unique: true,
-        allowNull: false,
-    },
-    parentcategory: {
-        type: DataTypes.STRING,
         unique: false,
-        allowNull: false,
+        allowNull: true,
     },
 }, {
     sequelize: Database.GetInstance().sequelize,

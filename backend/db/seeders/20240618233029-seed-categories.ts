@@ -6,17 +6,19 @@ const fs = require("node:fs/promises");
 module.exports = {
     // eslint-disable-next-line
   async up (queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
-    let data: { [parentCategory: string]: { subcategories: string[] } } = JSON.parse(await fs.readFile(path.resolve(__dirname, "./seed-data/updated-categories.json"), 'utf8'));
+    let data: { [category: string]: { subcategories: string[] } } = JSON.parse(await fs.readFile(path.resolve(__dirname, "./seed-data/updated-categories.json"), 'utf8'));
     let formatedData: {
-        parentCategory: string;
+        id: number;
+        category: string;
         subcategory: string;
         createdAt: Date;
         updatedAt: Date;
     }[] = [];
-    Object.keys(data).forEach((key: string) => {
-        data[key].subcategories.forEach((subcategory: string) => {
+    Object.keys(data).forEach((category: string) => {
+        data[category].subcategories.forEach((subcategory: string, index: number) => {
             formatedData.push({
-                parentCategory: key,
+                id: index + 1,
+                category: category,
                 subcategory: subcategory,
                 createdAt: new Date(),
                 updatedAt: new Date(),

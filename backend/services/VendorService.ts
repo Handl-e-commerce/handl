@@ -1,7 +1,6 @@
 import {IVendorService} from "../interfaces/IVendorService";
 import {Vendor} from "../db/models/Vendor";
 import {Op} from "sequelize";
-import {VendorCategories} from "../db/models/VendorCategories";
 import {Category} from "../db/models/Category";
 
 /** Vendor Service Class */
@@ -54,10 +53,9 @@ class VendorService implements IVendorService {
             }
             if (categories) {
                 includeClause.push({
-                    model: VendorCategories,
                     where: {
-                        CategorySubcategory: {
-                            [Op.or]: categories,
+                        categories: {
+                            [Op.contains]: [categories],
                         },
                     },
                 });
