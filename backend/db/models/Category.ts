@@ -5,7 +5,7 @@ import {Database} from "../Database";
  * Category model class which serves as a DTO via Sequelize
  */
 class Category extends Model<InferAttributes<Category>, InferCreationAttributes<Category>> {
-    declare id: number;
+    declare id?: number;
     declare category: string;
     declare subcategory: string;
 }
