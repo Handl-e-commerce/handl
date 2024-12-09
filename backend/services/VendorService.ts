@@ -7,18 +7,21 @@ import {Category} from "../db/models/Category";
 class VendorService implements IVendorService {
     /**
      * Returns the total number of items found using the query and the results fixed by limit and offset
-     * @param {string[] | null | undefined} categories
+     * @param {string | null | undefined} categories
+     * @param {string[] | null | undefined} subcategories
      * @param {string[] | null | undefined} searchVal
      * @param {string[] | null | undefined} states
      * @return {Vendor[]}
      */
     public async GetVendors(
-        categories: string[] | null | undefined,
+        categories: string | null | undefined,
+        subcategories: string[] | null | undefined,
         searchVal: string | null | undefined,
         states: string[] | null | undefined,
     ): Promise<Vendor[]> {
         try {
             let whereClause = {};
+            // TODO: (LOW) Remove references for searchVal as we are no longer implementing the search bar
             if (searchVal) {
                 whereClause = {
                     ...whereClause,
@@ -54,7 +57,15 @@ class VendorService implements IVendorService {
                 whereClause = {
                     ...whereClause,
                     categories: {
-                        [Op.or]: categories,
+                        [Op.iLike]: `%${categories}%`,
+                    },
+                };
+            }
+            if (subcategories) {
+                whereClause = {
+                    ...whereClause,
+                    subcategories: {
+                        [Op.in]: subcategories,
                     },
                 };
             }
@@ -95,6 +106,25 @@ class VendorService implements IVendorService {
                     ["category", "ASC"],
                 ],
                 attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("category")), "category"]],
+            });
+        } catch (err) {
+            const error = err as Error;
+            throw new Error(error.message);
+        }
+    }
+
+    /**
+     * Simple method to return all of the subcategories associated with a given category
+     * @param {string} category
+     * @return {Category[]}
+     */
+    public async GetSubCategories(category: string): Promise<Category[]> {
+        try {
+            return await Category.findAll({
+                where: {
+                    category: category,
+                },
+                attributes: ["subcategory"],
             });
         } catch (err) {
             const error = err as Error;
