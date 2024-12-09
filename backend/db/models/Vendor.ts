@@ -7,18 +7,18 @@ import {Database} from "../Database";
 class Vendor extends Model<InferAttributes<Vendor>, InferCreationAttributes<Vendor>> {
     declare uuid: string;
     declare name: string;
-    declare description: string;
-    declare website: string;
-    declare keywords: string;
-    declare categories: string;
-    declare subcategories: string;
-    declare people: string;
-    declare address: string;
-    declare city: string;
-    declare state: string;
-    declare zipcode: string;
-    declare phoneNumber: string;
-    declare email: string;
+    declare description: string | null;
+    declare website: string | null;
+    declare keywords: string | null;
+    declare categories: string | null;
+    declare subcategories: string | null;
+    declare people: string | null;
+    declare address: string | null;
+    declare city: string | null;
+    declare state: string | null;
+    declare zipcode: string | null;
+    declare phoneNumber: string | null;
+    declare email: string | null;
 }
 
 Vendor.init({
