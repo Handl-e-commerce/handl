@@ -51,12 +51,19 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
             </Button>
             <Menu
                 anchorEl={categoriesMenuAnchor}
+                aria-label='categories-menu-dropdown'
                 anchorOrigin={{
                     vertical: 'bottom',
                     horizontal: 'left',
                 }}
+                MenuListProps={{
+                    sx: {
+                        paddingTop: 0,
+                        paddingBottom: 0,
+                    }
+                }}
                 sx={{
-                    height: '100%'
+                    height: '100%',
                 }}
                 open={Boolean(categoriesMenuAnchor)}
                 onClose={() => setCategoriesMenuAnchor(null)}
@@ -70,7 +77,7 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
                             borderBottom: '1px solid rgb(36, 36, 37, 0.3)'
                         }}
                         onClick={(e) => {
-                            queryParams.set("categories", (e.target as HTMLElement).innerText);
+                            queryParams.set("category", (e.target as HTMLElement).innerText);
                             window.history.pushState({}, "", `${location.origin}/results?${queryParams.toString()}`);
                             location.replace(`${location.origin}/results?${queryParams.toString()}`);
                         }}
