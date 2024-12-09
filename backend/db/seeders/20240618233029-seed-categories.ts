@@ -23,8 +23,7 @@ module.exports = {
                         subcategory: subcategory,
                     });
                 });
-            }
-            else {
+            } else {
                 formatedData.push({
                     category: category,
                     subcategory: "",
