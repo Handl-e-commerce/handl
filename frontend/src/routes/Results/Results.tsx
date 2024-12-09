@@ -53,10 +53,15 @@ function Results(): JSX.Element {
 
     async function getSubcategories(): Promise<void> {
         const response = await fetchWrapper(`/vendors/subcategories?${queryParams.toString()}`, 'GET');
-        const data: { subcategory: string }[] = (await response.json()).result;
+        const data: { subcategory: string | null }[] = (await response.json()).result;
         let subcategories: string[] = [];
-        data.forEach((val, i) => {
-            subcategories.push(val.subcategory);
+        data.forEach((val) => {
+            if (val.subcategory === null) {
+                return;
+            }
+            else {
+                subcategories.push(val.subcategory as string);
+            };
         });
         setSubcategories(subcategories.sort());
     };
@@ -133,8 +138,8 @@ function Results(): JSX.Element {
     return (
         <Container sx={containerSx}>
             <Grid container spacing={1}>
-                {subcategories &&
-                    <Grid item sm={isMobile ? 1 : 1.75}> 
+                {subcategories && subcategories.length > 0 &&
+                    <Grid item sm={isMobile ? 1 : 1.75}>
                         <QueryDropDown 
                             name="Subcategories"
                             data={subcategories}

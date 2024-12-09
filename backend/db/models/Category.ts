@@ -6,8 +6,8 @@ import {Database} from "../Database";
  */
 class Category extends Model<InferAttributes<Category>, InferCreationAttributes<Category>> {
     declare id?: number;
-    declare category: string;
-    declare subcategory: string;
+    declare category: string | null;
+    declare subcategory: string | null;
 }
 Category.init({
     id: {

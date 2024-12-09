@@ -13,7 +13,7 @@ module.exports = {
         );
         const formatedData: {
         category: string;
-        subcategory: string;
+        subcategory: string | null;
     }[] = [];
         Object.keys(data).forEach((category: string) => {
             if (data[category].subcategories.length > 0) {
@@ -26,7 +26,7 @@ module.exports = {
             } else {
                 formatedData.push({
                     category: category,
-                    subcategory: "",
+                    subcategory: null,
                 });
             }
         });
