@@ -21,10 +21,10 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
 
     async function getCategories(): Promise<void> {
         const response = await fetchWrapper('/vendors/categories', 'GET');
-        const data: { subcategory: string }[] = (await response.json()).result;
+        const data: { category: string }[] = (await response.json()).result;
         let categories: string[] = [];
         data.forEach((val, i) => {
-            categories.push(val.subcategory);
+            categories.push(val.category);
         });
         setCategories(categories);
     };

@@ -23,12 +23,13 @@ module.exports = {
             phoneNumber: string;
             email: string;
         }[] = JSON.parse(await fs.readFile(path.resolve(__dirname, "./seed-data/AsdVendorDataWithWholesaleCentralCategories.json"), 'utf8'));
+        console.log(data.length);
         data.forEach((item: any) => {
             item.uuid = uuidv4().toString();
             item.createdAt = new Date(Date.now());
             item.updatedAt = new Date(Date.now());
-            item.categories = item.categories.toString();
-            item.subcategories = item.subcategories.toString();
+            item.categories = ([...new Set(item.categories)]).toString();
+            item.subcategories = ([...new Set(item.subcategories)]).toString();
             item.people = (item.people as string).split(",");
         });
         

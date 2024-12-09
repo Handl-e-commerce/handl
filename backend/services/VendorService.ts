@@ -1,6 +1,6 @@
 import {IVendorService} from "../interfaces/IVendorService";
 import {Vendor} from "../db/models/Vendor";
-import {Op} from "sequelize";
+import {Op, Sequelize} from "sequelize";
 import {Category} from "../db/models/Category";
 
 /** Vendor Service Class */
@@ -19,7 +19,6 @@ class VendorService implements IVendorService {
     ): Promise<Vendor[]> {
         try {
             let whereClause = {};
-            const includeClause = [];
             if (searchVal) {
                 whereClause = {
                     ...whereClause,
@@ -52,18 +51,16 @@ class VendorService implements IVendorService {
                 };
             }
             if (categories) {
-                includeClause.push({
-                    where: {
-                        categories: {
-                            [Op.contains]: [categories],
-                        },
+                whereClause = {
+                    ...whereClause,
+                    categories: {
+                        [Op.or]: categories,
                     },
-                });
+                };
             }
 
             const vendorResults: Vendor[] = await Vendor.findAll({
                 where: whereClause,
-                include: includeClause,
                 attributes: [
                     "uuid",
                     "name",
@@ -95,9 +92,9 @@ class VendorService implements IVendorService {
         try {
             return await Category.findAll({
                 order: [
-                    ["subcategory", "ASC"],
+                    ["category", "ASC"],
                 ],
-                attributes: ["subcategory"],
+                attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("category")), "category"]],
             });
         } catch (err) {
             const error = err as Error;

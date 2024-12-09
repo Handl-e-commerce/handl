@@ -13,7 +13,7 @@ function Results(): JSX.Element {
     let location = window.location;
 
     const [vendors, setVendors] = useState<Vendor[]>([]);
-    const [categories, setCategories] = useState<string[]>();
+    const [subcategories, setSubcategories] = useState<string[]>();
     const [selectedCategories, setSelectedCategories] = useState<string[]>(queryParams.get("categories")?.split(",") ?? []);
     const [selectedStates, setSelectedStates] = useState<string[]>(queryParams.get("states")?.split(",") ?? []);
     const [loadingData, setLoadingData] = useState<boolean>(true);
@@ -25,8 +25,8 @@ function Results(): JSX.Element {
         let ignore = false;
         if (!ignore && loggedIn) {
             handleQuery();
-            if (!categories) {
-                getCategories();
+            if (!subcategories) {
+                getSubcategories();
             };
         };
         return () => { ignore = true };
@@ -51,14 +51,14 @@ function Results(): JSX.Element {
         await getData();
     };
 
-    async function getCategories(): Promise<void> {
+    async function getSubcategories(): Promise<void> {
         const response = await fetchWrapper('/vendors/categories', 'GET');
         const data: { subcategory: string }[] = (await response.json()).result;
         let categories: string[] = [];
         data.forEach((val, i) => {
             categories.push(val.subcategory);
         });
-        setCategories(categories);
+        setSubcategories(categories);
     };
 
     function handleRemoveSearchVal(): void {
@@ -134,11 +134,11 @@ function Results(): JSX.Element {
     return (
         <Container sx={containerSx}>
             <Grid container spacing={1}>
-                {categories &&
+                {subcategories &&
                     <Grid item sm={isMobile ? undefined : 1.4}> 
                         <QueryDropDown 
-                            name="Categories"
-                            data={categories}
+                            name="Subcategories"
+                            data={subcategories}
                             selectedData={selectedCategories}
                             setSelectedData={setSelectedCategories}
                             handleQuery={handleQuery}

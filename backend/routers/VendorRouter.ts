@@ -38,6 +38,7 @@ vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
         if (req.query.states) {
             states = (req.query.states as string).split(",");
         }
+        console.log(categories);
         const searchVal: string = req.query["search-params"] as string;
         const vendorService: VendorService = new VendorService();
         const vendors = await vendorService.GetVendors(categories, searchVal, states);
