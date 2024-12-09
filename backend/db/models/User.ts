@@ -15,9 +15,9 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare city: string;
     declare state: string;
     declare zipcode: string;
-    declare categories: string[];
+    declare categories: string[] | null;
     declare password: string;
-    declare savedVendors: string[];
+    declare savedVendors: string[] | null;
     declare isVerified: boolean;
     declare verificationToken: string | null;
     declare tokenExpiration: Date | null;
