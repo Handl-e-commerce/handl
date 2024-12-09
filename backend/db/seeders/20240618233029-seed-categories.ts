@@ -16,12 +16,20 @@ module.exports = {
         subcategory: string;
     }[] = [];
         Object.keys(data).forEach((category: string) => {
-            data[category].subcategories.forEach((subcategory: string) => {
+            if (data[category].subcategories.length > 0) {
+                data[category].subcategories.forEach((subcategory: string) => {
+                    formatedData.push({
+                        category: category,
+                        subcategory: subcategory,
+                    });
+                });
+            }
+            else {
                 formatedData.push({
                     category: category,
-                    subcategory: subcategory,
+                    subcategory: "",
                 });
-            });
+            }
         });
         for (let i = 0; i < formatedData.length; i++) {
             await Category.create({

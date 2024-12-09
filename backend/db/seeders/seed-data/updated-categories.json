@@ -206,6 +206,15 @@
       "Hookahs"
     ]
   },
+  "Art & Supplies": {
+    "subcategories": []
+  },
+  "Automotive": {
+    "subcategories": []
+  },
+  "Baby Items": {
+    "subcategories": []
+  },
   "Business Opportunities": {
     "subcategories": [
       "Private Label Opportunities",
@@ -224,6 +233,9 @@
       "Trade Shows",
       "Financial Services"
     ]
+  },
+  "C-Store Items": {
+    "subcategories": []
   },
   "Candles, Oils, Incense": {
     "subcategories": [
@@ -255,6 +267,12 @@
       "Tinctures"
     ]
   },
+  "Cell Phone Accessories": {
+    "subcategories": []
+  },
+  "Closeout Suppliers": {
+    "subcategories": []
+  },
   "Collectibles": {
     "subcategories": [
       "Sports Memorabilia",
@@ -266,12 +284,18 @@
       "Military"
     ]
   },
+  "Computer Products": {
+    "subcategories": []
+  },
   "Crafts & Supplies": {
     "subcategories": [
       "Craft Supplies",
       "Handicrafts",
       "Artificial Flowers"
     ]
+  },
+  "Dollar Store": {
+    "subcategories": []
   },
   "Fashion Accessories": {
     "subcategories": [
@@ -290,6 +314,9 @@
       "Ties, Neckwear",
       "Transfers, Appliques"
     ]
+  },
+  "Food & Grocery": {
+    "subcategories": []
   },
   "Handbags & Luggage": {
     "subcategories": [
@@ -329,12 +356,21 @@
       "Woodenware"
     ]
   },
+  "Knives & Swords": {
+    "subcategories": []
+  },
+  "Lawn & Garden": {
+    "subcategories": []
+  },
   "Leather": {
     "subcategories": [
       "Accessories",
       "Biker",
       "Apparel"
     ]
+  },
+  "Military Goods": {
+    "subcategories": []
   },
   "Novelties": {
     "subcategories": [
@@ -363,6 +399,9 @@
       "Wristbands"
     ]
   },
+  "Office & School Supplies": {
+    "subcategories": []
+  },
   "Party Supplies & Greeting Cards": {
     "subcategories": [
       "Greeting Cards",
@@ -375,6 +414,12 @@
       "Paper, Plastic",
       "Party Favors"
     ]
+  },
+  "Perfume": {
+    "subcategories": []
+  },
+  "Pet Supplies": {
+    "subcategories": []
   },
   "Professional Supplies": {
     "subcategories": [
@@ -414,10 +459,19 @@
       "Asian"
     ]
   },
+  "Religious Items": {
+    "subcategories": []
+  },
+  "Self Defense, Security": {
+    "subcategories": []
+  },
   "Shoes & Footwear": {
     "subcategories": [
       "Socks, Hosiery"
     ]
+  },
+  "Souvenirs": {
+    "subcategories": []
   },
   "Sporting Goods": {
     "subcategories": [
@@ -447,6 +501,12 @@
     "subcategories": [
       "Reading Glasses"
     ]
+  },
+  "Survival & Emergency Kits": {
+    "subcategories": []
+  },
+  "Tools & Hardware": {
+    "subcategories": []
   },
   "Toys & Hobbies": {
     "subcategories": [
@@ -482,5 +542,8 @@
       "Video Games",
       "Wooden Toys"
     ]
+  },
+  "Vape Products / E-Liquids": {
+    "subcategories": []
   }
 }
