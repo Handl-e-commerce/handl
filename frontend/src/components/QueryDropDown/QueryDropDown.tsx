@@ -59,7 +59,7 @@ function QueryDropDown({name, data, selectedData, setSelectedData, handleQuery}:
     };
 
     return (
-        <FormControl sx={{ m: 1, width: 140, textAlign: 'left' }}>
+        <FormControl sx={{ m: 1, width: 160, textAlign: 'left' }}>
             <Select
                 multiple
                 displayEmpty
