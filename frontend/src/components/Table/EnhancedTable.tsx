@@ -51,7 +51,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
             page * rowsPerPage,
             page * rowsPerPage + rowsPerPage,
         ),
-        [order, orderBy, page, rowsPerPage, loadingData]
+        [order, orderBy, page, rowsPerPage, loadingData, data]
     );
 
     const boxSx: SxProps = {

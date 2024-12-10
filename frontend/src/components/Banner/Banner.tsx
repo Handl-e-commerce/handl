@@ -1,7 +1,5 @@
 import { useMobile } from "../../hooks/useMobile";
 import { Box, Container, Typography } from "@mui/material";
-import png from '../../static/Banner Square.png';
-import svg from '../../static/Banner All Horizontal.svg';
 import BannerSquare from '../../static/Banner_Square.png';
 import ManufacturerSingle from '../../static/Manufacturer_Single.png';
 import DistributorSingle from '../../static/Distributor_Single.png';

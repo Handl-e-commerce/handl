@@ -12,6 +12,7 @@ function Verify(): JSX.Element {
     const [responseMessage, setResponseMessage] = useState<string>("");
 
     useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         let ignore = false;
         handleEmailVerification(token as string, userId as string);
         return () => {

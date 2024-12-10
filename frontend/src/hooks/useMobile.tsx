@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 function useMobile(): boolean {
-    let location = window.location;
     const [width, setWidth] = useState<number>(window.innerWidth);
     const isMobile: boolean = width <= 430;
     

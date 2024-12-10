@@ -1,6 +1,6 @@
 import React from "react";
 import { Vendor } from "../../types/types";
-import { Box, Container, Link, SxProps, Typography } from "@mui/material";
+import { Box, Container, Link, Typography } from "@mui/material";
 import { Place, Web, Phone, Email } from "@mui/icons-material";
 
 interface IExpandedRowProps {
