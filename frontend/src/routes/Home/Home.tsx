@@ -53,7 +53,7 @@ function Home(): JSX.Element {
             };
             let queryRoute = new URLSearchParams({ 'category': val.category });
             column.push(
-                <List key={val.category} sx={{ display: 'flex', alignItems: 'center' }}>
+                <List key={val.category} sx={{ display: 'flex', alignItems: 'center', width: isMobile ? '250px' : '300px' }}>
                     {iconMapper[val.category]}
                     <Link
                         href={`${location.origin}/results?${queryRoute.toString()}`} 
@@ -61,9 +61,10 @@ function Home(): JSX.Element {
                         underline="none"
                         color='primary.main'
                         sx={{ 
-                            fontSize: '16px',
+                            fontSize: '15px',
                             fontWeight: 600,
-                            marginLeft: '1rem'
+                            marginLeft: '1rem',
+                            textAlign: isMobile ? 'left' : 'center',
                         }}
                     >
                         {val.category}
