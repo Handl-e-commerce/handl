@@ -137,6 +137,7 @@ function Results(): JSX.Element {
 
     return (
         <Container sx={containerSx}>
+            <Typography variant={isMobile ? "h6" : "h4"} sx={{margin: isMobile ? '.5rem' : '1rem', fontWeight: 600 }}>Viewing {queryParams.get("category")}</Typography>
             <Grid container spacing={1}>
                 {subcategories && subcategories.length > 0 &&
                     <Grid item sm={isMobile ? 1 : 1.75}>

@@ -41,7 +41,7 @@ function Header(): JSX.Element {
                             <CategoriesMenu sx={{...dropdownButtonSx, fontSize: '20px'}}/>
                             <Link href={location.origin + "/about-us"} target="_self" underline="none" color='#F2E5D1' sx={{ fontSize: '20px', fontWeight: 600, paddingLeft: '16px' }}>About</Link>
                         </MobileDrawer>
-                        <Grid item sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '-1.5rem' : '2rem'}}>
+                        <Grid item sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '-.5rem' : '2rem'}}>
                             <a href={location.origin} target="_self">
                                 <img src={goldLogoTransparent} alt="Handl Logo" width={"140px"} height={"60px"} style={{padding: '10px'}}/>
                             </a>
