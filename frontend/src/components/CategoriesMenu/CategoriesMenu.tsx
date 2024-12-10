@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { SxProps, Grid, Button, Menu, MenuItem } from '@mui/material';
+import { SxProps, Grid, Button, Menu, MenuItem, Box } from '@mui/material';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import { fetchWrapper } from '../../utils/fetch-wrapper';
+import { iconMapper } from '../../utils/icon-mapper';
 
 interface ICategoriesMenuProps {
     sx?: SxProps;
@@ -74,7 +75,9 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
                         value={category}
                         sx={{ 
                             padding: '6px 6px',
-                            borderBottom: '1px solid rgb(36, 36, 37, 0.3)'
+                            borderBottom: '1px solid rgb(36, 36, 37, 0.3)',
+                            display: 'flex',
+                            alignItems: 'center'
                         }}
                         onClick={(e) => {
                             queryParams.set("category", (e.target as HTMLElement).innerText);
@@ -82,7 +85,8 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
                             location.replace(`${location.origin}/results?${queryParams.toString()}`);
                         }}
                     >
-                        {category}
+                        {iconMapper[category]}
+                        <Box sx={{marginLeft: '0.5rem'}}>{category}</Box>
                     </MenuItem>
                 ))}
             </Menu>

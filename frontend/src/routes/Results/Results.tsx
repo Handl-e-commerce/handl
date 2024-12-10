@@ -14,7 +14,7 @@ function Results(): JSX.Element {
 
     const [vendors, setVendors] = useState<Vendor[]>([]);
     const [subcategories, setSubcategories] = useState<string[]>();
-    const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(queryParams.get("categories")?.split(",") ?? []);
+    const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(queryParams.get("subcategories")?.split(",") ?? []);
     const [selectedStates, setSelectedStates] = useState<string[]>(queryParams.get("states")?.split(",") ?? []);
     const [loadingData, setLoadingData] = useState<boolean>(true);
     let isMobile: boolean = useMobile();

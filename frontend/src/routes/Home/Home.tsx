@@ -7,6 +7,7 @@ import { Box, Container, Grid, Link, List, Typography, TypographyOwnProps } from
 import { useMobile } from "../../hooks/useMobile";
 import { Banner } from "../../components/Banner/Banner";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
+import { iconMapper } from "../../utils/icon-mapper";
 
 function Home(): JSX.Element {
     const [categories, setCategories] = useState<JSX.Element[][]>();
@@ -38,9 +39,9 @@ function Home(): JSX.Element {
 
     async function getCategories(): Promise<void> {
         const response = await fetchWrapper('/vendors/categories', 'GET');
-        const data: { subcategory: string }[] = (await response.json()).result;
-        let breakpoint = 20;
-        let numTranches = Math.ceil(data.length / 20);
+        const data: { category: string }[] = (await response.json()).result;
+        let breakpoint = 15;
+        let numTranches = Math.ceil(data.length / breakpoint);
         let column: JSX.Element[] = [];
         let matrix: JSX.Element[][] = [];
         let passes = 0;
@@ -50,9 +51,10 @@ function Home(): JSX.Element {
                 column = [];
                 passes++;
             };
-            let queryRoute = new URLSearchParams({ 'categories': val.subcategory});
+            let queryRoute = new URLSearchParams({ 'category': val.category });
             column.push(
-                <List key={val.subcategory}>
+                <List key={val.category} sx={{ display: 'flex', alignItems: 'center' }}>
+                    {iconMapper[val.category]}
                     <Link
                         href={`${location.origin}/results?${queryRoute.toString()}`} 
                         target="_self"
@@ -60,10 +62,11 @@ function Home(): JSX.Element {
                         color='primary.main'
                         sx={{ 
                             fontSize: '16px',
-                            fontWeight: 600
+                            fontWeight: 600,
+                            marginLeft: '1rem'
                         }}
                     >
-                        {val.subcategory}
+                        {val.category}
                     </Link>
                 </List>
             );
@@ -185,6 +188,7 @@ function Home(): JSX.Element {
                         <Typography variant={'h6'} component={'div'} fontSize={'20px'} textAlign={'center'}>Electronics</Typography>
                     </Grid>
                 </Grid>
+                {createCategoriesList()}
             </Container>
         </Box>
     )
