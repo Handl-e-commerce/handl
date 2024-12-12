@@ -66,6 +66,7 @@ function Home(): JSX.Element {
                             marginLeft: '1rem',
                             textAlign: isMobile ? 'left' : 'center',
                         }}
+                        data-testid={'category link'}
                     >
                         {val.category}
                     </Link>
@@ -90,9 +91,9 @@ function Home(): JSX.Element {
                     component={styles.font.heading.component}
                     fontSize={styles.font.heading.fontSize}
                     fontWeight={styles.font.heading.fontWeight}
-                >
-                    All Categories
-                </Typography>
+                    >
+                        All Categories
+                    </Typography>
                 </Grid>
                 {categories && categories.map((column, i) => (
                     <Grid key={i} item xs={styles.grid.xs} sx={{ marginRight: '0rem'}}>
@@ -105,7 +106,7 @@ function Home(): JSX.Element {
 
     function createHomePageCategories(childText: string): JSX.Element {
         return (
-            <Grid container spacing={'5px'} mb={'24px'} data-testid="featured-categories-container" sx={styles.gridContainer}>
+            <Grid container spacing={'5px'} mb={'24px'} data-testid={`${childText}-container`} sx={styles.gridContainer}>
                 <Grid item xs={12}>
                     <Typography 
                             variant={styles.font.heading.variant}

@@ -90,228 +90,613 @@ export const handlers = [
         });
     }),
     http.get(REACT_APP_SERVER_URI + `/vendors/categories`, ({ request, params, cookies }) => {
-        let categories: { subcategory: string }[] = [{
-            subcategory: "Fashion Jewelry / Watches",
-        },
-        {
-            subcategory: "Handbags",
-        },
-        {
-            subcategory: "Hats / Scarves",
-        },
-        {
-            subcategory: "Small Leather Goods (Belts/Wallets/etc)",
-        },
-        {
-            subcategory: "Sunglasses / Eyewear",
-        },
-        {
-            subcategory: "Adult Novelty",
-        },
-        {
-            subcategory: "CBD or other Cannabinoids",
-        },
-        {
-            subcategory: "Hemp",
-        },
-        {
-            subcategory: "Kratom",
-        },
-        {
-            subcategory: "Smoke Accessories",
-        },
-        {
-            subcategory: "Vape",
-        },
-        {
-            subcategory: "Kids / Baby Apparel",
-        },
-        {
-            subcategory: "Men's Apparel",
-        },
-        {
-            subcategory: "Plus Size Apparel",
-        },
-        {
-            subcategory: "Swimwear",
-        },
-        {
-            subcategory: "Undergarments / Hosiery / Socks",
-        },
-        {
-            subcategory: "Women's Apparel",
-        },
-        {
-            subcategory: "Baby / Kids Products",
-        },
-        {
-            subcategory: "Cosmetics / Nails / Hair Products",
-        },
-        {
-            subcategory: "Fragrance / Perfume",
-        },
-        {
-            subcategory: "Wellness / Personal Care",
-        },
-        {
-            subcategory: "Books / Publications",
-        },
-        {
-            subcategory: "Logistics / Shipping",
-        },
-        {
-            subcategory: "Marketing / Web / Social Media",
-        },
-        {
-            subcategory: "POS / Credit Card Services / Inventory Mgmt / Software",
-        },
-        {
-            subcategory: "Store Displays / Fixturing / Signage / Packaging",
-        },
-        {
-            subcategory: "Herbal Supplements",
-        },
-        {
-            subcategory: "Snacks / Candy / Energy / Drinks",
-        },
-        {
-            subcategory: "Travel Size / Over-the-Counter",
-        },
-        {
-            subcategory: "Cameras / Tablets / Drones / MP3 Players / Home / Entertainment Audio etc.",
-        },
-        {
-            subcategory: "Cell Phone Accessories / Wearables / Headphones / Speakers",
-        },
-        {
-            subcategory: "Kids / Baby Footwear",
-        },
-        {
-            subcategory: "Men's Footwear",
-        },
-        {
-            subcategory: "Women's Footwear",
-        },
-        {
-            subcategory: "Automotive",
-        },
-        {
-            subcategory: "Closeouts / Liquidation",
-        },
-        {
-            subcategory: "Dollar Store Items",
-        },
-        {
-            subcategory: "General Merchandise",
-        },
-        {
-            subcategory: "Art / Craft / Hobby",
-        },
-        {
-            subcategory: "General Gifts",
-        },
-        {
-            subcategory: "Keepsakes / Collectibles",
-        },
-        {
-            subcategory: "Promotional Products",
-        },
-        {
-            subcategory: "Religious / Spiritual",
-        },
-        {
-            subcategory: "Souvenirs",
-        },
-        {
-            subcategory: "Stationery / Party / Paper / Gift Wrap",
-        },
-        {
-            subcategory: "Wedding / Bridal",
-        },
-        {
-            subcategory: "Handmade",
-        },
-        {
-            subcategory: "Bed / Bath",
-        },
-        {
-            subcategory: "Floral / Floral Supplies",
-        },
-        {
-            subcategory: "Furniture / Lamps / Lighting",
-        },
-        {
-            subcategory: "Interior Décor (Curtains/Wall Art/etc.)",
-        },
-        {
-            subcategory: "Kitchen / Tabletop / Cookware / Cutlery / Small Appliances",
-        },
-        {
-            subcategory: "Outdoor Living / Décor",
-        },
-        {
-            subcategory: "Hardware / Tools",
-        },
-        {
-            subcategory: "Body Piercings",
-        },
-        {
-            subcategory: "Fine Jewelry / Watches (Diamonds/Gemstones/Gold)",
-        },
-        {
-            subcategory: "Silver / Semi Precious",
-        },
-        {
-            subcategory: "Characters / Brands / Entertainment",
-        },
-        {
-            subcategory: "Collegiate / Major League Sports",
-        },
-        {
-            subcategory: "Luggage / Travel Accessories",
-        },
-        {
-            subcategory: "Made in the USA",
-        },
-        {
-            subcategory: "Office / School Supplies",
-        },
-        {
-            subcategory: "Camping / Outdoor Recreation",
-        },
-        {
-            subcategory: "Personal Security / Tactical",
-        },
-        {
-            subcategory: "Sporting Goods",
-        },
-        {
-            subcategory: "Personal Protective Equipment / Health + Safety Essentials",
-        },
-        {
-            subcategory: "Pet Products",
-        },
-        {
-            subcategory: "Christmas",
-        },
-        {
-            subcategory: "Halloween",
-        },
-        {
-            subcategory: "Other Holiday",
-        },
-        {
-            subcategory: "Games / Puzzles",
-        },
-        {
-            subcategory: "Novelties (Humor/Gags & Pranks/Drinking Accessories/etc)",
-        },
-        {
-            subcategory: "Plush",
-        },
-        {
-            subcategory: "Toys / Figures",
-        }];
+        let categories: { category: string }[] = [];
+        for (let i = 0; i < 50; i++)
+          categories.push({ category: 'category' + i});
+        let body = JSON.stringify({
+            result: categories
+        });
+        return new HttpResponse(body, {
+            status: 200
+        });
+    }),
+    http.get(REACT_APP_SERVER_URI + `/vendors/subcategories`, ({ request, params, cookies }) => {
+        let categories: { [subcategories: string]: string[] }[] = [
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": [
+                "Hats & Scarves",
+                "Kids / Baby Footwear",
+                "Men's Footwear",
+                "Women's Footwear",
+                "Women's Apparel",
+                "Plus Size Clothing",
+                "Jeans & Denim",
+                "Childrens Clothing",
+                "Urban Clothing",
+                "Baby Clothes",
+                "Bridal & Wedding",
+                "Camouflage",
+                "Formalwear",
+                "Juniors",
+                "Leather",
+                "Leggings",
+                "Licensed",
+                "Lingerie",
+                "Maternity",
+                "Men's Apparel",
+                "Outerwear",
+                "Patriotic",
+                "Scrubs & Medical",
+                "Silk Screen, Embroidery & Decorated",
+                "Sleepwear",
+                "Socks & Hosiery",
+                "Sportswear",
+                "Sweatshirts",
+                "Swimwear",
+                "T-Shirts",
+                "Underwear",
+                "Vintage",
+                "Work Clothing"
+              ]
+            },{
+              "subcategories": [
+                "Apparel",
+                "Self-Defense & Security",
+                "Baby Products",
+                "Health, Beauty & Wellness",
+                "Electronics",
+                "Art & Supplies",
+                "As Seen On TV",
+                "Automotive",
+                "Books & Magazines",
+                "C-Store Items",
+                "Cameras",
+                "Candles, Incense, Potpourri",
+                "Collectibles",
+                "Computers",
+                "Crafts",
+                "Dollar Store",
+                "Fashion Accessories",
+                "Food & Grocery",
+                "Footwear",
+                "Garden & Lawn",
+                "General Merchandise",
+                "Gifts",
+                "Handbags & Luggage",
+                "Housewares",
+                "Jewelry",
+                "Knives",
+                "Leather Goods",
+                "Military Goods",
+                "Novelties",
+                "Office Supplies",
+                "Party Supplies",
+                "Perfume",
+                "Pet Supplies",
+                "Religious",
+                "Smoking Products",
+                "Sporting Goods",
+                "Sunglasses & Eyewear",
+                "Telephone, Cellular",
+                "Tools",
+                "Toys",
+                "Watches"
+              ]
+            },
+            {
+              "subcategories": [
+                "Mobile / Cellular",
+                "Accessories",
+                "Video Games",
+                "Digital Cameras & Photography",
+                "Car Electronics",
+                "Batteries",
+                "Home Entertainment",
+                "MP3 / MP4"
+              ]
+            },
+            {
+              "subcategories": [
+                "As Seen On TV",
+                "Food & Grocery",
+                "COVID-19 Supplies",
+                "Apparel",
+                "Tobacco & Smoking Products",
+                "Art & Supplies",
+                "Automotive",
+                "Baby Products",
+                "Books & Magazines",
+                "Cameras",
+                "Candles, Incense, Potpourri",
+                "Collectibles",
+                "Computers",
+                "Crafts",
+                "Dollar Store",
+                "DVDs & Videos",
+                "Electronics",
+                "Fashion Accessories",
+                "Gifts",
+                "Handbags & Luggage",
+                "Health, Beauty & Wellness",
+                "Holiday & Seasonal",
+                "Housewares",
+                "Jewelry",
+                "Knives",
+                "Lawn & Garden",
+                "Leather",
+                "Military",
+                "Music",
+                "Novelties",
+                "Office Supplies",
+                "Party Items & Greeting Cards",
+                "Patriotic Items",
+                "Perfumes",
+                "Pet Supplies",
+                "Professional Supplies",
+                "Promotional",
+                "Regional & Ethnic",
+                "Religious",
+                "Self-Defense, Security",
+                "Shoes & Footwear",
+                "Sporting Goods",
+                "Store Supplies",
+                "Sunglasses & Eyewear",
+                "Telephones, Cellular",
+                "Tools & Hardware",
+                "Toys, Games, Hobbies",
+                "Travel",
+                "Watches"
+              ]
+            },
+            {
+              "subcategories": [
+                "General Gifts",
+                "New Age",
+                "Souvenirs",
+                "Crystal",
+                "General",
+                "Wood",
+                "Bags",
+                "Boxes",
+                "Brass",
+                "China",
+                "Engraving & Etching",
+                "Figurines",
+                "Glass",
+                "Gourmet",
+                "Magnets",
+                "Nostalgic",
+                "Patriotic",
+                "Pewter",
+                "Pottery & Ceramics",
+                "Soaps & Bath Products",
+                "Suncatchers",
+                "Textiles"
+              ]
+            },
+            {
+              "subcategories": [
+                "Safety Essentials",
+                "Cosmetics",
+                "CBD",
+                "Skin Care",
+                "Vitamins & Herbs",
+                "Hair Products",
+                "Aromatherapy",
+                "First Aid",
+                "Green Products",
+                "Grooming Supplies",
+                "Magnetic Therapy",
+                "Natural & Holistic",
+                "OTC Pharmaceuticals",
+                "Skin Protection",
+                "Spa Products",
+                "Sports Nutrition",
+                "Toiletries"
+              ]
+            },
+            {
+              "subcategories": [
+                "Sterling Silver",
+                "Fashion Jewelry",
+                "Fine Jewelry",
+                "Stainless Steel",
+                "Diamonds",
+                "African",
+                "Antique",
+                "Beads",
+                "Body Jewelry",
+                "Charms",
+                "Cleaners, Supplies & Findings",
+                "Collegiate Jewelry",
+                "Costume Jewelry",
+                "Crystal & Rhinestone",
+                "Cubic Zirconia",
+                "Displays, Packaging",
+                "Gemstones",
+                "Gold",
+                "Hemp Jewelry",
+                "Hip Hop",
+                "Kids & Teens",
+                "Magnetic Jewelry",
+                "Mens Jewelry",
+                "Native American",
+                "New Age",
+                "Patriotic",
+                "Turquoise",
+                "Western",
+                "Watches"
+              ]
+            },
+            {
+              "subcategories": [
+                "Clothing",
+                "Health, Beauty & Wellness",
+                "Home & Garden",
+                "Pet Supplies",
+                "Gifts",
+                "Candles, Incense",
+                "Fashion Accessories",
+                "Greeting Cards",
+                "Jewelry",
+                "Novelties",
+                "Smoking Products"
+              ]
+            },
+            {
+              "subcategories": [
+                "Smoking Accessories",
+                "Tobacco Products",
+                "Lighters",
+                "Electronic Cigarettes",
+                "Disposable Electronic Cigarettes",
+                "Hookahs"
+              ]
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": [
+                "Private Label Opportunities",
+                "Distributorship Opportunities",
+                "Manufacturers Seeking Reps",
+                "Affiliate Programs",
+                "Direct Sales & MLM"
+              ]
+            },
+            {
+              "subcategories": [
+                "Logistics & Shipping",
+                "Marketing Services",
+                "Credit Card Services",
+                "Internet Services",
+                "Trade Shows",
+                "Financial Services"
+              ]
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": [
+                "Candles",
+                "Oil Burners",
+                "Oils",
+                "Incense",
+                "Incense Holders",
+                "Aromatherapy",
+                "Candle Holders",
+                "Potpourri"
+              ]
+            },
+            {
+              "subcategories": [
+                "Kratom",
+                "Oils",
+                "Vape & Smoking",
+                "Gummies and Edibles",
+                "White/Private Label",
+                "Flower",
+                "Bath Products",
+                "Creams, Lotions & Topicals",
+                "Full Spectrum",
+                "Made in USA",
+                "Natural & Organic",
+                "Pet Products",
+                "Skin & Body Care",
+                "Tinctures"
+              ]
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": [
+                "Sports Memorabilia",
+                "Figurines",
+                "Replica Models",
+                "Licensed Items",
+                "Patriotic",
+                "General",
+                "Military"
+              ]
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": [
+                "Craft Supplies",
+                "Handicrafts",
+                "Artificial Flowers"
+              ]
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": [
+                "Hats, Headwear",
+                "Handbags",
+                "Hair Accessories",
+                "Jewelry",
+                "Scarves",
+                "Belts & Suspenders",
+                "Bridal & Formal",
+                "Gloves",
+                "Kids & Teens",
+                "Patches",
+                "Rainwear, Umbrellas",
+                "Sunglasses / Eyewear",
+                "Ties, Neckwear",
+                "Transfers, Appliques"
+              ]
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": [
+                "Fashion Handbags",
+                "Luggage, Totes, Cases",
+                "Wallets",
+                "Backpacks"
+              ]
+            },
+            {
+              "subcategories": [
+                "Christmas",
+                "Halloween",
+                "Beach Items",
+                "Hanukkah"
+              ]
+            },
+            {
+              "subcategories": [
+                "Floral",
+                "Kitchenwares",
+                "Furniture",
+                "Decorative Accessories",
+                "Small Appliances",
+                "Cleaning Products",
+                "Artificial Flowers",
+                "Baskets",
+                "Bed & Bath",
+                "Clocks",
+                "Dinnerware",
+                "Lighting/LED",
+                "Linens",
+                "Rugs, Mats, Flooring",
+                "Storage",
+                "Textiles",
+                "Wall Hangings",
+                "Woodenware"
+              ]
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": [
+                "Accessories",
+                "Biker",
+                "Apparel"
+              ]
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": [
+                "Adult",
+                "Licensed",
+                "General",
+                "Toys",
+                "Flags, Banners, Ribbons",
+                "Clothing",
+                "Electronic",
+                "Gags",
+                "Glow",
+                "Inflatables",
+                "Jewelry",
+                "Keyrings",
+                "Laser Products",
+                "Lighters",
+                "Lighting/LED",
+                "Magnets",
+                "New Age",
+                "Nostalgic",
+                "Patriotic",
+                "Photo",
+                "Stickers & Signs",
+                "Tattoos",
+                "Wristbands"
+              ]
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": [
+                "Greeting Cards",
+                "Gift Wrap & Gift Bags",
+                "Costumes & Masks",
+                "Balloons & Inflatables",
+                "Wedding",
+                "Decorations",
+                "Holiday",
+                "Paper, Plastic",
+                "Party Favors"
+              ]
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": [
+                "Educational",
+                "Tattoo & Piercing",
+                "Barber & Beauty",
+                "Medical",
+                "Amusement & Carnival",
+                "Bars & Clubs",
+                "Casino",
+                "Dental",
+                "Entertainment",
+                "Florist",
+                "Hotel Supplies",
+                "Janitorial",
+                "Jeweler",
+                "Optical",
+                "Restaurant Supplies"
+              ]
+            },
+            {
+              "subcategories": [
+                "Imprintables",
+                "Fundraising Products",
+                "Signage",
+                "Green Products",
+                "Premiums & Incentives"
+              ]
+            },
+            {
+              "subcategories": [
+                "Mexican",
+                "Latin American",
+                "Southwest/Western",
+                "Native American",
+                "African",
+                "Asian"
+              ]
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": [
+                "Socks, Hosiery"
+              ]
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": [
+                "Camping & Outdoors",
+                "Licensed Products",
+                "Hunting",
+                "Athletic Apparel",
+                "Skiing & Snow Sports",
+                "Airsoft, Paintball",
+                "Bags",
+                "Equipment & Team Sports",
+                "Fishing",
+                "Fitness",
+                "Martial Arts",
+                "Recreational",
+                "Scooters & Skateboards",
+                "Water Sports"
+              ]
+            },
+            {
+              "subcategories": [
+                "Packaging, Shipping",
+                "Store Fixtures & Displays"
+              ]
+            },
+            {
+              "subcategories": [
+                "Reading Glasses"
+              ]
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": []
+            },
+            {
+              "subcategories": [
+                "Action Figures",
+                "Licensed",
+                "Collectible Toys",
+                "Educational",
+                "Games",
+                "Animated Toys",
+                "Arts & Crafts",
+                "Baby Toys",
+                "Battery Operated Toys",
+                "Building Kits",
+                "Carded / Peggable",
+                "Cars, Trucks, Vehicles",
+                "Doll Houses & Accessories",
+                "Dolls",
+                "Fads",
+                "General Toys",
+                "Hobbies",
+                "Kites, Flying Toys",
+                "Magic",
+                "Models & Supplies",
+                "Musical Toys",
+                "Outdoor Toys",
+                "Play Sets",
+                "Plush Toys",
+                "Puppets",
+                "Puzzles",
+                "Remote Control Toys",
+                "Scooters & Riding Toys",
+                "Trains",
+                "Video Games",
+                "Wooden Toys"
+              ]
+            },
+            {
+              "subcategories": []
+            }
+        ];
         
         let body = JSON.stringify({
             result: categories
