@@ -39,7 +39,7 @@ describe("Results Route Test", () => {
         await user.click(checkboxItems[1]);
         await user.click(checkboxItems[2]);
         await user.click(checkboxItems[3]);
-        await user.keyboard("{esc}")
+        await user.keyboard("{esc}");
         
         await waitFor(() => {
             expect(screen.getByTestId("Hats & Scarves-chip")).toBeInTheDocument();
