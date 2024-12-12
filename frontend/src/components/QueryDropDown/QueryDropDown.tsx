@@ -75,7 +75,7 @@ function QueryDropDown({name, data, selectedData, setSelectedData, handleQuery}:
                 sx={selectSx}
             >
                 {data.map((datum, i) => (
-                    <MenuItem key={datum} value={datum} data-testid={`${name.toLowerCase()}-menu-item`} sx={{ padding: '6px 6px'}}>
+                    <MenuItem key={i} value={datum} data-testid={`${name.toLowerCase()}-menu-item`} sx={{ padding: '6px 6px'}}>
                         <Checkbox checked={selectedData.indexOf(datum) > -1} sx={checkmarkSx}/>
                         <ListItemText primary={datum} sx={listItemTextSx}/>
                     </MenuItem>

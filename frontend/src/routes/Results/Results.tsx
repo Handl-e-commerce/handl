@@ -176,9 +176,9 @@ function Results(): JSX.Element {
             {searchParam ? <Chip key={searchParam} label={searchParam} sx={{ margin: '4px 1px' }} onDelete={handleRemoveSearchVal}/> : null}
             <Box sx={{ width: '95%', marginBottom: '7px'}} data-testid="chips-container" aria-label="chips-container">
                 {selectedSubcategories.map(
-                    (subcategory) => (
+                    (subcategory, i) => (
                         <Chip
-                            key={subcategory}
+                            key={i}
                             label={subcategory}
                             sx={{ margin: '4px 1px' }}
                             onDelete={() => handleRemoveSubcategoryChip(subcategory)}

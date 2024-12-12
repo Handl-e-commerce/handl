@@ -22,14 +22,14 @@ describe("Results Route Test", () => {
     const user = userEvent.setup();
     it("Should render only category query chips and remove them when closing them", async () => {
         await act(async () => render(<Results />));
-        let categoryDropdown = await waitFor(() => screen.getByTestId("categories-multiple-checkbox-select"), {
+        let categoryDropdown = await waitFor(() => screen.getByTestId("subcategories-multiple-checkbox-select"), {
             timeout: 3000
         });
         expect(categoryDropdown).toBeInTheDocument();
 
         await user.click(categoryDropdown);
 
-        let checkboxItems = await waitFor(async () => await screen.findAllByTestId("categories-menu-item"), {
+        let checkboxItems = await waitFor(async () => await screen.findAllByTestId("subcategories-menu-item"), {
             timeout: 3000,
         });
 
@@ -40,10 +40,10 @@ describe("Results Route Test", () => {
         await user.keyboard("{esc}")
         
         await waitFor(() => {
-            expect(screen.getByTestId("Fashion Jewelry / Watches-chip")).toBeInTheDocument();
-            expect(screen.getByTestId("Handbags-chip")).toBeInTheDocument();
-            expect(screen.getByTestId("Hats / Scarves-chip")).toBeInTheDocument();
-            expect(screen.getByTestId("Small Leather Goods (Belts/Wallets/etc)-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("Hats & Scarves-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("Kids / Baby Footwear-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("Men's Footwear-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("Women's Apparel-chip")).toBeInTheDocument();
         });
         
         let chipContainer = await screen.findByTestId("chips-container");
@@ -91,7 +91,7 @@ describe("Results Route Test", () => {
     
     it("Should remove all query chips when clicking clear all button", async () => {
         await act(async () => render(<Results />));
-        let categoryDropdown = await waitFor(() => screen.getByTestId("categories-multiple-checkbox-select"), {
+        let categoryDropdown = await waitFor(() => screen.getByTestId("subcategories-multiple-checkbox-select"), {
             timeout: 3000
         });
         let statesDropdown = await waitFor(() => screen.getByTestId("states-multiple-checkbox-select"), {
@@ -102,7 +102,7 @@ describe("Results Route Test", () => {
 
         await user.click(categoryDropdown);
 
-        let categoryItems = await waitFor(async () => await screen.findAllByTestId("categories-menu-item"), {
+        let categoryItems = await waitFor(async () => await screen.findAllByTestId("subcategories-menu-item"), {
             timeout: 3000,
         });
         await user.click(categoryItems[0]);
@@ -122,10 +122,10 @@ describe("Results Route Test", () => {
         await waitFor(() => {
             let chipContainer = screen.getByTestId("chips-container");
             expect(chipContainer.childElementCount).toEqual(6);
-            expect(screen.getByTestId("Fashion Jewelry / Watches-chip")).toBeInTheDocument();
-            expect(screen.getByTestId("Handbags-chip")).toBeInTheDocument();
-            expect(screen.getByTestId("Hats / Scarves-chip")).toBeInTheDocument();
-            expect(screen.getByTestId("Small Leather Goods (Belts/Wallets/etc)-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("Hats & Scarves-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("Kids / Baby Footwear-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("Men's Footwear-chip")).toBeInTheDocument();
+            expect(screen.getByTestId("Women's Apparel-chip")).toBeInTheDocument();
             expect(screen.getByTestId("CA-chip")).toBeInTheDocument();
             expect(screen.getByTestId("CO-chip")).toBeInTheDocument();
         });
