@@ -21,7 +21,7 @@ beforeEach(() => {
 
 describe("QueryDropDown Test", () => {
     const user = userEvent.setup();
-    it.skip("Should render all of the data passed to it", async () => {
+    it("Should render all of the data passed to it", async () => {
         render(
             <QueryDropDown 
                 name='subcategories'
