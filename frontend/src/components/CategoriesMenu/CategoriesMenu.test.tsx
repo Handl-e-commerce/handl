@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import { render, screen, act, waitFor, getByText } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { CategoriesMenu } from './CategoriesMenu';
 import userEvent from '@testing-library/user-event';
