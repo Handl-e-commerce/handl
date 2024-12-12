@@ -3,6 +3,8 @@ import { render, screen, act, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Results } from './Results';
 import userEvent from '@testing-library/user-event';
+import { server } from '../../../__mocks__/server';
+import { http, HttpResponse } from 'msw';
 
 let mockUseLoginStatus = jest.fn();
 jest.mock("../../hooks/useLoggedInStatus", () => {
@@ -145,6 +147,24 @@ describe("Results Route Test", () => {
         
         await waitFor(() => {
             expect(screen.getByText("Login or Sign up to get full access to our data!")).toBeInTheDocument();
+        });
+    });
+
+    it("Should not render subcategories dropdown because category doesn't have any subcategories", async () => {
+        server.use(
+            http.get(process.env.REACT_APP_SERVER_URI + `/vendors/subcategories`, ({ request, params, cookies }) => {
+                const subcategories: string[] = [];
+                let body = JSON.stringify({
+                    result: subcategories
+                });
+                return new HttpResponse(body, {
+                    status: 200
+                });
+            }),
+        );
+        await act(async () => render(<Results />));
+        await waitFor(() => {
+            expect(screen.queryAllByTestId("subcategories-multiple-checkbox-select").length).toEqual(0);
         });
     });
 });
