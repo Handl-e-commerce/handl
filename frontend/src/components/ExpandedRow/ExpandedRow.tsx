@@ -54,7 +54,7 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
             return (
                 <Typography variant={isMobile ? 'body2' : 'body1'} component='pre' sx={styles.contactInfoRow}>
                     <Place style={{ verticalAlign: "middle", marginRight: '7px' }} />
-                    <Link href={googleMapsUrl + params} target="_blank" rel="noreferrer">
+                    <Link href={googleMapsUrl + params} target="_blank" rel="noreferrer" data-testid='google-maps-link'>
                         {row.address + ", " + row.city + ", " + row.state + ", " + row.zipcode}
                     </Link>
                 </Typography>    

@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { CategoriesMenu } from './CategoriesMenu';
 import userEvent from '@testing-library/user-event';
 
-describe("QueryDropDown Test", () => {
+describe("CategoriesMenu Test", () => {
     it("Should render the list of categories for us to be able to select", async () => {
         render(<CategoriesMenu />);
         await userEvent.click(screen.getByText("Categories"));
