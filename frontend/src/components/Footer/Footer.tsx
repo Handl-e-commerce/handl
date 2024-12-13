@@ -26,7 +26,7 @@ function Footer(): JSX.Element {
             color: '#F2E5D1'
         }}>
             <a href={location.origin} target="_self">
-                <img src={goldLogoTransparent} alt="Handl Logo" width={"110px"} height={"40px"}/>
+                <img src={goldLogoTransparent} alt="Handl Logo" width={"90px"} height={"30px"}/>
             </a>
             <Box sx={{display: 'flex', justifyContent: 'center'}}>
                 <Typography m={1}>
