@@ -15,7 +15,7 @@ module.exports = {
             keywords: string;
             categories: string[];
             subcategories: string[];
-            people: string;
+            people: string[];
             address: string;
             city: string;
             state: string;
@@ -29,9 +29,8 @@ module.exports = {
             item.updatedAt = new Date(Date.now());
             item.categories = ([...new Set(item.categories)]).sort().toString();
             item.subcategories = ([...new Set(item.subcategories)]).sort().toString();
-            item.people = (item.people as string).split(",");
         });
-        
+
     /* eslint-enable */
         return await queryInterface.bulkInsert("Vendors", data, {});
     },

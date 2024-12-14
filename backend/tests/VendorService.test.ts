@@ -13,14 +13,14 @@ describe("VendorService tests", () => {
         let vendorService = new VendorService();
         let results = await vendorService.GetVendors("Apparel / Clothing", undefined, undefined, undefined);
         expect(results).toBeDefined();
-        expect(results.length).toEqual(117);
+        expect(results.length).toEqual(118);
     });
 
     it("Should return only rows that match the passed category and subcategories", async () => {
         let vendorService = new VendorService();
         let results = await vendorService.GetVendors("Apparel / Clothing", ["Women's Apparel", "Men's Apparel"], undefined, undefined);
         expect(results).toBeDefined();
-        expect(results.length).toEqual(10);
+        expect(results.length).toEqual(9);
     });
 
     it("Should return only rows that match the search param", async () => {
@@ -41,14 +41,14 @@ describe("VendorService tests", () => {
         let vendorService = new VendorService();
         let results = await vendorService.GetVendors(undefined, undefined, undefined, ["NY", "TX"]);
         expect(results).toBeDefined();
-        expect(results.length).toEqual(158);
+        expect(results.length).toEqual(160);
     });
     
     it("Should be case insensitive when querying states", async () => {
         let vendorService = new VendorService();
         let results = await vendorService.GetVendors(undefined, undefined, undefined, ["ny", "tx"]);
         expect(results).toBeDefined();
-        expect(results.length).toEqual(158);
+        expect(results.length).toEqual(160);
     });
 
     it("Should return only rows that match the search param and states", async () => {
