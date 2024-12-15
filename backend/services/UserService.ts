@@ -116,7 +116,7 @@ class UserService implements IUserService {
                 attributes: ["savedVendors"],
             });
 
-            if (!usersSavedVendors) {
+            if (!usersSavedVendors || !usersSavedVendors.savedVendors) {
                 return [];
             }
 

@@ -90,231 +90,37 @@ export const handlers = [
         });
     }),
     http.get(REACT_APP_SERVER_URI + `/vendors/categories`, ({ request, params, cookies }) => {
-        let categories: { subcategory: string }[] = [{
-            subcategory: "Fashion Jewelry / Watches",
-        },
-        {
-            subcategory: "Handbags",
-        },
-        {
-            subcategory: "Hats / Scarves",
-        },
-        {
-            subcategory: "Small Leather Goods (Belts/Wallets/etc)",
-        },
-        {
-            subcategory: "Sunglasses / Eyewear",
-        },
-        {
-            subcategory: "Adult Novelty",
-        },
-        {
-            subcategory: "CBD or other Cannabinoids",
-        },
-        {
-            subcategory: "Hemp",
-        },
-        {
-            subcategory: "Kratom",
-        },
-        {
-            subcategory: "Smoke Accessories",
-        },
-        {
-            subcategory: "Vape",
-        },
-        {
-            subcategory: "Kids / Baby Apparel",
-        },
-        {
-            subcategory: "Men's Apparel",
-        },
-        {
-            subcategory: "Plus Size Apparel",
-        },
-        {
-            subcategory: "Swimwear",
-        },
-        {
-            subcategory: "Undergarments / Hosiery / Socks",
-        },
-        {
-            subcategory: "Women's Apparel",
-        },
-        {
-            subcategory: "Baby / Kids Products",
-        },
-        {
-            subcategory: "Cosmetics / Nails / Hair Products",
-        },
-        {
-            subcategory: "Fragrance / Perfume",
-        },
-        {
-            subcategory: "Wellness / Personal Care",
-        },
-        {
-            subcategory: "Books / Publications",
-        },
-        {
-            subcategory: "Logistics / Shipping",
-        },
-        {
-            subcategory: "Marketing / Web / Social Media",
-        },
-        {
-            subcategory: "POS / Credit Card Services / Inventory Mgmt / Software",
-        },
-        {
-            subcategory: "Store Displays / Fixturing / Signage / Packaging",
-        },
-        {
-            subcategory: "Herbal Supplements",
-        },
-        {
-            subcategory: "Snacks / Candy / Energy / Drinks",
-        },
-        {
-            subcategory: "Travel Size / Over-the-Counter",
-        },
-        {
-            subcategory: "Cameras / Tablets / Drones / MP3 Players / Home / Entertainment Audio etc.",
-        },
-        {
-            subcategory: "Cell Phone Accessories / Wearables / Headphones / Speakers",
-        },
-        {
-            subcategory: "Kids / Baby Footwear",
-        },
-        {
-            subcategory: "Men's Footwear",
-        },
-        {
-            subcategory: "Women's Footwear",
-        },
-        {
-            subcategory: "Automotive",
-        },
-        {
-            subcategory: "Closeouts / Liquidation",
-        },
-        {
-            subcategory: "Dollar Store Items",
-        },
-        {
-            subcategory: "General Merchandise",
-        },
-        {
-            subcategory: "Art / Craft / Hobby",
-        },
-        {
-            subcategory: "General Gifts",
-        },
-        {
-            subcategory: "Keepsakes / Collectibles",
-        },
-        {
-            subcategory: "Promotional Products",
-        },
-        {
-            subcategory: "Religious / Spiritual",
-        },
-        {
-            subcategory: "Souvenirs",
-        },
-        {
-            subcategory: "Stationery / Party / Paper / Gift Wrap",
-        },
-        {
-            subcategory: "Wedding / Bridal",
-        },
-        {
-            subcategory: "Handmade",
-        },
-        {
-            subcategory: "Bed / Bath",
-        },
-        {
-            subcategory: "Floral / Floral Supplies",
-        },
-        {
-            subcategory: "Furniture / Lamps / Lighting",
-        },
-        {
-            subcategory: "Interior Décor (Curtains/Wall Art/etc.)",
-        },
-        {
-            subcategory: "Kitchen / Tabletop / Cookware / Cutlery / Small Appliances",
-        },
-        {
-            subcategory: "Outdoor Living / Décor",
-        },
-        {
-            subcategory: "Hardware / Tools",
-        },
-        {
-            subcategory: "Body Piercings",
-        },
-        {
-            subcategory: "Fine Jewelry / Watches (Diamonds/Gemstones/Gold)",
-        },
-        {
-            subcategory: "Silver / Semi Precious",
-        },
-        {
-            subcategory: "Characters / Brands / Entertainment",
-        },
-        {
-            subcategory: "Collegiate / Major League Sports",
-        },
-        {
-            subcategory: "Luggage / Travel Accessories",
-        },
-        {
-            subcategory: "Made in the USA",
-        },
-        {
-            subcategory: "Office / School Supplies",
-        },
-        {
-            subcategory: "Camping / Outdoor Recreation",
-        },
-        {
-            subcategory: "Personal Security / Tactical",
-        },
-        {
-            subcategory: "Sporting Goods",
-        },
-        {
-            subcategory: "Personal Protective Equipment / Health + Safety Essentials",
-        },
-        {
-            subcategory: "Pet Products",
-        },
-        {
-            subcategory: "Christmas",
-        },
-        {
-            subcategory: "Halloween",
-        },
-        {
-            subcategory: "Other Holiday",
-        },
-        {
-            subcategory: "Games / Puzzles",
-        },
-        {
-            subcategory: "Novelties (Humor/Gags & Pranks/Drinking Accessories/etc)",
-        },
-        {
-            subcategory: "Plush",
-        },
-        {
-            subcategory: "Toys / Figures",
-        }];
-        
+        let categories: { category: string }[] = [];
+        for (let i = 0; i < 50; i++)
+          categories.push({ category: 'category' + i});
         let body = JSON.stringify({
             result: categories
+        });
+        return new HttpResponse(body, {
+            status: 200
+        });
+    }),
+    http.get(REACT_APP_SERVER_URI + `/vendors/subcategories`, ({ request, params, cookies }) => {
+        let subcategories: { subcategory: string | null }[] = [
+          { 
+            subcategory: "Hats & Scarves",
+          },
+          {
+            subcategory: "Kids / Baby Footwear",
+          },
+          {
+            subcategory: "Men's Footwear",
+          },
+          {
+            subcategory: "Women's Footwear",
+          },
+          {
+            subcategory: "Women's Apparel",
+          }
+        ];
+        
+        let body = JSON.stringify({
+            result: subcategories
         });
         return new HttpResponse(body, {
             status: 200

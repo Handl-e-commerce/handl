@@ -13,6 +13,7 @@ const headerStyles: React.CSSProperties = {
     width: '100%',
     background: "#242425",
     color: '#F2E5D1',
+    paddingTop: '.625rem',
     paddingBottom: '.625rem',
 };
 
@@ -40,7 +41,7 @@ function Header(): JSX.Element {
                             <CategoriesMenu sx={{...dropdownButtonSx, fontSize: '20px'}}/>
                             <Link href={location.origin + "/about-us"} target="_self" underline="none" color='#F2E5D1' sx={{ fontSize: '20px', fontWeight: 600, paddingLeft: '16px' }}>About</Link>
                         </MobileDrawer>
-                        <Grid item sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '-2.5rem' : '2rem'}}>
+                        <Grid item sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '-.5rem' : '2rem'}}>
                             <a href={location.origin} target="_self">
                                 <img src={goldLogoTransparent} alt="Handl Logo" width={"140px"} height={"60px"} style={{padding: '10px'}}/>
                             </a>
@@ -54,7 +55,7 @@ function Header(): JSX.Element {
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', paddingLeft: '1rem' }}>
                     <a href={location.origin} target="_self">
-                        <img src={goldLogoTransparent} alt="Handl Logo" width={"140px"} height={"60px"} style={{padding: '10px'}}/>
+                        <img src={goldLogoTransparent} alt="Handl Logo" width={"120px"} height={"55px"} style={{padding: '10px'}}/>
                     </a>
                     <CategoriesMenu sx={dropdownButtonSx} />
                     <Link href={location.origin + "/about-us"} target="_self" underline="none" color='#F2E5D1' sx={{ fontSize: '16px', fontWeight: 600 }}>About</Link>

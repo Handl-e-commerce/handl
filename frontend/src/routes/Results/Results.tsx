@@ -13,8 +13,8 @@ function Results(): JSX.Element {
     let location = window.location;
 
     const [vendors, setVendors] = useState<Vendor[]>([]);
-    const [categories, setCategories] = useState<string[]>();
-    const [selectedCategories, setSelectedCategories] = useState<string[]>(queryParams.get("categories")?.split(",") ?? []);
+    const [subcategories, setSubcategories] = useState<string[]>();
+    const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(queryParams.get("subcategories")?.split(",") ?? []);
     const [selectedStates, setSelectedStates] = useState<string[]>(queryParams.get("states")?.split(",") ?? []);
     const [loadingData, setLoadingData] = useState<boolean>(true);
     let isMobile: boolean = useMobile();
@@ -25,8 +25,8 @@ function Results(): JSX.Element {
         let ignore = false;
         if (!ignore && loggedIn) {
             handleQuery();
-            if (!categories) {
-                getCategories();
+            if (!subcategories) {
+                getSubcategories();
             };
         };
         return () => { ignore = true };
@@ -42,23 +42,28 @@ function Results(): JSX.Element {
     };
 
     async function handleQuery(): Promise<void> {
-        queryParams.delete("categories");
+        queryParams.delete("subcategories");
         queryParams.delete("states");
-        let categories: string = selectedCategories.join(",");
+        let subcategories: string = selectedSubcategories.join(",");
         let states: string = selectedStates.join(",");
-        if (categories.length > 0) queryParams.set("categories", categories);
+        if (subcategories.length > 0) queryParams.set("subcategories", subcategories);
         if (states.length  > 0) queryParams.set("states", states);
         await getData();
     };
 
-    async function getCategories(): Promise<void> {
-        const response = await fetchWrapper('/vendors/categories', 'GET');
-        const data: { subcategory: string }[] = (await response.json()).result;
-        let categories: string[] = [];
-        data.forEach((val, i) => {
-            categories.push(val.subcategory);
+    async function getSubcategories(): Promise<void> {
+        const response = await fetchWrapper(`/vendors/subcategories?${queryParams.toString()}`, 'GET');
+        const data: { subcategory: string | null }[] = (await response.json()).result;
+        let subcategories: string[] = [];
+        data.forEach((val) => {
+            if (val.subcategory === null) {
+                return;
+            }
+            else {
+                subcategories.push(val.subcategory as string);
+            };
         });
-        setCategories(categories);
+        setSubcategories(subcategories.sort());
     };
 
     function handleRemoveSearchVal(): void {
@@ -67,12 +72,12 @@ function Results(): JSX.Element {
         window.location.replace(window.location.origin + "/results?" + queryParams.toString());
     };
 
-    function handleRemoveCategoryChip(category: string): void {
-        let filteredCategories = selectedCategories.filter(val => val !== category);
-        setSelectedCategories(filteredCategories);
-        queryParams.delete("categories");
+    function handleRemoveSubcategoryChip(category: string): void {
+        let filteredCategories = selectedSubcategories.filter(val => val !== category);
+        setSelectedSubcategories(filteredCategories);
+        queryParams.delete("subcategories");
         let categories: string = filteredCategories.join(",");
-        categories.length > 0 ? queryParams.set("categories", categories) : queryParams.delete("categories");
+        categories.length > 0 ? queryParams.set("subcategories", categories) : queryParams.delete("subcategories");
         getData();
     };
 
@@ -86,30 +91,18 @@ function Results(): JSX.Element {
     };
 
     function handleClearAll(): void {
-        setSelectedCategories([]);
+        setSelectedSubcategories([]);
         setSelectedStates([]);
-        queryParams.delete("categories");
+        queryParams.delete("subcategories");
         queryParams.delete("search-params");
         queryParams.delete("states");
         getData();
     };
 
-    function redirectSignUp(): void {
-        // redirect to sign up route
-        window.history.pushState({}, "", location.origin + "/sign-up?");
-        location.replace(location.origin + "/sign-up?");
-    };
-
-    function redirectLogin(): void {
-        // redirect to login page
-        window.history.pushState({}, "", location.origin + "/login?");
-        location.replace(location.origin + "/login?");
-    };
-
     const containerSx: SxProps = {
         paddingLeft: '1px', 
         paddingRight: '1px', 
-        minHeight: '62.5rem', 
+        minHeight: '62.5rem',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -117,6 +110,17 @@ function Results(): JSX.Element {
     }
 
     if (!loggedIn) {
+        const redirectSignUp = () =>  {
+            // redirect to sign up route
+            window.history.pushState({}, "", location.origin + "/sign-up?");
+            location.replace(location.origin + "/sign-up?");
+        };
+    
+        const redirectLogin = () => {
+            // redirect to login page
+            window.history.pushState({}, "", location.origin + "/login?");
+            location.replace(location.origin + "/login?");
+        };
         return (
             <Container sx={{...containerSx, width: '95%'}}>
                 <Paper elevation={24} sx={{width: 'fit-content', padding: 5, background: '#F2F2F7', height: 'fit-content'}}>
@@ -133,19 +137,20 @@ function Results(): JSX.Element {
 
     return (
         <Container sx={containerSx}>
+            <Typography variant={isMobile ? "h6" : "h4"} sx={{margin: isMobile ? '.5rem' : '1rem', fontWeight: 600 }}>Viewing {queryParams.get("category")}</Typography>
             <Grid container spacing={1}>
-                {categories &&
-                    <Grid item sm={isMobile ? undefined : 1.4}> 
+                {subcategories && subcategories.length > 0 &&
+                    <Grid item sm={isMobile ? 1 : 1.75}>
                         <QueryDropDown 
-                            name="Categories"
-                            data={categories}
-                            selectedData={selectedCategories}
-                            setSelectedData={setSelectedCategories}
+                            name="Subcategories"
+                            data={subcategories}
+                            selectedData={selectedSubcategories}
+                            setSelectedData={setSelectedSubcategories}
                             handleQuery={handleQuery}
                         />
                     </Grid>
                 }
-                <Grid item sm={isMobile ? undefined : 1.4}>
+                <Grid item sm={isMobile ? 1 : 1.75}>
                     <QueryDropDown 
                         name="States"
                         data={states.map((state) => state.abbreviation).filter((val) => val !== "--")}
@@ -154,8 +159,8 @@ function Results(): JSX.Element {
                         handleQuery={handleQuery}
                     />
                 </Grid>
-                <Grid item sm={isMobile ? undefined : 1.4}>
-                    {(selectedCategories.length > 0 || selectedStates.length > 0 || searchParam) && 
+                <Grid item sm={isMobile ? undefined : 1}>
+                    {(selectedSubcategories.length > 0 || selectedStates.length > 0 || searchParam) && 
                         <Button 
                             sx={{
                                 textTransform: 'none',
@@ -169,15 +174,15 @@ function Results(): JSX.Element {
                 </Grid>
             </Grid>
             {searchParam ? <Chip key={searchParam} label={searchParam} sx={{ margin: '4px 1px' }} onDelete={handleRemoveSearchVal}/> : null}
-            <Box sx={{ width: '95%', marginBottom: '7px'}} data-testid="chips-container">
-                {selectedCategories.map(
-                    (category) => (
+            <Box sx={{ width: '95%', marginBottom: '7px'}} data-testid="chips-container" aria-label="chips-container">
+                {selectedSubcategories.map(
+                    (subcategory, i) => (
                         <Chip
-                            key={category}
-                            label={category}
+                            key={i}
+                            label={subcategory}
                             sx={{ margin: '4px 1px' }}
-                            onDelete={() => handleRemoveCategoryChip(category)}
-                            data-testid={`${category}-chip`}
+                            onDelete={() => handleRemoveSubcategoryChip(subcategory)}
+                            data-testid={`${subcategory}-chip`}
                         />
                     )
                 )}
@@ -195,7 +200,7 @@ function Results(): JSX.Element {
             </Box>
             {loadingData ? <CircularProgress/> : <EnhancedTable isMobile={isMobile} data={vendors} loadingData={loadingData}/>}
         </Container>
-    )
+    );
 };
 
 export { Results };

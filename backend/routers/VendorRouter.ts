@@ -7,6 +7,7 @@ const vendorRouter = express.Router();
 
 vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
+        // TODO: (LOW) Remove references for searchVal as we are no longer implementing the search bar
         const cookies = req.cookies;
         const verificationService: VerificationService = new VerificationService();
         const isVerified: boolean = await verificationService.VerifyUser(
@@ -30,17 +31,21 @@ vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
                 })
                 .send();
         }
-        let categories = null;
-        let states = null;
-        if (req.query.categories) {
-            categories = (req.query.categories as string).split(",");
+        let category: string | null = null;
+        let subcategories: string[] | null = null;
+        let states: string[] | null = null;
+        if (req.query.category) {
+            category = (req.query.category as string);
+        }
+        if (req.query.subcategories) {
+            subcategories = (req.query.subcategories as string).split(",");
         }
         if (req.query.states) {
             states = (req.query.states as string).split(",");
         }
         const searchVal: string = req.query["search-params"] as string;
         const vendorService: VendorService = new VendorService();
-        const vendors = await vendorService.GetVendors(categories, searchVal, states);
+        const vendors = await vendorService.GetVendors(category, subcategories, searchVal, states);
         return res.status(200).json({
             result: vendors,
         });
@@ -55,6 +60,22 @@ vendorRouter.get("/categories", async (req: Request, res: Response, next: NextFu
         const categories = await vendorService.GetCategories();
         return res.status(200).json({
             result: categories,
+        });
+    } catch (err: unknown) {
+        return next(err as Error);
+    }
+});
+
+vendorRouter.get("/subcategories", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const vendorService: VendorService = new VendorService();
+        let category = null;
+        if (req.query.category) {
+            category = (req.query.category as string);
+        }
+        const subcategories = await vendorService.GetSubCategories(category as string);
+        return res.status(200).json({
+            result: subcategories,
         });
     } catch (err: unknown) {
         return next(err as Error);
