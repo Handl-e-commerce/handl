@@ -319,7 +319,7 @@ userRouter.post("/recaptcha/verify", async (req: Request, res: Response, next: N
     }
 });
 
-userRouter.put("/vendors/save", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.put("/vendors/save/:vendorIds", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const cookies = req.cookies;
         const verificationService: VerificationService = new VerificationService();
