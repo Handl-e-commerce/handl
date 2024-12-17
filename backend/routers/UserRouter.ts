@@ -319,7 +319,7 @@ userRouter.post("/recaptcha/verify", async (req: Request, res: Response, next: N
     }
 });
 
-userRouter.put("/vendors/save/:vendorIds", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.put("/vendors/save", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const cookies = req.cookies;
         const verificationService: VerificationService = new VerificationService();
@@ -344,7 +344,7 @@ userRouter.put("/vendors/save/:vendorIds", async (req: Request, res: Response, n
                 })
                 .send();
         }
-        const vendorIds = req.params.vendorIds.split(",");
+        const vendorIds: string[] = req.body.vendorIds;
         const userService: UserService = new UserService();
         await userService.SaveVendors(vendorIds, cookies.userId);
         return res.status(204).send();
