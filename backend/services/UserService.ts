@@ -329,6 +329,26 @@ class UserService implements IUserService {
     }
 
     /**
+     * Updates the list of saved vendors for users favorited vendors
+     * @param {string[]} vendorIds
+     * @param {string} userId
+     */
+    public async SaveVendors(vendorIds: string[], userId: string) {
+        try {
+            await User.update({
+                savedVendors: vendorIds,
+            }, {
+                where: {
+                    uuid: userId,
+                },
+            });
+        } catch (err) {
+            const error = err as Error;
+            throw Error(error.message);
+        }
+    }
+
+    /**
      * Utility method to send us the emails that users will write to submit to us
      * @param {string} firstName
      * @param {string} lastName

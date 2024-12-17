@@ -229,4 +229,34 @@ describe("UserService Tests", function() {
     await userService.SendSupportMessage("Foo", "Bar", "foobar@gmail.com", "Test Message");
     expect(sendMailMock).toHaveBeenCalledTimes(1);
   });
+
+  it("Should update the list of saved vendors", async () => {
+    const mockVendorIds = [
+      'e370166a-eecc-48b2-80d7-b5212cfd1f85',
+      '27ae85e2-8fb3-44e0-a381-f26c1a177025',
+      'f1e3776d-5ec4-4193-9046-854d9807617f',
+      'aed92045-9ecd-4729-bdcb-7d1d660f2d18',
+    ];
+    await userService.CreateUser(userDetails);
+    let userId = (await User.findOne({
+      where: {
+        email: userDetails.email,
+      }
+    }))?.uuid;
+    
+    await userService.SaveVendors(mockVendorIds, userId as string);
+    
+    let expectedResult = await userService.GetUserByUserId(userId as string);
+    expect(expectedResult.savedVendors).toEqual(mockVendorIds);
+    expect(expectedResult.savedVendors?.length).toEqual(mockVendorIds.length);
+
+    const slicedMockVendorIds = mockVendorIds.slice(0, 2);
+
+    await userService.SaveVendors(slicedMockVendorIds, userId as string);
+    
+    expectedResult = await userService.GetUserByUserId(userId as string);
+    expect(expectedResult.savedVendors).toEqual(slicedMockVendorIds);
+    expect(expectedResult.savedVendors?.length).toEqual(slicedMockVendorIds.length);
+  });
+
 });
