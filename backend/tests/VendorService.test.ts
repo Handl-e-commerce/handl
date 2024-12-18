@@ -1,5 +1,7 @@
 import {describe, expect, it} from "@jest/globals";
 import {VendorService} from "../services/VendorService";
+import { Vendor } from "../db/models/Vendor";
+import { Op } from "sequelize";
 
 describe("VendorService tests", () => {
     it("Should return all results", async () => {
@@ -70,5 +72,42 @@ describe("VendorService tests", () => {
         let results = await vendorService.GetVendors(undefined, undefined, "fba", undefined);
         expect(results).toBeDefined();
         expect(results.length).toEqual(4);
+    });
+
+    it("Should return the vendors queried for based on ids", async () => {
+        const vendors: {
+            uuid: string;
+            name: string;
+        }[] = [
+            {
+                uuid: 'id1',
+                name: 'mock name 1',
+            },
+            {
+                uuid: 'id2',
+                name: 'mock name 2',
+            },
+            {
+                uuid: 'id3',
+                name: 'mock name 3',
+            },
+            {
+                uuid: 'id4',
+                name: 'mock name 4',
+            },
+        ];
+        const vendorIds = vendors.map(x => x.uuid);
+        await Vendor.bulkCreate(vendors);
+        let vendorService = new VendorService();
+        let results = (await vendorService.GetVendorsByVendorIds(vendorIds.slice(0,2))).map((vendor) => vendor.uuid);
+        expect(results).toEqual(vendorIds.slice(0,2));
+        expect(results.length).toEqual(vendorIds.slice(0,2).length);
+        await Vendor.destroy({
+            where: {
+                uuid: {
+                    [Op.or]: vendorIds,
+                },
+            },
+        });
     });
 });

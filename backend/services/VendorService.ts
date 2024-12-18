@@ -131,6 +131,37 @@ class VendorService implements IVendorService {
             throw new Error(error.message);
         }
     }
+
+    public async GetVendorsByVendorIds(vendorIds: string[]): Promise<Vendor[]> {
+        try {
+            const vendorResults: Vendor[] = await Vendor.findAll({
+                where: {
+                    uuid: {
+                        [Op.or] : vendorIds
+                    },
+                },
+                attributes: [
+                    "uuid",
+                    "name",
+                    "description",
+                    "website",
+                    "categories",
+                    "people",
+                    "address",
+                    "city",
+                    "state",
+                    "zipcode",
+                    "phoneNumber",
+                    "email",
+                ],
+            });
+
+            return vendorResults;
+        } catch (err) {
+            const error = err as Error;
+            throw new Error(error.message);
+        }
+    };
 }
 
 export {VendorService};

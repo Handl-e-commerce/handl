@@ -82,4 +82,40 @@ vendorRouter.get("/subcategories", async (req: Request, res: Response, next: Nex
     }
 });
 
+vendorRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const cookies = req.cookies;
+        const vendorIds: string[] = req.params.id.split(",");
+        const verificationService: VerificationService = new VerificationService();
+        const isVerified: boolean = await verificationService.VerifyUser(
+            cookies.selector,
+            cookies.validator,
+            cookies.userId
+        );
+        if (!isVerified) {
+            return res.status(401)
+                .cookie("selector", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .cookie("validator", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .send();
+        }
+        const vendorService: VendorService = new VendorService();
+        const vendors = await vendorService.GetVendorsByVendorIds(vendorIds);
+        return res.status(200).json({
+            result: vendors,
+        });
+    } catch (err: unknown) {
+        return next(err as Error);
+    }
+});
+
 export {vendorRouter};
