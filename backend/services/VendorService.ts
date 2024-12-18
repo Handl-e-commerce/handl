@@ -132,12 +132,17 @@ class VendorService implements IVendorService {
         }
     }
 
+    /**
+     * Returns a list of vendors based on the passed in vendor ids
+     * @param {string[]} vendorIds 
+     * @returns 
+     */
     public async GetVendorsByVendorIds(vendorIds: string[]): Promise<Vendor[]> {
         try {
             const vendorResults: Vendor[] = await Vendor.findAll({
                 where: {
                     uuid: {
-                        [Op.or] : vendorIds
+                        [Op.or]: vendorIds,
                     },
                 },
                 attributes: [
@@ -161,7 +166,7 @@ class VendorService implements IVendorService {
             const error = err as Error;
             throw new Error(error.message);
         }
-    };
+    }
 }
 
 export {VendorService};
