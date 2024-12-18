@@ -11,7 +11,7 @@ class VendorService implements IVendorService {
      * @param {string[] | null | undefined} subcategories
      * @param {string[] | null | undefined} searchVal
      * @param {string[] | null | undefined} states
-     * @return {Vendor[]}
+     * @return {Promise<Vendor[]>}
      */
     public async GetVendors(
         categories: string | null | undefined,
@@ -97,7 +97,7 @@ class VendorService implements IVendorService {
 
     /**
      * Simple method to return all of the categories in the database
-     * @return {Category[]}
+     * @return {Promise<Category[]>}
      */
     public async GetCategories(): Promise<Category[]> {
         try {
@@ -116,7 +116,7 @@ class VendorService implements IVendorService {
     /**
      * Simple method to return all of the subcategories associated with a given category
      * @param {string} category
-     * @return {Category[]}
+     * @return {Promise<Category[]>}
      */
     public async GetSubCategories(category: string): Promise<Category[]> {
         try {
@@ -134,8 +134,8 @@ class VendorService implements IVendorService {
 
     /**
      * Returns a list of vendors based on the passed in vendor ids
-     * @param {string[]} vendorIds 
-     * @returns 
+     * @param {string[]} vendorIds
+     * @return {Promise<Vendor[]>}
      */
     public async GetVendorsByVendorIds(vendorIds: string[]): Promise<Vendor[]> {
         try {
