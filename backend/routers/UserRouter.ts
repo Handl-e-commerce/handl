@@ -5,7 +5,6 @@ import {UserService} from "../services/UserService";
 import {VerificationService} from "../services/VerificationService";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
 import {User} from "../db/models/User";
-import {Vendor} from "../db/models/Vendor";
 
 const userRouter = express.Router();
 
@@ -23,7 +22,7 @@ userRouter.post("/register", async (req: Request, res: Response, next: NextFunct
     }
 });
 
-userRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get("/me", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const cookies = req.cookies;
         const verificationService: VerificationService = new VerificationService();
@@ -58,7 +57,7 @@ userRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) =
     }
 });
 
-userRouter.get("/:id/vendors", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get("/me/vendors", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const cookies = req.cookies;
         const verificationService: VerificationService = new VerificationService();
@@ -84,7 +83,7 @@ userRouter.get("/:id/vendors", async (req: Request, res: Response, next: NextFun
                 .send();
         }
         const userService: UserService = new UserService();
-        const savedVendors: Vendor[] = await userService.GetSavedVendors(cookies.userId);
+        const savedVendors: string[] = await userService.GetSavedVendors(cookies.userId);
         return res.status(200).json({
             savedVendors: savedVendors,
         });

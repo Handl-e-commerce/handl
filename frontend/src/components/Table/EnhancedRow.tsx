@@ -3,6 +3,7 @@ import { Vendor } from "../../types/types";
 import { TableRow, TableCell, IconButton, Collapse, Box, Link } from "@mui/material";
 import { KeyboardArrowUp, KeyboardArrowDown } from "@mui/icons-material";
 import { ExpandedRow } from "../ExpandedRow/ExpandedRow";
+import { FavoriteBorder, Favorite } from "@mui/icons-material";
 
 interface IEnhancedRowProps {
     isMobile: boolean;
@@ -11,7 +12,7 @@ interface IEnhancedRowProps {
 
 function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
     const [open, setOpen] = useState<boolean>(false)
-
+    const [savedVendors, setSavedVendors] = useState<string[]>([]);
     function formatValue(value: string): string {
         return value === '' ? 'Coming soon' : value;
     }
@@ -48,6 +49,17 @@ function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
                 }</TableCell>}
                 {!isMobile && <TableCell onClick={() => setOpen(!open)}>{formatValue(data.phoneNumber)}</TableCell>}
                 {!isMobile && <TableCell onClick={() => setOpen(!open)}>{formatValue(data.state)}</TableCell>}
+                <TableCell>
+                    <IconButton
+                        onClick={() => {
+                            savedVendors.includes(data.uuid) ?
+                            setSavedVendors(savedVendors.filter((vendorId) => vendorId !== data.uuid)) :
+                            setSavedVendors([...savedVendors, data.uuid]);
+                        }}
+                    >
+                        {savedVendors.includes(data.uuid) ? <Favorite /> : <FavoriteBorder />}
+                    </IconButton>
+                </TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ padding: isMobile ? 0 : '0px 10px' }} colSpan={6}>

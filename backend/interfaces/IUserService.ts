@@ -1,12 +1,11 @@
 import {User} from "../db/models/User";
-import {Vendor} from "../db/models/Vendor";
 import {IGenericQueryResult} from "./IGenericQueryResult";
 import {IUserDetails} from "./IUserDetails";
 
 interface IUserService {
     CreateUser: (userDetails: IUserDetails) => Promise<IGenericQueryResult>;
     GetUserByUserId: (userId: string) => Promise<User>;
-    GetSavedVendors: (userId: string) => Promise<Vendor[]>;
+    GetSavedVendors: (userId: string) => Promise<string[]>;
     ResetUserPassword: (
         userId: string,
         newPassword: string

@@ -3,9 +3,7 @@ import {User} from "../db/models/User";
 import {IUserDetails} from "../interfaces/IUserDetails";
 import {IUserService} from "../interfaces/IUserService";
 import * as argon2 from "argon2";
-import {Vendor} from "../db/models/Vendor";
 import {AuthToken} from "../db/models/AuthToken";
-import {Op} from "sequelize";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
 import {EmailService} from "./EmailService";
 import {VerificationService} from "./VerificationService";
@@ -105,9 +103,9 @@ class UserService implements IUserService {
     /**
      * Get list of Vendors based on user's saved vendors
      * @param {string} userId
-     * @return {Vendor[]}
+     * @return {string[]}
      */
-    public async GetSavedVendors(userId: string): Promise<Vendor[]> {
+    public async GetSavedVendors(userId: string): Promise<string[]> {
         try {
             const usersSavedVendors = await User.findOne({
                 where: {
@@ -120,16 +118,7 @@ class UserService implements IUserService {
                 return [];
             }
 
-            const savedVendors = await Vendor.findAll({
-                where: {
-                    name: {
-                        [Op.and]: usersSavedVendors.savedVendors,
-                    },
-                },
-                attributes: ["name", "uuid"],
-            });
-
-            return savedVendors;
+            return usersSavedVendors.savedVendors;
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);

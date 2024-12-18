@@ -43,32 +43,32 @@ function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhance
         },
     ] : [
         {
-          id: 'name',
-          numeric: false,
-          disablePadding: true,
-          label: 'Name',
-          width: '25%'
+            id: 'name',
+            numeric: false,
+            disablePadding: true,
+            label: 'Name',
+            width: '35%'
         },
         {
             id: 'website',
             numeric: false,
             disablePadding: true,
             label: 'Website',
-            width: '30%'
+            width: '35%'
         },
         {
-          id: 'phoneNumber',
-          numeric: false,
-          disablePadding: true,
-          label: 'Phone Number',
-          width: '25%'
+            id: 'phoneNumber',
+            numeric: false,
+            disablePadding: true,
+            label: 'Phone Number',
+            width: '15%'
         },
         {
-          id: 'state',
-          numeric: false,
-          disablePadding: true,
-          label: 'State',
-          width: '10%'
+            id: 'state',
+            numeric: false,
+            disablePadding: true,
+            label: 'State',
+            width: 'auto'
         },
     ];
 
@@ -104,6 +104,7 @@ function EnhancedTableHead({ isMobile, order, orderBy, onRequestSort }: IEnhance
                         </TableSortLabel>
                     </TableCell>
                 ))}
+                <TableCell width={'4.5%'}/>
             </TableRow>
         </TableHead>
     );
