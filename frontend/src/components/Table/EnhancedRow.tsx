@@ -39,7 +39,8 @@ function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
                 {!isMobile && <TableCell onClick={() => setOpen(!open)}>{
                     <Link
                         href={data.website} 
-                        target="_self"
+                        target="_blank"
+                        rel="noreferrer"
                         underline="none"
                         color='#3C8DBC'
                     >
