@@ -57,7 +57,9 @@ function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
                             setSavedVendors([...savedVendors, data.uuid]);
                         }}
                     >
-                        {savedVendors.includes(data.uuid) ? <Favorite /> : <FavoriteBorder />}
+                        {savedVendors.includes(data.uuid) ? <Favorite sx={{
+                            color: '#DC4637'
+                        }}/> : <FavoriteBorder />}
                     </IconButton>
                 </TableCell>
             </TableRow>
