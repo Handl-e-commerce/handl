@@ -60,7 +60,7 @@ function EnhancedRow({ isMobile, data, savedVendors, setSavedVendors }: IEnhance
                 <TableCell component='th' scope='row' onClick={() => setOpen(!open)}>{data.name}</TableCell>
                 {!isMobile && <TableCell onClick={() => setOpen(!open)}>{
                     <Link
-                        href={data.website}
+                        href={data.website} 
                         target="_blank"
                         rel="noreferrer"
                         underline="none"
