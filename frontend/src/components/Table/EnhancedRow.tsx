@@ -4,6 +4,7 @@ import { TableRow, TableCell, IconButton, Collapse, Box, Link } from "@mui/mater
 import { KeyboardArrowUp, KeyboardArrowDown } from "@mui/icons-material";
 import { ExpandedRow } from "../ExpandedRow/ExpandedRow";
 import { FavoriteBorder, Favorite } from "@mui/icons-material";
+import { fetchWrapper } from "../../utils/fetch-wrapper";
 
 interface IEnhancedRowProps {
     isMobile: boolean;
@@ -14,9 +15,16 @@ interface IEnhancedRowProps {
 
 function EnhancedRow({ isMobile, data, savedVendors, setSavedVendors }: IEnhancedRowProps): JSX.Element {
     const [open, setOpen] = useState<boolean>(false)
+    
     function formatValue(value: string): string {
         return value === '' ? 'Coming soon' : value;
-    }
+    };
+
+    async function updateSavedVendors() {
+        await fetchWrapper("/users/vendors/save", "PUT", {
+            vendorIds: savedVendors,
+        });
+    };
 
     return (
         <>
@@ -57,6 +65,7 @@ function EnhancedRow({ isMobile, data, savedVendors, setSavedVendors }: IEnhance
                             savedVendors.includes(data.uuid) ?
                             setSavedVendors(savedVendors.filter((vendorId) => vendorId !== data.uuid)) :
                             setSavedVendors([...savedVendors, data.uuid]);
+                            updateSavedVendors();
                         }}
                     >
                         {savedVendors.includes(data.uuid) ? <Favorite sx={{

@@ -3,6 +3,7 @@ import { Table, TableBody, TableContainer, Paper, SxProps, TablePagination, Box 
 import { Order, Vendor } from "../../types/types";
 import { EnhancedTableHead } from "./EnhancedTableHead";
 import { EnhancedRow } from "./EnhancedRow";
+import { fetchWrapper } from "../../utils/fetch-wrapper";
 
 interface ITableProps {
     isMobile: boolean;
@@ -17,6 +18,12 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
     const [rowsPerPage, setRowsPerPage] = useState(100);
     const [savedVendors, setSavedVendors] = useState<string[]>([]);
     
+    async function getSavedVendors(): Promise<void> {
+        const response = await fetchWrapper("/users/me/vendors", "GET");
+        const data = (await response.json()).savedVendors;
+        setSavedVendors(data);
+    };
+
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
         if (b[orderBy] < a[orderBy]) {
           return -1;
@@ -53,13 +60,9 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
         [order, orderBy, page, rowsPerPage, loadingData, data]
     );
 
-    async function updateSavedVendors() {
-
-    };
-
     useEffect(() => {
-
-    }, [savedVendors]);
+        getSavedVendors();
+    }, []);
 
     const boxSx: SxProps = {
         display: 'flex',
