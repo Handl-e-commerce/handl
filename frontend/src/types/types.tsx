@@ -12,3 +12,5 @@ export type Vendor = {
     phoneNumber: string;
     email: string;
 };
+
+export type Order = 'asc' | 'desc';

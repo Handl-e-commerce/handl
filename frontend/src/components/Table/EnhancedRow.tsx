@@ -8,11 +8,12 @@ import { FavoriteBorder, Favorite } from "@mui/icons-material";
 interface IEnhancedRowProps {
     isMobile: boolean;
     data: Vendor;
+    savedVendors: string[];
+    setSavedVendors: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
+function EnhancedRow({ isMobile, data, savedVendors, setSavedVendors }: IEnhancedRowProps): JSX.Element {
     const [open, setOpen] = useState<boolean>(false)
-    const [savedVendors, setSavedVendors] = useState<string[]>([]);
     function formatValue(value: string): string {
         return value === '' ? 'Coming soon' : value;
     }
@@ -39,8 +40,9 @@ function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
                 <TableCell component='th' scope='row' onClick={() => setOpen(!open)}>{data.name}</TableCell>
                 {!isMobile && <TableCell onClick={() => setOpen(!open)}>{
                     <Link
-                        href={data.website} 
-                        target="_self"
+                        href={data.website}
+                        target="_blank"
+                        rel="noreferrer"
                         underline="none"
                         color='#3C8DBC'
                     >

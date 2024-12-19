@@ -1,10 +1,8 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Table, TableBody, TableContainer, Paper, SxProps, TablePagination, Box } from "@mui/material";
-import { Vendor } from "../../types/types";
+import { Order, Vendor } from "../../types/types";
 import { EnhancedTableHead } from "./EnhancedTableHead";
 import { EnhancedRow } from "./EnhancedRow";
-
-type Order = 'asc' | 'desc';
 
 interface ITableProps {
     isMobile: boolean;
@@ -13,10 +11,11 @@ interface ITableProps {
 };
 
 function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Element {
-    const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof Vendor>('name');
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(100);
+    const [order, setOrder] = useState<Order>('asc');
+    const [orderBy, setOrderBy] = useState<keyof Vendor>('name');
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(100);
+    const [savedVendors, setSavedVendors] = useState<string[]>([]);
     
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
         if (b[orderBy] < a[orderBy]) {
@@ -26,7 +25,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
           return 1;
         }
         return 0;
-    }
+    };
 
     function handleRequestSort(event: React.MouseEvent<unknown>, property: keyof Vendor): void {
         const isAsc = orderBy === property && order === 'asc';
@@ -44,7 +43,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
         setPage(0);
     };
     
-    const visibleRows = React.useMemo(() => 
+    const visibleRows = useMemo(() => 
         data.slice().sort(
             (a, b) => order === 'desc' ? descendingComparator(a, b, orderBy) : -descendingComparator(a, b, orderBy)
         ).slice(
@@ -53,6 +52,14 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
         ),
         [order, orderBy, page, rowsPerPage, loadingData, data]
     );
+
+    async function updateSavedVendors() {
+
+    };
+
+    useEffect(() => {
+
+    }, [savedVendors]);
 
     const boxSx: SxProps = {
         display: 'flex',
@@ -111,7 +118,13 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
                     <EnhancedTableHead isMobile={isMobile} order={order} orderBy={orderBy} onRequestSort={handleRequestSort}/>
                     <TableBody>
                         {visibleRows.map((vendor) => (
-                            <EnhancedRow key={vendor.uuid} isMobile={isMobile} data={vendor}/>
+                            <EnhancedRow 
+                                key={vendor.uuid}
+                                isMobile={isMobile}
+                                data={vendor}
+                                savedVendors={savedVendors}
+                                setSavedVendors={setSavedVendors}
+                            />
                         ))}
                     </TableBody>
                 </Table>
