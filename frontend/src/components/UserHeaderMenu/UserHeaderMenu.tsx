@@ -37,8 +37,8 @@ function UserHeaderMenu({ sx }: IUserHeaderMenuProps): JSX.Element {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'end',
-        marginLeft: isMobile ? 0 : loggedIn ? '0' : '.5rem',
-        paddingRight: isMobile ? null : '1rem',
+        marginLeft: isMobile ? 0 : loggedIn ? '3.5rem' : '.5rem',
+        paddingRight: isMobile ? (loggedIn ? '20px' : null) : null,
     };
     
     function redirectSignUp(): void {

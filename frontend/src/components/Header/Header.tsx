@@ -37,10 +37,10 @@ function Header(): JSX.Element {
         if (isMobile) {
             return (
                 <>
-                    <Grid container pt={1} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                         <MobileDrawer>
                             <CategoriesMenu sx={{...dropdownButtonSx, fontSize: '16px'}}/>
-                            <Link 
+                            <Link
                                 href={location.origin + "/about-us"}
                                 target="_self"
                                 underline="none"
@@ -69,7 +69,15 @@ function Header(): JSX.Element {
                                 Saved Vendors
                             </Link>}
                         </MobileDrawer>
-                        <Grid item sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '-.5rem' : '2rem'}}>
+                        <Grid 
+                            item 
+                            sx={{
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'baseline',
+                                marginLeft: loggedIn ? '-4rem' : '-1rem',
+                            }}
+                        >
                             <a href={location.origin} target="_self">
                                 <img src={goldLogoTransparent} alt="Handl Logo" width={"140px"} height={"60px"} style={{padding: '10px'}}/>
                             </a>
