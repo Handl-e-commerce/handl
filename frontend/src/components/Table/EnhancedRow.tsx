@@ -20,10 +20,22 @@ function EnhancedRow({ isMobile, data, savedVendors, setSavedVendors }: IEnhance
         return value === '' ? 'Coming soon' : value;
     };
 
-    async function updateSavedVendors() {
+    async function updateSavedVendors(newVendorIds: string[]) {
         await fetchWrapper("/users/vendors/save", "PUT", {
-            vendorIds: savedVendors,
+            vendorIds: newVendorIds,
         });
+    };
+
+    async function handleSavedVendorChange() {
+        if (savedVendors.includes(data.uuid)) {
+            const newVendorIds = savedVendors.filter((vendorId) => vendorId !== data.uuid);
+            setSavedVendors(newVendorIds);
+            updateSavedVendors(newVendorIds);
+        }
+        else {
+            setSavedVendors([...savedVendors, data.uuid]);
+            updateSavedVendors([...savedVendors, data.uuid]);
+        }
     };
 
     return (
@@ -61,12 +73,7 @@ function EnhancedRow({ isMobile, data, savedVendors, setSavedVendors }: IEnhance
                 {!isMobile && <TableCell onClick={() => setOpen(!open)}>{formatValue(data.state)}</TableCell>}
                 <TableCell>
                     <IconButton
-                        onClick={() => {
-                            savedVendors.includes(data.uuid) ?
-                            setSavedVendors(savedVendors.filter((vendorId) => vendorId !== data.uuid)) :
-                            setSavedVendors([...savedVendors, data.uuid]);
-                            updateSavedVendors();
-                        }}
+                        onClick={handleSavedVendorChange}
                     >
                         {savedVendors.includes(data.uuid) ? <Favorite sx={{
                             color: '#DC4637'

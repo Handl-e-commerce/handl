@@ -20,7 +20,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
     
     async function getSavedVendors(): Promise<void> {
         const response = await fetchWrapper("/users/me/vendors", "GET");
-        const data = (await response.json()).savedVendors;
+        const data = (await response.json()).savedVendors.map((vendor: Vendor) => vendor.uuid);
         setSavedVendors(data);
     };
 
