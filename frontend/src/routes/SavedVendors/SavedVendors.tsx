@@ -8,14 +8,12 @@ import { Vendor } from "../../types/types";
 function SavedVendors(): JSX.Element {
     const [loadingData, setLoadingData] = useState<boolean>(true);
     const [savedVendors, setSavedVendors] = useState<Vendor[]>([]);
-    const [savedVendorIds, setSavedVendorIds] = useState<string[]>([]);
     const isMobile = useMobile();
 
     async function getSavedVendors(): Promise<void> {
         const response = await fetchWrapper("/users/me/vendors", "GET");
         const data = (await response.json()).savedVendors;
         setSavedVendors(data);
-        setSavedVendorIds(data.map((vendor: Vendor) => vendor.uuid))
         setLoadingData(false);
     };
 
