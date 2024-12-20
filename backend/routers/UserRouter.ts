@@ -5,6 +5,7 @@ import {UserService} from "../services/UserService";
 import {VerificationService} from "../services/VerificationService";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
 import {User} from "../db/models/User";
+import {Vendor} from "../db/models/Vendor";
 
 const userRouter = express.Router();
 
@@ -83,7 +84,7 @@ userRouter.get("/me/vendors", async (req: Request, res: Response, next: NextFunc
                 .send();
         }
         const userService: UserService = new UserService();
-        const savedVendors: string[] = await userService.GetSavedVendors(cookies.userId);
+        const savedVendors: Vendor[] = await userService.GetSavedVendors(cookies.userId);
         return res.status(200).json({
             savedVendors: savedVendors,
         });

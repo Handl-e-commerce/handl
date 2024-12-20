@@ -11,7 +11,6 @@ interface IVendorService {
     ) => Promise<Vendor[]>;
     GetCategories: () => Promise<Category[]>;
     GetSubCategories: (category: string) => Promise<Category[]>;
-    GetVendorsByVendorIds: (vendorIds: string[]) => Promise<Vendor[]>;
 }
 
 export {IVendorService};

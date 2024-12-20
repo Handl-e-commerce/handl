@@ -7,6 +7,9 @@ import {AuthToken} from "../db/models/AuthToken";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
 import {EmailService} from "./EmailService";
 import {VerificationService} from "./VerificationService";
+import {Vendor} from "../db/models/Vendor";
+import {QueryTypes} from "sequelize";
+import {Database} from "../db/Database";
 
 /**
  * User Service Class
@@ -105,20 +108,38 @@ class UserService implements IUserService {
      * @param {string} userId
      * @return {string[]}
      */
-    public async GetSavedVendors(userId: string): Promise<string[]> {
+    public async GetSavedVendors(userId: string): Promise<Vendor[]> {
         try {
-            const usersSavedVendors = await User.findOne({
-                where: {
-                    uuid: userId,
+            // Wrote a raw query because it's more efficient than using sequelize's ORM logic
+            return await Database.GetInstance().sequelize.query(
+                `
+                    SELECT 
+                        uuid,
+                        name,
+                        description,
+                        website,
+                        categories,
+                        subcategories,
+                        people,
+                        address,
+                        city,
+                        state,
+                        zipcode,
+                        "phoneNumber",
+                        email
+                    FROM public."Vendors"
+                    WHERE uuid IN (
+                        SELECT UNNEST("savedVendors") FROM public."Users"
+                        WHERE uuid = :userId
+                    );
+                `,
+                {
+                    replacements: {
+                        userId: userId,
+                    },
+                    type: QueryTypes.SELECT,
                 },
-                attributes: ["savedVendors"],
-            });
-
-            if (!usersSavedVendors || !usersSavedVendors.savedVendors) {
-                return [];
-            }
-
-            return usersSavedVendors.savedVendors;
+            );
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);
