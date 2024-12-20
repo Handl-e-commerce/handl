@@ -120,7 +120,7 @@ function Header(): JSX.Element {
                         Saved Vendors
                     </Link>}
                 </Box>
-                <UserHeaderMenu sx={dropdownButtonSx} />
+                <UserHeaderMenu sx={{ ...dropdownButtonSx, marginRight: '1.5rem'}} />
             </Box>
         );
     };
