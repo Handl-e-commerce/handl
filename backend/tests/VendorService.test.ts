@@ -1,5 +1,7 @@
 import {describe, expect, it} from "@jest/globals";
 import {VendorService} from "../services/VendorService";
+import { Vendor } from "../db/models/Vendor";
+import { Op } from "sequelize";
 
 describe("VendorService tests", () => {
     it("Should return all results", async () => {

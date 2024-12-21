@@ -10,7 +10,7 @@ function MobileDrawer({children}: IMobileDrawerProps): JSX.Element {
     const [toggleDrawer, setToggleDrawer] = useState<boolean>(false);
 
     return (
-        <Grid item sx={{ marginLeft: '.125rem', marginRight: "-2rem" }}>
+        <Grid item sx={{ marginLeft: '.125rem' }}>
             <IconButton onClick={() => setToggleDrawer(!toggleDrawer)}>
                 <Menu sx={{color: '#F2E5D1'}}/>
             </IconButton>

@@ -11,6 +11,7 @@ import { Redirect } from './routes/Reset/Redirect';
 import { Password } from './routes/Reset/Password';
 import { Header } from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
+import { SavedVendors } from './routes/SavedVendors/SavedVendors';
 
 function Layout(): JSX.Element {
     return (
@@ -62,9 +63,13 @@ const Router = createBrowserRouter([
             {
                 path: "/reset/password",
                 element: <Password />,
-            }
-        ]
-    }
+            },
+            {
+                path: "/me/saved-vendors",
+                element: <SavedVendors/>
+            },
+        ],
+    },
 ]);
 
 export {Router};

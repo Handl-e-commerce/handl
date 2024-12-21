@@ -29,7 +29,8 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
             marginBottom: '10px',
         },
         contactInfoRow: {
-            marginBottom: '3px'
+            marginBottom: '3px',
+            display: 'flex',
         },
         peopleCategories: {
             marginRight: isMobile ? 0 : 10,
@@ -54,8 +55,15 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
             return (
                 <Typography variant={isMobile ? 'body2' : 'body1'} component='pre' sx={styles.contactInfoRow}>
                     <Place style={{ verticalAlign: "middle", marginRight: '7px' }} />
-                    <Link href={googleMapsUrl + params} target="_blank" rel="noreferrer" data-testid='google-maps-link'>
-                        {row.address + ", " + row.city + ", " + row.state + ", " + row.zipcode}
+                    <Link 
+                        href={googleMapsUrl + params}
+                        target="_blank"
+                        rel="noreferrer"
+                        data-testid='google-maps-link'
+                        color='#3C8DBC'
+                    >
+                        <Box>{row.address + ","}</Box>
+                        <Box>{row.city + ", " + row.state + ", " + row.zipcode}</Box>
                     </Link>
                 </Typography>    
             )
@@ -77,7 +85,7 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
         
         if (address !== "") {
             return (
-                <Typography variant={isMobile ? 'body2' : 'body1'} component='pre' sx={styles.contactInfoRow} color='#3C8DBC'>
+                <Typography variant={isMobile ? 'body2' : 'body1'} component='pre' sx={styles.contactInfoRow}>
                     <Place style={{ verticalAlign: "middle", marginRight: '7px' }} />
                     {address}
                 </Typography>

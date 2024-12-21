@@ -25,7 +25,8 @@ describe("Contact Us Tests", function() {
         await user.click(screen.getByText("Submit"));
 
         await waitFor(() => {
-            expect(screen.getByText("Thanks for you message! We'll respond to you soon!")).toBeInTheDocument();
+            expect(screen.getByText("Thanks for you message!")).toBeInTheDocument();
+            expect(screen.getByText("We'll respond to you soon!")).toBeInTheDocument();
         });
 
 

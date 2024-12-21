@@ -1,4 +1,3 @@
-import { act } from 'react';
 import { describe, expect, it } from '@jest/globals';
 import { render, screen, waitFor } from '@testing-library/react';
 import { SearchBar } from './SearchBar';

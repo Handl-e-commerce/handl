@@ -3,18 +3,40 @@ import { Vendor } from "../../types/types";
 import { TableRow, TableCell, IconButton, Collapse, Box, Link } from "@mui/material";
 import { KeyboardArrowUp, KeyboardArrowDown } from "@mui/icons-material";
 import { ExpandedRow } from "../ExpandedRow/ExpandedRow";
+import { FavoriteBorder, Favorite } from "@mui/icons-material";
+import { fetchWrapper } from "../../utils/fetch-wrapper";
 
 interface IEnhancedRowProps {
     isMobile: boolean;
     data: Vendor;
+    savedVendors: string[];
+    setSavedVendors: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
+function EnhancedRow({ isMobile, data, savedVendors, setSavedVendors }: IEnhancedRowProps): JSX.Element {
     const [open, setOpen] = useState<boolean>(false)
-
+    
     function formatValue(value: string): string {
         return value === '' ? 'Coming soon' : value;
-    }
+    };
+
+    async function updateSavedVendors(newVendorIds: string[]) {
+        await fetchWrapper("/users/vendors/save", "PUT", {
+            vendorIds: newVendorIds,
+        });
+    };
+
+    async function handleSavedVendorChange() {
+        if (savedVendors.includes(data.uuid)) {
+            const newVendorIds = savedVendors.filter((vendorId) => vendorId !== data.uuid);
+            setSavedVendors(newVendorIds);
+            updateSavedVendors(newVendorIds);
+        }
+        else {
+            setSavedVendors([...savedVendors, data.uuid]);
+            updateSavedVendors([...savedVendors, data.uuid]);
+        }
+    };
 
     return (
         <>
@@ -49,6 +71,16 @@ function EnhancedRow({ isMobile, data }: IEnhancedRowProps): JSX.Element {
                 }</TableCell>}
                 {!isMobile && <TableCell onClick={() => setOpen(!open)}>{formatValue(data.phoneNumber)}</TableCell>}
                 {!isMobile && <TableCell onClick={() => setOpen(!open)}>{formatValue(data.state)}</TableCell>}
+                <TableCell>
+                    <IconButton
+                        onClick={handleSavedVendorChange}
+                        aria-label="icon-button-favorite"
+                    >
+                        {savedVendors.includes(data.uuid) ? <Favorite sx={{
+                            color: '#DC4637'
+                        }}/> : <FavoriteBorder />}
+                    </IconButton>
+                </TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ padding: isMobile ? 0 : '0px 10px' }} colSpan={6}>

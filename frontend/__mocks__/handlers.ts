@@ -288,5 +288,33 @@ export const handlers = [
         return new HttpResponse(null, {
             status: 201
         });
-    })
+    }),
+    http.get(REACT_APP_SERVER_URI + `/users/me/vendors`, ({request, params, cookies}) => {
+        return new HttpResponse(JSON.stringify({
+                savedVendors: [
+                    {
+                        uuid: "randomUuid1",
+                        name: "Foobaroni Associates",
+                        description: "Classified",
+                        website: "foobaroniasc.com",
+                        categories: "Category1, Category2",
+                        people: ["Tony Soprano"],
+                        address: "Don't worry about it",
+                        city: "Brooklyn",
+                        state: "NY",
+                        zipcode: "11111",
+                        phoneNumber: "(555) 555-5555",
+                        email: "tsoprano@foobaroni.com",
+                    }
+                ]}
+            ), {
+                status: 200,
+            }
+        );
+    }),
+    http.put(REACT_APP_SERVER_URI + `/users/vendors/save`, ({request, params, cookies}) => {
+        return new HttpResponse( null, {
+            status: 201
+        });
+    }),
 ];

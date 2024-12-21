@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
-import { Box, Button, Container, FormControl, IconButton, InputAdornment, ListItemText, MenuItem, Select, SxProps, TextField } from "@mui/material";
+import { Box, Button, Container, FormControl, IconButton, InputAdornment, Link, ListItemText, MenuItem, Select, SxProps, TextField, Typography } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { states } from "../../utils/constants";
+import { East } from "@mui/icons-material";
 
 function SignUp(): JSX.Element {
     let location = window.location;
@@ -159,7 +160,29 @@ function SignUp(): JSX.Element {
         <Container sx={containerSx}>
             <h1>Sign Up Free</h1>
             <Box className="sign-up-container" data-testid="default-form" sx={boxSx}>
-                <div>Already a member? <a href={location.origin + "/login?"}>{"Login ->"}</a></div>
+                <Typography 
+                    variant="body1"
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                    fontSize="1.125rem"
+                    >
+                    Already a member?
+                    <Link 
+                        href={location.origin + "/login"}
+                        sx={{
+                            marginLeft: '5px',
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                        underline="none"
+                    >
+                        Login
+                        <East fontSize="small"/>
+                    </Link>
+                </Typography>
                 <TextField 
                     type="email"
                     value={email}

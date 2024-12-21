@@ -30,15 +30,16 @@ function UserHeaderMenu({ sx }: IUserHeaderMenuProps): JSX.Element {
     const cookieObject = cookieParser();
     const isMobile: boolean = useMobile();
     const location = window.location;
-    let loggedIn = useLoginStatus();
+    const loggedIn = useLoginStatus();
+
     let isLoginOrSignUpPage: boolean = location.pathname === "/login" || location.pathname === "/sign-up";
     
     const menuSx: SxProps = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'end',
-        marginLeft: isMobile ? 0 : loggedIn ? '0' : '.5rem',
-        paddingRight: isMobile ? null : '1rem',
+        marginLeft: isMobile ? 0 : loggedIn ? '3.5rem' : '.5rem',
+        paddingRight: isMobile ? (loggedIn ? '20px' : null) : null,
     };
     
     function redirectSignUp(): void {

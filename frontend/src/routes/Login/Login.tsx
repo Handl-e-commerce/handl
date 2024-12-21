@@ -97,7 +97,7 @@ function Login(): JSX.Element {
         if (submittedResetRequest) {
             return (
                 <Container sx={containerSx}>
-                    We've sent a password reset link to your email.
+                    <h1>We've sent a password reset link to your email.</h1>
                 </Container>
             )
         }

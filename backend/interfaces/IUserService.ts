@@ -19,6 +19,7 @@ interface IUserService {
         expires?: Date | null
         firstName?: string | null
     }>;
+    SaveVendors: (vendorIds: string[], userId: string) => Promise<void>
 }
 
 export {IUserService};

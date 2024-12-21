@@ -3,12 +3,13 @@ import {User} from "../db/models/User";
 import {IUserDetails} from "../interfaces/IUserDetails";
 import {IUserService} from "../interfaces/IUserService";
 import * as argon2 from "argon2";
-import {Vendor} from "../db/models/Vendor";
 import {AuthToken} from "../db/models/AuthToken";
-import {Op} from "sequelize";
 import {IGenericQueryResult} from "../interfaces/IGenericQueryResult";
 import {EmailService} from "./EmailService";
 import {VerificationService} from "./VerificationService";
+import {Vendor} from "../db/models/Vendor";
+import {QueryTypes} from "sequelize";
+import {Database} from "../db/Database";
 
 /**
  * User Service Class
@@ -105,31 +106,40 @@ class UserService implements IUserService {
     /**
      * Get list of Vendors based on user's saved vendors
      * @param {string} userId
-     * @return {Vendor[]}
+     * @return {string[]}
      */
     public async GetSavedVendors(userId: string): Promise<Vendor[]> {
         try {
-            const usersSavedVendors = await User.findOne({
-                where: {
-                    uuid: userId,
-                },
-                attributes: ["savedVendors"],
-            });
-
-            if (!usersSavedVendors || !usersSavedVendors.savedVendors) {
-                return [];
-            }
-
-            const savedVendors = await Vendor.findAll({
-                where: {
-                    name: {
-                        [Op.and]: usersSavedVendors.savedVendors,
+            // Wrote a raw query because it's more efficient than using sequelize's ORM logic
+            return await Database.GetInstance().sequelize.query(
+                `
+                    SELECT 
+                        uuid,
+                        name,
+                        description,
+                        website,
+                        categories,
+                        subcategories,
+                        people,
+                        address,
+                        city,
+                        state,
+                        zipcode,
+                        "phoneNumber",
+                        email
+                    FROM public."Vendors"
+                    WHERE uuid IN (
+                        SELECT UNNEST("savedVendors") FROM public."Users"
+                        WHERE uuid = :userId
+                    );
+                `,
+                {
+                    replacements: {
+                        userId: userId,
                     },
+                    type: QueryTypes.SELECT,
                 },
-                attributes: ["name", "uuid"],
-            });
-
-            return savedVendors;
+            );
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);
@@ -322,6 +332,26 @@ class UserService implements IUserService {
                 },
             });
             console.log(`Number of rows deleted: ${rowsAffected}`);
+        } catch (err) {
+            const error = err as Error;
+            throw Error(error.message);
+        }
+    }
+
+    /**
+     * Updates the list of saved vendors for users favorited vendors
+     * @param {string[]} vendorIds
+     * @param {string} userId
+     */
+    public async SaveVendors(vendorIds: string[], userId: string) {
+        try {
+            await User.update({
+                savedVendors: vendorIds,
+            }, {
+                where: {
+                    uuid: userId,
+                },
+            });
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);

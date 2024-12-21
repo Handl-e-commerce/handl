@@ -23,7 +23,7 @@ userRouter.post("/register", async (req: Request, res: Response, next: NextFunct
     }
 });
 
-userRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get("/me", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const cookies = req.cookies;
         const verificationService: VerificationService = new VerificationService();
@@ -58,7 +58,7 @@ userRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) =
     }
 });
 
-userRouter.get("/:id/vendors", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get("/me/vendors", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const cookies = req.cookies;
         const verificationService: VerificationService = new VerificationService();
@@ -221,7 +221,6 @@ userRouter.post("/logout", async (req: Request, res: Response, next: NextFunctio
     }
 });
 
-// TODO: (MEDIUM) Next on TODO list is to investigate why this is 500ing on the server in dev
 userRouter.post("/registration/verify", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userId: string = req.body.userId;
@@ -315,6 +314,40 @@ userRouter.post("/recaptcha/verify", async (req: Request, res: Response, next: N
         return res.status(201).json({
             success: success,
         });
+    } catch (err: unknown) {
+        return next(err as Error);
+    }
+});
+
+userRouter.put("/vendors/save", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const cookies = req.cookies;
+        const verificationService: VerificationService = new VerificationService();
+        const isVerified: boolean = await verificationService.VerifyUser(
+            cookies.selector,
+            cookies.validator,
+            cookies.userId
+        );
+        if (!isVerified) {
+            return res.status(401)
+                .cookie("selector", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .cookie("validator", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .send();
+        }
+        const vendorIds: string[] = req.body.vendorIds;
+        const userService: UserService = new UserService();
+        await userService.SaveVendors(vendorIds, cookies.userId);
+        return res.status(204).send();
     } catch (err: unknown) {
         return next(err as Error);
     }

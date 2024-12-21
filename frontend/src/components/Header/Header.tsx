@@ -5,6 +5,7 @@ import { useMobile } from "../../hooks/useMobile";
 import { CategoriesMenu } from "../CategoriesMenu/CategoriesMenu";
 import { UserHeaderMenu } from "../UserHeaderMenu/UserHeaderMenu";
 import { MobileDrawer } from "../MobileDrawer/MobileDrawer";
+import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 
 const headerStyles: React.CSSProperties = {
     position: 'relative',
@@ -18,9 +19,8 @@ const headerStyles: React.CSSProperties = {
 };
 
 const dropdownButtonSx: SxProps = {
-    marginRight: '.75rem',
     fontWeight: 600,
-    fontSize: '16px',
+    fontSize: '16px !important',
     background: '#3B4B59',
     color: '#F2E5D1',
     width: 'fit-content',
@@ -31,17 +31,53 @@ const dropdownButtonSx: SxProps = {
 function Header(): JSX.Element {
     const location = window.location;
     const isMobile: boolean = useMobile();
+    const loggedIn: boolean = useLoginStatus();
 
     function gridLayout(): JSX.Element {
         if (isMobile) {
             return (
                 <>
-                    <Grid container pt={1} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                         <MobileDrawer>
-                            <CategoriesMenu sx={{...dropdownButtonSx, fontSize: '20px'}}/>
-                            <Link href={location.origin + "/about-us"} target="_self" underline="none" color='#F2E5D1' sx={{ fontSize: '20px', fontWeight: 600, paddingLeft: '16px' }}>About</Link>
+                            <CategoriesMenu sx={{...dropdownButtonSx, fontSize: '16px'}}/>
+                            <Link
+                                href={location.origin + "/about-us"}
+                                target="_self"
+                                underline="none"
+                                color='#F2E5D1'
+                                sx={{
+                                    paddingBottom: '6px',
+                                    paddingLeft: '1rem',
+                                    fontSize: '16px',
+                                    fontWeight: 600
+                                }}
+                            >
+                                About
+                            </Link>
+                            {loggedIn && <Link 
+                                href={location.origin + "/me/saved-vendors"}
+                                target="_self"
+                                underline="none"
+                                color='#F2E5D1'
+                                sx={{
+                                    paddingBottom: '6px', 
+                                    paddingLeft: '1rem',
+                                    fontSize: '16px',
+                                    fontWeight: 600
+                                }}
+                            >
+                                Saved Vendors
+                            </Link>}
                         </MobileDrawer>
-                        <Grid item sx={{display: 'flex', alignItems: 'center', justifyContent: 'baseline', marginLeft: isMobile ? '-.5rem' : '2rem'}}>
+                        <Grid 
+                            item 
+                            sx={{
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'baseline',
+                                marginLeft: loggedIn ? '-4rem' : '-1rem',
+                            }}
+                        >
                             <a href={location.origin} target="_self">
                                 <img src={goldLogoTransparent} alt="Handl Logo" width={"140px"} height={"60px"} style={{padding: '10px'}}/>
                             </a>
@@ -58,9 +94,33 @@ function Header(): JSX.Element {
                         <img src={goldLogoTransparent} alt="Handl Logo" width={"120px"} height={"55px"} style={{padding: '10px'}}/>
                     </a>
                     <CategoriesMenu sx={dropdownButtonSx} />
-                    <Link href={location.origin + "/about-us"} target="_self" underline="none" color='#F2E5D1' sx={{ fontSize: '16px', fontWeight: 600 }}>About</Link>
+                    <Link 
+                        href={location.origin + "/about-us"}
+                        target="_self"
+                        underline="none"
+                        color='#F2E5D1'
+                        sx={{
+                            marginRight: '16px',
+                            fontSize: '16px',
+                            fontWeight: 600
+                        }}
+                    >
+                        About
+                    </Link>
+                    {loggedIn && <Link 
+                        href={location.origin + "/me/saved-vendors"}
+                        target="_self"
+                        underline="none"
+                        color='#F2E5D1'
+                        sx={{
+                            fontSize: '16px',
+                            fontWeight: 600
+                        }}
+                    >
+                        Saved Vendors
+                    </Link>}
                 </Box>
-                <UserHeaderMenu sx={dropdownButtonSx} />
+                <UserHeaderMenu sx={{ ...dropdownButtonSx, marginRight: '1.5rem'}} />
             </Box>
         );
     };

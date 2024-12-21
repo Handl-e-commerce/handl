@@ -38,7 +38,7 @@ afterEach(() => {
 describe("Header Test", function() {
     const user = userEvent.setup();
     it("Should render the logged in header because valid long term session cookies are stored", async function() {
-        mockUseLoginStatus.mockReturnValueOnce(true);
+        mockUseLoginStatus.mockReturnValue(true);
         Object.defineProperty(window.document, 'cookie', {
             writable: true,
             value: "firstName=MockFirstName",
@@ -49,6 +49,7 @@ describe("Header Test", function() {
             let navBar = screen.getByTestId("header");
             expect(navBar).toBeDefined();
             expect(navBar).toBeInTheDocument();
+            expect(screen.getByText("Saved Vendors")).toBeInTheDocument();
             expect(screen.getByText(/hi, mockfirstname/i)).toBeInTheDocument();
         });
     });
@@ -60,6 +61,7 @@ describe("Header Test", function() {
             let header = screen.getByTestId("header");
             expect(header).toBeDefined();
             expect(header).toBeInTheDocument();
+            expect(screen.queryByText("Saved Vendors")).toBeNull();
             expect(screen.getByText(/Login/i)).toBeInTheDocument();
             expect(screen.getByText(/Sign Up/i)).toBeInTheDocument();
         });
