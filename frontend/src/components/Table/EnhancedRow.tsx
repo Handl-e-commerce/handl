@@ -74,6 +74,7 @@ function EnhancedRow({ isMobile, data, savedVendors, setSavedVendors }: IEnhance
                 <TableCell>
                     <IconButton
                         onClick={handleSavedVendorChange}
+                        aria-label="icon-button-favorite"
                     >
                         {savedVendors.includes(data.uuid) ? <Favorite sx={{
                             color: '#DC4637'

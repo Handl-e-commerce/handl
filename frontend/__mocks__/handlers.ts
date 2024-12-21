@@ -312,4 +312,9 @@ export const handlers = [
             }
         );
     }),
+    http.put(REACT_APP_SERVER_URI + `/users/vendors/save`, ({request, params, cookies}) => {
+        return new HttpResponse( null, {
+            status: 201
+        });
+    }),
 ];

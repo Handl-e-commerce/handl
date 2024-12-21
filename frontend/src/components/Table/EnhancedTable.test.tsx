@@ -51,6 +51,12 @@ const mockData: Vendor[] = [
 
 ];
 
+global.fetch = jest.fn();
+
+beforeEach(() => {
+    jest.resetAllMocks();
+});
+
 describe("EnhancedTable Tests", () => {
     it("Should render data as expected", async () => {
         render(<EnhancedTable isMobile={false} loadingData={false} data={mockData}/>);
@@ -85,7 +91,15 @@ describe("EnhancedTable Tests", () => {
         });
     });
 
-    it("Should render api call when clicking on favorite vendor", async () => {
+    it("Should update favorites when clicking on favorite icon button for vendor", async () => {
         render(<EnhancedTable isMobile={false} loadingData={false} data={mockData}/>);
+        await userEvent.click(screen.getAllByLabelText("icon-button-favorite")[1]);
+        await waitFor(() => {
+            expect(screen.getAllByTestId("FavoriteIcon").length).toEqual(2);
+        });
+        await userEvent.click(screen.getAllByLabelText("icon-button-favorite")[0]);
+        await waitFor(() => {
+            expect(screen.getAllByTestId("FavoriteIcon").length).toEqual(1);
+        });
     });
 });
