@@ -30,7 +30,8 @@ function UserHeaderMenu({ sx }: IUserHeaderMenuProps): JSX.Element {
     const cookieObject = cookieParser();
     const isMobile: boolean = useMobile();
     const location = window.location;
-    let loggedIn = useLoginStatus();
+    const loggedIn = useLoginStatus();
+
     let isLoginOrSignUpPage: boolean = location.pathname === "/login" || location.pathname === "/sign-up";
     
     const menuSx: SxProps = {
