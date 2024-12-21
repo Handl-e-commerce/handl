@@ -55,7 +55,8 @@ function ContactUs(): JSX.Element {
     if (isSubmit) {
         return (
             <Container sx={containerSx}>
-                Thanks for you message! We'll respond to you soon!
+                <h1>Thanks for you message!</h1>
+                <h2>We'll respond to you soon!</h2>
             </Container>
         )
     }
