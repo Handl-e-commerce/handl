@@ -55,7 +55,7 @@ function Header(): JSX.Element {
                                 About
                             </Link>
                             <Link 
-                                href={location.origin + "/blogs"}
+                                href={location.origin + "/blog"}
                                 target="_self"
                                 underline="none"
                                 color='#F2E5D1'
@@ -66,7 +66,7 @@ function Header(): JSX.Element {
                                     fontWeight: 600
                                 }}
                             >
-                                Blogs
+                                Blog
                             </Link>
                             {loggedIn && <Link 
                                 href={location.origin + "/me/saved-vendors"}
@@ -122,7 +122,7 @@ function Header(): JSX.Element {
                         About
                     </Link>
                     <Link 
-                        href={location.origin + "/blogs"}
+                        href={location.origin + "/blog"}
                         target="_self"
                         underline="none"
                         color='#F2E5D1'
@@ -132,7 +132,7 @@ function Header(): JSX.Element {
                             fontWeight: 600
                         }}
                     >
-                        Blogs
+                        Blog
                     </Link>
                     {loggedIn && <Link 
                         href={location.origin + "/me/saved-vendors"}

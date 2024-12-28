@@ -70,11 +70,11 @@ const Router = createBrowserRouter([
                 element: <SavedVendors/>
             },
             {
-                path: "/blogs",
+                path: "/blog",
                 element: <Blogs />
             },
             {
-                path: "/blogs/:title",
+                path: "/blog/:title",
             },
         ],
     },
