@@ -1,4 +1,4 @@
-import { Typography, Link, SxProps, Grid } from "@mui/material";
+import { Typography, Link, SxProps, Grid, Box } from "@mui/material";
 import { useMobile } from "../../hooks/useMobile";
 import logo from "../../static/logo.jpg";
 
@@ -15,8 +15,9 @@ const boxSx: SxProps = {
     textAlign: 'left',
     borderRadius: '5px',
     transition: 'all .2s ease-in-out',
+    padding: '1%',
     '&:hover': {
-        transform: 'scale(105%)',
+        transform: 'scale(102%)',
     }
 };
 
@@ -26,23 +27,26 @@ function BlogCard({ title, author, link, date }: IBlogCardProps): JSX.Element {
         <Grid item sx={boxSx} xs={ isMobile ? 12 : 4}>
             <img 
                 src={logo} 
-                style={{ borderRadius: '5px' }}
+                style={{ borderRadius: '12px' }}
             />
-            <Typography variant="h5" sx={{ margin: '7px 0px'}}>{title}</Typography>
-            <Typography variant="body1" fontWeight={700} sx={{ margin: '7px 0px'}}>{author}</Typography>
-            <Typography variant="body2">{date}</Typography>
-            <Link
-                href={window.location.origin + "/" + link}
-                target="_self"
-                underline="none"
-                color='#3C8DBC'
-                sx={{
-                    fontSize: '16px',
-                    fontWeight: 600
-                }}
-            >
-                Read More
-            </Link>
+            <Box sx={{paddingLeft: '0.25rem'}}>
+                <Typography variant="h5" sx={{ margin: '7px 0px'}}>{title}</Typography>
+                <Typography variant="body1" fontWeight={700} sx={{ margin: '7px 0px'}}>{author}</Typography>
+                <Typography variant="body2" sx={{ margin: '7px 0px'}}>{date}</Typography>
+                <Link
+                    href={window.location.origin + "/" + link}
+                    target="_self"
+                    underline="none"
+                    color='#3C8DBC'
+                    sx={{
+                        marginTop: '3%',
+                        fontSize: '16px',
+                        fontWeight: 600
+                    }}
+                >
+                    Read More
+                </Link>
+            </Box>
         </Grid>
     );
 };
