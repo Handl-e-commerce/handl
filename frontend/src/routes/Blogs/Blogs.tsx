@@ -50,7 +50,7 @@ function Blogs(): JSX.Element {
                 container
                 columns={9}
                 spacing={5}
-                padding={'4% 9.5%'}
+                padding={isMobile ? '7%' : '4% 9.5%'}
             >
                 {blogs.map(blog => <BlogCard {...blog} />)}
             </Grid>
