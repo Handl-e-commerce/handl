@@ -12,6 +12,7 @@ import { Password } from './routes/Reset/Password';
 import { Header } from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { SavedVendors } from './routes/SavedVendors/SavedVendors';
+import { Blogs } from './routes/Blogs/Blogs';
 
 function Layout(): JSX.Element {
     return (
@@ -67,6 +68,10 @@ const Router = createBrowserRouter([
             {
                 path: "/me/saved-vendors",
                 element: <SavedVendors/>
+            },
+            {
+                path: "/blogs",
+                element: <Blogs />
             },
         ],
     },

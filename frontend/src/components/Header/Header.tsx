@@ -107,6 +107,19 @@ function Header(): JSX.Element {
                     >
                         About
                     </Link>
+                    <Link 
+                        href={location.origin + "/blogs"}
+                        target="_self"
+                        underline="none"
+                        color='#F2E5D1'
+                        sx={{
+                            marginRight: '16px',
+                            fontSize: '16px',
+                            fontWeight: 600
+                        }}
+                    >
+                        Blogs
+                    </Link>
                     {loggedIn && <Link 
                         href={location.origin + "/me/saved-vendors"}
                         target="_self"
