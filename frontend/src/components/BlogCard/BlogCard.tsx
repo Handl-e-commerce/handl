@@ -14,7 +14,6 @@ const boxSx: SxProps = {
     flexDirection: 'column',
     textAlign: 'left',
     borderRadius: '5px',
-    width: '375px',
     transition: 'all .2s ease-in-out',
     '&:hover': {
         transform: 'scale(105%)',
@@ -22,10 +21,12 @@ const boxSx: SxProps = {
 };
 
 function BlogCard({ title, author, link, date }: IBlogCardProps): JSX.Element {
+    const isMobile: boolean = useMobile();
     return (
-        <Grid item sx={boxSx}>
+        <Grid item sx={boxSx} xs={ isMobile ? 12 : 4}>
             <img 
-                src={logo} style={{ borderRadius: '5px' }}
+                src={logo} 
+                style={{ borderRadius: '5px' }}
             />
             <Typography variant="h5" sx={{ margin: '7px 0px'}}>{title}</Typography>
             <Typography variant="body1" fontWeight={700} sx={{ margin: '7px 0px'}}>{author}</Typography>

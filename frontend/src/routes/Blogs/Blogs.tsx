@@ -37,7 +37,7 @@ function Blogs(): JSX.Element {
     };
     
     return (
-        <Box sx={{ minHeight: '40rem'}}>
+        <Box sx={{ display: "flex", flexDirection: 'column', justifyContent: "center"}}>
             <Box sx={styles.banner}>
                 <Typography fontSize={'54px'} justifySelf={'baseline'} fontWeight={600} marginBottom={'1rem'}>
                     Dive Even Deeper.
@@ -48,11 +48,11 @@ function Blogs(): JSX.Element {
             </Box>
             <Grid
                 container
-                columns={9}
-                spacing={5}
-                padding={isMobile ? '7%' : '4% 9.5%'}
+                spacing={3}
+                marginTop={'1%'}
+                padding={'2% 6%'}
             >
-                {blogs.map(blog => <BlogCard {...blog} />)}
+                {blogs.map((blog, i) => <BlogCard key={i} {...blog} />)}
             </Grid>
         </Box>
     );
