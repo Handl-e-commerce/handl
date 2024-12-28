@@ -2,7 +2,6 @@ import React from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import { useMobile } from "../../hooks/useMobile";
 import { BlogCard } from "../../components/BlogCard/BlogCard";
-import { title } from "process";
 
 
 function Blogs(): JSX.Element {
@@ -26,38 +25,16 @@ function Blogs(): JSX.Element {
         author: string;
         link: string;
         date: string;
-    }[] = [
-        {
-            title: "Lorem Ipsum",
-            author: "Aaron Isakov",
-            link: "",
-            date: new Date(Date.now()).toISOString(),
-        },
-        {
+    }[] = [];
+
+    for (let i = 0; i < 10; i++) {
+        blogs.push({
             title: "Lorem Ipsum",
             author: "Aaron Isakov",
             link: "",
             date: new Date(Date.now()).toDateString(),
-        },
-        {
-            title: "Lorem Ipsum",
-            author: "Aaron Isakov",
-            link: "",
-            date: new Date(Date.now()).toDateString(),
-        },
-        {
-            title: "Lorem Ipsum",
-            author: "Aaron Isakov",
-            link: "",
-            date: new Date(Date.now()).toDateString(),
-        },
-        {
-            title: "Lorem Ipsum",
-            author: "Aaron Isakov",
-            link: "",
-            date: new Date(Date.now()).toDateString(),
-        },
-    ];
+        });
+    };
     
     return (
         <Box sx={{ minHeight: '40rem'}}>
@@ -69,15 +46,11 @@ function Blogs(): JSX.Element {
                     Stay ahead and take your sourcing to the next level with our latest insights, updates, comprehensive guides, valuable webinars, and additional resources.
                 </Typography>
             </Box>
-            <Grid 
+            <Grid
                 container
-                sx={{
-                    columnGap: '15px',
-                    rowGap: '15px',
-                    margin: '10px',
-                    display: 'flex',
-                    justifyContent: 'center'
-                }}
+                columns={9}
+                spacing={5}
+                padding={'4% 9.5%'}
             >
                 {blogs.map(blog => <BlogCard {...blog} />)}
             </Grid>
