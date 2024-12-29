@@ -56,9 +56,13 @@ function Blog(): JSX.Element {
             date: new Date(Date.now()).toDateString(),
         },
     ];
-
-    const currentBlog = blogs.find((blog) => {
-        return blog.link === params.title
+    let index = 0;
+    let currentBlog = {};
+    blogs.forEach((blog, i) => {
+        if (blog.link === params.title) {
+            index = i;
+            currentBlog = blog;
+        };
     });
 
     return (
@@ -81,9 +85,9 @@ function Blog(): JSX.Element {
                     {blogs.map((blog, i) => <BlogCard key={i} {...blog} />)}
                 </Grid>
             </>}
-            {params.title && <Outlet context={currentBlog}/>}
+            {params.title && <Outlet context={[currentBlog, index]}/>}
         </Box>
     );
 };
 
-export {Blog as Blogs};
+export {Blog};

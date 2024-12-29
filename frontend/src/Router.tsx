@@ -12,7 +12,7 @@ import { Password } from './routes/Reset/Password';
 import { Header } from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { SavedVendors } from './routes/SavedVendors/SavedVendors';
-import { Blogs } from './routes/Blog/Blog';
+import { Blog } from './routes/Blog/Blog';
 import { BlogPost } from './components/BlogPost/BlogPost';
 
 function Layout(): JSX.Element {
@@ -72,7 +72,7 @@ const Router = createBrowserRouter([
             },
             {
                 path: "/blog",
-                element: <Blogs />,
+                element: <Blog />,
                 children: [
                     {
                         path: "/blog/:title",
