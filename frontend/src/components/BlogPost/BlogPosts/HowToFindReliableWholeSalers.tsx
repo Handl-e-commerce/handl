@@ -1,18 +1,5 @@
-import { Typography, Link, Box, SxProps } from "@mui/material";
-
-const styles: {
-  [key: string]: SxProps
-} = {
-  subheading: {
-    fontWeight: 700,
-    marginTop: '20px',
-    marginBottom: '10px'
-  },
-  pointHeading: {
-    marginTop: '10px',
-    marginBottom: '5px'
-  }
-}
+import { Typography, Link, Box } from "@mui/material";
+import {styles} from './styles';
 
 export const HowToFindReliableWholesalers = (
     <Box sx={{ paddingX: '5%', textAlign: 'left', fontSize: '18px !important' }}>
@@ -145,6 +132,7 @@ export const HowToFindReliableWholesalers = (
       <Typography variant="h4" component="h2" sx={styles.subheading}>
         Conclusion
       </Typography>
+
       <Typography paragraph>
         Finding <strong>reliable wholesalers</strong> doesn't have to be overwhelming. With a clear plan, thorough research, and the right tools, you can secure profitable partnerships that help your business grow. Whether you’re just starting or looking to expand your supplier network, remember to <strong>verify credentials, communicate openly, and start small</strong> to ensure the wholesaler truly meets your needs.
       </Typography>
