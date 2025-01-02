@@ -1,4 +1,4 @@
-import { Typography, List, ListItem, Link, Box, ListItemText } from "@mui/material";
+import { Typography, Link, Box } from "@mui/material";
 import { styles } from "./styles";
 
 export const FiveWaysToStreamlineInventoryManagement = (
