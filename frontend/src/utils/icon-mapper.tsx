@@ -55,7 +55,7 @@ import {
 export const iconMapper: {
     [category: string] : JSX.Element
 } = {
-    "Amazon FBA Suppliers": <IconBrandAmazon />,
+    "Amazon FBA Sellers": <IconBrandAmazon />,
     "Apparel / Clothing": <IconShirtFilled />,
     "Dropshippers": <IconPackageExport />,
     "Electronics": <IconCpu />,
