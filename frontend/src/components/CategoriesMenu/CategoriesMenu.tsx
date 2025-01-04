@@ -77,10 +77,12 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
                             padding: '6px 6px',
                             borderBottom: '1px solid rgb(36, 36, 37, 0.3)',
                             display: 'flex',
-                            alignItems: 'center'
+                            alignItems: 'center',
                         }}
                         onClick={(e) => {
                             queryParams.set("category", (e.target as HTMLElement).innerText);
+                            queryParams.delete("subcategories");
+                            queryParams.delete("states");
                             window.history.pushState({}, "", `${location.origin}/results?${queryParams.toString()}`);
                             location.replace(`${location.origin}/results?${queryParams.toString()}`);
                         }}
