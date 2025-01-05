@@ -127,9 +127,9 @@ function ExpandedRow({ row, isMobile }: IExpandedRowProps): JSX.Element {
                             >
                                 People
                             </Typography>
-                            {row.people.map((person, i) => (
+                            {row.people ? row.people?.map((person, i) => (
                                 <Typography variant={isMobile ? 'body2' : 'body1'} component='p' key={i}>{person}</Typography>
-                            ))}
+                            )): <Typography variant={isMobile ? 'body2' : 'body1'} component='p'>Coming Soon</Typography>}
                         </Box>
                         <Box sx={{marginBottom: '10px'}} aria-roledescription="Categories Box">
                             <Typography
