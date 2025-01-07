@@ -90,9 +90,9 @@ export const handlers = [
         });
     }),
     http.get(REACT_APP_SERVER_URI + `/vendors/categories`, ({ request, params, cookies }) => {
-        let categories: { category: string }[] = [];
+        let categories: string[] = [];
         for (let i = 0; i < 50; i++)
-          categories.push({ category: 'category' + i});
+          categories.push(`category${i}`);
         let body = JSON.stringify({
             result: categories
         });
