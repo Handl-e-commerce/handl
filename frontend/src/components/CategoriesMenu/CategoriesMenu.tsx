@@ -22,12 +22,8 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
 
     async function getCategories(): Promise<void> {
         const response = await fetchWrapper('/vendors/categories', 'GET');
-        const data: { category: string }[] = (await response.json()).result;
-        let categories: string[] = [];
-        data.forEach((val, i) => {
-            categories.push(val.category);
-        });
-        setCategories(categories);
+        const data: string[] = (await response.json()).result;
+        setCategories(data);
     };
 
     useEffect(() => {

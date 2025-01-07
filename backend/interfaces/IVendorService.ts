@@ -1,4 +1,3 @@
-import {Category} from "../db/models/Category";
 import {Vendor} from "../db/models/Vendor";
 
 interface IVendorService {
@@ -9,8 +8,8 @@ interface IVendorService {
         searchVal: string | null | undefined,
         states: string[] | null | undefined,
     ) => Promise<Vendor[]>;
-    GetCategories: () => Promise<Category[]>;
-    GetSubCategories: (category: string) => Promise<Category[]>;
+    GetCategories: () => Promise<string[]>;
+    GetSubCategories: (category: string) => Promise<string[]>;
 }
 
 export {IVendorService};
