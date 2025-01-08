@@ -39,13 +39,15 @@ vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
         let subcategories: string[] | null = null;
         let states: string[] | null = null;
         if (req.query.category) {
-            category = (req.query.category as string);
+            category = (req.query.category as string).trim();
         }
         if (req.query.subcategories) {
-            subcategories = (req.query.subcategories as string).split(",");
+            subcategories = (req.query.subcategories as string).split(",")
+                .map((subcategory) => subcategory.trim());
         }
         if (req.query.states) {
-            states = (req.query.states as string).split(",");
+            states = (req.query.states as string).split(",")
+                .map((subcategory) => subcategory.trim());
         }
         const searchVal: string = req.query["search-params"] as string;
         const vendorService: VendorService = new VendorService();
