@@ -102,7 +102,7 @@ vendorRouter.get("/subcategories", async (req: Request, res: Response, next: Nex
         if (req.query.category) {
             category = (req.query.category as string);
         }
-        const subcategories = await vendorService.GetSubCategories(category as string);
+        const subcategories = await vendorService.GetSubCategories((category as string).trim());
         return res.status(200).json({
             result: subcategories,
         });
