@@ -37,6 +37,10 @@ function Results(): JSX.Element {
         window.history.pushState("", "", `/results?${queryParams.toString()}`);
         const response = await fetchWrapper(`/vendors?${queryParams.toString()}`, 'GET');
         const data: Vendor[] = (await response.json()).result;
+        if (isMobile) {
+            console.log("Checking to see that we actually have data: ");
+            console.log(data);
+        };
         setVendors(data);
         setLoadingData(false);
     };
