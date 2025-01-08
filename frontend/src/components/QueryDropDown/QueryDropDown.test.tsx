@@ -28,7 +28,6 @@ describe("QueryDropDown Test", () => {
                 data={data}
                 selectedData={[]}
                 setSelectedData={setSelectedDataMock}
-                handleQuery={handleQueryMock}
             />
         );
         await user.click(screen.getByTestId("subcategories-multiple-checkbox-select"));
