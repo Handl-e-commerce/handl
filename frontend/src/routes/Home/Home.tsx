@@ -118,10 +118,10 @@ function Home(): JSX.Element {
                         </Typography>
                 </Grid>
                 <Grid item xs={styles.grid.xs}>
-                    <a href={location.origin + '/results?category=Amazon+FBA+Suppliers'} target="_self">
+                    <a href={location.origin + '/results?category=Amazon+FBA+Sellers'} target="_self">
                         <img src={fba} alt="" style={styles.image} />
                     </a>
-                    <Typography variant={'h6'} component={'div'} fontSize={'20px'} textAlign={'center'}>Amazon FBA Suppliers</Typography>
+                    <Typography variant={'h6'} component={'div'} fontSize={'20px'} textAlign={'center'}>Amazon FBA Sellers</Typography>
                 </Grid>
                 <Grid item xs={styles.grid.xs}>
                     <a href={location.origin + '/results?category=Health%2C+Beauty+%26+Wellness'} target="_self">
