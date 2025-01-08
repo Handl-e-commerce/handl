@@ -5,7 +5,8 @@ import {VerificationService} from "../services/VerificationService";
 import {Vendor} from "../db/models/Vendor";
 
 const vendorRouter = express.Router();
-const project: string = 'handl-425522';
+const project = "handl-425522";
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const globalLogFields: any = {};
 
 vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
@@ -51,27 +52,27 @@ vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
         const vendors: Vendor[] = (
             await vendorService.GetVendors(category, subcategories, searchVal, states)
         ).map((row) => row);
-        
-        if (typeof req !== 'undefined') {
-            const traceHeader = req.header('X-Cloud-Trace-Context');
+
+        if (typeof req !== "undefined") {
+            const traceHeader = req.header("X-Cloud-Trace-Context");
             if (traceHeader && project) {
-              const [trace] = traceHeader.split('/');
-              globalLogFields['logging.googleapis.com/trace'] =
+                const [trace] = traceHeader.split("/");
+                globalLogFields["logging.googleapis.com/trace"] =
                 `projects/${project}/traces/${trace}`;
             }
-        };
+        }
 
         const entry = Object.assign(
             {
-              severity: 'NOTICE',
-              message: 'This is the default display field.',
-              component: 'arbitrary-property',
+                severity: "NOTICE",
+                message: "This is the default display field.",
+                component: "arbitrary-property",
             },
             globalLogFields
-          );
+        );
 
-          console.log(JSON.stringify(entry));
-        
+        console.log(JSON.stringify(entry));
+
         return res.status(200).json({
             result: vendors,
         });
