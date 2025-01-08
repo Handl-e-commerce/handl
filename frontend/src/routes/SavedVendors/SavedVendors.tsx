@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, CircularProgress, Container, Typography } from "@mui/material";
+import { CircularProgress, Container, Typography } from "@mui/material";
 import { EnhancedTable } from "../../components/Table/EnhancedTable";
 import { useMobile } from "../../hooks/useMobile";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
