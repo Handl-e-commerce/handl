@@ -142,7 +142,7 @@ describe("Results Route Test", () => {
     }, 7500);
 
     it("Should render you must sign in first in order to access our data modal if user isn't signed up", async () => {
-        mockUseLoginStatus.mockReturnValueOnce(false);
+        mockUseLoginStatus.mockReturnValue(false);
         await act(async () => render(<Results />));
         
         await waitFor(() => {
