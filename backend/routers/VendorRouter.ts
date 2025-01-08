@@ -65,7 +65,7 @@ vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
         const entry = Object.assign(
             {
                 severity: "NOTICE",
-                message: "This is the default display field.",
+                message: `Data that is fetched from the database:\n ${vendors}`,
                 component: "arbitrary-property",
             },
             globalLogFields
