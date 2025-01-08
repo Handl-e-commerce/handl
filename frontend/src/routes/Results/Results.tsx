@@ -35,25 +35,23 @@ function Results(): JSX.Element {
         let ignore = false;
         if (!ignore && loggedIn) {
             handleQuery();
-            if (!subcategories) {
-                getSubcategories();
-            };
         };
         return () => { ignore = true };
     }, [selectedSubcategories, selectedSubcategories]);
 
+    useEffect(() => {
+        if (!subcategories) {
+            getSubcategories();
+        };
+    }, []);
+
     const handleQuery = async () => {
-        console.log('Hitting handleQuery');
         queryParams.delete("subcategories");
         queryParams.delete("states");
         let subcategories: string = selectedSubcategories.join(",");
         let states: string = selectedStates.join(",");
         if (subcategories.length > 0) queryParams.set("subcategories", subcategories);
         if (states.length  > 0) queryParams.set("states", states);
-        await getData();
-    };
-
-    async function getData(): Promise<void> {
         setLoadingData(true);
         window.history.pushState("", "", `/results?${queryParams.toString()}`);
         const response = await fetchWrapper(`/vendors?${queryParams.toString()}`, 'GET');
@@ -89,7 +87,6 @@ function Results(): JSX.Element {
         queryParams.delete("subcategories");
         let categories: string = filteredCategories.join(",");
         categories.length > 0 ? queryParams.set("subcategories", categories) : queryParams.delete("subcategories");
-        getData();
     };
 
     function handleRemoveStateChip(state: string): void {
@@ -98,7 +95,6 @@ function Results(): JSX.Element {
         queryParams.delete("states");
         let states: string = filteredStates.join(",");
         states.length > 0 ? queryParams.set("states", states) : queryParams.delete("states");
-        getData();
     };
 
     function handleClearAll(): void {
@@ -107,9 +103,10 @@ function Results(): JSX.Element {
         queryParams.delete("subcategories");
         queryParams.delete("search-params");
         queryParams.delete("states");
-        getData();
     };
 
+    // TODO: (LOW) Refactor everything below here to make components simpler
+    // Create Modal Component for not logged in for example
     if (!loggedIn) {
         const redirectSignUp = () =>  {
             // redirect to sign up route
