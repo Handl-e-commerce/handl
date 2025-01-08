@@ -37,7 +37,7 @@ function Results(): JSX.Element {
             handleQuery();
         };
         return () => { ignore = true };
-    }, [selectedSubcategories, selectedSubcategories]);
+    }, [selectedSubcategories, selectedStates]);
 
     useEffect(() => {
         if (!subcategories) {
