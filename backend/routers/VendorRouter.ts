@@ -2,6 +2,7 @@ const express = require("express");
 import {NextFunction, Request, Response} from "express";
 import {VendorService} from "../services/VendorService";
 import {VerificationService} from "../services/VerificationService";
+import {Vendor} from "../db/models/Vendor";
 
 const vendorRouter = express.Router();
 
@@ -35,17 +36,22 @@ vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
         let subcategories: string[] | null = null;
         let states: string[] | null = null;
         if (req.query.category) {
-            category = (req.query.category as string);
+            category = (req.query.category as string).trim();
         }
         if (req.query.subcategories) {
-            subcategories = (req.query.subcategories as string).split(",");
+            subcategories = (req.query.subcategories as string).split(",")
+                .map((subcategory) => subcategory.trim());
         }
         if (req.query.states) {
-            states = (req.query.states as string).split(",");
+            states = (req.query.states as string).split(",")
+                .map((subcategory) => subcategory.trim());
         }
         const searchVal: string = req.query["search-params"] as string;
         const vendorService: VendorService = new VendorService();
-        const vendors = await vendorService.GetVendors(category, subcategories, searchVal, states);
+        const vendors: Vendor[] = (
+            await vendorService.GetVendors(category, subcategories, searchVal, states)
+        ).map((row) => row);
+
         return res.status(200).json({
             result: vendors,
         });
@@ -73,7 +79,7 @@ vendorRouter.get("/subcategories", async (req: Request, res: Response, next: Nex
         if (req.query.category) {
             category = (req.query.category as string);
         }
-        const subcategories = await vendorService.GetSubCategories(category as string);
+        const subcategories = await vendorService.GetSubCategories((category as string).trim());
         return res.status(200).json({
             result: subcategories,
         });

@@ -90,9 +90,9 @@ export const handlers = [
         });
     }),
     http.get(REACT_APP_SERVER_URI + `/vendors/categories`, ({ request, params, cookies }) => {
-        let categories: { category: string }[] = [];
+        let categories: string[] = [];
         for (let i = 0; i < 50; i++)
-          categories.push({ category: 'category' + i});
+          categories.push(`category${i}`);
         let body = JSON.stringify({
             result: categories
         });
@@ -101,22 +101,12 @@ export const handlers = [
         });
     }),
     http.get(REACT_APP_SERVER_URI + `/vendors/subcategories`, ({ request, params, cookies }) => {
-        let subcategories: { subcategory: string | null }[] = [
-          { 
-            subcategory: "Hats & Scarves",
-          },
-          {
-            subcategory: "Kids / Baby Footwear",
-          },
-          {
-            subcategory: "Men's Footwear",
-          },
-          {
-            subcategory: "Women's Footwear",
-          },
-          {
-            subcategory: "Women's Apparel",
-          }
+        let subcategories: string[] = [
+          "Hats & Scarves",
+          "Kids / Baby Footwear",
+          "Men's Footwear",
+          "Women's Footwear",
+          "Women's Apparel",
         ];
         
         let body = JSON.stringify({

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { Vendor } from "../../types/types";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
@@ -21,18 +21,37 @@ function Results(): JSX.Element {
     let loggedIn: boolean = useLoginStatus();
     let searchParam = queryParams.get("search-params");
 
+    const containerSx: SxProps = {
+        paddingLeft: '1px', 
+        paddingRight: '1px', 
+        minHeight: '62.5rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: loggedIn ? 'none' : isMobile ? 'none' : 'center',
+    };
+
     useEffect(() => {
         let ignore = false;
         if (!ignore && loggedIn) {
             handleQuery();
-            if (!subcategories) {
-                getSubcategories();
-            };
         };
         return () => { ignore = true };
+    }, [selectedSubcategories, selectedStates]);
+
+    useEffect(() => {
+        if (!subcategories) {
+            getSubcategories();
+        };
     }, []);
 
-    async function getData(): Promise<void> {
+    const handleQuery = async () => {
+        queryParams.delete("subcategories");
+        queryParams.delete("states");
+        let subcategories: string = selectedSubcategories.join(",");
+        let states: string = selectedStates.join(",");
+        if (subcategories.length > 0) queryParams.set("subcategories", subcategories);
+        if (states.length  > 0) queryParams.set("states", states);
         setLoadingData(true);
         window.history.pushState("", "", `/results?${queryParams.toString()}`);
         const response = await fetchWrapper(`/vendors?${queryParams.toString()}`, 'GET');
@@ -41,26 +60,16 @@ function Results(): JSX.Element {
         setLoadingData(false);
     };
 
-    async function handleQuery(): Promise<void> {
-        queryParams.delete("subcategories");
-        queryParams.delete("states");
-        let subcategories: string = selectedSubcategories.join(",");
-        let states: string = selectedStates.join(",");
-        if (subcategories.length > 0) queryParams.set("subcategories", subcategories);
-        if (states.length  > 0) queryParams.set("states", states);
-        await getData();
-    };
-
     async function getSubcategories(): Promise<void> {
         const response = await fetchWrapper(`/vendors/subcategories?${queryParams.toString()}`, 'GET');
-        const data: { subcategory: string | null }[] = (await response.json()).result;
+        const data: string[] = (await response.json()).result;
         let subcategories: string[] = [];
-        data.forEach((val) => {
-            if (val.subcategory === null) {
+        data.forEach((subcategory) => {
+            if (subcategory === null) {
                 return;
             }
             else {
-                subcategories.push(val.subcategory as string);
+                subcategories.push(subcategory as string);
             };
         });
         setSubcategories(subcategories.sort());
@@ -78,7 +87,6 @@ function Results(): JSX.Element {
         queryParams.delete("subcategories");
         let categories: string = filteredCategories.join(",");
         categories.length > 0 ? queryParams.set("subcategories", categories) : queryParams.delete("subcategories");
-        getData();
     };
 
     function handleRemoveStateChip(state: string): void {
@@ -87,7 +95,6 @@ function Results(): JSX.Element {
         queryParams.delete("states");
         let states: string = filteredStates.join(",");
         states.length > 0 ? queryParams.set("states", states) : queryParams.delete("states");
-        getData();
     };
 
     function handleClearAll(): void {
@@ -96,19 +103,10 @@ function Results(): JSX.Element {
         queryParams.delete("subcategories");
         queryParams.delete("search-params");
         queryParams.delete("states");
-        getData();
     };
 
-    const containerSx: SxProps = {
-        paddingLeft: '1px', 
-        paddingRight: '1px', 
-        minHeight: '62.5rem',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: loggedIn ? 'none' : isMobile ? 'none' : 'center',
-    }
-
+    // TODO: (LOW) Refactor everything below here to make components simpler
+    // Create Modal Component for not logged in for example
     if (!loggedIn) {
         const redirectSignUp = () =>  {
             // redirect to sign up route
@@ -146,7 +144,6 @@ function Results(): JSX.Element {
                             data={subcategories}
                             selectedData={selectedSubcategories}
                             setSelectedData={setSelectedSubcategories}
-                            handleQuery={handleQuery}
                         />
                     </Grid>
                 }
@@ -156,7 +153,6 @@ function Results(): JSX.Element {
                         data={states.map((state) => state.abbreviation).filter((val) => val !== "--")}
                         selectedData={selectedStates}
                         setSelectedData={setSelectedStates}
-                        handleQuery={handleQuery}
                     />
                 </Grid>
                 <Grid item sm={isMobile ? undefined : 1}>

@@ -8,10 +8,9 @@ interface IQueryDropDownProps {
     data: string[];
     selectedData: string[];
     setSelectedData: React.Dispatch<React.SetStateAction<string[]>>;
-    handleQuery: () => void;
-}
+};
 
-function QueryDropDown({name, data, selectedData, setSelectedData, handleQuery}: IQueryDropDownProps): JSX.Element {
+function QueryDropDown({name, data, selectedData, setSelectedData}: IQueryDropDownProps): JSX.Element {
     const isMobile = useMobile();
     
     function handleChange(event: SelectChangeEvent<typeof data>) {
@@ -65,7 +64,6 @@ function QueryDropDown({name, data, selectedData, setSelectedData, handleQuery}:
                 displayEmpty
                 value={selectedData.sort()}
                 onChange={handleChange}
-                onClose={handleQuery}
                 renderValue={() => <Typography variant='body1' component='div'>{name}</Typography>}
                 SelectDisplayProps={{
                     // @ts-ignore

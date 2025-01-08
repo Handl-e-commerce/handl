@@ -97,16 +97,16 @@ class VendorService implements IVendorService {
 
     /**
      * Simple method to return all of the categories in the database
-     * @return {Promise<Category[]>}
+     * @return {Promise<string[]>}
      */
-    public async GetCategories(): Promise<Category[]> {
+    public async GetCategories(): Promise<string[]> {
         try {
-            return await Category.findAll({
+            return (await Category.findAll({
                 order: [
                     ["category", "ASC"],
                 ],
                 attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("category")), "category"]],
-            });
+            })).map((row) => row.category) as string[];
         } catch (err) {
             const error = err as Error;
             throw new Error(error.message);
@@ -116,16 +116,18 @@ class VendorService implements IVendorService {
     /**
      * Simple method to return all of the subcategories associated with a given category
      * @param {string} category
-     * @return {Promise<Category[]>}
+     * @return {Promise<string[]>}
      */
-    public async GetSubCategories(category: string): Promise<Category[]> {
+    public async GetSubCategories(category: string): Promise<string[]> {
         try {
-            return await Category.findAll({
+            const results = (await Category.findAll({
                 where: {
                     category: category,
                 },
                 attributes: ["subcategory"],
-            });
+            })).map((row) => row.subcategory);
+
+            return results[0] !== null ? results as string[] : [];
         } catch (err) {
             const error = err as Error;
             throw new Error(error.message);

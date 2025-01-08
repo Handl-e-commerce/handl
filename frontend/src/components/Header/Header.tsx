@@ -39,7 +39,7 @@ function Header(): JSX.Element {
                 <>
                     <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                         <MobileDrawer>
-                            <CategoriesMenu sx={{...dropdownButtonSx, fontSize: '16px'}}/>
+                            <CategoriesMenu sx={{...dropdownButtonSx, fontSize: '22px'}}/>
                             <Link
                                 href={location.origin + "/about-us"}
                                 target="_self"
@@ -48,7 +48,7 @@ function Header(): JSX.Element {
                                 sx={{
                                     paddingBottom: '6px',
                                     paddingLeft: '1rem',
-                                    fontSize: '16px',
+                                    fontSize: '22px',
                                     fontWeight: 600
                                 }}
                             >
@@ -62,7 +62,7 @@ function Header(): JSX.Element {
                                 sx={{
                                     paddingBottom: '6px', 
                                     paddingLeft: '1rem',
-                                    fontSize: '16px',
+                                    fontSize: '22px',
                                     fontWeight: 600
                                 }}
                             >

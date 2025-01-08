@@ -39,22 +39,22 @@ function Home(): JSX.Element {
 
     async function getCategories(): Promise<void> {
         const response = await fetchWrapper('/vendors/categories', 'GET');
-        const data: { category: string }[] = (await response.json()).result;
+        const data: string[] = (await response.json()).result;
         let breakpoint = 13;
         let numTranches = Math.ceil(data.length / breakpoint);
         let column: JSX.Element[] = [];
         let matrix: JSX.Element[][] = [];
         let passes = 0;
-        data.forEach((val, i) => {
+        data.forEach((category, i) => {
             if (i % breakpoint === 0 && i > 0 && !isMobile) {
                 matrix.push(column);
                 column = [];
                 passes++;
             };
-            let queryRoute = new URLSearchParams({ 'category': val.category });
+            let queryRoute = new URLSearchParams({ 'category': category });
             column.push(
-                <List key={val.category} sx={{ display: 'flex', alignItems: 'center', width: isMobile ? '250px' : '300px' }}>
-                    {iconMapper[val.category]}
+                <List key={category} sx={{ display: 'flex', alignItems: 'center', width: isMobile ? '250px' : '300px' }}>
+                    {iconMapper[category]}
                     <Link
                         href={`${location.origin}/results?${queryRoute.toString()}`} 
                         target="_self"
@@ -68,7 +68,7 @@ function Home(): JSX.Element {
                         }}
                         data-testid={'category link'}
                     >
-                        {val.category}
+                        {category}
                     </Link>
                 </List>
             );
@@ -118,10 +118,10 @@ function Home(): JSX.Element {
                         </Typography>
                 </Grid>
                 <Grid item xs={styles.grid.xs}>
-                    <a href={location.origin + '/results?category=Amazon+FBA+Suppliers'} target="_self">
+                    <a href={location.origin + '/results?category=Amazon+FBA+Sellers'} target="_self">
                         <img src={fba} alt="" style={styles.image} />
                     </a>
-                    <Typography variant={'h6'} component={'div'} fontSize={'20px'} textAlign={'center'}>Amazon FBA Suppliers</Typography>
+                    <Typography variant={'h6'} component={'div'} fontSize={'20px'} textAlign={'center'}>Amazon FBA Sellers</Typography>
                 </Grid>
                 <Grid item xs={styles.grid.xs}>
                     <a href={location.origin + '/results?category=Health%2C+Beauty+%26+Wellness'} target="_self">
