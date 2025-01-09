@@ -5,10 +5,9 @@ function AboutUs(): JSX.Element {
     return (
         <Box style={{height: '35rem', display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
             <Box sx={{width: '90%'}}>
-                <Typography variant="h4" sx={{ margin: '1rem', fontWeight: 600 }}>Handl: Revolutionizing Wholesale E-Commerce</Typography>
-                <Typography variant="body1" component='p' sx={{margin: '14px'}}>At Handl, we envision a world where the e-commerce industry is transparent, efficient, and accessible to all. We believe the current market is plagued by inefficiencies, gate-keeping, and costly trade shows as the primary means of discovering new inventory sources. Our mission is to dismantle these barriers, democratizing information to seamlessly connect retailers with wholesalers.</Typography>
-                <Typography variant="body1" component='p' sx={{margin: '14px'}}>Handl is your ultimate destination for sourcing inventory, whether you're looking for FBA sellers, general merchandise, or cosmetics. We are dedicated to simplifying the process for underserved e-commerce retailers, ensuring that finding new suppliers is no longer a daunting task.</Typography>
-                <Typography variant="body1" component='p' sx={{margin: '14px'}}>Experience a new era of e-commerce with Handl.</Typography>
+                <Typography variant="h4" sx={{ margin: '1rem', fontWeight: 600 }}>Handl: A Simpler Way to Source</Typography>
+                <Typography variant="body1" component='p' sx={{margin: '14px'}}>At Handl, we believe finding new inventory should be easy, transparent, and open to everyone. We're rethinking how retailers connect with wholesalers—no more high-cost trade shows or confusing gatekeeping. Whether you need FBA items, general merchandise, or beauty products, Handl is your one-stop platform to discover and compare reliable suppliers.</Typography>
+                <Typography variant="body1" component='p' sx={{margin: '14px'}}>Experience a new era of wholesale e-commerce where sourcing is straightforward, connections are clear, and growth opportunities are endless. Let's make it simpler—together.</Typography>
             </Box>
         </Box>
     )
