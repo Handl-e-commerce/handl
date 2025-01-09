@@ -1,18 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import goldLogoTransparent from '../../static/Gold_Logo_Transparent_Image.png';
 import { LinkedIn, Reddit } from "@mui/icons-material";
 import { Box, Link, SxProps, Typography } from "@mui/material";
+import { PrivacyPolicy } from "../PrivacyPolicy/PrivacyPolicy";
 
+const iconSx: SxProps = {
+    width: '36px', 
+    height: '36px',
+    margin: '5px',
+    marginTop: '10px',
+}
 
 function Footer(): JSX.Element {
     let location = window.location;
+    const [open, setOpen] = useState<boolean>(false)
 
-    const iconSx: SxProps = {
-        width: '36px', 
-        height: '36px',
-        margin: '5px',
-        marginTop: '10px',
-    }
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <footer style={{
@@ -39,9 +44,10 @@ function Footer(): JSX.Element {
                         Contact Us
                     </Link> 
                 </Typography>
-                <Typography m={1}>
+                <Typography m={1} sx={{ cursor: "pointer" }} onClick={() => setOpen(!open)}>
                     Privacy Policy
                 </Typography>
+                <PrivacyPolicy open={open} onClose={handleClose}/>
             </Box>
             <Box aria-label="social-icons-container">
                 <Link href="https://www.linkedin.com/company/handl-technologies/" underline="none" target="_blank" rel="noreferrer" color='#F2E5D1'>
