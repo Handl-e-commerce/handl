@@ -6,6 +6,7 @@ import { EightCommonSourcingMistakes } from "./BlogPosts/EightCommonSourcingMist
 import { CaseStudy } from "./BlogPosts/CaseStudy";
 import { ArrowBack } from "@mui/icons-material";
 import { useMobile } from "../../hooks/useMobile";
+import logo from "../../static/logo.jpg";
 
 function BlogPost(): JSX.Element {
     // window.scrollTo({
@@ -50,8 +51,22 @@ function BlogPost(): JSX.Element {
                         Go Back
                     </Typography>
                 </Grid>
-                <Grid item marginY={'20px'} xs={6}>
-                    <Typography fontSize={'48px'} fontWeight={700}>{currentBlog.title}</Typography>
+                <Grid item 
+                    marginY={'20px'} 
+                    sx={{ 
+                        display: 'flex', 
+                        flexDirection: isMobille ? 'column-reverse' : 'row',
+                        alignItems: 'center'
+                    }}
+                >
+                    <Typography fontSize={'48px'} fontWeight={700} marginLeft={'-1%'}>{currentBlog.title}</Typography>
+                    <img
+                        src={logo} 
+                        style={{
+                            borderRadius: '12px',
+                        }}
+                        width={'100%'}
+                    />
                 </Grid>
             </Grid>
             <Box aria-label="Blog Body">
