@@ -43,8 +43,17 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
             <Button
                 variant="contained"
                 onClick={(e: React.MouseEvent<HTMLElement>) => setCategoriesMenuAnchor(e.currentTarget)}
-                endIcon={<KeyboardArrowDown />}
-                sx={{...sx, background: 'none', boxShadow: 'none'}}
+                endIcon={
+                    <KeyboardArrowDown />
+                }
+                sx={{
+                    ...sx,
+                    background: 'none',
+                    boxShadow: 'none',
+                    '& .MuiButton-endIcon': {
+                        marginLeft: '4px',
+                    },
+                }}
                 aria-label='categories-menu-dropdown'
                 disableRipple
                 disableElevation
