@@ -62,7 +62,7 @@ function Header(): JSX.Element {
                                 sx={{
                                     paddingBottom: '6px',
                                     paddingLeft: '1rem',
-                                    fontSize: '16px',
+                                    fontSize: '22px',
                                     fontWeight: 600
                                 }}
                             >

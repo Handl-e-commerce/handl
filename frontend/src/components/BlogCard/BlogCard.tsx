@@ -38,7 +38,7 @@ function BlogCard({ title, author, description, link, date }: IBlogCardProps): J
             />
             <Box sx={{paddingLeft: '0.25rem'}}>
                 <Typography
-                    variant="h5"
+                    variant="h6"
                     fontWeight={700}
                     sx={{ 
                         margin: '7px 0px',
@@ -48,9 +48,11 @@ function BlogCard({ title, author, description, link, date }: IBlogCardProps): J
                 >
                     {title}
                 </Typography>
-                <Typography variant="body1">{description}</Typography>
-                <Typography variant="body1" fontWeight={700} sx={{ margin: '7px 0px'}}>{author}</Typography>
-                <Typography variant="body2" sx={{ margin: '7px 0px'}}>{date}</Typography>
+                <Box>
+                    <Typography variant="body1">{description}</Typography>
+                    <Typography variant="body1" fontWeight={700} sx={{ margin: '7px 0px'}}>{author}</Typography>
+                    <Typography variant="body2" sx={{ margin: '7px 0px'}}>{date}</Typography>
+                </Box>
                 <Link
                     href={window.location.origin + "/blog/" + link}
                     target="_self"
