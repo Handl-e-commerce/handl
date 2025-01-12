@@ -15,7 +15,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
     const [order, setOrder] = useState<Order>('asc');
     const [orderBy, setOrderBy] = useState<keyof Vendor>('name');
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(100);
+    const [rowsPerPage, setRowsPerPage] = useState(-1);
     const [savedVendors, setSavedVendors] = useState<string[]>([]);
     
     async function getSavedVendors(): Promise<void> {
