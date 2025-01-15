@@ -3,6 +3,7 @@ import { SxProps, Grid, Button, Menu, MenuItem, Box } from '@mui/material';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import { fetchWrapper } from '../../utils/fetch-wrapper';
 import { iconMapper } from '../../utils/icon-mapper';
+import { useMobile } from '../../hooks/useMobile';
 
 interface ICategoriesMenuProps {
     sx?: SxProps;
@@ -18,6 +19,7 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
     const location = window.location;
     const [categoriesMenuAnchor, setCategoriesMenuAnchor] = useState<null | HTMLElement>(null);
     const [categories, setCategories] = useState<string[]>();
+    const isMobile: boolean = useMobile();
     let queryParams = new URL(document.location.toString()).searchParams;
 
     async function getCategories(): Promise<void> {
@@ -41,14 +43,28 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
             <Button
                 variant="contained"
                 onClick={(e: React.MouseEvent<HTMLElement>) => setCategoriesMenuAnchor(e.currentTarget)}
-                endIcon={<KeyboardArrowDown />}
-                sx={{...sx, background: 'none', boxShadow: 'none'}}
+                endIcon={
+                    <KeyboardArrowDown />
+                }
+                sx={{
+                    ...sx,
+                    background: 'none',
+                    boxShadow: 'none',
+                    '& .MuiButton-endIcon': {
+                        marginLeft: '4px',
+                    },
+                    '&:hover': {
+                        background: 'none',
+                    },
+                }}
+                aria-label='categories-menu-dropdown'
+                disableRipple
+                disableElevation
             >
                 Categories
             </Button>
             <Menu
                 anchorEl={categoriesMenuAnchor}
-                aria-label='categories-menu-dropdown'
                 anchorOrigin={{
                     vertical: 'bottom',
                     horizontal: 'left',
@@ -61,6 +77,7 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
                 }}
                 sx={{
                     height: '100%',
+                    maxHeight: isMobile ? '95%' : 'none',
                 }}
                 open={Boolean(categoriesMenuAnchor)}
                 onClose={() => setCategoriesMenuAnchor(null)}

@@ -27,7 +27,7 @@ function Footer(): JSX.Element {
             padding: '10px',
             height: '100%',
             width: '100%',
-            background: "#242425",
+            background: "#001E42",
             color: '#F2E5D1'
         }}>
             <a href={location.origin} target="_self">
