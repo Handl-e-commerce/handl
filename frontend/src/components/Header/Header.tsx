@@ -12,7 +12,7 @@ const headerStyles: React.CSSProperties = {
     top: 0,
     height: 'fit-content',
     width: '100%',
-    background: "#242425",
+    background: "#022648",
     color: '#F2E5D1',
     paddingTop: '.625rem',
     paddingBottom: '.625rem',

@@ -53,6 +53,9 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
                     '& .MuiButton-endIcon': {
                         marginLeft: '4px',
                     },
+                    '&:hover': {
+                        background: 'none',
+                    },
                 }}
                 aria-label='categories-menu-dropdown'
                 disableRipple

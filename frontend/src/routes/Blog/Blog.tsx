@@ -10,7 +10,7 @@ const styles = {
         flexDirection: 'column',
         alignItems: 'center',
         color: '#F2E5D1',
-        background: '#2F2F30',
+        background: 'linear-gradient(to bottom, #022648,#00152d)',
         position: 'relative',
         width: '100%',
         padding: '60px 4%',
