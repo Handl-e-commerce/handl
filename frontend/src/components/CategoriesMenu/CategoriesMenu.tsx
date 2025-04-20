@@ -75,9 +75,10 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
                         paddingBottom: 0,
                     }
                 }}
+                marginThreshold={0}
                 sx={{
                     height: '100%',
-                    maxHeight: isMobile ? '95%' : 'none',
+                    maxHeight: isMobile ? '22.5%' : '35%',
                 }}
                 open={Boolean(categoriesMenuAnchor)}
                 onClose={() => setCategoriesMenuAnchor(null)}
