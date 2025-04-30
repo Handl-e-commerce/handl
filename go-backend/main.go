@@ -10,6 +10,7 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Hello World, welcome to Handl's Go Backend Service!")
 	})
-
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	const PORT string = ":8080"
+	fmt.Printf("Listening and serving on port %s\n", PORT)
+	log.Print(http.ListenAndServe(PORT, nil))
 }
