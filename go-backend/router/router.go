@@ -3,6 +3,9 @@ package router
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	// "github.com/go-chi/chi/v5/middleware"
 )
 
 func landingPageHandler(w http.ResponseWriter, r *http.Request) {
@@ -10,10 +13,10 @@ func landingPageHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func SetUpRoutes() http.Handler {
-	mux := http.NewServeMux()
-	mux.HandleFunc("GET /", landingPageHandler)
-	mux.Handle("/users/", UserRouter())
-	mux.Handle("/vendors/", VendorRouter())
+	r := chi.NewRouter()
+	r.Get("/", landingPageHandler)
+	r.Mount("/users", UserRouter())
+	r.Mount("/vendors", VendorRouter())
 
-	return mux
+	return r
 }

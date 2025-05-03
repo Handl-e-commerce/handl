@@ -2,22 +2,24 @@ package router
 
 import (
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
 )
 
 // TODO: (HIGH) Implement Vendor routes here
 func VendorRouter() http.Handler {
-	mux := http.NewServeMux()
+	r := chi.NewRouter()
 	// vendorRouter.get("/")
-	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 
 	})
 	// vendorRouter.get("/categories")
-	mux.HandleFunc("GET /categories", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/categories", func(w http.ResponseWriter, r *http.Request) {
 
 	})
 	// vendorRouter.get("/subcategories")
-	mux.HandleFunc("GET /subcategories", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/subcategories", func(w http.ResponseWriter, r *http.Request) {
 
 	})
-	return mux
+	return r
 }
