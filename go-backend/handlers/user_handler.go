@@ -12,10 +12,12 @@ type UserHandler struct {
 }
 
 func (userHandler *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
-
+	userService := services.NewUserService()
+	userService.CreateUser()
 }
 
 func (userHandler *UserHandler) GetUserByUserId(w http.ResponseWriter, r *http.Request) {
+	// id := chi.URLParam(r, "id")
 	fmt.Fprintf(w, "Your router is working")
 }
 

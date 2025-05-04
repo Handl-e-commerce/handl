@@ -1,7 +1,6 @@
 package router
 
 import (
-	"fmt"
 	"net/http"
 
 	"handl-server/handlers"
@@ -18,30 +17,19 @@ func UserRouter() chi.Router {
 
 	r.Get("/me", userHandler.GetUserByUserId)
 
-	r.Get("/me/vendors", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/me/vendors", userHandler.GetSavedVendors)
 
-	})
-
-	r.Put("/{id}/password", func(w http.ResponseWriter, r *http.Request) {
-		id := chi.URLParam(r, "id")
-		fmt.Fprintf(w, "Your %v is working", id)
-	})
+	r.Put("/{id}/password", userHandler.ResetUserPassword)
 
 	r.Post("/password/reset/verify", func(w http.ResponseWriter, r *http.Request) {
 
 	})
 
-	r.Post("/password/reset/request", func(w http.ResponseWriter, r *http.Request) {
+	r.Post("/password/reset/request", userHandler.RequestUserPasswordReset)
 
-	})
+	r.Post("/login", userHandler.Login)
 
-	r.Post("/login", func(w http.ResponseWriter, r *http.Request) {
-
-	})
-
-	r.Post("/logout", func(w http.ResponseWriter, r *http.Request) {
-
-	})
+	r.Post("/logout", userHandler.Logout)
 
 	r.Post("/registration/verify", func(w http.ResponseWriter, r *http.Request) {
 
@@ -51,21 +39,15 @@ func UserRouter() chi.Router {
 
 	})
 
-	r.Put("/delete/{id}", func(w http.ResponseWriter, r *http.Request) {
+	r.Put("/delete/{id}", userHandler.DeleteUser)
 
-	})
-
-	r.Post("/contact", func(w http.ResponseWriter, r *http.Request) {
-
-	})
+	r.Post("/contact", userHandler.SendSupportMessage)
 
 	r.Post("/recaptcha/verify", func(w http.ResponseWriter, r *http.Request) {
 
 	})
 
-	r.Put("/vendors/save", func(w http.ResponseWriter, r *http.Request) {
-
-	})
+	r.Put("/vendors/save", userHandler.SaveVendors)
 
 	return r
 }
