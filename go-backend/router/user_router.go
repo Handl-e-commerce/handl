@@ -4,20 +4,19 @@ import (
 	"fmt"
 	"net/http"
 
+	"handl-server/handlers"
+
 	"github.com/go-chi/chi/v5"
 )
 
 // TODO: (HIGH) Implement User routes
 func UserRouter() chi.Router {
 	r := chi.NewRouter()
+	userHandler := &handlers.UserHandler{}
 
-	r.Post("/register", func(w http.ResponseWriter, r *http.Request) {
+	r.Post("/register", userHandler.CreateUser)
 
-	})
-
-	r.Get("/me", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Your router is working")
-	})
+	r.Get("/me", userHandler.GetUserByUserId)
 
 	r.Get("/me/vendors", func(w http.ResponseWriter, r *http.Request) {
 
