@@ -12,6 +12,7 @@ func landingPageHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello World, welcome to Handl's Go Backend Service!")
 }
 
+// TODO: (HIGH) Add Middleware to prevent security attacks
 func SetUpRoutes() http.Handler {
 	r := chi.NewRouter()
 	r.Get("/", landingPageHandler)
