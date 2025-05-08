@@ -7,9 +7,7 @@ import (
 )
 
 // TODO: (HIGH) Implement UserHandler
-type UserHandler struct {
-	userService *services.UserService
-}
+type UserHandler struct{}
 
 func (userHandler *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	userService := services.NewUserService()
@@ -18,6 +16,8 @@ func (userHandler *UserHandler) CreateUser(w http.ResponseWriter, r *http.Reques
 
 func (userHandler *UserHandler) GetUserByUserId(w http.ResponseWriter, r *http.Request) {
 	// id := chi.URLParam(r, "id")
+	// userService := services.NewUserService()
+	// userService.GetUserByUserId();
 	fmt.Fprintf(w, "Your router is working")
 }
 
