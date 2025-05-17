@@ -23,6 +23,7 @@ func (u *userService) GetUserByUserId(userId string) error {
 	return nil
 }
 
+// TODO: (MEDIUM) Potentially move this to vendor service
 func (u *userService) GetSavedVendors(userId string) error {
 	return nil
 }
