@@ -19,8 +19,6 @@ var (
 
 func GetClient() *ent.Client {
 	once.Do(func() {
-		// postgres://postgres:~PostgresUserPassword0830%24@127.0.0.1:5432/handl_local_dev
-		// host=127.0.0.1 port=5432 user=postgres dbname=handl_local_dev password=~PostgresUserPassword0830$
 		client, err = ent.Open("postgres", getDSN())
 		if err != nil {
 			log.Fatalf("failed opening connection to postgres: %v", err)
@@ -31,7 +29,7 @@ func GetClient() *ent.Client {
 
 func getDSN() string {
 	// Ideally load from env vars
-	return "host=127.0.0.1 port=5434 user=postgres dbname=handl_local_dev sslmode=disable password=~PostgresUserPassword0830$"
+	return "host=127.0.0.1 port=5434 user=postgres dbname=handl_local_dev sslmode=disable password="
 }
 
 func TestConnection() (string, error) {
