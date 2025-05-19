@@ -50,7 +50,7 @@ const (
 	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
 	// Table holds the table name of the user in the database.
-	Table = "users"
+	Table = "Users"
 )
 
 // Columns holds all SQL columns for user fields.

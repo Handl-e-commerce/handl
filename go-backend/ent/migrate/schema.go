@@ -3,6 +3,7 @@
 package migrate
 
 import (
+	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/dialect/sql/schema"
 	"entgo.io/ent/schema/field"
 )
@@ -32,7 +33,7 @@ var (
 		Columns:    CategoriesColumns,
 		PrimaryKey: []*schema.Column{CategoriesColumns[0]},
 	}
-	// UsersColumns holds the columns for the "users" table.
+	// UsersColumns holds the columns for the "Users" table.
 	UsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "uuid", Type: field.TypeString, Unique: true},
@@ -54,13 +55,13 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 	}
-	// UsersTable holds the schema information for the "users" table.
+	// UsersTable holds the schema information for the "Users" table.
 	UsersTable = &schema.Table{
-		Name:       "users",
+		Name:       "Users",
 		Columns:    UsersColumns,
 		PrimaryKey: []*schema.Column{UsersColumns[0]},
 	}
-	// VendorsColumns holds the columns for the "vendors" table.
+	// VendorsColumns holds the columns for the "Vendors" table.
 	VendorsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "uuid", Type: field.TypeString, Unique: true},
@@ -80,9 +81,9 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 	}
-	// VendorsTable holds the schema information for the "vendors" table.
+	// VendorsTable holds the schema information for the "Vendors" table.
 	VendorsTable = &schema.Table{
-		Name:       "vendors",
+		Name:       "Vendors",
 		Columns:    VendorsColumns,
 		PrimaryKey: []*schema.Column{VendorsColumns[0]},
 	}
@@ -96,4 +97,10 @@ var (
 )
 
 func init() {
+	UsersTable.Annotation = &entsql.Annotation{
+		Table: "Users",
+	}
+	VendorsTable.Annotation = &entsql.Annotation{
+		Table: "Vendors",
+	}
 }

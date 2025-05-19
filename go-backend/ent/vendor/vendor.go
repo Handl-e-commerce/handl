@@ -46,7 +46,7 @@ const (
 	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
 	// Table holds the table name of the vendor in the database.
-	Table = "vendors"
+	Table = "Vendors"
 )
 
 // Columns holds all SQL columns for vendor fields.
