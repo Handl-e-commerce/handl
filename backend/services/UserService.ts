@@ -319,6 +319,34 @@ class UserService implements IUserService {
         }
     }
 
+    // TODO: (HIGH) Implement JWT login functionality
+    /**
+     * Login method so that user can login and get long term session cookies in return
+     * @param {string} email
+     * @param {string} password
+     */
+    public async JwtLogin(email: string, password: string): Promise<{
+        result: boolean,
+        userId?: string,
+        expires?: Date | null,
+        firstName?: string | null,
+        token?: string,
+    }> {
+        try {
+            return {
+                result: true,
+                userId: "1234",
+                expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 90),
+                firstName: "John",
+                token: "1234",
+            }
+        }
+        catch (err) {
+            const error = err as Error;
+            throw Error(error.message);
+        }
+    }
+
     /**
      * Logs the user out and deletes the user's info from AuthToken table
      * @param {string} selector

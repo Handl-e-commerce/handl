@@ -47,6 +47,7 @@ class VerificationService implements IVerificationService {
         }
     }
 
+    // TODO: (HIGH) Rename this to VerifyJsonWebToken and implement JWT authorization logic
     /**
    * Method to verify that the user's long term log in cookies are still valid and user can be logged in
    * Is also used to verify that user has access to user actions such as My Account, etc.
@@ -91,6 +92,7 @@ class VerificationService implements IVerificationService {
         }
     }
 
+    // TODO: (HIGH) Rename this to VerifyRegistrationToken
     /**
      * Verifies that the token the user pass after clicking verification link from email is valid
      * @param {string} userId
