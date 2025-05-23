@@ -116,7 +116,7 @@ userRouter.post("/password/reset/verify", async (req: Request, res: Response, ne
         const verificationResult: {
             result: boolean;
             message: string;
-        } = await verificationService.VerifyToken(userId, token, true);
+        } = await verificationService.VerifyRegistrationToken(userId, token, true);
         if (verificationResult.result) {
             return res.status(201).json({
                 message: verificationResult.message,
@@ -219,7 +219,7 @@ userRouter.post("/registration/verify", async (req: Request, res: Response, next
         const verificationResult: {
             result: boolean;
             message: string;
-        } = await verificationService.VerifyToken(userId, token, false);
+        } = await verificationService.VerifyRegistrationToken(userId, token, false);
         if (verificationResult.result) {
             return res.status(201).json({
                 message: verificationResult.message,

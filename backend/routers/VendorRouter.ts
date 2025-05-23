@@ -6,6 +6,7 @@ import {Vendor} from "../db/models/Vendor";
 
 const vendorRouter = express.Router();
 
+// TODO: (HIGH) Add authentication middleware to this route
 vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
         // TODO: (LOW) Remove references for searchVal as we are no longer implementing the search bar

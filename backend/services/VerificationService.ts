@@ -52,6 +52,12 @@ class VerificationService implements IVerificationService {
         }
     }
 
+    /**
+     * Generates a JWT access token for the user
+     * @param {string} userId
+     * @return {string} access token
+     * 
+    */
     public GenerateAccessToken(userId: string): string {
         try {
             const payload: {
@@ -67,6 +73,12 @@ class VerificationService implements IVerificationService {
         }
     };
 
+    /**
+     * Generates a JWT refresh token for the user
+     * @param {string} userId
+     * @return {string} refresh token
+     * 
+    */
     public GenerateRefreshToken(userId: string): string {
         try {
             const tokenId: string = uuidv4().toString();
@@ -78,7 +90,6 @@ class VerificationService implements IVerificationService {
         }
     };
 
-    // TODO: (HIGH) Rename this to VerifyJsonWebToken and implement JWT authorization logic
     /**
    * Method to verify that the user's long term log in cookies are still valid and user can be logged in
    * Is also used to verify that user has access to user actions such as My Account, etc.
@@ -123,7 +134,6 @@ class VerificationService implements IVerificationService {
         }
     }
 
-    // TODO: (HIGH) Rename this to VerifyRegistrationToken
     /**
      * Verifies that the token the user pass after clicking verification link from email is valid
      * @param {string} userId
@@ -131,7 +141,7 @@ class VerificationService implements IVerificationService {
      * @param {string} isPasswordReset
      * @return {boolean}
      */
-    public async VerifyToken(userId: string, token: string, isPasswordReset: boolean): Promise<{
+    public async VerifyRegistrationToken(userId: string, token: string, isPasswordReset: boolean): Promise<{
         result: boolean,
         message: string,
     }> {
