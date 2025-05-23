@@ -327,18 +327,46 @@ class UserService implements IUserService {
      */
     public async JwtLogin(email: string, password: string): Promise<{
         result: boolean,
-        userId?: string,
-        expires?: Date | null,
-        firstName?: string | null,
-        token?: string,
+        firstName?: string,
+        accessToken?: string,
+        refreshToken?: string,
     }> {
         try {
+            const user: User | null = await User.findOne({
+                where: {
+                    email: email,
+                },
+            });
+
+            if (user === null || user === undefined) {
+                return {
+                    result: false,
+                };
+            }
+
+            if (!(await argon2.verify(user.password, password))) {
+                return {
+                    result: false,
+                };
+            }
+
+            const accessToken: string = this.verificationService.GenerateAccessToken(user.uuid);
+            const refreshToken: string = this.verificationService.GenerateRefreshToken(user.uuid);
+            // TODO: (HIGH) Store refresh token in DB
+            // const hashedRefreshToken: string = await argon2.hash(refreshToken);
+            // const expirationDate = new Date(Date.now()+1000*60*60*24*30);            
+            // await AuthToken.create({
+            //     refreshToken: hashedRefreshToken,
+            //     UserUuid: user.uuid,
+            //     expires: new Date(expirationDate),
+            // });
+
+            // TODO: (LOW) Add user type to return body
             return {
                 result: true,
-                userId: "1234",
-                expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 90),
-                firstName: "John",
-                token: "1234",
+                firstName: user.firstName,
+                accessToken: accessToken,
+                refreshToken: refreshToken,
             }
         }
         catch (err) {

@@ -2,17 +2,22 @@ import {IVerificationService} from "../interfaces/IVerificationService";
 import {AuthToken} from "../db/models/AuthToken";
 import {User} from "../db/models/User";
 import * as argon2 from "argon2";
+import jwt from "jsonwebtoken";
 import {EmailService} from "./EmailService";
+import {v4 as uuidv4} from "uuid";
 
 /** Verification Service Class */
 class VerificationService implements IVerificationService {
     private emailService: EmailService;
-
+    private accessSecret: string;
+    private refreshSecret: string;
     /**
      * constructor where we inject services and utils
      */
     constructor() {
         this.emailService = new EmailService();
+        this.accessSecret = process.env.ACCESS_SECRET_KEY as string;
+        this.refreshSecret = process.env.REFRESH_SECRET_KEY as string;
     }
 
     /**
@@ -46,6 +51,32 @@ class VerificationService implements IVerificationService {
             throw new Error(error.message);
         }
     }
+
+    public GenerateAccessToken(userId: string): string {
+        try {
+            const payload: {
+                userId: string,
+                type?: string,
+            } = {
+                userId: userId,
+            }
+            return jwt.sign(payload, this.accessSecret, { expiresIn: "15m"});
+        } catch (err) {
+            const error = err as Error;
+            throw new Error(error.message);
+        }
+    };
+
+    public GenerateRefreshToken(userId: string): string {
+        try {
+            const tokenId: string = uuidv4().toString();
+            const token: string = jwt.sign({ userId: userId, tokenId }, this.refreshSecret, { expiresIn: "30d"});
+            return token
+        } catch (err) {
+            const error = err as Error;
+            throw new Error(error.message);
+        }
+    };
 
     // TODO: (HIGH) Rename this to VerifyJsonWebToken and implement JWT authorization logic
     /**

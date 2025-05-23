@@ -148,28 +148,18 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
         const userService: UserService = new UserService();
         const loginStatus: {
             result: boolean;
-            selector?: string | null | undefined;
-            validator?: string | null | undefined;
-            userId?: string | undefined;
-            expires?: Date | null | undefined;
-            firstName?: string | null | undefined,
-        } = await userService.Login(userDetails.email, userDetails.password);
+            firstName?: string,
+            accessToken?: string,
+            refreshToken?: string,
+        } = await userService.JwtLogin(userDetails.email, userDetails.password);
         if (loginStatus.result) {
             return res.status(201)
-                .cookie("selector", loginStatus.selector, {
-                    expires: new Date(Date.now() + (1000*60*60*24*90)),
+                .cookie("accessToken", loginStatus.accessToken, {
                     sameSite: "none",
                     secure: true,
                     httpOnly: true,
                 })
-                .cookie("validator", loginStatus.validator, {
-                    expires: new Date(Date.now() + (1000*60*60*24*90)),
-                    sameSite: "none",
-                    secure: true,
-                    httpOnly: true,
-                })
-                .cookie("userId", loginStatus.userId, {
-                    expires: new Date(Date.now() + (1000*60*60*24*90)),
+                .cookie("refreshToken", loginStatus.refreshToken, {
                     sameSite: "none",
                     secure: true,
                     httpOnly: true,
