@@ -1,38 +1,38 @@
 const express = require("express");
 import {NextFunction, Request, Response} from "express";
 import {VendorService} from "../services/VendorService";
-import {VerificationService} from "../services/VerificationService";
 import {Vendor} from "../db/models/Vendor";
+import jwt from "jsonwebtoken";
+import * as VendorController from "../controllers/VendorController";
 
 const vendorRouter = express.Router();
 
-// TODO: (HIGH) Add authentication middleware to this route
-vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
+const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     try {
-        // TODO: (LOW) Remove references for searchVal as we are no longer implementing the search bar
-        const cookies = req.cookies;
-        const verificationService: VerificationService = new VerificationService();
-        const isVerified: boolean = await verificationService.VerifyUser(
-            cookies.selector,
-            cookies.validator,
-            cookies.userId
-        );
-        if (!isVerified) {
-            return res.status(401)
-                .cookie("selector", "", {
-                    maxAge: Number(new Date(1)),
-                    sameSite: "none",
-                    secure: true,
-                    httpOnly: true,
-                })
-                .cookie("validator", "", {
-                    maxAge: Number(new Date(1)),
-                    sameSite: "none",
-                    secure: true,
-                    httpOnly: true,
-                })
-                .send();
+        const token = req.header("Authorization")?.replace("Bearer ", "");
+    
+        if (!token) {
+            return res.status(401).send({ error: "No access token found." });
         }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
+        
+        if (!decoded) {
+            return res.status(401).send({ error: "Invalid access token." });
+        };
+        (req as any).token = decoded;
+        next();
+
+    } catch (err: any) {
+        return next(err as Error);
+    }
+};
+
+// TODO: (HIGH) Add authentication middleware to this route
+vendorRouter.get("/", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        
+        // TODO: (LOW) Remove references for searchVal as we are no longer implementing the search bar
         let category: string | null = null;
         let subcategories: string[] | null = null;
         let states: string[] | null = null;
@@ -61,32 +61,8 @@ vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
     }
 });
 
-vendorRouter.get("/categories", async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const vendorService: VendorService = new VendorService();
-        const categories = await vendorService.GetCategories();
-        return res.status(200).json({
-            result: categories,
-        });
-    } catch (err: unknown) {
-        return next(err as Error);
-    }
-});
+vendorRouter.get("/categories", VendorController.GetCategories);
 
-vendorRouter.get("/subcategories", async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const vendorService: VendorService = new VendorService();
-        let category = null;
-        if (req.query.category) {
-            category = (req.query.category as string);
-        }
-        const subcategories = await vendorService.GetSubCategories((category as string).trim());
-        return res.status(200).json({
-            result: subcategories,
-        });
-    } catch (err: unknown) {
-        return next(err as Error);
-    }
-});
+vendorRouter.get("/subcategories", VendorController.GetSubcategories);
 
 export {vendorRouter};

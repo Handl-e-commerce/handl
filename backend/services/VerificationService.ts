@@ -53,44 +53,6 @@ class VerificationService implements IVerificationService {
     }
 
     /**
-     * Generates a JWT access token for the user
-     * @param {string} userId
-     * @return {string} access token
-     * 
-    */
-    public GenerateAccessToken(userId: string): string {
-        try {
-            const payload: {
-                userId: string,
-                type?: string,
-            } = {
-                userId: userId,
-            }
-            return jwt.sign(payload, this.accessSecret, { expiresIn: "15m"});
-        } catch (err) {
-            const error = err as Error;
-            throw new Error(error.message);
-        }
-    };
-
-    /**
-     * Generates a JWT refresh token for the user
-     * @param {string} userId
-     * @return {string} refresh token
-     * 
-    */
-    public GenerateRefreshToken(userId: string): string {
-        try {
-            const tokenId: string = uuidv4().toString();
-            const token: string = jwt.sign({ userId: userId, tokenId }, this.refreshSecret, { expiresIn: "30d"});
-            return token
-        } catch (err) {
-            const error = err as Error;
-            throw new Error(error.message);
-        }
-    };
-
-    /**
    * Method to verify that the user's long term log in cookies are still valid and user can be logged in
    * Is also used to verify that user has access to user actions such as My Account, etc.
    * If false, then cookies will be deleted from client side.
@@ -250,6 +212,59 @@ class VerificationService implements IVerificationService {
         }
         return token;
     }
+
+        /**
+     * Generates a JWT access token for the user
+     * @param {string} userId
+     * @return {string} access token
+     * 
+    */
+    public GenerateAccessToken(userId: string): string {
+        try {
+            const payload: {
+                userId: string,
+                type?: string,
+            } = {
+                userId: userId,
+            }
+            return jwt.sign(payload, this.accessSecret, { expiresIn: "15m"});
+        } catch (err) {
+            const error = err as Error;
+            throw new Error(error.message);
+        }
+    };
+
+    /**
+     * Generates a JWT refresh token for the user
+     * @param {string} userId
+     * @return {string} refresh token
+     * 
+    */
+    public GenerateRefreshToken(userId: string): string {
+        try {
+            const tokenId: string = uuidv4().toString();
+            const token: string = jwt.sign({ userId: userId, tokenId }, this.refreshSecret, { expiresIn: "30d"});
+            return token
+        } catch (err) {
+            const error = err as Error;
+            throw new Error(error.message);
+        }
+    };
+
+    /**
+     * Verifies the JWT access token
+     * @param {string} token
+     * @return {string | object} payload
+     */
+    public VerifyAccessToken(token: string): jwt.JwtPayload | string {
+        try {
+            const payload = jwt.verify(token, this.accessSecret);
+            return payload;
+        } catch (err) {
+            const error = err as Error;
+            throw new Error(error.message);
+        }
+    };
 }
 
 export {VerificationService};
