@@ -127,7 +127,7 @@ class UserService implements IUserService {
                         city,
                         state,
                         zipcode,
-                        "phoneNumber",
+                        phone_number,
                         email
                     FROM public."Vendors"
                     WHERE uuid IN (

@@ -83,7 +83,7 @@ class VendorService implements IVendorService {
                     "city",
                     "state",
                     "zipcode",
-                    "phoneNumber",
+                    "phone_number",
                     "email",
                 ],
             });

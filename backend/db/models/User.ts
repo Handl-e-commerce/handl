@@ -40,19 +40,23 @@ User.init({
     firstName: {
         type: DataTypes.STRING,
         allowNull: false,
+        field: 'first_name',
     },
     lastName: {
         type: DataTypes.STRING,
         allowNull: false,
+        field: 'last_name',
     },
     businessName: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        field: 'business_name',
     },
     phoneNumber: {
         type: DataTypes.STRING,
         allowNull: false,
+        field: 'phone_number',
     },
     address: {
         type: DataTypes.STRING,
@@ -81,18 +85,22 @@ User.init({
     savedVendors: {
         type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: true,
+        field: 'saved_vendors',
     },
     isVerified: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
+        field: 'is_verified',
     },
     verificationToken: {
         type: DataTypes.STRING,
         allowNull: true,
+        field: 'verification_token',
     },
     tokenExpiration: {
         type: DataTypes.DATE,
         allowNull: true,
+        field: 'token_expiration',
     },
     type: {
         type: DataTypes.STRING,
@@ -102,6 +110,7 @@ User.init({
     subscriptionExpiresAt: {
         type: DataTypes.DATE,
         allowNull: true,
+        field: 'subscription_expires_at',
     },
 },
 {
