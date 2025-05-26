@@ -96,12 +96,12 @@ User.init({
     },
     type: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         defaultValue: "free",
     },
     subscriptionExpiresAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
     },
 },
 {
