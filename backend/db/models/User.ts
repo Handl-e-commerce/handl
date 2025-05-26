@@ -22,7 +22,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare verificationToken: string | null;
     declare tokenExpiration: Date | null;
     declare type: string;
-    declare subscriptionExpiresAt: Date;
+    declare subscriptionExpiresAt: Date | null;
 }
 
 User.init({
@@ -102,7 +102,6 @@ User.init({
     subscriptionExpiresAt: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: DataTypes.NOW,
     },
 },
 {

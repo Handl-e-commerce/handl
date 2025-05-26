@@ -63,6 +63,8 @@ class UserService implements IUserService {
                     isVerified: false,
                     verificationToken: hashedToken,
                     tokenExpiration: new Date(Date.now() + 1000*60*30),
+                    type: "free", // Default type is free, can be changed later
+                    subscriptionExpiresAt: null,
                 });
 
                 this.emailService.GenerateVerificationEmail(userDetails.firstName, userId, token, userDetails.email);
