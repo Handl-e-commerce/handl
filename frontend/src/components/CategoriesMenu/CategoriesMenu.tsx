@@ -92,11 +92,11 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
                             alignItems: 'center',
                         }}
                         onClick={(e) => {
-                            queryParams.set("category", (e.target as HTMLElement).innerText);
+                            console.log(e.currentTarget.innerText);
                             queryParams.delete("subcategories");
                             queryParams.delete("states");
-                            window.history.pushState({}, "", `${location.origin}/results?${queryParams.toString()}`);
-                            location.replace(`${location.origin}/results?${queryParams.toString()}`);
+                            window.history.pushState({}, "", `${location.origin}/results/${e.currentTarget.innerText}?`);
+                            location.replace(`${location.origin}/results/${e.currentTarget.innerText}?`);
                         }}
                     >
                         {iconMapper[category]}

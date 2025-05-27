@@ -17,6 +17,7 @@ function Results(): JSX.Element {
     const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(queryParams.get("subcategories")?.split(",") ?? []);
     const [selectedStates, setSelectedStates] = useState<string[]>(queryParams.get("states")?.split(",") ?? []);
     const [loadingData, setLoadingData] = useState<boolean>(true);
+    
     let isMobile: boolean = useMobile();
     let loggedIn: boolean = useLoginStatus();
     let searchParam = queryParams.get("search-params");
@@ -41,7 +42,7 @@ function Results(): JSX.Element {
 
     useEffect(() => {
         if (!subcategories) {
-            getSubcategories();
+            // getSubcategories();
         };
     }, []);
 
@@ -53,8 +54,9 @@ function Results(): JSX.Element {
         if (subcategories.length > 0) queryParams.set("subcategories", subcategories);
         if (states.length  > 0) queryParams.set("states", states);
         setLoadingData(true);
-        window.history.pushState("", "", `/results?${queryParams.toString()}`);
-        const response = await fetchWrapper(`/vendors?${queryParams.toString()}`, 'GET');
+        const category = location.pathname.split("/")[2];
+        window.history.pushState("", "", `/results/${category}?${queryParams.toString()}`);
+        const response = await fetchWrapper(`/vendors/categories/${category}?${queryParams.toString()}`, 'GET');
         const data: Vendor[] = (await response.json()).result;
         setVendors(data);
         setLoadingData(false);
@@ -105,7 +107,7 @@ function Results(): JSX.Element {
         queryParams.delete("states");
     };
 
-    // TODO: (LOW) Refactor everything below here to make components simpler
+    // TODO: (HIGH) Remove block modal and replace with paywall logic
     // Create Modal Component for not logged in for example
     if (!loggedIn) {
         const redirectSignUp = () =>  {

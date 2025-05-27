@@ -51,7 +51,7 @@ const Router = createBrowserRouter([
                 element: <ContactUs />,
             },
             {
-                path: "/results",
+                path: "/results/:category",
                 element: <Results />,
             },
             {

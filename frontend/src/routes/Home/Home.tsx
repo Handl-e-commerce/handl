@@ -51,12 +51,11 @@ function Home(): JSX.Element {
                 column = [];
                 passes++;
             };
-            let queryRoute = new URLSearchParams({ 'category': category });
             column.push(
                 <List key={category} sx={{ display: 'flex', alignItems: 'center', width: isMobile ? '250px' : '300px' }}>
                     {iconMapper[category]}
                     <Link
-                        href={`${location.origin}/results?${queryRoute.toString()}`} 
+                        href={`${location.origin}/results/${category}`} 
                         target="_self"
                         underline="none"
                         color='primary.main'
@@ -118,25 +117,25 @@ function Home(): JSX.Element {
                         </Typography>
                 </Grid>
                 <Grid item xs={styles.grid.xs}>
-                    <a href={location.origin + '/results?category=Amazon+FBA+Sellers'} target="_self">
+                    <a href={location.origin + '/results/Amazon%20FBA%20Sellers'} target="_self">
                         <img src={fba} alt="" style={styles.image} />
                     </a>
                     <Typography variant={'h6'} component={'div'} fontSize={'20px'} textAlign={'center'}>Amazon FBA Sellers</Typography>
                 </Grid>
                 <Grid item xs={styles.grid.xs}>
-                    <a href={location.origin + '/results?category=Health%2C+Beauty+%26+Wellness'} target="_self">
+                    <a href={location.origin + '/results/Health, Beauty & Wellness'} target="_self">
                         <img src={health} alt="" style={styles.image} />
                     </a>
                     <Typography variant={'h6'} component={'div'} fontSize={'20px'} textAlign={'center'}>Health, Beauty, & Wellness</Typography>
                 </Grid>
                 <Grid item xs={styles.grid.xs}>
-                    <a href={location.origin + `/results?category=Apparel+%2F+Clothing`} target="_self">
+                    <a href={location.origin + `/results/Apparel & Clothing`} target="_self">
                         <img src={clothing} alt="" style={styles.image} />
                     </a>
                     <Typography variant={'h6'} component={'div'} fontSize={'20px'} textAlign={'center'}>Apparel / Clothing</Typography>
                 </Grid>
                 <Grid item xs={styles.grid.xs}>
-                    <a href={location.origin + '/results?category=Electronics'} target="_self">
+                    <a href={location.origin + '/results/Electronics'} target="_self">
                         <img src={electronics} alt="" style={styles.image} />
                     </a>
                     <Typography variant={'h6'} component={'div'} fontSize={'20px'} textAlign={'center'}>Electronics</Typography>
