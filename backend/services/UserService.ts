@@ -131,7 +131,7 @@ class UserService implements IUserService {
                         email
                     FROM public."Vendors"
                     WHERE uuid IN (
-                        SELECT UNNEST("savedVendors") FROM public."Users"
+                        SELECT UNNEST("saved_vendors") FROM public."Users"
                         WHERE uuid = :userId
                     );
                 `,

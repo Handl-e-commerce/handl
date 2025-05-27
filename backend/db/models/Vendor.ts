@@ -76,7 +76,7 @@ Vendor.init({
     phoneNumber: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: 'phone_number',
+        field: "phone_number",
     },
     email: {
         type: DataTypes.STRING,

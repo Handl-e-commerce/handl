@@ -6,7 +6,7 @@ import {Vendor} from "../db/models/Vendor";
 
 const vendorRouter = express.Router();
 
-vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
+vendorRouter.get("/categories/:category", async (req: Request, res: Response, next: NextFunction) => {
     try {
         // TODO: (LOW) Remove references for searchVal as we are no longer implementing the search bar
         const cookies = req.cookies;
@@ -16,6 +16,7 @@ vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
             cookies.validator,
             cookies.userId
         );
+        
         if (!isVerified) {
             return res.status(401)
                 .cookie("selector", "", {
@@ -32,7 +33,13 @@ vendorRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
                 })
                 .send();
         }
-        let category: string | null = null;
+
+        let category: string | null = req.params.category;
+        if (!category) {
+            return res.status(400).json({
+                error: "Category is required",
+            });
+        }
         let subcategories: string[] | null = null;
         let states: string[] | null = null;
         if (req.query.category) {
