@@ -103,6 +103,7 @@ function Home(): JSX.Element {
         );
     };
 
+    // TODO: (LOW) Figure out how to refactor this from static to dynamic
     function createHomePageCategories(childText: string): JSX.Element {
         return (
             <Grid container spacing={'5px'} mb={'24px'} data-testid={`${childText}-container`} sx={styles.gridContainer}>

@@ -108,7 +108,7 @@ function Results(): JSX.Element {
         queryParams.delete("states");
     };
 
-    // TODO: (HIGH) Remove block modal and replace with paywall logic
+    // TODO: (HIGH) Implement paywall logic
     // Create Modal Component for not logged in for example
     if (!loggedIn) {
         const redirectSignUp = () =>  {
