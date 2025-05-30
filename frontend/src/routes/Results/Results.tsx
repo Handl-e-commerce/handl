@@ -17,9 +17,11 @@ function Results(): JSX.Element {
     const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(queryParams.get("subcategories")?.split(",") ?? []);
     const [selectedStates, setSelectedStates] = useState<string[]>(queryParams.get("states")?.split(",") ?? []);
     const [loadingData, setLoadingData] = useState<boolean>(true);
-    
+    const category = decodeURIComponent(location.pathname.split("/")[2]);
+
     let isMobile: boolean = useMobile();
     let loggedIn: boolean = useLoginStatus();
+    // TODO: (LOW) Remove search params since we're not using it for the time being?
     let searchParam = queryParams.get("search-params");
 
     const containerSx: SxProps = {
@@ -54,7 +56,6 @@ function Results(): JSX.Element {
         if (subcategories.length > 0) queryParams.set("subcategories", subcategories);
         if (states.length  > 0) queryParams.set("states", states);
         setLoadingData(true);
-        const category = location.pathname.split("/")[2];
         window.history.pushState("", "", `/results/${category}?${queryParams.toString()}`);
         const response = await fetchWrapper(`/vendors/categories/${category}?${queryParams.toString()}`, 'GET');
         const data: Vendor[] = (await response.json()).result;
@@ -137,7 +138,7 @@ function Results(): JSX.Element {
 
     return (
         <Container sx={containerSx}>
-            <Typography variant={isMobile ? "h6" : "h4"} sx={{margin: isMobile ? '.5rem' : '1rem', fontWeight: 600 }}>Viewing {queryParams.get("category")}</Typography>
+            <Typography variant={isMobile ? "h6" : "h4"} sx={{margin: isMobile ? '.5rem' : '1rem', fontWeight: 600 }}>Viewing {category}</Typography>
             <Grid container spacing={1}>
                 {subcategories && subcategories.length > 0 &&
                     <Grid item sm={isMobile ? 1 : 1.75}>
