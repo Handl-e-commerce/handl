@@ -130,6 +130,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
                             />
                         ))}
                     </TableBody>
+                    {/* TODO: (HIGH) Add subscribe modal here */}
                 </Table>
             </TableContainer>
             <TablePagination

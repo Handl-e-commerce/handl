@@ -16,7 +16,7 @@ vendorRouter.get("/categories/:category", async (req: Request, res: Response, ne
             cookies.validator,
             cookies.userId
         );
-        
+
         if (!isVerified) {
             return res.status(401)
                 .cookie("selector", "", {

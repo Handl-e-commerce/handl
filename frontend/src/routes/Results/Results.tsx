@@ -44,7 +44,7 @@ function Results(): JSX.Element {
 
     useEffect(() => {
         if (!subcategories) {
-            // getSubcategories();
+            getSubcategories();
         };
     }, []);
 
@@ -64,7 +64,8 @@ function Results(): JSX.Element {
     };
 
     async function getSubcategories(): Promise<void> {
-        const response = await fetchWrapper(`/vendors/subcategories?${queryParams.toString()}`, 'GET');
+        // TODO: (LOW) Quick and dirty hack, find a way to make this better
+        const response = await fetchWrapper(`/vendors/subcategories?category=${category}`, 'GET');
         const data: string[] = (await response.json()).result;
         let subcategories: string[] = [];
         data.forEach((subcategory) => {
@@ -109,33 +110,6 @@ function Results(): JSX.Element {
     };
 
     // TODO: (HIGH) Implement paywall logic
-    // Create Modal Component for not logged in for example
-    if (!loggedIn) {
-        const redirectSignUp = () =>  {
-            // redirect to sign up route
-            window.history.pushState({}, "", location.origin + "/sign-up?");
-            location.replace(location.origin + "/sign-up?");
-        };
-    
-        const redirectLogin = () => {
-            // redirect to login page
-            window.history.pushState({}, "", location.origin + "/login?");
-            location.replace(location.origin + "/login?");
-        };
-        return (
-            <Container sx={{...containerSx, width: '95%'}}>
-                <Paper elevation={24} sx={{width: 'fit-content', padding: 5, background: '#F2F2F7', height: 'fit-content'}}>
-                    <Box>
-                        <Typography id="modal-title" variant="h4" component="h4" sx={{textAlign: 'center'}}>Login or Sign up to get full access to our data!</Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2, textAlign: 'center' }}>Get access to hundreds of wholesalers and distributors today!</Typography>
-                        <Button onClick={redirectSignUp} variant="contained" sx={{ marginTop: '7px', marginRight: '4px' }}>Sign Up</Button>
-                        <Button onClick={redirectLogin} variant="outlined" sx={{ marginTop: '7px', marginLeft: '4px' }}>Login</Button>
-                    </Box>
-                </Paper>
-            </Container>
-        );
-    };
-
     return (
         <Container sx={containerSx}>
             <Typography variant={isMobile ? "h6" : "h4"} sx={{margin: isMobile ? '.5rem' : '1rem', fontWeight: 600 }}>Viewing {category}</Typography>
@@ -168,7 +142,9 @@ function Results(): JSX.Element {
                                 padding: '7px 8px'
                             }}
                             onClick={handleClearAll}
-                        >Clear All</Button>
+                        >
+                            Clear All
+                        </Button>
                     }
                 </Grid>
             </Grid>
