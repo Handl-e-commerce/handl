@@ -22,7 +22,7 @@ function SavedVendors(): JSX.Element {
     }, []);
 
     return (
-        <Container sx={{ height: '50rem'}}>
+        <Container sx={{ minHeight: '100vh'}}>
             <Typography variant="h4" sx={{ margin: '1rem', fontWeight: 600 }}>Viewing User Favorites</Typography>
             {loadingData ?
                 <CircularProgress/> :
