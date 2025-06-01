@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { Vendor } from "../../types/types";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
-import { Box, Button, Chip, CircularProgress, Container, Grid, Paper, SxProps, Typography  } from '@mui/material';
+import { Box, Button, Chip, CircularProgress, Container, Grid, SxProps, Typography  } from '@mui/material';
 import { EnhancedTable } from "../../components/Table/EnhancedTable";
 import { useMobile } from "../../hooks/useMobile";
 import { QueryDropDown } from "../../components/QueryDropDown/QueryDropDown";
@@ -36,17 +36,15 @@ function Results(): JSX.Element {
     };
 
     useEffect(() => {
-        let ignore = false;
-        if (!ignore && loggedIn) {
+        if (loggedIn) {
             handleQuery();
         };
-        return () => { ignore = true };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedSubcategories, selectedStates]);
 
     useEffect(() => {
-        if (!subcategories) {
-            getSubcategories();
-        };
+        if (!subcategories) getSubcategories();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleQuery = async () => {

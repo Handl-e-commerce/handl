@@ -146,13 +146,8 @@ function Home(): JSX.Element {
     };
 
     useEffect(() => {
-        let ignore = false;
-        if (!ignore) {
-            if (!categories) {
-                getCategories();
-            };
-        };
-        return () => { ignore = true };
+        if (!categories) getCategories()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

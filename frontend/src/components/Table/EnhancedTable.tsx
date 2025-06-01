@@ -57,6 +57,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
             page * rowsPerPage,
             rowsPerPage > -1 ? page * rowsPerPage + rowsPerPage : undefined,
         ),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [order, orderBy, page, rowsPerPage, loadingData, data]
     );
 
