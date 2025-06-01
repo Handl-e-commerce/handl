@@ -9,15 +9,16 @@ import { QueryDropDown } from "../../components/QueryDropDown/QueryDropDown";
 import { states } from "../../utils/constants";
 
 function Results(): JSX.Element {
-    let queryParams = new URL(document.location.toString()).searchParams;
-    let location = window.location;
+    const queryParams = new URL(document.location.toString()).searchParams;
+    const location = window.location;
+    const category = decodeURIComponent(location.pathname.split("/")[2]);
 
+    const [loadingData, setLoadingData] = useState<boolean>(true);
     const [vendors, setVendors] = useState<Vendor[]>([]);
     const [subcategories, setSubcategories] = useState<string[]>();
     const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(queryParams.get("subcategories")?.split(",") ?? []);
     const [selectedStates, setSelectedStates] = useState<string[]>(queryParams.get("states")?.split(",") ?? []);
-    const [loadingData, setLoadingData] = useState<boolean>(true);
-    const category = decodeURIComponent(location.pathname.split("/")[2]);
+    
 
     let isMobile: boolean = useMobile();
     let loggedIn: boolean = useLoginStatus();
@@ -113,7 +114,7 @@ function Results(): JSX.Element {
     return (
         <Container sx={containerSx}>
             <Typography variant={isMobile ? "h6" : "h4"} sx={{margin: isMobile ? '.5rem' : '1rem', fontWeight: 600 }}>Viewing {category}</Typography>
-            <Grid container spacing={1}>
+            <Grid container spacing={1} aria-label="options-container">
                 {subcategories && subcategories.length > 0 &&
                     <Grid item sm={isMobile ? 1 : 1.75}>
                         <QueryDropDown 
