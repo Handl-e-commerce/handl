@@ -27,8 +27,7 @@ function Results(): JSX.Element {
 
     const containerSx: SxProps = {
         paddingLeft: '1px', 
-        paddingRight: '1px', 
-        minHeight: '62.5rem',
+        paddingRight: '1px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
