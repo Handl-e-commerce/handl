@@ -153,6 +153,9 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
             userId?: string | undefined;
             expires?: Date | null | undefined;
             firstName?: string | null | undefined,
+            type?: string | null | undefined,
+            subscriptionExpiresDate?: Date | null | undefined;
+
         } = await userService.Login(userDetails.email, userDetails.password);
         if (loginStatus.result) {
             return res.status(201)
@@ -173,6 +176,18 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
                     sameSite: "none",
                     secure: true,
                     httpOnly: true,
+                })
+                .cookie("type", loginStatus.type, {
+                    expires: new Date(Date.now() + (1000*60*60*24*90)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                })
+                .cookie("subscriptionExpirationDate", loginStatus.subscriptionExpiresDate, {
+                    expires: new Date(Date.now() + (1000*60*60*24*90)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
                 })
                 .json({
                     message: "Successfully authenticated user",

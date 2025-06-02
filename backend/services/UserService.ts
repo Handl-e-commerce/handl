@@ -274,7 +274,9 @@ class UserService implements IUserService {
         validator?: string | null,
         userId?: string,
         expires?: Date | null,
-        firstName?: string | null
+        firstName?: string | null,
+        type?: string | null,
+        subscriptionExpiresDate?: Date | null,
     }> {
         try {
             const user: User | null = await User.findOne({
@@ -314,6 +316,8 @@ class UserService implements IUserService {
                 userId: user.uuid,
                 expires: expirationDate,
                 firstName: user.firstName,
+                type: user.type,
+                subscriptionExpiresDate: user.subscriptionExpiresAt,
             };
         } catch (err) {
             const error = err as Error;
