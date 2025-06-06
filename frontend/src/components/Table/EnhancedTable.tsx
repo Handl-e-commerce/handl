@@ -4,6 +4,7 @@ import { Order, Vendor } from "../../types/types";
 import { EnhancedTableHead } from "./EnhancedTableHead";
 import { EnhancedRow } from "./EnhancedRow";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
+import { Paywall } from "../Paywall/Paywall";
 
 interface ITableProps {
     isMobile: boolean;
@@ -131,9 +132,10 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
                             />
                         ))}
                     </TableBody>
-                    {/* TODO: (HIGH) Add subscribe modal here */}
                 </Table>
             </TableContainer>
+            {/* TODO: (HIGH) Add subscribe modal here */}
+            <Paywall />
             <TablePagination
                 rowsPerPageOptions={[25, 50, 100, 200, { label: 'All', value: -1 }]}
                 colSpan={3}

@@ -171,14 +171,19 @@ function Results(): JSX.Element {
                     )
                 )}
             </Box>
-            {loadingData ?
+            {/* {loadingData ?
                 <CircularProgress/> :
                 <EnhancedTable
                     isMobile={isMobile}
                     data={vendors}
                     loadingData={loadingData}
                 />
-            }
+            } */}
+            <EnhancedTable
+                isMobile={isMobile}
+                data={vendors}
+                loadingData={loadingData}
+            />
         </Container>
     );
 };
