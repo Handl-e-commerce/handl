@@ -5,13 +5,11 @@ function Paywall(): JSX.Element {
     return (
         <Box
             sx={{
-                mt: "7px",
-                mb: "7px",
+                margin: "7px",
                 p: "7px",
-                width: "97%",
+                width: "98%",
                 background: "#022648",
-                border: "1px solid #022648",
-                borderRadius: "8px",
+                borderRadius: "10px",
                 textAlign: "center",
             }}
         >
@@ -29,7 +27,7 @@ function Paywall(): JSX.Element {
                     padding: "8px 24px",
                     background: "#f2e5d1",
                     border: "none",
-                    borderRadius: "4px",
+                    borderRadius: "25px",
                     color: "#022648",
                     fontWeight: "bold",
                     cursor: "pointer",
