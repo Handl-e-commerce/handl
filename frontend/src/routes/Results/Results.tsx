@@ -171,7 +171,8 @@ function Results(): JSX.Element {
                     )
                 )}
             </Box>
-            {/* {loadingData ?
+            {/* TODO: (HIGH) Implement paywall logic
+            {loadingData ?
                 <CircularProgress/> :
                 <EnhancedTable
                     isMobile={isMobile}
