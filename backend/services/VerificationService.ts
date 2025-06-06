@@ -61,31 +61,50 @@ class VerificationService implements IVerificationService {
         selector: string | undefined,
         validator: string | undefined,
         userId: string
-    ): Promise<boolean> {
+    ): Promise<{
+        result: boolean,
+        type?: string,
+        subscriptionExpirationDate?: Date | null,
+    }> {
         try {
             if (!selector || !validator) {
-                return false;
+                return {
+                    result: false,
+                };
             }
 
-            const auth: AuthToken | null = await AuthToken.findOne({
+            const auth = await AuthToken.findOne({
                 where: {
                     selector: selector,
                 },
-            });
+                include: [{
+                    model: User,
+                    as: "User",
+                    where: {
+                        uuid: userId,
+                    },
+                    attributes: ["type", "subscriptionExpirationDate"],
+                    required: true, // ensures LEFT JOIN (set to false for OUTER JOIN)
+                }],
+            }) as (AuthToken & { User: User }) | null;
 
             if (auth === null) {
-                return false;
+                return { result: false };
             }
 
             if (!(await argon2.verify(auth.validator, validator))) {
-                return false;
+                return { result: false };
             }
 
             if (userId != auth.UserUuid) {
-                return false;
+                return { result: false };
             }
 
-            return true;
+            return {
+                result: true,
+                type: auth.User.type,
+                subscriptionExpirationDate: auth.User.subscriptionExpiresAt,
+            };
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);

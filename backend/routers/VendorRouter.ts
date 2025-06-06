@@ -11,28 +11,15 @@ vendorRouter.get("/categories/:category", async (req: Request, res: Response, ne
         // TODO: (LOW) Remove references for searchVal as we are no longer implementing the search bar
         const cookies = req.cookies;
         const verificationService: VerificationService = new VerificationService();
-        const isVerified: boolean = await verificationService.VerifyUser(
+        const isVerifiedResult = await verificationService.VerifyUser(
             cookies.selector,
             cookies.validator,
             cookies.userId
         );
 
-        if (!isVerified) {
-            return res.status(401)
-                .cookie("selector", "", {
-                    maxAge: Number(new Date(1)),
-                    sameSite: "none",
-                    secure: true,
-                    httpOnly: true,
-                })
-                .cookie("validator", "", {
-                    maxAge: Number(new Date(1)),
-                    sameSite: "none",
-                    secure: true,
-                    httpOnly: true,
-                })
-                .send();
-        }
+        // TODO: (HIGH) Remove the !isVerified check and check instead for user type + expiration
+        // if null or type != premium or expiration date < time.now(), then return query with 5 results
+        // if type == premium, then return query with all results
 
         let category: string | null = req.params.category;
         if (!category) {
