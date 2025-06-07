@@ -31,7 +31,7 @@ vendorRouter.get("/categories/:category", async (req: Request, res: Response, ne
 
         const vendorService = new VendorService();
         const isPremium = verificationStatus.result && verificationStatus.type === UserType[1] &&
-            // There might be a timezone issue here but will deal with this in the future     
+            // There might be a timezone issue here but will deal with this in the future
             new Date(verificationStatus.subscriptionExpirationDate as Date) > new Date();
 
         const limit = isPremium ? undefined : 5;

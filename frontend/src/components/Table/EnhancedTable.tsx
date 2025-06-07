@@ -136,7 +136,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
                     </TableBody>
                 </Table>
             </TableContainer>
-            {cookiesObject.type !== 'premium' && <Paywall />}
+            {cookiesObject.type !== 'Premium' && <Paywall />}
             <TablePagination
                 rowsPerPageOptions={[25, 50, 100, 200, { label: 'All', value: -1 }]}
                 colSpan={3}
