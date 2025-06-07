@@ -171,7 +171,6 @@ function Results(): JSX.Element {
                     )
                 )}
             </Box>
-            {/* TODO: (HIGH) Implement paywall logic
             {loadingData ?
                 <CircularProgress/> :
                 <EnhancedTable
@@ -179,12 +178,7 @@ function Results(): JSX.Element {
                     data={vendors}
                     loadingData={loadingData}
                 />
-            } */}
-            <EnhancedTable
-                isMobile={isMobile}
-                data={vendors}
-                loadingData={loadingData}
-            />
+            }
         </Container>
     );
 };

@@ -3,6 +3,7 @@ import {NextFunction, Request, Response} from "express";
 import {VendorService} from "../services/VendorService";
 import {VerificationService} from "../services/VerificationService";
 import {Vendor} from "../db/models/Vendor";
+import {UserType} from "../enums/UserType";
 
 const vendorRouter = express.Router();
 
@@ -29,19 +30,21 @@ vendorRouter.get("/categories/:category", async (req: Request, res: Response, ne
             null;
 
         const vendorService = new VendorService();
-        // TODO: (HIGH) Remove the !isVerified check and check instead for user type + expiration
-        // if null or type != premium or expiration date < time.now(), then return query with 5 results
-        // if type == premium, then return query with all results
-        // Just return limit 5 results if not premium or expired
-        const isPremium =
-            verificationStatus.result &&
-            verificationStatus.type === "premium" &&
+        const isPremium = verificationStatus.result && verificationStatus.type === UserType[1] &&
+            // There might be a timezone issue here but will deal with this in the future     
             new Date(verificationStatus.subscriptionExpirationDate as Date) > new Date();
 
         const limit = isPremium ? undefined : 5;
         const vendors: Vendor[] = await vendorService.GetVendors(category, subcategories, states, limit);
 
-        return res.status(200).json({result: vendors});
+        return res.status(200)
+            .cookie("type", verificationStatus.type, {
+                expires: new Date(Date.now() + (1000*60*60*24*90)),
+                sameSite: "none",
+                secure: true,
+                httpOnly: false,
+            })
+            .json({result: vendors});
     } catch (err: unknown) {
         return next(err as Error);
     }

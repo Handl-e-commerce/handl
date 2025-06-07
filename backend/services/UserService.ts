@@ -10,6 +10,7 @@ import {VerificationService} from "./VerificationService";
 import {Vendor} from "../db/models/Vendor";
 import {QueryTypes} from "sequelize";
 import {Database} from "../db/Database";
+import {UserType} from "../enums/UserType";
 
 /**
  * User Service Class
@@ -63,7 +64,7 @@ class UserService implements IUserService {
                     isVerified: false,
                     verificationToken: hashedToken,
                     tokenExpiration: new Date(Date.now() + 1000*60*30),
-                    type: "free", // Default type is free, can be changed later
+                    type: UserType[0],
                     subscriptionExpiresAt: null,
                 });
 

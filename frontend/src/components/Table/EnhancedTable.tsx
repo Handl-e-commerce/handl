@@ -5,6 +5,7 @@ import { EnhancedTableHead } from "./EnhancedTableHead";
 import { EnhancedRow } from "./EnhancedRow";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { Paywall } from "../Paywall/Paywall";
+import { cookieParser } from "../../utils/cookie-util";
 
 interface ITableProps {
     isMobile: boolean;
@@ -18,7 +19,8 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(-1);
     const [savedVendors, setSavedVendors] = useState<string[]>([]);
-    
+    const cookiesObject = cookieParser();
+
     async function getSavedVendors(): Promise<void> {
         const response = await fetchWrapper("/users/me/vendors", "GET");
         const data = (await response.json()).savedVendors.map((vendor: Vendor) => vendor.uuid);
@@ -134,8 +136,7 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
                     </TableBody>
                 </Table>
             </TableContainer>
-            {/* TODO: (HIGH) Add subscribe modal here */}
-            <Paywall />
+            {cookiesObject.type !== 'premium' && <Paywall />}
             <TablePagination
                 rowsPerPageOptions={[25, 50, 100, 200, { label: 'All', value: -1 }]}
                 colSpan={3}
