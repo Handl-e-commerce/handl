@@ -9,41 +9,18 @@ class VendorService implements IVendorService {
      * Returns the total number of items found using the query and the results fixed by limit and offset
      * @param {string | null | undefined} categories
      * @param {string[] | null | undefined} subcategories
-     * @param {string[] | null | undefined} searchVal
      * @param {string[] | null | undefined} states
+     * @param {number} limit
      * @return {Promise<Vendor[]>}
      */
     public async GetVendors(
         categories: string | null | undefined,
         subcategories: string[] | null | undefined,
-        searchVal: string | null | undefined,
         states: string[] | null | undefined,
+        limit?: number
     ): Promise<Vendor[]> {
         try {
             let whereClause = {};
-            // TODO: (LOW) Remove references for searchVal as we are no longer implementing the search bar
-            if (searchVal) {
-                whereClause = {
-                    ...whereClause,
-                    [Op.or]: [
-                        {
-                            name: {
-                                [Op.iLike]: `%${searchVal}%`,
-                            },
-                        },
-                        {
-                            description: {
-                                [Op.iLike]: `%${searchVal}%`,
-                            },
-                        },
-                        {
-                            keywords: {
-                                [Op.iLike]: `%${searchVal}%`,
-                            },
-                        },
-                    ],
-                };
-            }
             if (states) {
                 const properStates: string[] = states.map((state) => state.toUpperCase());
                 whereClause = {
@@ -86,6 +63,7 @@ class VendorService implements IVendorService {
                     "phoneNumber",
                     "email",
                 ],
+                limit: limit,
             });
 
             return vendorResults;

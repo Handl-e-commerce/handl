@@ -83,21 +83,21 @@ class VerificationService implements IVerificationService {
                     where: {
                         uuid: userId,
                     },
-                    attributes: ["type", "subscriptionExpirationDate"],
+                    attributes: ["type", "subscriptionExpiresAt"],
                     required: true, // ensures LEFT JOIN (set to false for OUTER JOIN)
                 }],
             }) as (AuthToken & { User: User }) | null;
 
             if (auth === null) {
-                return { result: false };
+                return {result: false};
             }
 
             if (!(await argon2.verify(auth.validator, validator))) {
-                return { result: false };
+                return {result: false};
             }
 
             if (userId != auth.UserUuid) {
-                return { result: false };
+                return {result: false};
             }
 
             return {

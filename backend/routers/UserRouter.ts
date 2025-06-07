@@ -27,12 +27,12 @@ userRouter.get("/me", async (req: Request, res: Response, next: NextFunction) =>
     try {
         const cookies = req.cookies;
         const verificationService: VerificationService = new VerificationService();
-        const isVerified: boolean = await verificationService.VerifyUser(
+        const verificationStatus = await verificationService.VerifyUser(
             cookies.selector,
             cookies.validator,
             cookies.userId
         );
-        if (!isVerified) {
+        if (!verificationStatus.result) {
             return res.status(401)
                 .cookie("selector", "", {
                     maxAge: Number(new Date(1)),
@@ -62,12 +62,12 @@ userRouter.get("/me/vendors", async (req: Request, res: Response, next: NextFunc
     try {
         const cookies = req.cookies;
         const verificationService: VerificationService = new VerificationService();
-        const isVerified: boolean = await verificationService.VerifyUser(
+        const verificationStatus = await verificationService.VerifyUser(
             cookies.selector,
             cookies.validator,
             cookies.userId
         );
-        if (!isVerified) {
+        if (!verificationStatus.result) {
             return res.status(401)
                 .cookie("selector", "", {
                     maxAge: Number(new Date(1)),
@@ -155,7 +155,6 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
             firstName?: string | null | undefined,
             type?: string | null | undefined,
             subscriptionExpiresDate?: Date | null | undefined;
-
         } = await userService.Login(userDetails.email, userDetails.password);
         if (loginStatus.result) {
             return res.status(201)
@@ -178,12 +177,6 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
                     httpOnly: true,
                 })
                 .cookie("type", loginStatus.type, {
-                    expires: new Date(Date.now() + (1000*60*60*24*90)),
-                    sameSite: "none",
-                    secure: true,
-                    httpOnly: false,
-                })
-                .cookie("subscriptionExpirationDate", loginStatus.subscriptionExpiresDate, {
                     expires: new Date(Date.now() + (1000*60*60*24*90)),
                     sameSite: "none",
                     secure: true,
@@ -274,12 +267,12 @@ userRouter.put("/delete/:id", async (req: Request, res: Response, next: NextFunc
     try {
         const cookies = req.cookies;
         const verificationService: VerificationService = new VerificationService();
-        const isVerified: boolean = await verificationService.VerifyUser(
+        const verificationStatus = await verificationService.VerifyUser(
             cookies.selector,
             cookies.validator,
             cookies.userId
         );
-        if (isVerified) {
+        if (verificationStatus.result) {
             return res.status(401)
                 .cookie("selector", "", {
                     maxAge: Number(new Date(1)),
@@ -338,12 +331,12 @@ userRouter.put("/vendors/save", async (req: Request, res: Response, next: NextFu
     try {
         const cookies = req.cookies;
         const verificationService: VerificationService = new VerificationService();
-        const isVerified: boolean = await verificationService.VerifyUser(
+        const verificationStatus = await verificationService.VerifyUser(
             cookies.selector,
             cookies.validator,
             cookies.userId
         );
-        if (!isVerified) {
+        if (!verificationStatus.result) {
             return res.status(401)
                 .cookie("selector", "", {
                     maxAge: Number(new Date(1)),

@@ -33,6 +33,7 @@ function Paywall(): JSX.Element {
                     cursor: "pointer",
                 }}
                 onClick={() => {
+                    // TODO: (HIGH) Implement stripe logic here
                     // Replace with your subscribe modal logic
                     alert("Subscribe modal coming soon!");
                 }}
