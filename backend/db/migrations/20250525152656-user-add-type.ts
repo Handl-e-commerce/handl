@@ -16,7 +16,7 @@ module.exports = {
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async down(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
-        await queryInterface.removeColumn("Users", "type");
+        await queryInterface.removeColumn("Users", "plan_type");
         await queryInterface.removeColumn("Users", "subscription_expires_at");
     },
 };
