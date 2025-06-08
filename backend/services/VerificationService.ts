@@ -3,7 +3,7 @@ import {AuthToken} from "../db/models/AuthToken";
 import {User} from "../db/models/User";
 import * as argon2 from "argon2";
 import {EmailService} from "./EmailService";
-import { UserType } from "../enums/PlanType";
+import {UserType} from "../enums/PlanType";
 
 /** Verification Service Class */
 class VerificationService implements IVerificationService {
@@ -100,7 +100,7 @@ class VerificationService implements IVerificationService {
             if (userId != auth.UserUuid) {
                 return {result: false};
             }
-            
+
             let userType = auth.User.planType;
             // If the user's subsctription has expired, write to the DB that the user is no longer a premium user
             if (auth.User.subscriptionExpiresAt && new Date(Date.now()) > auth.User.subscriptionExpiresAt) {
@@ -112,7 +112,7 @@ class VerificationService implements IVerificationService {
                     },
                 });
                 userType = UserType[0];
-            };
+            }
 
             return {
                 result: true,
