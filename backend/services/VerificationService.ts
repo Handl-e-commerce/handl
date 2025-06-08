@@ -48,7 +48,6 @@ class VerificationService implements IVerificationService {
         }
     }
 
-    // TODO: (HIGH) Add join logic to fetch the user's true type and subscription expiration date
     /**
    * Method to verify that the user's long term log in cookies are still valid and user can be logged in
    * Is also used to verify that user has access to user actions such as My Account, etc.
