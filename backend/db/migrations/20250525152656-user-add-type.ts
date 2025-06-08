@@ -4,7 +4,7 @@ import {DataTypes, QueryInterface} from "sequelize";
 module.exports = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async up(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
-        await queryInterface.addColumn("Users", "type", {
+        await queryInterface.addColumn("Users", "plan_type", {
             type: Sequelize.STRING(),
             allowNull: true,
             defaultValue: "free",

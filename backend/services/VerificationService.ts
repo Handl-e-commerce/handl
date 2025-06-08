@@ -3,7 +3,7 @@ import {AuthToken} from "../db/models/AuthToken";
 import {User} from "../db/models/User";
 import * as argon2 from "argon2";
 import {EmailService} from "./EmailService";
-import { UserType } from "../enums/UserType";
+import { UserType } from "../enums/PlanType";
 
 /** Verification Service Class */
 class VerificationService implements IVerificationService {
@@ -84,7 +84,7 @@ class VerificationService implements IVerificationService {
                     where: {
                         uuid: userId,
                     },
-                    attributes: ["type", "subscriptionExpiresAt"],
+                    attributes: ["planType", "subscriptionExpiresAt"],
                     required: true, // ensures LEFT JOIN (set to false for OUTER JOIN)
                 }],
             }) as (AuthToken & { User: User }) | null;
@@ -101,11 +101,11 @@ class VerificationService implements IVerificationService {
                 return {result: false};
             }
             
-            let userType = auth.User.type;
+            let userType = auth.User.planType;
             // If the user's subsctription has expired, write to the DB that the user is no longer a premium user
             if (auth.User.subscriptionExpiresAt && new Date(Date.now()) > auth.User.subscriptionExpiresAt) {
                 await User.update({
-                    type: UserType[0],
+                    planType: UserType[0],
                 }, {
                     where: {
                         uuid: userId,

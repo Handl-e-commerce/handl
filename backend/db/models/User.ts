@@ -21,7 +21,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare isVerified: boolean;
     declare verificationToken: string | null;
     declare tokenExpiration: Date | null;
-    declare type: string;
+    declare planType: string;
     declare subscriptionExpiresAt: Date | null;
 }
 
@@ -102,10 +102,11 @@ User.init({
         allowNull: true,
         field: "token_expiration",
     },
-    type: {
+    planType: {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: "free",
+        field: "plan_type",
     },
     subscriptionExpiresAt: {
         type: DataTypes.DATE,

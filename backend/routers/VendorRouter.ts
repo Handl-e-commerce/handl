@@ -3,7 +3,7 @@ import {NextFunction, Request, Response} from "express";
 import {VendorService} from "../services/VendorService";
 import {VerificationService} from "../services/VerificationService";
 import {Vendor} from "../db/models/Vendor";
-import {UserType} from "../enums/UserType";
+import {UserType} from "../enums/PlanType";
 
 const vendorRouter = express.Router();
 
