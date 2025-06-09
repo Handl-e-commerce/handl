@@ -38,7 +38,7 @@ vendorRouter.get("/categories/:category", async (req: Request, res: Response, ne
         const vendors: Vendor[] = await vendorService.GetVendors(category, subcategories, states, limit);
 
         return res.status(200)
-            .cookie("type", verificationStatus.type, {
+            .cookie("planType", verificationStatus.type, {
                 expires: new Date(Date.now() + (1000*60*60*24*90)),
                 sameSite: "none",
                 secure: true,

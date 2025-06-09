@@ -35,9 +35,7 @@ function Results(): JSX.Element {
     };
 
     useEffect(() => {
-        if (loggedIn) {
-            handleQuery();
-        };
+        handleQuery();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedSubcategories, selectedStates]);
 
@@ -55,9 +53,14 @@ function Results(): JSX.Element {
         if (states.length  > 0) queryParams.set("states", states);
         setLoadingData(true);
         window.history.pushState("", "", `/results/${category}?${queryParams.toString()}`);
-        const response = await fetchWrapper(`/vendors/categories/${category}?${queryParams.toString()}`, 'GET');
-        const data: Vendor[] = (await response.json()).result;
-        setVendors(data);
+        try {
+            const response = await fetchWrapper(`/vendors/categories/${category}?${queryParams.toString()}`, 'GET');
+            const data: Vendor[] = (await response.json()).result;
+            setVendors(data);
+        } catch (error) {
+            console.error("Error fetching vendors:", error);
+            setVendors([]);
+        }
         setLoadingData(false);
     };
 

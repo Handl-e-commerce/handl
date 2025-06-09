@@ -46,6 +46,30 @@ userRouter.get("/me", async (req: Request, res: Response, next: NextFunction) =>
                     secure: true,
                     httpOnly: true,
                 })
+                .cookie("userId", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .cookie("planType", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                })
+                .cookie("loggedIn", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                })
+                .cookie("firstName", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                })
                 .send();
         }
         const userService: UserService = new UserService();
@@ -80,6 +104,30 @@ userRouter.get("/me/vendors", async (req: Request, res: Response, next: NextFunc
                     sameSite: "none",
                     secure: true,
                     httpOnly: true,
+                })
+                .cookie("userId", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .cookie("planType", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                })
+                .cookie("loggedIn", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                })
+                .cookie("firstName", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
                 })
                 .send();
         }
@@ -182,11 +230,20 @@ userRouter.post("/login", async (req: Request, res: Response, next: NextFunction
                     secure: true,
                     httpOnly: false,
                 })
+                .cookie("loggedIn", true, {
+                    expires: new Date(Date.now() + (1000*60*60*24*90)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                })
+                .cookie("firstName", loginStatus.firstName, {
+                    expires: new Date(Date.now() + (1000*60*60*24*90)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                })
                 .json({
                     message: "Successfully authenticated user",
-                    loggedIn: "true",
-                    expires: new Date(Date.now() + (1000*60*60*24*90)),
-                    firstName: loginStatus.firstName,
                 })
             ;
         } else {
@@ -222,6 +279,24 @@ userRouter.post("/logout", async (req: Request, res: Response, next: NextFunctio
                 sameSite: "none",
                 secure: true,
                 httpOnly: true,
+            })
+            .cookie("planType", "", {
+                maxAge: Number(new Date(1)),
+                sameSite: "none",
+                secure: true,
+                httpOnly: false,
+            })
+            .cookie("loggedIn", "", {
+                maxAge: Number(new Date(1)),
+                sameSite: "none",
+                secure: true,
+                httpOnly: false,
+            })
+            .cookie("firstName", "", {
+                maxAge: Number(new Date(1)),
+                sameSite: "none",
+                secure: true,
+                httpOnly: false,
             })
             .send();
     } catch (err: unknown) {
@@ -286,6 +361,30 @@ userRouter.put("/delete/:id", async (req: Request, res: Response, next: NextFunc
                     secure: true,
                     httpOnly: true,
                 })
+                .cookie("userId", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .cookie("planType", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                })
+                .cookie("loggedIn", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                })
+                .cookie("firstName", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                })
                 .send();
         }
         const userId: string = req.params.id;
@@ -349,6 +448,30 @@ userRouter.put("/vendors/save", async (req: Request, res: Response, next: NextFu
                     sameSite: "none",
                     secure: true,
                     httpOnly: true,
+                })
+                .cookie("userId", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                })
+                .cookie("planType", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                })
+                .cookie("loggedIn", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                })
+                .cookie("firstName", "", {
+                    maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
                 })
                 .send();
         }

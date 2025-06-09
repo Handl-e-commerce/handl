@@ -6,6 +6,7 @@ import { EnhancedRow } from "./EnhancedRow";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { Paywall } from "../Paywall/Paywall";
 import { cookieParser } from "../../utils/cookie-util";
+import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 
 interface ITableProps {
     isMobile: boolean;
@@ -20,11 +21,17 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
     const [rowsPerPage, setRowsPerPage] = useState(-1);
     const [savedVendors, setSavedVendors] = useState<string[]>([]);
     const cookiesObject = cookieParser();
+    const loggedIn = useLoginStatus();
 
     async function getSavedVendors(): Promise<void> {
-        const response = await fetchWrapper("/users/me/vendors", "GET");
-        const data = (await response.json()).savedVendors.map((vendor: Vendor) => vendor.uuid);
-        setSavedVendors(data);
+        try {
+            const response = await fetchWrapper("/users/me/vendors", "GET");
+            const data = (await response.json()).savedVendors.map((vendor: Vendor) => vendor.uuid);
+            setSavedVendors(data);
+        } catch (error) {
+            console.error("Error fetching saved vendors:", error);
+            setSavedVendors([]);
+        };
     };
 
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -65,8 +72,10 @@ function EnhancedTable({ isMobile, data, loadingData }: ITableProps): JSX.Elemen
     );
 
     useEffect(() => {
-        getSavedVendors();
-    }, []);
+        if (loggedIn) {
+            getSavedVendors();
+        }
+    }, [loggedIn]);
 
     const boxSx: SxProps = {
         display: 'flex',
