@@ -85,7 +85,6 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
                             alignItems: 'center',
                         }}
                         onClick={(e) => {
-                            console.log(e.currentTarget.innerText);
                             queryParams.delete("subcategories");
                             queryParams.delete("states");
                             window.history.pushState({}, "", `${location.origin}/results/${e.currentTarget.innerText}?`);
