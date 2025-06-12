@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { EnhancedTable } from './EnhancedTable';
 import { Vendor } from '../../types/types';
@@ -53,26 +53,37 @@ const mockData: Vendor[] = [
 
 global.fetch = jest.fn();
 
+let mockUseLoginStatus = jest.fn();
+jest.mock("../../hooks/useLoggedInStatus", () => {
+    const originalModule = jest.requireActual("../../hooks/useLoggedInStatus");
+    return {
+        __esModule: true,
+        ...originalModule,
+        useLoginStatus: jest.fn(() => mockUseLoginStatus()),
+    };
+});
+
 beforeEach(() => {
+    mockUseLoginStatus.mockReturnValue(true);
+});
+
+afterEach(() => {
     jest.resetAllMocks();
 });
 
 describe("EnhancedTable Tests", () => {
-    it("Should render data as expected", async () => {
-        render(<EnhancedTable isMobile={false} loadingData={false} data={mockData}/>);
+    it("Should render data as expected for logged in user", async () => {
+        mockUseLoginStatus.mockReturnValue(true);
+        await act(async () => render(<EnhancedTable isMobile={false} loadingData={false} data={mockData}/>));
+
+        for (let i = 0; i < mockData.length; i++) {
+            expect(screen.getByText(mockData[i].name)).toBeInTheDocument();
+            expect(screen.getByText(mockData[i].website)).toBeInTheDocument();
+            expect(screen.getByText(mockData[i].phoneNumber)).toBeInTheDocument();
+            expect(screen.getByText(mockData[i].state)).toBeInTheDocument();
+        };
+        
         await waitFor(() => {
-            expect(screen.getByText(mockData[0].name)).toBeInTheDocument();
-            expect(screen.getByText(mockData[0].website)).toBeInTheDocument();
-            expect(screen.getByText(mockData[0].phoneNumber)).toBeInTheDocument();
-            expect(screen.getByText(mockData[0].state)).toBeInTheDocument();
-            expect(screen.getByText(mockData[1].name)).toBeInTheDocument();
-            expect(screen.getByText(mockData[1].website)).toBeInTheDocument();
-            expect(screen.getByText(mockData[1].phoneNumber)).toBeInTheDocument();
-            expect(screen.getByText(mockData[1].state)).toBeInTheDocument();
-            expect(screen.getByText(mockData[2].name)).toBeInTheDocument();
-            expect(screen.getByText(mockData[2].website)).toBeInTheDocument();
-            expect(screen.getByText(mockData[2].phoneNumber)).toBeInTheDocument();
-            expect(screen.getByText(mockData[2].state)).toBeInTheDocument();
             expect(screen.getByTestId("FavoriteIcon")).toBeInTheDocument();
             expect(screen.getAllByTestId("FavoriteBorderIcon").length).toEqual(2);
         });

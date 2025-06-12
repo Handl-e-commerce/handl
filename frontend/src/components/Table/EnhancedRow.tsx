@@ -71,6 +71,7 @@ function EnhancedRow({ isMobile, data, savedVendors, setSavedVendors }: IEnhance
                 }</TableCell>}
                 {!isMobile && <TableCell onClick={() => setOpen(!open)}>{formatValue(data.phoneNumber)}</TableCell>}
                 {!isMobile && <TableCell onClick={() => setOpen(!open)}>{formatValue(data.state)}</TableCell>}
+                {/* TODO: Hide this column for users that are not logged in */}
                 <TableCell>
                     <IconButton
                         onClick={handleSavedVendorChange}
