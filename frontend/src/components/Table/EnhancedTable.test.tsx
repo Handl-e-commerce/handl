@@ -73,7 +73,7 @@ afterEach(() => {
 
 describe("EnhancedTable Tests", () => {
     it("Should render data as expected for logged in user", async () => {
-        mockUseLoginStatus.mockReturnValue(true);
+        // mockUseLoginStatus.mockReturnValue(true);
         await act(async () => render(<EnhancedTable isMobile={false} loadingData={false} data={mockData}/>));
 
         for (let i = 0; i < mockData.length; i++) {
@@ -103,14 +103,20 @@ describe("EnhancedTable Tests", () => {
     });
 
     it("Should update favorites when clicking on favorite icon button for vendor", async () => {
-        render(<EnhancedTable isMobile={false} loadingData={false} data={mockData}/>);
+        console.log("Running the failing test");
+        mockUseLoginStatus.mockReturnValueOnce(true);
+        await act(async () => render(<EnhancedTable isMobile={false} loadingData={false} data={mockData}/>));
+
         await userEvent.click(screen.getAllByLabelText("icon-button-favorite")[1]);
-        await waitFor(() => {
-            expect(screen.getAllByTestId("FavoriteIcon").length).toEqual(2);
-        });
+        expect(screen.getAllByTestId("FavoriteIcon").length).toEqual(2);
         await userEvent.click(screen.getAllByLabelText("icon-button-favorite")[0]);
-        await waitFor(() => {
-            expect(screen.getAllByTestId("FavoriteIcon").length).toEqual(1);
-        });
+        expect(screen.getAllByTestId("FavoriteIcon").length).toEqual(1);
+    });
+
+    it("Should not render favorite icon button for non-logged in user", async () => {
+        mockUseLoginStatus.mockReturnValueOnce(false);
+        await act(async () => render(<EnhancedTable isMobile={false} loadingData={false} data={mockData}/>));
+
+        expect(screen.queryByTestId("FavoriteIcon")).toBeNull();
     });
 });

@@ -5,6 +5,7 @@ import { KeyboardArrowUp, KeyboardArrowDown } from "@mui/icons-material";
 import { ExpandedRow } from "../ExpandedRow/ExpandedRow";
 import { FavoriteBorder, Favorite } from "@mui/icons-material";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
+import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 
 interface IEnhancedRowProps {
     isMobile: boolean;
@@ -15,6 +16,7 @@ interface IEnhancedRowProps {
 
 function EnhancedRow({ isMobile, data, savedVendors, setSavedVendors }: IEnhancedRowProps): JSX.Element {
     const [open, setOpen] = useState<boolean>(false)
+    const loggedIn = useLoginStatus();
     
     function formatValue(value: string): string {
         return value === '' ? 'Coming soon' : value;
@@ -71,8 +73,7 @@ function EnhancedRow({ isMobile, data, savedVendors, setSavedVendors }: IEnhance
                 }</TableCell>}
                 {!isMobile && <TableCell onClick={() => setOpen(!open)}>{formatValue(data.phoneNumber)}</TableCell>}
                 {!isMobile && <TableCell onClick={() => setOpen(!open)}>{formatValue(data.state)}</TableCell>}
-                {/* TODO: Hide this column for users that are not logged in */}
-                <TableCell>
+                {loggedIn && <TableCell>
                     <IconButton
                         onClick={handleSavedVendorChange}
                         aria-label="icon-button-favorite"
@@ -81,7 +82,7 @@ function EnhancedRow({ isMobile, data, savedVendors, setSavedVendors }: IEnhance
                             color: '#DC4637'
                         }}/> : <FavoriteBorder />}
                     </IconButton>
-                </TableCell>
+                </TableCell>}
             </TableRow>
             <TableRow>
                 <TableCell style={{ padding: isMobile ? 0 : '0px 10px' }} colSpan={6}>
