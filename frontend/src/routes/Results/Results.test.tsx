@@ -20,6 +20,10 @@ beforeEach(() => {
     mockUseLoginStatus.mockReturnValue(true);
 });
 
+afterEach(() => {
+    jest.clearAllMocks();
+});
+
 describe("Results Route Test", () => {
     const user = userEvent.setup();
     it("Should render only category query chips and remove them when closing them", async () => {
