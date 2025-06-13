@@ -68,14 +68,21 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
 });
 
 describe("EnhancedTable Tests", () => {
-    it("Should render data as expected for logged in user", async () => {
-        // mockUseLoginStatus.mockReturnValue(true);
-        await act(async () => render(<EnhancedTable isMobile={false} loadingData={false} data={mockData}/>));
+    it("Should update favorites when clicking on favorite icon button for vendor", async () => {
+        render(<EnhancedTable isMobile={false} loadingData={false} data={mockData}/>)
 
+        await userEvent.click(screen.getAllByLabelText("icon-button-favorite")[1]);
+        expect(screen.getAllByTestId("FavoriteIcon").length).toEqual(2);
+        await userEvent.click(screen.getAllByLabelText("icon-button-favorite")[0]);
+        expect(screen.getAllByTestId("FavoriteIcon").length).toEqual(1);
+    });
+
+    it("Should render data as expected for logged in user", async () => {
+        render(<EnhancedTable isMobile={false} loadingData={false} data={mockData}/>)
         for (let i = 0; i < mockData.length; i++) {
             expect(screen.getByText(mockData[i].name)).toBeInTheDocument();
             expect(screen.getByText(mockData[i].website)).toBeInTheDocument();
@@ -100,17 +107,6 @@ describe("EnhancedTable Tests", () => {
             expect(screen.getByText("Category1")).toBeInTheDocument();
             expect(screen.getByText("Category2")).toBeInTheDocument();
         });
-    });
-
-    it("Should update favorites when clicking on favorite icon button for vendor", async () => {
-        console.log("Running the failing test");
-        mockUseLoginStatus.mockReturnValueOnce(true);
-        await act(async () => render(<EnhancedTable isMobile={false} loadingData={false} data={mockData}/>));
-
-        await userEvent.click(screen.getAllByLabelText("icon-button-favorite")[1]);
-        expect(screen.getAllByTestId("FavoriteIcon").length).toEqual(2);
-        await userEvent.click(screen.getAllByLabelText("icon-button-favorite")[0]);
-        expect(screen.getAllByTestId("FavoriteIcon").length).toEqual(1);
     });
 
     it("Should not render favorite icon button for non-logged in user", async () => {
