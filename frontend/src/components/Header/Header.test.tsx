@@ -32,7 +32,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
 });
 
 describe("Header Test", function() {
