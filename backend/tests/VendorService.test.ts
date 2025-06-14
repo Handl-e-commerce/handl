@@ -1,7 +1,5 @@
 import {describe, expect, it} from "@jest/globals";
 import {VendorService} from "../services/VendorService";
-const express = require("express");
-const request = require("supertest");
 
 describe("VendorService tests", () => {
     it.skip("Should return all results", async () => {
