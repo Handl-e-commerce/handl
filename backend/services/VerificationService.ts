@@ -63,7 +63,7 @@ class VerificationService implements IVerificationService {
         userId: string
     ): Promise<{
         result: boolean,
-        type?: string,
+        planType?: string,
         subscriptionExpirationDate?: Date | null,
     }> {
         try {
@@ -115,7 +115,7 @@ class VerificationService implements IVerificationService {
 
             return {
                 result: true,
-                type: userType,
+                planType: userType,
                 subscriptionExpirationDate: auth.User.subscriptionExpiresAt,
             };
         } catch (err) {

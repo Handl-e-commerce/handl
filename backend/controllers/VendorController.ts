@@ -45,7 +45,7 @@ class VendorController {
                 null;
 
             const vendorService = new VendorService();
-            const isPremium = verificationStatus.result && verificationStatus.type === UserType[1] &&
+            const isPremium = verificationStatus.result && verificationStatus.planType === UserType[1] &&
                 // There might be a timezone issue here but will deal with this in the future
                 new Date(verificationStatus.subscriptionExpirationDate as Date) > new Date();
 
@@ -53,7 +53,7 @@ class VendorController {
             const vendors: Vendor[] = await vendorService.GetVendors(category, subcategories, states, limit);
 
             return res.status(200)
-                .cookie("planType", verificationStatus.type, {
+                .cookie("planType", verificationStatus.planType, {
                     expires: new Date(Date.now() + (1000*60*60*24*90)),
                     sameSite: "none",
                     secure: true,
