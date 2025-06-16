@@ -158,4 +158,11 @@ describe("VendorRoutes tests", () => {
         expect(response.body.result.length).toEqual(5);
         expect(response.status).toBe(200);
     });
+
+    it("Should return subcategories for a given category", async () => {
+        const response = await request(app)
+        .get("/vendors/subcategories?category=Electronics");
+
+        expect(response.body.result.length).toBeGreaterThan(1);
+    });
 });
