@@ -14,4 +14,8 @@ describe("VendorRoutes tests", () => {
         expect(response.status).toBe(200);
         expect(response.body.result.length).toEqual(52);
     });
+
+    it("Should create a user", async () => {
+
+    });
 });

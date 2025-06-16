@@ -3,4 +3,4 @@ enum PlanType {
     Premium = 1,
 }
 
-export {PlanType as UserType};
+export {PlanType};

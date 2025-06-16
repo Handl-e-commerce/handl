@@ -2,7 +2,7 @@ import {Request, Response, NextFunction} from "express";
 import {VendorService} from "../services/VendorService";
 import {VerificationService} from "../services/VerificationService";
 import {Vendor} from "../db/models/Vendor";
-import {UserType} from "../enums/PlanType";
+import {PlanType} from "../enums/PlanType";
 
 /**
  * Vendor Controller Class
@@ -31,11 +31,7 @@ class VendorController {
                 cookies.validator,
                 cookies.userId
             );
-
             const category = req.query.category ? (req.query.category as string).trim() : req.params.category;
-            if (!category) {
-                return res.status(400).json({error: "Category is required"});
-            }
 
             const subcategories = req.query.subcategories ?
                 (req.query.subcategories as string).split(",").map((s) => s.trim()) :
@@ -45,7 +41,7 @@ class VendorController {
                 null;
 
             const vendorService = new VendorService();
-            const isPremium = verificationStatus.result && verificationStatus.planType === UserType[1] &&
+            const isPremium = verificationStatus.result && verificationStatus.planType === PlanType[1] &&
                 // There might be a timezone issue here but will deal with this in the future
                 new Date(verificationStatus.subscriptionExpirationDate as Date) > new Date();
 
