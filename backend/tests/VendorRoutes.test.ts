@@ -61,6 +61,7 @@ afterEach(async () => {
         },
         force: true
     });
+    jest.clearAllMocks();
 });
 
 describe("VendorRoutes tests", () => {
