@@ -10,8 +10,8 @@ const cookieParser = require("cookie-parser");
 const sendMailMock = jest.fn().mockReturnValue("Sent mock email!");
 // Arrange
 // Create a user to test with
-const userDetails: any = {
-    uuid: "test-uuid",
+const userDetails = {
+    uuid: "0df06746-dbf0-41d1-9272-ee2ddd51eb04",
     email: "analyst@test.buzz",
     businessName: "Analyst & Associates",
     phoneNumber: "9876543210",
@@ -24,10 +24,11 @@ const userDetails: any = {
     zipcode: "42310",
     categories: ["Beauty", "Apparel"],
     isVerified: true,
-    verificationToken: undefined,
-    tokenExpiration: undefined,
+    verificationToken: null,
+    tokenExpiration: null,
     planType: "free",
-    subscriptionExpiresAt: undefined,
+    subscriptionExpiresAt: null,
+    savedVendors: ['6906356c-df26-46ba-8f61-dabe7b57c988','a21c4cd9-73d2-4c90-a2e7-dda857becb32']
 };
 
 jest.mock("nodemailer");
@@ -98,8 +99,40 @@ describe("UserRoutes tests", () => {
         } catch(error) {}
     });
 
-    it("", async () => {
+    it("Should return saved vendors because user is authenticated", async () => {
+        const selector = 'selector=test-selector;';
+        const validator = 'validator=test-validator;';
+        const planType = 'planType=Free;';
+        const subscriptionExpiresAt = `subsctriptionExpiresAt=undefined;`;
+        const userId = `userId=${userDetails.uuid}`
+        const response = await request(app)
+            .get("/users/me/vendors")
+            .set("Cookie", [selector + validator + planType + subscriptionExpiresAt + userId]);
+        
+        expect(response.status).toBe(200);
+        expect(response.body.savedVendors.length).toBe(2);
+    });
 
+    it("Should return 401 for saved vendors because user is unauthenticated", async () => {
+        const selector = 'selector=test-selector;';
+        const validator = 'validator=invalid-test-validator;';
+        const planType = 'planType=Free;';
+        const subscriptionExpiresAt = `subsctriptionExpiresAt=undefined;`;
+        const userId = `userId=${userDetails.uuid}`
+        try {
+            const response = await request(app)
+                .get("/users/me/vendors")
+                .set("Cookie", [selector + validator + planType + subscriptionExpiresAt + userId]);
+            expect(response.status).toBe(401);
+        } catch (error) {}
+    });
+
+    it("Should update the user password", async () => {
+        const response = await request(app)
+            .put(`/users/${userDetails.uuid}/password`)
+            .send({newPassword: 'TestPassword'});
+
+        expect(response.body.message.message).toContain(`Successfully updated password of user ${userDetails.uuid}`);
     });
 
 });
