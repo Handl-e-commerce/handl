@@ -12,12 +12,12 @@ const sendMailMock = jest.fn().mockReturnValue("Sent mock email!");
 // Create a user to test with
 const userDetails = {
     uuid: "0df06746-dbf0-41d1-9272-ee2ddd51eb04",
-    email: "analyst@test.buzz",
-    businessName: "Analyst & Associates",
+    email: "t_soprano@satriellies.com",
+    businessName: "Mob Inc.",
     phoneNumber: "9876543210",
     password: "Bafang00l$!",
-    firstName: "Test",
-    lastName: "User2",
+    firstName: "Tony",
+    lastName: "Gunta",
     address: "4398 Space st",
     city: "Crooklyn",
     state: "FY",
