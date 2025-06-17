@@ -90,7 +90,7 @@ class VerificationService implements IVerificationService {
             if (auth === null) {
                 return {result: false};
             }
-            
+
             if (!(await argon2.verify(auth.validator, validator))) {
                 return {result: false};
             }

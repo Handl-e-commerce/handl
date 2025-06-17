@@ -133,7 +133,7 @@ function Home(): JSX.Element {
                     <a href={location.origin + `/results/Apparel & Clothing`} target="_self">
                         <img src={clothing} alt="" style={styles.image} />
                     </a>
-                    <Typography variant={'h6'} component={'div'} fontSize={'20px'} textAlign={'center'}>Apparel / Clothing</Typography>
+                    <Typography variant={'h6'} component={'div'} fontSize={'20px'} textAlign={'center'}>Apparel & Clothing</Typography>
                 </Grid>
                 <Grid item xs={styles.grid.xs}>
                     <a href={location.origin + '/results/Electronics'} target="_self">
