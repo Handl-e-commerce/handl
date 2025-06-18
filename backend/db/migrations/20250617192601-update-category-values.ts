@@ -45,25 +45,10 @@ module.exports = {
       UPDATE public."Vendors"
       SET subcategories = REGEXP_REPLACE(subcategories, '([a-z0-9])([A-Z])', '\x01, \x02', 'g')
       WHERE subcategories ~ '([a-z0-9])([A-Z])';
-
-      ALTER TABLE public."Vendors"
-      ALTER COLUMN categories TYPE text[] USING string_to_array(categories, ', ');
-
-      ALTER TABLE public."Vendors"
-      ALTER COLUMN subcategories TYPE text[] USING string_to_array(subcategories, ', ');
     `);
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async down(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
-        await queryInterface.sequelize.query(`
-        ALTER TABLE "Vendors"
-        ALTER COLUMN categories TYPE text
-        USING array_to_string(categories, ', ');
-  
-        ALTER TABLE "Vendors"
-        ALTER COLUMN subcategories TYPE text
-        USING array_to_string(subcategories, ', ');
-      `);
         await queryInterface.sequelize.query(`
       DROP TABLE IF EXISTS temp_categories;
       CREATE TEMPORARY TABLE temp_categories AS 
