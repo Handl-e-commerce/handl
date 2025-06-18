@@ -11,14 +11,14 @@ describe("VendorService tests", () => {
 
     it("Should return only rows that match the passed category", async () => {
         let vendorService = new VendorService();
-        let results = await vendorService.GetVendors("Apparel / Clothing", undefined, undefined, undefined);
+        let results = await vendorService.GetVendors("Apparel & Clothing", undefined, undefined, undefined);
         expect(results).toBeDefined();
-        expect(results.length).toEqual(242);
+        expect(results.length).toEqual(243);
     });
 
     it("Should return only rows that match the passed category and subcategories", async () => {
         let vendorService = new VendorService();
-        let results = await vendorService.GetVendors("Apparel / Clothing", ["Women's Apparel", "Men's Apparel"], undefined, undefined);
+        let results = await vendorService.GetVendors("Apparel & Clothing", ["Women's Apparel", "Men's Apparel"], undefined, undefined);
         expect(results).toBeDefined();
         expect(results.length).toEqual(9);
     });

@@ -74,7 +74,7 @@ describe("VendorRoutes tests", () => {
     it("Should return all vendor categories from the /vendors/categories endpoint", async () => {
         const response = await request(app).get("/vendors/categories");
         expect(response.status).toBe(200);
-        expect(response.body.result.length).toEqual(52);
+        expect(response.body.result.length).toEqual(48);
     });
 
     it("Should return only 5 rows for a user with a free plan", async () => {

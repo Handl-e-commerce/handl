@@ -40,7 +40,7 @@ function Home(): JSX.Element {
     async function getCategories(): Promise<void> {
         const response = await fetchWrapper('/vendors/categories', 'GET');
         const data: string[] = (await response.json()).result;
-        let breakpoint = 13;
+        let breakpoint = 12;
         let numTranches = Math.ceil(data.length / breakpoint);
         let column: JSX.Element[] = [];
         let matrix: JSX.Element[][] = [];

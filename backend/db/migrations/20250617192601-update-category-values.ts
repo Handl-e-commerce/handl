@@ -4,6 +4,7 @@ import {DataTypes, QueryInterface} from "sequelize";
 module.exports = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async up(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
+    // Update categories in the Categories table to replace ' / ' with ' & '
         await queryInterface.sequelize.query(`
       DROP TABLE IF EXISTS temp_categories;
       CREATE TEMPORARY TABLE temp_categories AS 
@@ -20,7 +21,7 @@ module.exports = {
       
       DROP TABLE IF EXISTS temp_categories;
     `);
-
+        // Update categories in the Vendors table to replace '/' with '&'
         await queryInterface.sequelize.query(`
       DROP TABLE IF EXISTS temp_vendors;
       CREATE TEMPORARY TABLE temp_vendors AS
@@ -35,9 +36,34 @@ module.exports = {
       FROM temp_vendors
       WHERE public."Vendors".uuid = temp_vendors.uuid;  
     `);
+        // Convert categories and subcategories to be properly delimited and arrays of strings
+        await queryInterface.sequelize.query(`
+      UPDATE public."Vendors"
+      SET categories = REGEXP_REPLACE(categories, '([a-z0-9])([A-Z])', '\x01, \x02', 'g')
+      WHERE categories ~ '([a-z0-9])([A-Z])';
+
+      UPDATE public."Vendors"
+      SET subcategories = REGEXP_REPLACE(subcategories, '([a-z0-9])([A-Z])', '\x01, \x02', 'g')
+      WHERE subcategories ~ '([a-z0-9])([A-Z])';
+
+      ALTER TABLE public."Vendors"
+      ALTER COLUMN categories TYPE text[] USING string_to_array(categories, ', ');
+
+      ALTER TABLE public."Vendors"
+      ALTER COLUMN subcategories TYPE text[] USING string_to_array(subcategories, ', ');
+    `);
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async down(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
+        await queryInterface.sequelize.query(`
+        ALTER TABLE "Vendors"
+        ALTER COLUMN categories TYPE text
+        USING array_to_string(categories, ', ');
+  
+        ALTER TABLE "Vendors"
+        ALTER COLUMN subcategories TYPE text
+        USING array_to_string(subcategories, ', ');
+      `);
         await queryInterface.sequelize.query(`
       DROP TABLE IF EXISTS temp_categories;
       CREATE TEMPORARY TABLE temp_categories AS 
@@ -70,4 +96,5 @@ module.exports = {
       WHERE public."Vendors".uuid = temp_vendors.uuid;  
     `);
     },
+
 };
