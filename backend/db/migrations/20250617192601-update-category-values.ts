@@ -36,16 +36,6 @@ module.exports = {
       FROM temp_vendors
       WHERE public."Vendors".uuid = temp_vendors.uuid;  
     `);
-        // Convert categories and subcategories to be properly delimited and arrays of strings
-        await queryInterface.sequelize.query(`
-      UPDATE public."Vendors"
-      SET categories = REGEXP_REPLACE(categories, '([a-z0-9])([A-Z])', '\x01, \x02', 'g')
-      WHERE categories ~ '([a-z0-9])([A-Z])';
-
-      UPDATE public."Vendors"
-      SET subcategories = REGEXP_REPLACE(subcategories, '([a-z0-9])([A-Z])', '\x01, \x02', 'g')
-      WHERE subcategories ~ '([a-z0-9])([A-Z])';
-    `);
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async down(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
