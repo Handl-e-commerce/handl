@@ -35,6 +35,7 @@ function BlogCard({ title, author, description, link, date }: IBlogCardProps): J
                     cursor: 'pointer'
                 }}
                 onClick={() => navigate("/blog/" + link)}
+                alt="Logo Blog Thumbnail"
             />
             <Box sx={{paddingLeft: '0.25rem'}}>
                 <Typography

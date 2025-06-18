@@ -56,7 +56,7 @@ export const iconMapper: {
     [category: string] : JSX.Element
 } = {
     "Amazon FBA Sellers": <IconBrandAmazon />,
-    "Apparel / Clothing": <IconShirtFilled />,
+    "Apparel & Clothing": <IconShirtFilled />,
     "Dropshippers": <IconPackageExport />,
     "Electronics": <IconCpu />,
     "General Merchandise": <IconShoppingBag />,
@@ -83,7 +83,7 @@ export const iconMapper: {
     "Food & Grocery": <IconBaguette />,
     "Handbags & Luggage": <IconLuggage />,
     "Holiday & Seasonal": <IconChristmasTree />,
-    "Housewares / Home Decor": <IconHomeFilled />,
+    "Housewares & Home Decor": <IconHomeFilled />,
     "Knives & Swords": <IconSword />,
     "Lawn & Garden": <IconPlant />,
     "Leather": <IconBriefcaseFilled />,
@@ -101,10 +101,10 @@ export const iconMapper: {
     "Shoes & Footwear": <IconShoe />,
     "Souvenirs": <IconPlayCard />,
     "Sporting Goods": <IconBallAmericanFootball />,
-    "Store / Dealer Supplies": <IconBuildingWarehouse />,
+    "Store & Dealer Supplies": <IconBuildingWarehouse />,
     "Sunglasses & Eyewear": <IconSunglasses />,
     "Survival & Emergency Kits": <IconBuildingHospital />,
     "Tools & Hardware": <IconHammer />,
     "Toys & Hobbies": <IconHorseToy />,
-    "Vape Products / E-Liquids": <IconBongFilled />,
+    "Vape Products & E-Liquids": <IconBongFilled />,
 };

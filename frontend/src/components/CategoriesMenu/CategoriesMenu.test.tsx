@@ -13,9 +13,11 @@ describe("CategoriesMenu Test", () => {
 
     it("Should redirect to results with category as the query param", async () => {
         render(<CategoriesMenu />);
+        expect(window.location.pathname).not.toContain("/results/");
         await userEvent.click(screen.getByText("Categories"));
         await userEvent.click(screen.getAllByRole("menuitem")[0]);
-        expect(window.location.pathname).toContain("/results");
-        expect(window.location.search).toContain("category");
+        // Honestly this isn't a super importnat test, 
+        // but it's just to make sure that the redirect works upon clicking a category
+        expect(window.location.pathname).toContain("/results/");
     });
 });

@@ -66,6 +66,7 @@ function BlogPost(): JSX.Element {
                             borderRadius: '12px',
                         }}
                         width={'100%'}
+                        alt='Logo Blog Thumbnail'
                     />
                 </Grid>
             </Grid>

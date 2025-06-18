@@ -5,8 +5,8 @@ interface IVendorService {
     GetVendors: (
         categories: string | null | undefined,
         subcategories: string[] | null | undefined,
-        searchVal: string | null | undefined,
         states: string[] | null | undefined,
+        limit?: number,
     ) => Promise<Vendor[]>;
     GetCategories: () => Promise<string[]>;
     GetSubCategories: (category: string) => Promise<string[]>;

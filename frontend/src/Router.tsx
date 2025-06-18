@@ -14,14 +14,17 @@ import { Footer } from './components/Footer/Footer';
 import { SavedVendors } from './routes/SavedVendors/SavedVendors';
 import { Blog } from './routes/Blog/Blog';
 import { BlogPost } from './components/BlogPost/BlogPost';
+import './App/App.css';
 
 function Layout(): JSX.Element {
     return (
-        <>
+        <div className="App">
             <Header />
-            <Outlet />
+            <div className="App-content">
+                <Outlet />
+            </div>
             <Footer />
-        </>
+        </div>
     );
 };
 
@@ -51,7 +54,7 @@ const Router = createBrowserRouter([
                 element: <ContactUs />,
             },
             {
-                path: "/results",
+                path: "/results/:category",
                 element: <Results />,
             },
             {

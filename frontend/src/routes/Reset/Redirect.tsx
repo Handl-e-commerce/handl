@@ -6,19 +6,16 @@ function Redirect(): JSX.Element {
     let queryParams = new URL(document.location.toString()).searchParams;
     
     useEffect(() => {
-        let ignore = false;
-        if (!ignore) {
-            let token = queryParams.get("token") as string;
-            let userId = queryParams.get("userId") as string;
-            addCookie("token", token);
-            addCookie("userId", userId);
-            let cookieObject = cookieParser();
-            if (cookieObject.token && cookieObject.userId) {
-                window.history.pushState({}, "", location.origin + "/reset/password");
-                location.replace(location.origin + "/reset/password");
-            };
+        let token = queryParams.get("token") as string;
+        let userId = queryParams.get("userId") as string;
+        addCookie("token", token);
+        addCookie("userId", userId);
+        let cookieObject = cookieParser();
+        if (cookieObject.token && cookieObject.userId) {
+            window.history.pushState({}, "", location.origin + "/reset/password");
+            location.replace(location.origin + "/reset/password");
         };
-        return () => { ignore = true };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return <div>Redirecting to password reset page...</div>

@@ -1,30 +1,33 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { Vendor } from "../../types/types";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
-import { Box, Button, Chip, CircularProgress, Container, Grid, Paper, SxProps, Typography  } from '@mui/material';
+import { Box, Button, Chip, CircularProgress, Container, Grid, SxProps, Typography  } from '@mui/material';
 import { EnhancedTable } from "../../components/Table/EnhancedTable";
 import { useMobile } from "../../hooks/useMobile";
 import { QueryDropDown } from "../../components/QueryDropDown/QueryDropDown";
 import { states } from "../../utils/constants";
 
 function Results(): JSX.Element {
-    let queryParams = new URL(document.location.toString()).searchParams;
-    let location = window.location;
+    const queryParams = new URL(document.location.toString()).searchParams;
+    const location = window.location;
+    const category = decodeURIComponent(location.pathname.split("/")[2]);
 
+    const [loadingData, setLoadingData] = useState<boolean>(true);
     const [vendors, setVendors] = useState<Vendor[]>([]);
     const [subcategories, setSubcategories] = useState<string[]>();
     const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(queryParams.get("subcategories")?.split(",") ?? []);
     const [selectedStates, setSelectedStates] = useState<string[]>(queryParams.get("states")?.split(",") ?? []);
-    const [loadingData, setLoadingData] = useState<boolean>(true);
+    
+
     let isMobile: boolean = useMobile();
     let loggedIn: boolean = useLoginStatus();
+    // TODO: (LOW) Remove search params since we're not using it for the time being?
     let searchParam = queryParams.get("search-params");
 
     const containerSx: SxProps = {
         paddingLeft: '1px', 
-        paddingRight: '1px', 
-        minHeight: '62.5rem',
+        paddingRight: '1px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -32,17 +35,13 @@ function Results(): JSX.Element {
     };
 
     useEffect(() => {
-        let ignore = false;
-        if (!ignore && loggedIn) {
-            handleQuery();
-        };
-        return () => { ignore = true };
+        handleQuery();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedSubcategories, selectedStates]);
 
     useEffect(() => {
-        if (!subcategories) {
-            getSubcategories();
-        };
+        if (!subcategories) getSubcategories();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleQuery = async () => {
@@ -53,15 +52,21 @@ function Results(): JSX.Element {
         if (subcategories.length > 0) queryParams.set("subcategories", subcategories);
         if (states.length  > 0) queryParams.set("states", states);
         setLoadingData(true);
-        window.history.pushState("", "", `/results?${queryParams.toString()}`);
-        const response = await fetchWrapper(`/vendors?${queryParams.toString()}`, 'GET');
-        const data: Vendor[] = (await response.json()).result;
-        setVendors(data);
+        window.history.pushState("", "", `/results/${category}?${queryParams.toString()}`);
+        try {
+            const response = await fetchWrapper(`/vendors/categories/${category}?${queryParams.toString()}`, 'GET');
+            const data: Vendor[] = (await response.json()).result;
+            setVendors(data);
+        } catch (error) {
+            console.error("Error fetching vendors:", error);
+            setVendors([]);
+        }
         setLoadingData(false);
     };
 
     async function getSubcategories(): Promise<void> {
-        const response = await fetchWrapper(`/vendors/subcategories?${queryParams.toString()}`, 'GET');
+        // TODO: (LOW) Quick and dirty hack, find a way to make this better
+        const response = await fetchWrapper(`/vendors/subcategories?category=${category}`, 'GET');
         const data: string[] = (await response.json()).result;
         let subcategories: string[] = [];
         data.forEach((subcategory) => {
@@ -105,38 +110,11 @@ function Results(): JSX.Element {
         queryParams.delete("states");
     };
 
-    // TODO: (LOW) Refactor everything below here to make components simpler
-    // Create Modal Component for not logged in for example
-    if (!loggedIn) {
-        const redirectSignUp = () =>  {
-            // redirect to sign up route
-            window.history.pushState({}, "", location.origin + "/sign-up?");
-            location.replace(location.origin + "/sign-up?");
-        };
-    
-        const redirectLogin = () => {
-            // redirect to login page
-            window.history.pushState({}, "", location.origin + "/login?");
-            location.replace(location.origin + "/login?");
-        };
-        return (
-            <Container sx={{...containerSx, width: '95%'}}>
-                <Paper elevation={24} sx={{width: 'fit-content', padding: 5, background: '#F2F2F7', height: 'fit-content'}}>
-                    <Box>
-                        <Typography id="modal-title" variant="h4" component="h4" sx={{textAlign: 'center'}}>Login or Sign up to get full access to our data!</Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2, textAlign: 'center' }}>Get access to hundreds of wholesalers and distributors today!</Typography>
-                        <Button onClick={redirectSignUp} variant="contained" sx={{ marginTop: '7px', marginRight: '4px' }}>Sign Up</Button>
-                        <Button onClick={redirectLogin} variant="outlined" sx={{ marginTop: '7px', marginLeft: '4px' }}>Login</Button>
-                    </Box>
-                </Paper>
-            </Container>
-        );
-    };
-
+    // TODO: (HIGH) Implement paywall logic
     return (
         <Container sx={containerSx}>
-            <Typography variant={isMobile ? "h6" : "h4"} sx={{margin: isMobile ? '.5rem' : '1rem', fontWeight: 600 }}>Viewing {queryParams.get("category")}</Typography>
-            <Grid container spacing={1}>
+            <Typography variant={isMobile ? "h6" : "h4"} sx={{margin: isMobile ? '.5rem' : '1rem', fontWeight: 600 }}>Viewing {category}</Typography>
+            <Grid container spacing={1} aria-label="options-container">
                 {subcategories && subcategories.length > 0 &&
                     <Grid item sm={isMobile ? 1 : 1.75}>
                         <QueryDropDown 
@@ -165,7 +143,9 @@ function Results(): JSX.Element {
                                 padding: '7px 8px'
                             }}
                             onClick={handleClearAll}
-                        >Clear All</Button>
+                        >
+                            Clear All
+                        </Button>
                     }
                 </Grid>
             </Grid>

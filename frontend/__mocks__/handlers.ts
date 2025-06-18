@@ -116,7 +116,7 @@ export const handlers = [
             status: 200
         });
     }),
-    http.get(REACT_APP_SERVER_URI + `/vendors`, ({request, params, cookies}) => {
+    http.get(REACT_APP_SERVER_URI + `/vendors/categories/:category`, ({request, params, cookies}) => {
        let data: Vendor[] = [
         {
             "uuid": "a3a27978-b3d9-421b-9209-1915d44836ff",

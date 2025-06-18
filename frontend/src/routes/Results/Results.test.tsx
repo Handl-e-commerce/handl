@@ -20,6 +20,10 @@ beforeEach(() => {
     mockUseLoginStatus.mockReturnValue(true);
 });
 
+afterEach(() => {
+    jest.clearAllMocks();
+});
+
 describe("Results Route Test", () => {
     const user = userEvent.setup();
     it("Should render only category query chips and remove them when closing them", async () => {
@@ -141,12 +145,12 @@ describe("Results Route Test", () => {
         });
     }, 7500);
 
-    it("Should render you must sign in first in order to access our data modal if user isn't signed up", async () => {
+    it("Should render you must subscribe in order to access our data modal if user isn't logged in", async () => {
         mockUseLoginStatus.mockReturnValue(false);
         await act(async () => render(<Results />));
         
         await waitFor(() => {
-            expect(screen.getByText("Login or Sign up to get full access to our data!")).toBeInTheDocument();
+            expect(screen.getByText(/subscribe to access all data/i)).toBeInTheDocument();
         });
     });
 

@@ -12,11 +12,8 @@ function Password(): JSX.Element {
     const [submitted, setSubmitted] = useState<boolean>(false);
 
     useEffect(() => {
-        let ignore = false;
-        if (!ignore) {
-            verifyResetToken();
-        };
-        return () => { ignore = true };
+        verifyResetToken();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     async function verifyResetToken(): Promise<void> {

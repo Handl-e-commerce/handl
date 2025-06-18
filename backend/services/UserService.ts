@@ -10,6 +10,7 @@ import {VerificationService} from "./VerificationService";
 import {Vendor} from "../db/models/Vendor";
 import {QueryTypes} from "sequelize";
 import {Database} from "../db/Database";
+import {PlanType} from "../enums/PlanType";
 
 /**
  * User Service Class
@@ -63,6 +64,8 @@ class UserService implements IUserService {
                     isVerified: false,
                     verificationToken: hashedToken,
                     tokenExpiration: new Date(Date.now() + 1000*60*30),
+                    planType: PlanType[0],
+                    subscriptionExpiresAt: null,
                 });
 
                 this.emailService.GenerateVerificationEmail(userDetails.firstName, userId, token, userDetails.email);
@@ -125,11 +128,11 @@ class UserService implements IUserService {
                         city,
                         state,
                         zipcode,
-                        "phoneNumber",
+                        phone_number,
                         email
                     FROM public."Vendors"
                     WHERE uuid IN (
-                        SELECT UNNEST("savedVendors") FROM public."Users"
+                        SELECT UNNEST("saved_vendors") FROM public."Users"
                         WHERE uuid = :userId
                     );
                 `,
@@ -272,7 +275,9 @@ class UserService implements IUserService {
         validator?: string | null,
         userId?: string,
         expires?: Date | null,
-        firstName?: string | null
+        firstName?: string | null,
+        planType?: string | null,
+        subscriptionExpiresDate?: Date | null,
     }> {
         try {
             const user: User | null = await User.findOne({
@@ -312,6 +317,8 @@ class UserService implements IUserService {
                 userId: user.uuid,
                 expires: expirationDate,
                 firstName: user.firstName,
+                planType: user.planType,
+                subscriptionExpiresDate: user.subscriptionExpiresAt,
             };
         } catch (err) {
             const error = err as Error;
