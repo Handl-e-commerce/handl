@@ -79,7 +79,19 @@ class VendorService implements IVendorService {
      */
     public async GetCategories(): Promise<string[]> {
         try {
+            const excludedCategories = [
+                "Business Opportunities",
+                "Promotional",
+                "Regional & Ethnic",
+                "Self Defense, Security",
+                "Store & Dealer Supplies",
+            ];
             return (await Category.findAll({
+                where: {
+                    category: {
+                        [Op.notIn]: excludedCategories,
+                    },
+                },
                 order: [
                     ["category", "ASC"],
                 ],

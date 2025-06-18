@@ -40,7 +40,7 @@ function Home(): JSX.Element {
     async function getCategories(): Promise<void> {
         const response = await fetchWrapper('/vendors/categories', 'GET');
         const data: string[] = (await response.json()).result;
-        let breakpoint = 13;
+        let breakpoint = 12;
         let numTranches = Math.ceil(data.length / breakpoint);
         let column: JSX.Element[] = [];
         let matrix: JSX.Element[][] = [];
@@ -133,7 +133,7 @@ function Home(): JSX.Element {
                     <a href={location.origin + `/results/Apparel & Clothing`} target="_self">
                         <img src={clothing} alt="" style={styles.image} />
                     </a>
-                    <Typography variant={'h6'} component={'div'} fontSize={'20px'} textAlign={'center'}>Apparel / Clothing</Typography>
+                    <Typography variant={'h6'} component={'div'} fontSize={'20px'} textAlign={'center'}>Apparel & Clothing</Typography>
                 </Grid>
                 <Grid item xs={styles.grid.xs}>
                     <a href={location.origin + '/results/Electronics'} target="_self">

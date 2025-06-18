@@ -3,7 +3,7 @@ import {AuthToken} from "../db/models/AuthToken";
 import {User} from "../db/models/User";
 import * as argon2 from "argon2";
 import {EmailService} from "./EmailService";
-import {UserType} from "../enums/PlanType";
+import {PlanType} from "../enums/PlanType";
 
 /** Verification Service Class */
 class VerificationService implements IVerificationService {
@@ -63,7 +63,7 @@ class VerificationService implements IVerificationService {
         userId: string
     ): Promise<{
         result: boolean,
-        type?: string,
+        planType?: string,
         subscriptionExpirationDate?: Date | null,
     }> {
         try {
@@ -87,7 +87,6 @@ class VerificationService implements IVerificationService {
                     required: true, // ensures LEFT JOIN (set to false for OUTER JOIN)
                 }],
             }) as (AuthToken & { User: User }) | null;
-
             if (auth === null) {
                 return {result: false};
             }
@@ -100,22 +99,22 @@ class VerificationService implements IVerificationService {
                 return {result: false};
             }
 
-            let userType = auth.User.planType;
+            let planType = auth.User.planType;
             // If the user's subsctription has expired, write to the DB that the user is no longer a premium user
             if (auth.User.subscriptionExpiresAt && new Date(Date.now()) > auth.User.subscriptionExpiresAt) {
                 await User.update({
-                    planType: UserType[0],
+                    planType: PlanType[0],
                 }, {
                     where: {
                         uuid: userId,
                     },
                 });
-                userType = UserType[0];
+                planType = PlanType[0];
             }
 
             return {
                 result: true,
-                type: userType,
+                planType: planType,
                 subscriptionExpirationDate: auth.User.subscriptionExpiresAt,
             };
         } catch (err) {
