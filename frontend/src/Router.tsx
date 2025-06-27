@@ -14,6 +14,8 @@ import { Footer } from './components/Footer/Footer';
 import { SavedVendors } from './routes/SavedVendors/SavedVendors';
 import { Blog } from './routes/Blog/Blog';
 import { BlogPost } from './components/BlogPost/BlogPost';
+import { Pricing } from './routes/Pricing/Pricing';
+
 import './App/App.css';
 
 function Layout(): JSX.Element {
@@ -84,6 +86,8 @@ const Router = createBrowserRouter([
                 ]
             },
             {
+                path: "/pricing",
+                element: <Pricing />,
             },
         ],
     },
