@@ -85,6 +85,11 @@ function UserHeaderMenu({ sx }: IUserHeaderMenuProps): JSX.Element {
                         Logout
                         <Logout/>
                     </MenuItem>
+                    {cookieObject.planType !== 'Premium' && 
+                        <MenuItem>
+                            Upgrade to Premium!
+                        </MenuItem>
+                    }
                 </Menu>
             </Grid>
         )

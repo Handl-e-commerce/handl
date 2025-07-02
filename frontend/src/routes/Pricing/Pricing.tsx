@@ -4,7 +4,7 @@ import { Box, Typography, Button, Paper } from "@mui/material";
 function Pricing(): JSX.Element {
     return (
         <Box
-            maxWidth={500}
+            maxWidth={'80%'}
             mx="auto"
             my={6}
             p={4}
@@ -12,11 +12,14 @@ function Pricing(): JSX.Element {
             elevation={3}
             textAlign="center"
         >
-            <Typography variant="h4" gutterBottom>
+            <Typography fontSize={'54px'} justifySelf={'baseline'} fontWeight={600} marginBottom={'1rem'}>
                 Pricing
             </Typography>
             <Typography variant="subtitle1" sx={{ my: 4 }}>
                 Get full access to all features with our annual subscription.
+            </Typography>
+            <Typography variant="subtitle1" sx={{ my: 4 }}>
+                Unlock all of our vendor data and features with our premium plan to help you save time and money on sourcing products and deals!
             </Typography>
             <Typography
                 variant="h2"
@@ -32,7 +35,7 @@ function Pricing(): JSX.Element {
                 size="large"
                 sx={{ mt: 4, px: 5, fontSize: "1.1rem", backgroundColor: "#2d7ff9" }}
             >
-                Get Started
+                Go Premium Now
             </Button>
         </Box>
     );
