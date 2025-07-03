@@ -1,7 +1,21 @@
 import React from "react";
 import { Box, Typography, Button, Paper } from "@mui/material";
+import { fetchWrapper } from "../../utils/fetch-wrapper";
+import { hostname } from "os";
 
 function Pricing(): JSX.Element {
+    async function redirectToStripeCheckout(): Promise<void> {
+        try {
+            const response = await fetchWrapper('/billing/subscribe', 'POST', {
+                hostname: window.location.origin,
+            });
+            const data = await response.json();
+            window.location.href = data.url; // Redirect to the Stripe checkout URL
+        } catch (error) {
+            console.error("Error redirecting to Stripe checkout:", error);
+        };
+    };
+
     return (
         <Box
             maxWidth={'80%'}
@@ -34,6 +48,7 @@ function Pricing(): JSX.Element {
                 variant="contained"
                 size="large"
                 sx={{ mt: 4, px: 5, fontSize: "1.1rem", backgroundColor: "#2d7ff9" }}
+                onClick={redirectToStripeCheckout}
             >
                 Go Premium Now
             </Button>

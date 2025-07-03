@@ -90,7 +90,8 @@ const Router = createBrowserRouter([
                 element: <Pricing />,
             },
             {
-                path: "/subscribe",
+                path: "/subscribe/:status",
+                // element: <Pricing />,
             }
         ],
     },

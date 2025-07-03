@@ -6,6 +6,7 @@ import {Express, Request, Response, NextFunction} from "express";
 import {Database} from "./db/Database";
 import {userRouter} from "./routers/UserRouter";
 import {vendorRouter} from "./routers/VendorRouter";
+import {billingRouter} from "./routers/BillingRouter";
 
 const PORT = process.env.PORT;
 
@@ -38,6 +39,7 @@ app.use(cookieParser());
 // routers
 app.use("/users", userRouter);
 app.use("/vendors", vendorRouter);
+app.use("/billing", billingRouter);
 
 app.get( "/", async ( req: Request, res: Response, next: NextFunction ) => {
     try {
