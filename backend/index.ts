@@ -7,6 +7,7 @@ import {Database} from "./db/Database";
 import {userRouter} from "./routers/UserRouter";
 import {vendorRouter} from "./routers/VendorRouter";
 import {billingRouter} from "./routers/BillingRouter";
+import {webhookRouter} from "./routers/WebhookRouter";
 
 const PORT = process.env.PORT;
 
@@ -40,6 +41,7 @@ app.use(cookieParser());
 app.use("/users", userRouter);
 app.use("/vendors", vendorRouter);
 app.use("/billing", billingRouter);
+app.use("/webhook", webhookRouter);
 
 app.get( "/", async ( req: Request, res: Response, next: NextFunction ) => {
     try {

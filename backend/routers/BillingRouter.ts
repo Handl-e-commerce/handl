@@ -10,6 +10,10 @@ const billingRouter = express.Router();
 
 billingRouter.post("/subscribe", async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const hostname = req.body.hostname;
+        if (!hostname) {
+            return res.status(400).json({error: "Hostname is required"});
+        }
         const priceId = process.env.NODE_ENV === "production" ?
             "price_1RgdI403qEXOPJPaGa0Ij5Qq" : "price_1Rf1iS03jjb671QdjNefc4UB";
         const session = await stripe.checkout.sessions.create({
@@ -21,18 +25,16 @@ billingRouter.post("/subscribe", async (req: Request, res: Response, next: NextF
                 },
             ],
             mode: "payment",
-            success_url: `${req.protocol}://${req.get("host")}/subscribe/success`,
-            cancel_url: `${req.protocol}://${req.get("host")}/subscribe/cancel`,
+            success_url: `${hostname}/subscribe/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${hostname}/subscribe/cancel?session_id={CHECKOUT_SESSION_ID}`,
             automatic_tax: {enabled: true},
         });
-        console.log(session.url);
-        res.status(201).json({
+        return res.status(201).json({
             url: session.url,
             sessionId: session.id,
         });
-        // res.redirect(303, session.url);
     } catch (err: unknown) {
-        next(err as Error);
+        return next(err as Error);
     }
 });
 

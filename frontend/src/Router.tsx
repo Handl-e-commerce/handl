@@ -15,6 +15,7 @@ import { SavedVendors } from './routes/SavedVendors/SavedVendors';
 import { Blog } from './routes/Blog/Blog';
 import { BlogPost } from './components/BlogPost/BlogPost';
 import { Pricing } from './routes/Pricing/Pricing';
+import { Subscribe } from './routes/Subscribe/Subscribe';
 
 import './App/App.css';
 
@@ -91,7 +92,7 @@ const Router = createBrowserRouter([
             },
             {
                 path: "/subscribe/:status",
-                // element: <Pricing />,
+                element: <Subscribe />,
             }
         ],
     },

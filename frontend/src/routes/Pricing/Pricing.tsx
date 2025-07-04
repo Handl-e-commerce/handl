@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Typography, Button, Paper } from "@mui/material";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
-import { hostname } from "os";
 
 function Pricing(): JSX.Element {
     async function redirectToStripeCheckout(): Promise<void> {
