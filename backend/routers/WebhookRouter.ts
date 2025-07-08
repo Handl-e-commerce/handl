@@ -1,11 +1,16 @@
 import {NextFunction, Request, Response} from "express";
+import { PlanType } from "../enums/PlanType";
+import { User } from "../db/models/User";
 const dotenv = require("dotenv");
 dotenv.config({path: ".env"});
 if (process.env.NODE_ENV === "local_dev") {
     dotenv.config({path: ".env.local"});
-}
-const stripeSecretKey = process.env.NODE_ENV === "production" ?
-    process.env.STRIPE_API_SECRET_KEY : process.env.STRIPE_SANDBOX_SECRET_KEY;
+};
+const stripeSecretKey = process.env.STRIPE_API_SECRET_KEY;
+
+if (!stripeSecretKey) {
+    throw new Error("Stripe API secret key is not defined in environment variables.");
+};
 
 const stripe = require("stripe")(stripeSecretKey);
 
@@ -18,15 +23,22 @@ webhookRouter.post(
     express.raw({type: "application/json"}),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            console.log("Node Env: ", process.env.NODE_ENV);
             const signature = req.headers["stripe-signature"];
             const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-            console.log("Webhook secret:", webhookSecret);
             const event = stripe.webhooks.constructEvent(req.body, signature as string, webhookSecret as string);
             if (event.type === "checkout.session.completed") {
                 const session = event.data.object;
-                // Handle successful checkout session
-                console.log("Checkout session completed:", session);
+                const userId = session.client_reference_id;
+                const planType = session.metadata.planType ?? PlanType[1];
+                await User.update(
+                    {
+                        planType: planType,
+                        subscriptionExpiresAt: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)),
+                    },
+                    {
+                        where: { uuid: userId }
+                    }
+                );
             } else {
                 console.warn(`Unhandled event type: ${event.type}`);
             }
