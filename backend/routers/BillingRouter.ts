@@ -8,6 +8,8 @@ const express = require("express");
 
 const billingRouter = express.Router();
 
+billingRouter.use(express.json());
+
 billingRouter.post("/subscribe", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const hostname = req.body.hostname;

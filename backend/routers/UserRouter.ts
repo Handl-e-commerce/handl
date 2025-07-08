@@ -3,6 +3,8 @@ import UserController from "../controllers/UserController";
 
 const userRouter = express.Router();
 
+userRouter.use(express.json());
+
 userRouter.post("/register", UserController.CreateUser);
 
 userRouter.get("/me", UserController.GetMe);

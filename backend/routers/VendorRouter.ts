@@ -3,6 +3,8 @@ import VendorController from "../controllers/VendorController";
 
 const vendorRouter = express.Router();
 
+vendorRouter.use(express.json());
+
 vendorRouter.get("/categories/:category", VendorController.GetVendorsByCategory);
 
 vendorRouter.get("/categories", VendorController.GetCategories);
