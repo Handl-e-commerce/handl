@@ -1,15 +1,15 @@
 import {NextFunction, Request, Response} from "express";
-import { PlanType } from "../enums/PlanType";
+import {PlanType} from "../enums/PlanType";
 const dotenv = require("dotenv");
 dotenv.config({path: ".env"});
 if (process.env.NODE_ENV === "local_dev") {
     dotenv.config({path: ".env.local"});
-};
+}
 const stripeSecretKey = process.env.STRIPE_API_SECRET_KEY;
 
 if (!stripeSecretKey) {
     throw new Error("Stripe API secret key is not defined in environment variables.");
-};
+}
 
 const stripe = require("stripe")(stripeSecretKey);
 
@@ -25,7 +25,7 @@ billingRouter.post("/subscribe", async (req: Request, res: Response, next: NextF
         const userId = cookies.userId;
         if (!cookies || userId === undefined) {
             return res.status(400).json({error: "User ID is required"});
-        };
+        }
         const hostname = req.body.hostname;
         if (!hostname) {
             return res.status(400).json({error: "Hostname is required"});
@@ -47,8 +47,8 @@ billingRouter.post("/subscribe", async (req: Request, res: Response, next: NextF
             client_reference_id: userId,
             metadata: {
                 userId: userId,
-                planType: PlanType[1], 
-            }
+                planType: PlanType[1],
+            },
         });
         return res.status(201).json({
             url: session.url,

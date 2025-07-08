@@ -1,16 +1,16 @@
 import {NextFunction, Request, Response} from "express";
-import { PlanType } from "../enums/PlanType";
-import { User } from "../db/models/User";
+import {PlanType} from "../enums/PlanType";
+import {User} from "../db/models/User";
 const dotenv = require("dotenv");
 dotenv.config({path: ".env"});
 if (process.env.NODE_ENV === "local_dev") {
     dotenv.config({path: ".env.local"});
-};
+}
 const stripeSecretKey = process.env.STRIPE_API_SECRET_KEY;
 
 if (!stripeSecretKey) {
     throw new Error("Stripe API secret key is not defined in environment variables.");
-};
+}
 
 const stripe = require("stripe")(stripeSecretKey);
 
@@ -36,7 +36,7 @@ webhookRouter.post(
                         subscriptionExpiresAt: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)),
                     },
                     {
-                        where: { uuid: userId }
+                        where: {uuid: userId},
                     }
                 );
             } else {
