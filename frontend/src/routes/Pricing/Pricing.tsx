@@ -1,20 +1,10 @@
-import React from "react";
 import { Box, Typography, Button, Paper } from "@mui/material";
-import { fetchWrapper } from "../../utils/fetch-wrapper";
+import { redirectToStripeCheckout } from "../../utils/stripe-checkout";
+import { cookieParser } from "../../utils/cookie-util";
 
 function Pricing(): JSX.Element {
-    async function redirectToStripeCheckout(): Promise<void> {
-        try {
-            const response = await fetchWrapper('/billing/subscribe', 'POST', {
-                hostname: window.location.origin,
-            });
-            const data = await response.json();
-            window.location.href = data.url; // Redirect to the Stripe checkout URL
-        } catch (error) {
-            console.error("Error redirecting to Stripe checkout:", error);
-        };
-    };
-
+    const cookieObject = cookieParser();
+    const planType = cookieObject.planType as string;
     return (
         <Box
             maxWidth={'80%'}
@@ -43,14 +33,14 @@ function Pricing(): JSX.Element {
             <Typography variant="body1" color="text.secondary">
                 <strong>One-time fee</strong> for a 1-year subscription.
             </Typography>
-            <Button
+            {planType !== 'Premium' && <Button
                 variant="contained"
                 size="large"
                 sx={{ mt: 4, px: 5, fontSize: "1.1rem", backgroundColor: "#2d7ff9" }}
                 onClick={redirectToStripeCheckout}
             >
                 Go Premium Now
-            </Button>
+            </Button>}
         </Box>
     );
 }

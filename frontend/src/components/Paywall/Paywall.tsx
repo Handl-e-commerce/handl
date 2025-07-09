@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Button } from "@mui/material";
+import { redirectToStripeCheckout } from "../../utils/stripe-checkout";
 
 function Paywall(): JSX.Element {
     return (
@@ -32,11 +33,7 @@ function Paywall(): JSX.Element {
                     fontWeight: "bold",
                     cursor: "pointer",
                 }}
-                onClick={() => {
-                    // TODO: (HIGH) Implement stripe logic here
-                    // Replace with your subscribe modal logic
-                    alert("Subscribe modal coming soon!");
-                }}
+                onClick={redirectToStripeCheckout}
             >
                 Subscribe Now
             </Button>

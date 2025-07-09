@@ -5,6 +5,7 @@ import { useLoginStatus } from '../../hooks/useLoggedInStatus';
 import { cookieParser, deleteCookie } from '../../utils/cookie-util';
 import { fetchWrapper } from '../../utils/fetch-wrapper';
 import { useState } from 'react';
+import { redirectToStripeCheckout } from '../../utils/stripe-checkout';
 
 interface IUserHeaderMenuProps {
     sx?: SxProps;
@@ -86,7 +87,7 @@ function UserHeaderMenu({ sx }: IUserHeaderMenuProps): JSX.Element {
                         <Logout/>
                     </MenuItem>
                     {cookieObject.planType !== 'Premium' && 
-                        <MenuItem>
+                        <MenuItem onClick={redirectToStripeCheckout}>
                             Upgrade to Premium!
                         </MenuItem>
                     }
