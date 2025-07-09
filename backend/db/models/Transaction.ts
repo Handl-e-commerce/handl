@@ -6,23 +6,18 @@ import {Database} from "../Database";
  * Stores checkout session data and payment information
  */
 class Transaction extends Model<InferAttributes<Transaction>, InferCreationAttributes<Transaction>> {
-    declare id: string;
+    declare id?: string;
     declare userId: string;
     declare stripeSessionId: string;
     declare stripeCustomerId: string | null;
     declare planType: string;
     declare amount: number;
     declare currency: string;
-    declare status: string;
-    declare paymentMethod: string | null;
+    declare status: string | null;
     declare paymentIntentId: string | null;
     declare subscriptionStartDate: Date;
     declare subscriptionEndDate: Date | null;
     declare metadata: object | null;
-    declare billingAddress: object | null;
-    declare receiptUrl: string | null;
-    declare description: string | null;
-    declare taxAmount: number | null;
 }
 
 Transaction.init({
@@ -66,12 +61,7 @@ Transaction.init({
     },
     status: {
         type: DataTypes.STRING,
-        allowNull: false,
-    },
-    paymentMethod: {
-        type: DataTypes.STRING,
         allowNull: true,
-        field: "payment_method",
     },
     paymentIntentId: {
         type: DataTypes.STRING,
@@ -80,7 +70,7 @@ Transaction.init({
     },
     subscriptionStartDate: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
         field: "subscription_start_date",
     },
     subscriptionEndDate: {
@@ -91,25 +81,6 @@ Transaction.init({
     metadata: {
         type: DataTypes.JSONB,
         allowNull: true,
-    },
-    billingAddress: {
-        type: DataTypes.JSONB,
-        allowNull: true,
-        field: "billing_address",
-    },
-    receiptUrl: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "receipt_url",
-    },
-    description: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-    },
-    taxAmount: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: true,
-        field: "tax_amount",
     },
 },
 {

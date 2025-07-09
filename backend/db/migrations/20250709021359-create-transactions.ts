@@ -46,11 +46,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      paymentMethod: {
-        type: Sequelize.STRING,
-        allowNull: true,
-        field: "payment_method",
-      },
       paymentIntentId: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -69,25 +64,6 @@ module.exports = {
       metadata: {
         type: Sequelize.JSONB,
         allowNull: true,
-      },
-      billingAddress: {
-        type: Sequelize.JSONB,
-        allowNull: true,
-        field: "billing_address",
-      },
-      receiptUrl: {
-        type: Sequelize.STRING,
-        allowNull: true,
-        field: "receipt_url",
-      },
-      description: {
-        type: Sequelize.TEXT,
-        allowNull: true,
-      },
-      taxAmount: {
-        type: Sequelize.DECIMAL(10, 2),
-        allowNull: true,
-        field: "tax_amount",
       },
       createdAt: {
         allowNull: false,
