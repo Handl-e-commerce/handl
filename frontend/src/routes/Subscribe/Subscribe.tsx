@@ -1,13 +1,16 @@
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Typography, Paper, Button, Container, Divider } from "@mui/material";
+import { Box, Typography, Button, Container, Divider } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import EmailIcon from "@mui/icons-material/Email";
+import { cookieParser } from "../../utils/cookie-util";
+import Home from "@mui/icons-material/Home";
 
 function Subscribe(): JSX.Element {
     const { status } = useParams<{ status: string }>();
     const navigate = useNavigate();
-    
+    const cookiesObject = cookieParser();
+
     useEffect(() => {
         if (status !== 'success' && status !== "cancel") {
             navigate('/pricing');
@@ -17,6 +20,9 @@ function Subscribe(): JSX.Element {
     const renderContent = () => {
         return (
             <Box textAlign="center" my={4}>
+                <Typography variant="h4" gutterBottom>
+                    Thanks {cookiesObject.firstName}!
+                </Typography>
                 <CheckCircleIcon color="success" sx={{ fontSize: 80 }} />
                 <Typography variant="h4" gutterBottom mt={2}>
                     Subscription Confirmed!
@@ -37,10 +43,11 @@ function Subscribe(): JSX.Element {
                 <Button 
                     variant="contained" 
                     color="primary" 
+                    startIcon={<Home />} 
                     onClick={() => navigate('/')}
                     sx={{ mt: 4 }}
                 >
-                    Go to Dashboard
+                    Go to Home
                 </Button>
             </Box>
         );
@@ -48,21 +55,7 @@ function Subscribe(): JSX.Element {
     
     return (
         <Container maxWidth="md">
-            <Paper 
-                elevation={3} 
-                sx={{ 
-                    p: 4, 
-                    mt: 4, 
-                    mb: 4, 
-                    borderRadius: 2,
-                    minHeight: '50vh',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center'
-                }}
-            >
-                {renderContent()}
-            </Paper>
+            {renderContent()}
         </Container>
     );
 }
