@@ -21,7 +21,7 @@ const headerStyles: React.CSSProperties = {
 const dropdownButtonSx: SxProps = {
     fontWeight: 600,
     fontSize: '16px !important',
-    background: '#3B4B59',
+    backgroundColor: "#2D7FF9",
     color: '#F2E5D1',
     width: 'fit-content',
     height: 'fit-content',

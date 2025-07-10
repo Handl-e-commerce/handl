@@ -13,7 +13,7 @@ interface IUserHeaderMenuProps {
 
 const signupButtonSx: SxProps = {
     color: 'secondary.main',
-    background: '#3B4B59',
+    background: '#2D7FF9',
     marginRight: "4px",
     width: '100px',
 };
@@ -24,6 +24,12 @@ const loginButtonSx: SxProps = {
     marginLeft: "4px",
     marginRight: "20px",
     width: 'fit-content',
+};
+
+const menuItemSx: SxProps = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
 };
 
 function UserHeaderMenu({ sx }: IUserHeaderMenuProps): JSX.Element {
@@ -82,12 +88,12 @@ function UserHeaderMenu({ sx }: IUserHeaderMenuProps): JSX.Element {
                     open={Boolean(userMenuAnchor)}
                     onClose={() => setUserMenuAnchor(null)}
                 >
-                    <MenuItem onClick={handleLogout}>
+                    <MenuItem onClick={handleLogout} sx={menuItemSx}>
                         Logout
-                        <Logout/>
+                        <Logout />
                     </MenuItem>
                     {cookieObject.planType !== 'Premium' && 
-                        <MenuItem onClick={redirectToStripeCheckout}>
+                        <MenuItem onClick={redirectToStripeCheckout} sx={menuItemSx}>
                             Upgrade to Premium!
                         </MenuItem>
                     }
