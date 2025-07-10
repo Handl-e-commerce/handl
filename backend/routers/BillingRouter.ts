@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from "express";
 import {PlanType} from "../enums/PlanType";
-import { VerificationService } from "../services/VerificationService";
+import {VerificationService} from "../services/VerificationService";
 const dotenv = require("dotenv");
 dotenv.config({path: ".env"});
 if (process.env.NODE_ENV === "local_dev") {
@@ -31,14 +31,14 @@ billingRouter.post("/subscribe", async (req: Request, res: Response, next: NextF
         if (!hostname) {
             return res.status(400).json({error: "Hostname is required"});
         }
-        
+
         const verificationService = new VerificationService();
         const verificationResult = await verificationService.VerifyUser(cookies.selector, cookies.validator, userId);
-        
+
         if (!verificationResult.result) {
             return res.status(400).json({error: "User verification failed"});
         }
-        
+
         if (verificationResult.planType == PlanType[1]) {
             return res.status(400).json({error: "User is already subscribed"});
         }

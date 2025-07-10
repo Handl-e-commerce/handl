@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import {PlanType} from "../enums/PlanType";
 import {User} from "../db/models/User";
-import { Transaction } from "../db/models/Transaction";
+import {Transaction} from "../db/models/Transaction";
 import Stripe from "stripe";
 const dotenv = require("dotenv");
 dotenv.config({path: ".env"});

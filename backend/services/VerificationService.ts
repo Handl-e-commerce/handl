@@ -101,7 +101,11 @@ class VerificationService implements IVerificationService {
 
             let planType = auth.User.planType;
             // If the user's subsctription has expired, write to the DB that the user is no longer a premium user
-            if (auth.User.planType === PlanType[1] && auth.User.subscriptionExpiresAt && new Date(Date.now()) > auth.User.subscriptionExpiresAt) {
+            if (
+                auth.User.planType === PlanType[1] &&
+                auth.User.subscriptionExpiresAt &&
+                new Date(Date.now()) > auth.User.subscriptionExpiresAt
+            ) {
                 await User.update({
                     planType: PlanType[0],
                 }, {
