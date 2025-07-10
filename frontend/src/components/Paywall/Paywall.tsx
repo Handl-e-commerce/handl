@@ -1,8 +1,12 @@
 import React from "react";
 import { Box, Button } from "@mui/material";
 import { redirectToStripeCheckout } from "../../utils/stripe-checkout";
+import { useNavigate } from "react-router-dom";
+import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 
 function Paywall(): JSX.Element {
+    const loggedIn = useLoginStatus();
+    const navigate = useNavigate();
     return (
         <Box
             sx={{
@@ -26,16 +30,19 @@ function Paywall(): JSX.Element {
                 sx={{
                     m: "10px",
                     padding: "8px 24px",
-                    background: "#f2e5d1",
+                    background: "#2D7FF9",
                     border: "none",
-                    borderRadius: "25px",
-                    color: "#022648",
+                    borderRadius: "10px",
+                    color: "#f2e5d1",
                     fontWeight: "bold",
                     cursor: "pointer",
+                    "&:hover": {
+                        backgroundColor: "primary.main",
+                    },
                 }}
-                onClick={redirectToStripeCheckout}
+                onClick={loggedIn ? redirectToStripeCheckout : () => navigate("/sign-up")}
             >
-                Subscribe Now
+                {loggedIn ? "Go Premium Now" : "Sign Up Today"}
             </Button>
         </Box>
     );

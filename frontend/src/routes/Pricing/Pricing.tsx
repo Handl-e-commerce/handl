@@ -1,10 +1,14 @@
 import { Box, Typography, Button, Paper } from "@mui/material";
 import { redirectToStripeCheckout } from "../../utils/stripe-checkout";
 import { cookieParser } from "../../utils/cookie-util";
+import { useLoginStatus } from "../../hooks/useLoggedInStatus";
+import { useNavigate } from "react-router-dom";
 
 function Pricing(): JSX.Element {
     const cookieObject = cookieParser();
+    const loggedIn = useLoginStatus();
     const planType = cookieObject.planType as string;
+    const navigate = useNavigate();
     return (
         <Box
             maxWidth={'80%'}
@@ -33,7 +37,15 @@ function Pricing(): JSX.Element {
             <Typography variant="body1" color="text.secondary">
                 <strong>One-time fee</strong> for a 1-year subscription.
             </Typography>
-            {planType !== 'Premium' && <Button
+            {!loggedIn && <Button
+                variant="contained"
+                size="large"
+                sx={{ mt: 4, px: 5, fontSize: "1.1rem", backgroundColor: "#2d7ff9" }}
+                onClick={() => navigate('/sign-up')}
+            >
+                Sign Up Today
+            </Button>}
+            {loggedIn && planType !== 'Premium' && <Button
                 variant="contained"
                 size="large"
                 sx={{ mt: 4, px: 5, fontSize: "1.1rem", backgroundColor: "#2d7ff9" }}
