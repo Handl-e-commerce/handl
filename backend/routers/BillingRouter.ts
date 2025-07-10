@@ -4,7 +4,7 @@ import {VerificationService} from "../services/VerificationService";
 const dotenv = require("dotenv");
 dotenv.config({path: ".env"});
 if (process.env.NODE_ENV === "local_dev") {
-    dotenv.config({path: ".env.local"});
+    dotenv.config({path: ".env.local", override: true});
 }
 const stripeSecretKey = process.env.STRIPE_API_SECRET_KEY;
 

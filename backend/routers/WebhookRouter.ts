@@ -6,7 +6,7 @@ import Stripe from "stripe";
 const dotenv = require("dotenv");
 dotenv.config({path: ".env"});
 if (process.env.NODE_ENV === "local_dev") {
-    dotenv.config({path: ".env.local"});
+    dotenv.config({path: ".env.local", override: true});
 }
 const stripeSecretKey = process.env.STRIPE_API_SECRET_KEY;
 
@@ -39,6 +39,7 @@ webhookRouter.post(
                 {
                     where: {uuid: userId as string},
                 });
+                // TODO: (HIGH) Fix the failure point for creating a transaction
                 await Transaction.create({
                     userId: userId as string,
                     stripeSessionId: session.id,
@@ -52,6 +53,7 @@ webhookRouter.post(
                     subscriptionEndDate: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)),
                     metadata: session.metadata,
                 });
+                // TODO: (HIGH) Add event handlers for charge.succeeded, payment_intent.succeeded, payment_intent.created, charge.updated
             } else {
                 console.warn(`Unhandled event type: ${event.type}`);
             }
