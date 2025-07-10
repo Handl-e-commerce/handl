@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
+import { SxProps } from "@mui/material";
 
 const modalStyle = {
   position: 'absolute' as const,
@@ -19,14 +20,14 @@ const modalStyle = {
   p: 4,
 };
 
-export default function ReturnPolicyModal() {
+function ReturnPolicy({ sx }: { sx?: SxProps }): JSX.Element {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
-    <>
+    <Box sx={sx}>
       <Button variant="text" color="primary" onClick={handleOpen} sx={{ textTransform: 'none', fontWeight: 500 }}>
         View Return Policy
       </Button>
@@ -56,6 +57,8 @@ export default function ReturnPolicyModal() {
           </Typography>
         </Box>
       </Modal>
-    </>
+    </Box>
   );
 }
+
+export {ReturnPolicy};
