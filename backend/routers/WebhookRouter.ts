@@ -52,7 +52,7 @@ webhookRouter.post(
                     subscriptionEndDate: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)),
                     metadata: session.metadata,
                 });
-            } 
+            }
             if (event.type === "charge.succeeded") {
                 console.log("Charge Succeeded", event.data.object);
             }
@@ -64,8 +64,7 @@ webhookRouter.post(
             }
             if (event.type === "charge.updated") {
                 console.log("Charge Updated", event.data.object);
-            }
-            else {
+            } else {
                 console.warn(`Unhandled event type: ${event.type}`);
             }
         } catch (err: unknown) {

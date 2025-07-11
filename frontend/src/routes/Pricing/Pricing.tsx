@@ -1,11 +1,10 @@
-import { Box, Typography, Button, Paper, Avatar, Checkbox } from "@mui/material";
+import { Box, Typography, Button, Avatar } from "@mui/material";
 import { redirectToStripeCheckout } from "../../utils/stripe-checkout";
 import { cookieParser } from "../../utils/cookie-util";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { useNavigate } from "react-router-dom";
 import { ReturnPolicy } from "../../components/ReturnPolicy/ReturnPolicy";
 import { Paid } from "@mui/icons-material";
-import { useState } from "react";
 
 const styles = {
     banner: {
@@ -87,7 +86,7 @@ function Pricing(): JSX.Element {
                 <Button
                     variant="contained"
                     size="large"
-                    sx={{ mt: 4, px: 5, fontSize: "1.1rem", backgroundColor: "#2d7ff9" }}
+                    sx={{ mt: 2, px: 5, fontSize: "1.1rem", backgroundColor: "#2d7ff9" }}
                     onClick={redirectToStripeCheckout}
                 >
                     Go Premium Now

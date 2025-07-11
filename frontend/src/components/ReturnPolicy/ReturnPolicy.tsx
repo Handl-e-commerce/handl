@@ -12,12 +12,13 @@ const modalStyle = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #001E42',
+  width: '90%',
+  maxHeight: '90vh',
+  bgcolor: '#F2F2F7',
   boxShadow: 24,
   borderRadius: 2,
   p: 4,
+  overflowY: 'auto',
 };
 
 function ReturnPolicy({ sx }: { sx?: SxProps }): JSX.Element {
@@ -50,9 +51,16 @@ function ReturnPolicy({ sx }: { sx?: SxProps }): JSX.Element {
             Return, Refund & Cancellation Policy
           </Typography>
           <Typography id="return-policy-description" variant="body1" sx={{ mb: 2 }}>
-            <strong>All Sales Are Final:</strong> Due to the proprietary and digital nature of the information and services we provide, <u>all purchases are non-refundable, non-cancellable, and non-returnable</u>. By proceeding with your purchase, you acknowledge and agree that you have been clearly informed of this policy prior to completing your transaction. <br /><br />
-            <strong>No Refunds, Cancellations, or Returns:</strong> Once an order is placed and payment is processed, you will not be eligible for any refund, return, or cancellation, in whole or in part, for any reason, including but not limited to dissatisfaction with the product or service, accidental purchase, or change of mind. <br /><br />
-            <strong>Legal Notice:</strong> This policy is provided in accordance with applicable law and is intended to be fully binding and enforceable. By making a purchase, you expressly waive any right to dispute charges, request a refund, or initiate a chargeback for any reason. If you do not agree with this policy, please do not proceed with your purchase. <br /><br />
+            <strong>All Sales Are Final:</strong> Due to the proprietary and digital nature of the information and services we provide, 
+            <u>all purchases are non-refundable, non-cancellable, and non-returnable</u>. By proceeding with your purchase, you acknowledge and agree that you have been clearly informed of this policy prior to completing your transaction.
+            <br />
+            <br />
+            <strong>No Refunds, Cancellations, or Returns:</strong> Once an order is placed and payment is processed, you will not be eligible for any refund, return, or cancellation, in whole or in part, for any reason, including but not limited to dissatisfaction with the product or service, accidental purchase, or change of mind.
+            <br />
+            <br />
+            <strong>Legal Notice:</strong> This policy is provided in accordance with applicable law and is intended to be fully binding and enforceable. By making a purchase, you expressly waive any right to dispute charges, request a refund, or initiate a chargeback for any reason. If you do not agree with this policy, please do not proceed with your purchase. 
+            <br />
+            <br />
             If you have any questions regarding this policy, please contact us before making a purchase.
           </Typography>
         </Box>
