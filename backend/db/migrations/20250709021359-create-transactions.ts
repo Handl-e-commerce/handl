@@ -75,6 +75,11 @@ module.exports = {
                 type: Sequelize.DATE,
                 field: "updated_at",
             },
+            deletedAt: {
+                allowNull: true,
+                type: Sequelize.DATE,
+                field: "deleted_at",
+            },
         });
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

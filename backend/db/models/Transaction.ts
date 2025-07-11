@@ -86,6 +86,8 @@ Transaction.init({
 {
     sequelize: Database.GetInstance().sequelize,
     modelName: "Transactions",
+    tableName: "Transactions",
+    freezeTableName: true,
     paranoid: true,
     underscored: true,
     timestamps: true,

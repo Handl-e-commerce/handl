@@ -39,13 +39,12 @@ webhookRouter.post(
                 {
                     where: {uuid: userId as string},
                 });
-                // TODO: (HIGH) Fix the failure point for creating a transaction
                 await Transaction.create({
                     userId: userId as string,
                     stripeSessionId: session.id,
                     stripeCustomerId: session.customer as string | null,
                     planType: planType,
-                    amount: 899.99,
+                    amount: session.amount_total as number,
                     currency: "USD",
                     status: session.status,
                     paymentIntentId: session.payment_intent as string | null,
@@ -53,11 +52,13 @@ webhookRouter.post(
                     subscriptionEndDate: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)),
                     metadata: session.metadata,
                 });
-                // TODO: (HIGH) Add event handlers for charge.succeeded, payment_intent.succeeded, payment_intent.created, charge.updated
+                // TODO: (HIGH) Add event handlers for charge.succeeded,
+                // payment_intent.succeeded, payment_intent.created, charge.updated
             } else {
                 console.warn(`Unhandled event type: ${event.type}`);
             }
         } catch (err: unknown) {
+            console.error(err);
             return next(err as Error);
         }
     }
