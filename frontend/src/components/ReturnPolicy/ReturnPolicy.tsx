@@ -28,7 +28,7 @@ function ReturnPolicy({ sx }: { sx?: SxProps }): JSX.Element {
 
   return (
     <Box sx={sx}>
-      <Button variant="text" color="primary" onClick={handleOpen} sx={{ textTransform: 'none', fontWeight: 500 }}>
+      <Button variant="text" onClick={handleOpen} sx={{ color: "primary.main", textTransform: 'none', fontWeight: 500 }}>
         View Return Policy
       </Button>
       <Modal

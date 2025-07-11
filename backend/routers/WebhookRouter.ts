@@ -52,9 +52,20 @@ webhookRouter.post(
                     subscriptionEndDate: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)),
                     metadata: session.metadata,
                 });
-                // TODO: (HIGH) Add event handlers for charge.succeeded,
-                // payment_intent.succeeded, payment_intent.created, charge.updated
-            } else {
+            } 
+            if (event.type === "charge.succeeded") {
+                console.log("Charge Succeeded", event.data.object);
+            }
+            if (event.type === "payment_intent.created") {
+                console.log("Payment Intent Created", event.data.object);
+            }
+            if (event.type === "payment_intent.succeeded") {
+                console.log("Payment Intent Succeeded", event.data.object);
+            }
+            if (event.type === "charge.updated") {
+                console.log("Charge Updated", event.data.object);
+            }
+            else {
                 console.warn(`Unhandled event type: ${event.type}`);
             }
         } catch (err: unknown) {
