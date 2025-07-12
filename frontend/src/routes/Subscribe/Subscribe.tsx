@@ -7,17 +7,19 @@ import { cookieParser } from "../../utils/cookie-util";
 import Home from "@mui/icons-material/Home";
 import { redirectToStripeCheckout } from "../../utils/stripe-checkout";
 import { Error, Loop } from "@mui/icons-material";
+import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 
 function Subscribe(): JSX.Element {
     const { status } = useParams<{ status: string }>();
     const navigate = useNavigate();
     const cookiesObject = cookieParser();
+    const loggedIn = useLoginStatus();
 
     useEffect(() => {
-        if (status !== 'success' && status !== "cancel") {
+        if ((status !== 'success' && status !== "cancel") || !loggedIn) {
             navigate('/pricing');
         }
-    }, [status, navigate]);
+    }, [status, navigate, loggedIn]);
     
     const renderContent = () => {
         if (status === 'success') {

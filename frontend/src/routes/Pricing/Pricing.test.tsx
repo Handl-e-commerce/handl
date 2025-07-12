@@ -4,9 +4,6 @@ import { render, screen, act } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import '@testing-library/jest-dom/extend-expect';
 
-// !loggedIn
-// loggedIn && planType !== 'Premium'
-
 let mockUseLoginStatus = jest.fn();
 jest.mock("../../hooks/useLoggedInStatus", () => {
     const originalModule = jest.requireActual("../../hooks/useLoggedInStatus");
