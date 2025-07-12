@@ -96,4 +96,21 @@ describe("Header Test", function() {
             expect(navBar).toBeInTheDocument();
         });
     });
+
+    it("Should render upgrade to premium because user is not premium", async () => {
+        mockUseLoginStatus.mockReturnValue(true);
+        Object.defineProperty(window.document, 'cookie', {
+            writable: true,
+            value: "firstName=MockFirstName; planType=Free;",
+        });
+        await act(async () => render(<Header />));
+        await user.click(screen.getByText(/hi, mockfirstname/i));
+        await waitFor(() => {
+            expect(screen.getByText("Upgrade to Premium!")).toBeInTheDocument();
+        });
+        await user.click(screen.getByText("Upgrade to Premium!"));
+        await waitFor(() => {
+            expect(window.location.href).toEqual("https://stripe-checkout-url.com");
+        });
+    });
 });

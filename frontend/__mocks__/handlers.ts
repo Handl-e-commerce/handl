@@ -307,4 +307,13 @@ export const handlers = [
             status: 201
         });
     }),
+    http.post(REACT_APP_SERVER_URI + `/billing/subscribe`, ({request, params, cookies}) => {
+        let body = JSON.stringify({
+            url: "https://stripe-checkout-url.com",
+            sessionId: "randomSessionId"
+        });
+        return new HttpResponse(body, {
+            status: 201
+        });
+    })
 ];
