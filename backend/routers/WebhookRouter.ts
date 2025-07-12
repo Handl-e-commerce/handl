@@ -15,7 +15,6 @@ if (!stripeSecretKey) {
 }
 
 const stripe = require("stripe")(stripeSecretKey);
-
 const express = require("express");
 
 const webhookRouter = express.Router();
@@ -24,14 +23,23 @@ webhookRouter.post(
     "/stripe",
     express.raw({type: "application/json"}),
     async (req: Request, res: Response, next: NextFunction) => {
+        // Verify webhook request
+        const signature = req.headers["stripe-signature"];
+        const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+        let event: Stripe.Event;
         try {
-            const signature = req.headers["stripe-signature"];
-            const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-            const event = stripe.webhooks.constructEvent(req.body, signature as string, webhookSecret as string);
-            if (event.type === "checkout.session.completed") {
+            event = stripe.webhooks.constructEvent(req.body, signature as string, webhookSecret as string);
+        } catch (err: unknown) {
+            return res.status(400).send(`Webhook Error: ${(err as Error).message}`);
+        }
+
+        try {
+            switch (event.type) {
+            case "checkout.session.completed": {
                 const session = event.data.object as Stripe.Checkout.Session;
                 const userId = session.client_reference_id;
                 const planType = session.metadata?.planType ?? PlanType[1];
+
                 await User.update({
                     planType: planType,
                     subscriptionExpiresAt: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)),
@@ -45,30 +53,39 @@ webhookRouter.post(
                     stripeCustomerId: session.customer as string | null,
                     planType: planType,
                     amount: session.amount_total as number,
-                    currency: "USD",
+                    currency: session.currency as string,
                     status: session.status,
                     paymentIntentId: session.payment_intent as string | null,
                     subscriptionStartDate: new Date(Date.now()),
                     subscriptionEndDate: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)),
                     metadata: session.metadata,
                 });
+                break;
             }
-            if (event.type === "charge.succeeded") {
+            case "charge.succeeded":
                 console.log("Charge Succeeded", event.data.object);
-            }
-            if (event.type === "payment_intent.created") {
+                break;
+            case "payment_intent.created":
                 console.log("Payment Intent Created", event.data.object);
-            }
-            if (event.type === "payment_intent.succeeded") {
+                break;
+            case "payment_intent.succeeded":
                 console.log("Payment Intent Succeeded", event.data.object);
-            }
-            if (event.type === "charge.updated") {
+                break;
+            case "charge.updated":
                 console.log("Charge Updated", event.data.object);
-            } else {
+                break;
+            case "payment_intent.requires_action":
+                console.log("Payment Intent Requires Action", event.data.object);
+                break;
+            case "payment_intent.payment_failed":
+                console.log("Payment Intent Payment Failed", event.data.object);
+                break;
+            default:
                 console.warn(`Unhandled event type: ${event.type}`);
+                break;
             }
+            return res.status(201).json({message: "Event processed successfully"});
         } catch (err: unknown) {
-            console.error(err);
             return next(err as Error);
         }
     }
