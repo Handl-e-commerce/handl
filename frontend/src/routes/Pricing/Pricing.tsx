@@ -5,6 +5,7 @@ import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { useNavigate } from "react-router-dom";
 import { ReturnPolicy } from "../../components/ReturnPolicy/ReturnPolicy";
 import { Paid, Bolt, LockOpen, ConnectWithoutContact } from "@mui/icons-material";
+import { BenefitCard } from "../../components/BenefitCard/BenefitCard";
 
 const styles = {
     banner: {
@@ -28,41 +29,43 @@ const styles = {
         mb: 2,
         boxShadow: 3,
     },
-};
-
-const BenefitCard = ({ Icon, text }: { Icon: React.ElementType, text: string }) => {
-    return (
-        <Box sx={{
-            my: 2,
-            backgroundColor: '#ffffff',
-            borderRadius: '12px',
-            p: 2.5,
-            boxShadow: '0 4px 12px rgba(0, 80, 158, 0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            transition: 'transform 0.2s, box-shadow 0.2s',
-            width: '100%',
-            '&:hover': {
-                transform: 'translateY(-4px)',
-                boxShadow: '0 8px 16px rgba(0, 80, 158, 0.25)',
-            }
-        }}>
-            <Box sx={{ 
-                backgroundColor: '#e6f0ff', 
-                borderRadius: '50%', 
-                p: 1.5, 
-                mr: 2,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}>
-                <Icon fontSize="large" sx={{ color: '#2d7ff9' }}/>
-            </Box>
-            <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
-                {text}
-            </Typography>
-        </Box>
-    )
+    pricingPageColumn: {
+        backgroundColor: '#ffffff',
+        borderRadius: '16px',
+        p: 4,
+        boxShadow: '0 8px 24px rgba(0, 80, 158, 0.2)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        mt: 4,
+        mb: 6,
+        width: '100%',
+        maxWidth: '500px',
+        position: 'relative',
+        overflow: 'hidden',
+        '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '6px',
+            background: 'linear-gradient(to right, #2d7ff9, #00509e)',
+        }
+    },
+    pricingButton: {
+        mt: 2, 
+        px: 5, 
+        py: 1.5,
+        fontSize: "1.1rem", 
+        backgroundColor: "#2d7ff9",
+        borderRadius: '10px',
+        boxShadow: '0 4px 12px rgba(45, 127, 249, 0.3)',
+        '&:hover': {
+            backgroundColor: '#1a6eeb',
+            boxShadow: '0 6px 16px rgba(45, 127, 249, 0.4)',
+        }
+    },
 };
 
 function Pricing(): JSX.Element {
@@ -89,30 +92,7 @@ function Pricing(): JSX.Element {
                 <BenefitCard Icon={Bolt} text="Save time sourcing products and deals!"/>
                 <BenefitCard Icon={ConnectWithoutContact} text="Get access to key personal and contact information!"/>
             </Box>
-            <Box aria-label="pricing-price-column" sx={{
-                backgroundColor: '#ffffff',
-                borderRadius: '16px',
-                p: 4,
-                boxShadow: '0 8px 24px rgba(0, 80, 158, 0.2)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                mt: 4,
-                mb: 6,
-                width: '100%',
-                maxWidth: '500px',
-                position: 'relative',
-                overflow: 'hidden',
-                '&::before': {
-                    content: '""',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: '6px',
-                    background: 'linear-gradient(to right, #2d7ff9, #00509e)',
-                }
-            }}>
+            <Box aria-label="pricing-price-column" sx={styles.pricingPageColumn}>
                 <Typography
                     variant="h6"
                     sx={{ 
@@ -153,19 +133,7 @@ function Pricing(): JSX.Element {
                 <Button
                     variant="contained"
                     size="large"
-                    sx={{ 
-                        mt: 2, 
-                        px: 5, 
-                        py: 1.5,
-                        fontSize: "1.1rem", 
-                        backgroundColor: "#2d7ff9",
-                        borderRadius: '10px',
-                        boxShadow: '0 4px 12px rgba(45, 127, 249, 0.3)',
-                        '&:hover': {
-                            backgroundColor: '#1a6eeb',
-                            boxShadow: '0 6px 16px rgba(45, 127, 249, 0.4)',
-                        }
-                    }}
+                    sx={styles.pricingButton}
                     onClick={() => navigate('/sign-up')}
                 >
                     Sign Up Today
@@ -176,19 +144,7 @@ function Pricing(): JSX.Element {
                     <Button
                         variant="contained"
                         size="large"
-                        sx={{ 
-                            mt: 2, 
-                            px: 5, 
-                            py: 1.5,
-                            fontSize: "1.1rem", 
-                            backgroundColor: "#2d7ff9",
-                            borderRadius: '10px',
-                            boxShadow: '0 4px 12px rgba(45, 127, 249, 0.3)',
-                            '&:hover': {
-                                backgroundColor: '#1a6eeb',
-                                boxShadow: '0 6px 16px rgba(45, 127, 249, 0.4)',
-                            }
-                        }}
+                        sx={styles.pricingButton}
                         onClick={redirectToStripeCheckout}
                     >
                         Go Premium Now
