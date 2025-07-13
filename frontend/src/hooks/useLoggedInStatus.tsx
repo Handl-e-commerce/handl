@@ -5,14 +5,10 @@ const cookieObject = cookieParser();
 
 function useLoginStatus(): boolean {
     const [loggedIn, setLoggedIn] = useState<boolean>(cookieObject.loggedIn === "true")
-    
+
     useEffect(() => {
-        let ignore = false;
-        if (!ignore) {
-            setLoggedIn(cookieObject.loggedIn === "true");
-        }
-        return () => { ignore = true };
-    }, []);
+        setLoggedIn(cookieObject.loggedIn === "true");
+    }, [loggedIn]);
     
     return loggedIn;
 };

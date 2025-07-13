@@ -1,9 +1,10 @@
 import { describe, expect, it } from '@jest/globals';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { EnhancedTable } from './EnhancedTable';
 import { Vendor } from '../../types/types';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 
 const mockData: Vendor[] = [
     {
@@ -53,33 +54,63 @@ const mockData: Vendor[] = [
 
 global.fetch = jest.fn();
 
+let mockUseLoginStatus = jest.fn();
+jest.mock("../../hooks/useLoggedInStatus", () => {
+    const originalModule = jest.requireActual("../../hooks/useLoggedInStatus");
+    return {
+        __esModule: true,
+        ...originalModule,
+        useLoginStatus: jest.fn(() => mockUseLoginStatus()),
+    };
+});
+
 beforeEach(() => {
-    jest.resetAllMocks();
+    mockUseLoginStatus.mockReturnValue(true);
+});
+
+afterEach(() => {
+    jest.clearAllMocks();
 });
 
 describe("EnhancedTable Tests", () => {
-    it("Should render data as expected", async () => {
-        render(<EnhancedTable isMobile={false} loadingData={false} data={mockData}/>);
+    it("Should update favorites when clicking on favorite icon button for vendor", async () => {
+        render(
+            <MemoryRouter>
+                <EnhancedTable isMobile={false} loadingData={false} data={mockData}/>
+            </MemoryRouter>
+        );
+
+        await userEvent.click(screen.getAllByLabelText("icon-button-favorite")[1]);
+        expect(screen.getAllByTestId("FavoriteIcon").length).toEqual(2);
+        await userEvent.click(screen.getAllByLabelText("icon-button-favorite")[0]);
+        expect(screen.getAllByTestId("FavoriteIcon").length).toEqual(1);
+    });
+
+    it("Should render data as expected for logged in user", async () => {
+        render(
+            <MemoryRouter>
+                <EnhancedTable isMobile={false} loadingData={false} data={mockData}/>
+            </MemoryRouter>
+        );
+        for (let i = 0; i < mockData.length; i++) {
+            expect(screen.getByText(mockData[i].name)).toBeInTheDocument();
+            expect(screen.getByText(mockData[i].website)).toBeInTheDocument();
+            expect(screen.getByText(mockData[i].phoneNumber)).toBeInTheDocument();
+            expect(screen.getByText(mockData[i].state)).toBeInTheDocument();
+        };
+        
         await waitFor(() => {
-            expect(screen.getByText(mockData[0].name)).toBeInTheDocument();
-            expect(screen.getByText(mockData[0].website)).toBeInTheDocument();
-            expect(screen.getByText(mockData[0].phoneNumber)).toBeInTheDocument();
-            expect(screen.getByText(mockData[0].state)).toBeInTheDocument();
-            expect(screen.getByText(mockData[1].name)).toBeInTheDocument();
-            expect(screen.getByText(mockData[1].website)).toBeInTheDocument();
-            expect(screen.getByText(mockData[1].phoneNumber)).toBeInTheDocument();
-            expect(screen.getByText(mockData[1].state)).toBeInTheDocument();
-            expect(screen.getByText(mockData[2].name)).toBeInTheDocument();
-            expect(screen.getByText(mockData[2].website)).toBeInTheDocument();
-            expect(screen.getByText(mockData[2].phoneNumber)).toBeInTheDocument();
-            expect(screen.getByText(mockData[2].state)).toBeInTheDocument();
             expect(screen.getByTestId("FavoriteIcon")).toBeInTheDocument();
             expect(screen.getAllByTestId("FavoriteBorderIcon").length).toEqual(2);
         });
     });
 
     it("Should expand the row upon clicking the expansion icon", async () => {
-        render(<EnhancedTable isMobile={false} loadingData={false} data={mockData}/>);
+        render(
+            <MemoryRouter>
+                <EnhancedTable isMobile={false} loadingData={false} data={mockData}/>
+            </MemoryRouter>
+        );
         await userEvent.click(screen.getAllByLabelText("expand row")[0]);
         await waitFor(() => {
             expect(screen.getByText(mockData[0].description)).toBeInTheDocument();
@@ -91,15 +122,14 @@ describe("EnhancedTable Tests", () => {
         });
     });
 
-    it("Should update favorites when clicking on favorite icon button for vendor", async () => {
-        render(<EnhancedTable isMobile={false} loadingData={false} data={mockData}/>);
-        await userEvent.click(screen.getAllByLabelText("icon-button-favorite")[1]);
-        await waitFor(() => {
-            expect(screen.getAllByTestId("FavoriteIcon").length).toEqual(2);
-        });
-        await userEvent.click(screen.getAllByLabelText("icon-button-favorite")[0]);
-        await waitFor(() => {
-            expect(screen.getAllByTestId("FavoriteIcon").length).toEqual(1);
-        });
+    it("Should not render favorite icon button for non-logged in user", async () => {
+        mockUseLoginStatus.mockReturnValueOnce(false);
+        await act(async () => render(
+            <MemoryRouter>
+                <EnhancedTable isMobile={false} loadingData={false} data={mockData}/>
+            </MemoryRouter>
+        ));
+
+        expect(screen.queryByTestId("FavoriteIcon")).toBeNull();
     });
 });

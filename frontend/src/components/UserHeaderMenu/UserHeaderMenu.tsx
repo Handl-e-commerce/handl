@@ -1,10 +1,11 @@
-import { SxProps, Grid, Button, Menu, MenuItem } from '@mui/material';
-import { KeyboardArrowDown, Logout } from '@mui/icons-material';
+import { SxProps, Grid, Button, Menu, MenuItem, ListItemIcon } from '@mui/material';
+import { EmojiEvents, KeyboardArrowDown, Logout } from '@mui/icons-material';
 import { useMobile } from '../../hooks/useMobile';
 import { useLoginStatus } from '../../hooks/useLoggedInStatus';
 import { cookieParser, deleteCookie } from '../../utils/cookie-util';
 import { fetchWrapper } from '../../utils/fetch-wrapper';
 import { useState } from 'react';
+import { redirectToStripeCheckout } from '../../utils/stripe-checkout';
 
 interface IUserHeaderMenuProps {
     sx?: SxProps;
@@ -12,7 +13,7 @@ interface IUserHeaderMenuProps {
 
 const signupButtonSx: SxProps = {
     color: 'secondary.main',
-    background: '#3B4B59',
+    background: '#2D7FF9',
     marginRight: "4px",
     width: '100px',
 };
@@ -82,9 +83,19 @@ function UserHeaderMenu({ sx }: IUserHeaderMenuProps): JSX.Element {
                     onClose={() => setUserMenuAnchor(null)}
                 >
                     <MenuItem onClick={handleLogout}>
+                        <ListItemIcon>
+                            <Logout />
+                        </ListItemIcon>
                         Logout
-                        <Logout/>
                     </MenuItem>
+                    {cookieObject.planType !== 'Premium' && 
+                        <MenuItem onClick={redirectToStripeCheckout}>
+                            <ListItemIcon>
+                                <EmojiEvents />
+                            </ListItemIcon>
+                            Upgrade to Premium!
+                        </MenuItem>
+                    }
                 </Menu>
             </Grid>
         )

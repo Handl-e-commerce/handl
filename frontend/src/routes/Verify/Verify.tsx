@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
-import { Box, Container } from "@mui/material";
+import { Box, Container, Link, SxProps } from "@mui/material";
+
+const linkSx: SxProps = {
+    marginTop: '3%',
+    fontSize: '16px',
+    fontWeight: 600
+};
 
 // TODO: (MEDIUM) Next on TODO list is to investigate why this is 500ing on the server in dev
 function Verify(): JSX.Element {
@@ -12,13 +18,8 @@ function Verify(): JSX.Element {
     const [responseMessage, setResponseMessage] = useState<string>("");
 
     useEffect(() => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        let ignore = false;
         handleEmailVerification(token as string, userId as string);
-        return () => {
-            ignore = true;
-        };
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     async function handleEmailVerification(token: string, userId: string): Promise<void> {
@@ -40,7 +41,7 @@ function Verify(): JSX.Element {
     return (
         <Container sx={{minHeight: '66rem'}} data-testid="verify-container">
             <Box className={isVerified ? "verified" : "not-verified"}>{responseMessage}</Box>
-            {!isVerified && <Box>Please click <a onClick={() => handleResendVerification(userId)}>here</a> to resend verification link</Box>}
+            {!isVerified && <Box>Please click <Link onClick={() => handleResendVerification(userId)} sx={linkSx}>here</Link> to resend verification link</Box>}
         </Container>
     )
 };

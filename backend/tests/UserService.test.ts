@@ -12,8 +12,8 @@ const nodemailer = require("nodemailer");
 nodemailer.createTransport.mockReturnValue({"sendMail": sendMailMock});
 
 const userDetails: IUserDetails = {
-  email: "analyst@test.buzz",
-  businessName: "Analyst & Associates",
+  email: "silvio@badabing.com",
+  businessName: "Bada Bing",
   phoneNumber: "9876543210",
   password: "Bafang00l$!",
   firstName: "Test",

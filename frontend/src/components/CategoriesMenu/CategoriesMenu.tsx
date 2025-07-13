@@ -3,7 +3,6 @@ import { SxProps, Grid, Button, Menu, MenuItem, Box } from '@mui/material';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import { fetchWrapper } from '../../utils/fetch-wrapper';
 import { iconMapper } from '../../utils/icon-mapper';
-import { useMobile } from '../../hooks/useMobile';
 
 interface ICategoriesMenuProps {
     sx?: SxProps;
@@ -19,7 +18,6 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
     const location = window.location;
     const [categoriesMenuAnchor, setCategoriesMenuAnchor] = useState<null | HTMLElement>(null);
     const [categories, setCategories] = useState<string[]>();
-    const isMobile: boolean = useMobile();
     let queryParams = new URL(document.location.toString()).searchParams;
 
     async function getCategories(): Promise<void> {
@@ -29,13 +27,8 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
     };
 
     useEffect(() => {
-        let ignore = false;
-        if (!ignore) {
-            if (!categories) {
-                getCategories();
-            };
-        };
-        return () => { ignore = true };
+        if (!categories) getCategories();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -92,11 +85,10 @@ function CategoriesMenu({ sx }: ICategoriesMenuProps): JSX.Element {
                             alignItems: 'center',
                         }}
                         onClick={(e) => {
-                            queryParams.set("category", (e.target as HTMLElement).innerText);
                             queryParams.delete("subcategories");
                             queryParams.delete("states");
-                            window.history.pushState({}, "", `${location.origin}/results?${queryParams.toString()}`);
-                            location.replace(`${location.origin}/results?${queryParams.toString()}`);
+                            window.history.pushState({}, "", `${location.origin}/results/${e.currentTarget.innerText}?`);
+                            location.replace(`${location.origin}/results/${e.currentTarget.innerText}?`);
                         }}
                     >
                         {iconMapper[category]}

@@ -3,6 +3,7 @@ import {AuthToken} from "../db/models/AuthToken";
 import {User} from "../db/models/User";
 import * as argon2 from "argon2";
 import {EmailService} from "./EmailService";
+import {PlanType} from "../enums/PlanType";
 
 /** Verification Service Class */
 class VerificationService implements IVerificationService {
@@ -60,31 +61,66 @@ class VerificationService implements IVerificationService {
         selector: string | undefined,
         validator: string | undefined,
         userId: string
-    ): Promise<boolean> {
+    ): Promise<{
+        result: boolean,
+        planType?: string,
+        subscriptionExpirationDate?: Date | null,
+    }> {
         try {
             if (!selector || !validator) {
-                return false;
+                return {
+                    result: false,
+                };
             }
 
-            const auth: AuthToken | null = await AuthToken.findOne({
+            const auth = await AuthToken.findOne({
                 where: {
                     selector: selector,
                 },
-            });
-
+                include: [{
+                    model: User,
+                    as: "User",
+                    where: {
+                        uuid: userId,
+                    },
+                    attributes: ["planType", "subscriptionExpiresAt"],
+                    required: true, // ensures LEFT JOIN (set to false for OUTER JOIN)
+                }],
+            }) as (AuthToken & { User: User }) | null;
             if (auth === null) {
-                return false;
+                return {result: false};
             }
 
             if (!(await argon2.verify(auth.validator, validator))) {
-                return false;
+                return {result: false};
             }
 
             if (userId != auth.UserUuid) {
-                return false;
+                return {result: false};
             }
 
-            return true;
+            let planType = auth.User.planType;
+            // If the user's subsctription has expired, write to the DB that the user is no longer a premium user
+            if (
+                auth.User.planType === PlanType[1] &&
+                auth.User.subscriptionExpiresAt &&
+                new Date(Date.now()) > auth.User.subscriptionExpiresAt
+            ) {
+                await User.update({
+                    planType: PlanType[0],
+                }, {
+                    where: {
+                        uuid: userId,
+                    },
+                });
+                planType = PlanType[0];
+            }
+
+            return {
+                result: true,
+                planType: planType,
+                subscriptionExpirationDate: auth.User.subscriptionExpiresAt,
+            };
         } catch (err) {
             const error = err as Error;
             throw Error(error.message);

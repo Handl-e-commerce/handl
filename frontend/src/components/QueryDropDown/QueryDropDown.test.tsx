@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { QueryDropDown } from './QueryDropDown';
 import userEvent from '@testing-library/user-event';
@@ -16,7 +16,7 @@ const setSelectedDataMock = jest.fn();
 const handleQueryMock = jest.fn();
 
 beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
 });
 
 describe("QueryDropDown Test", () => {

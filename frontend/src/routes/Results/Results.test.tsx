@@ -5,6 +5,7 @@ import { Results } from './Results';
 import userEvent from '@testing-library/user-event';
 import { server } from '../../../__mocks__/server';
 import { http, HttpResponse } from 'msw';
+import { MemoryRouter } from 'react-router-dom';
 
 let mockUseLoginStatus = jest.fn();
 jest.mock("../../hooks/useLoggedInStatus", () => {
@@ -20,10 +21,18 @@ beforeEach(() => {
     mockUseLoginStatus.mockReturnValue(true);
 });
 
+afterEach(() => {
+    jest.clearAllMocks();
+});
+
 describe("Results Route Test", () => {
     const user = userEvent.setup();
     it("Should render only category query chips and remove them when closing them", async () => {
-        await act(async () => render(<Results />));
+        await act(async () => render(
+            <MemoryRouter>
+                <Results />
+            </MemoryRouter>
+        ));
         let categoryDropdown = await waitFor(() => screen.getByTestId("subcategories-multiple-checkbox-select"), {
             timeout: 3000
         });
@@ -61,7 +70,11 @@ describe("Results Route Test", () => {
     }, 7500);
 
     it("Should render only state query chips and remove them when closing them", async () => {
-        await act(async () => render(<Results />));
+        await act(async () => render(
+            <MemoryRouter>
+                <Results />
+            </MemoryRouter>
+        ));
         let statesDropdown = await waitFor(() => screen.getByTestId("states-multiple-checkbox-select"), {
             timeout: 3000
         });
@@ -92,7 +105,11 @@ describe("Results Route Test", () => {
     }, 7500);
     
     it("Should remove all query chips when clicking clear all button", async () => {
-        await act(async () => render(<Results />));
+        await act(async () => render(
+            <MemoryRouter>
+                <Results />
+            </MemoryRouter>
+        ));
         let categoryDropdown = await waitFor(() => screen.getByTestId("subcategories-multiple-checkbox-select"), {
             timeout: 3000
         });
@@ -141,12 +158,16 @@ describe("Results Route Test", () => {
         });
     }, 7500);
 
-    it("Should render you must sign in first in order to access our data modal if user isn't signed up", async () => {
+    it("Should render you must subscribe in order to access our data modal if user isn't logged in", async () => {
         mockUseLoginStatus.mockReturnValue(false);
-        await act(async () => render(<Results />));
+        await act(async () => render(
+            <MemoryRouter>
+                <Results />
+            </MemoryRouter>
+        ));
         
         await waitFor(() => {
-            expect(screen.getByText("Login or Sign up to get full access to our data!")).toBeInTheDocument();
+            expect(screen.getByText(/subscribe to access all data/i)).toBeInTheDocument();
         });
     });
 
@@ -162,7 +183,11 @@ describe("Results Route Test", () => {
                 });
             }),
         );
-        await act(async () => render(<Results />));
+        await act(async () => render(
+            <MemoryRouter>
+                <Results />
+            </MemoryRouter>
+        ));
         await waitFor(() => {
             expect(screen.queryAllByTestId("subcategories-multiple-checkbox-select").length).toEqual(0);
         });

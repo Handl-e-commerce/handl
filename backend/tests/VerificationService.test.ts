@@ -49,12 +49,16 @@ describe("VerificationService Tests", () => {
         const loginRes = await userService.Login(userDetails.email, userDetails.password);
         expect(loginRes.selector).toBeDefined();
         expect(loginRes.validator).toBeDefined();
-        const verify: boolean = await verificationService.VerifyUser(
+        const verify: {
+          result: boolean;
+          type?: string | undefined;
+          subscriptionExpirationDate?: Date | null | undefined;
+        } = await verificationService.VerifyUser(
           loginRes.selector as string,
           loginRes.validator as string,
           loginRes.userId as string
         );
-        expect(verify).toBe(true);
+        expect(verify.result).toBe(true);
         await AuthToken.destroy({
           where: {
             selector: loginRes.selector as string
@@ -67,8 +71,12 @@ describe("VerificationService Tests", () => {
         const loginRes = await userService.Login(userDetails.email, userDetails.password);
         expect(loginRes.selector).toBeDefined();
         expect(loginRes.validator).toBeDefined();
-        const verify: boolean = await verificationService.VerifyUser(loginRes.selector as string, loginRes.validator as string, "UserIdWhichDoesn'tExist");
-        expect(verify).toBe(false);
+        const verify: {
+          result: boolean;
+          type?: string | undefined;
+          subscriptionExpirationDate?: Date | null | undefined;
+        } = await verificationService.VerifyUser(loginRes.selector as string, loginRes.validator as string, "UserIdWhichDoesn'tExist");
+        expect(verify.result).toBe(false);
         await AuthToken.destroy({
           where: {
             selector: loginRes.selector as string
@@ -77,8 +85,12 @@ describe("VerificationService Tests", () => {
     });
     
     it("Should return false because row doesn't exist in the DB leading to null from query", async () => {
-        const verify: boolean = await verificationService.VerifyUser("SelectorThatDoesn'tExistInDB", "ValidatorThatDoesn'tExistInDB", "MockUserId");
-        expect(verify).toBe(false);
+        const verify: {
+          result: boolean;
+          type?: string | undefined;
+          subscriptionExpirationDate?: Date | null | undefined;
+        } = await verificationService.VerifyUser("SelectorThatDoesn'tExistInDB", "ValidatorThatDoesn'tExistInDB", "MockUserId");
+        expect(verify.result).toBe(false);
     });
     
     it("Should return false because validator doesn't match decrypted validator", async () => {
@@ -86,8 +98,12 @@ describe("VerificationService Tests", () => {
         const loginRes = await userService.Login(userDetails.email, userDetails.password);
         expect(loginRes.selector).toBeDefined();
         expect(loginRes.validator).toBeDefined();
-        const verify: boolean = await verificationService.VerifyUser(loginRes.selector as string, "validatorThatWon'tMatch", "MockUserId");
-        expect(verify).toBe(false);
+        const verify: {
+          result: boolean;
+          type?: string | undefined;
+          subscriptionExpirationDate?: Date | null | undefined;
+        } = await verificationService.VerifyUser(loginRes.selector as string, "validatorThatWon'tMatch", "MockUserId");
+        expect(verify.result).toBe(false);
         await AuthToken.destroy({
           where: {
             selector: loginRes.selector as string

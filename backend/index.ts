@@ -6,6 +6,8 @@ import {Express, Request, Response, NextFunction} from "express";
 import {Database} from "./db/Database";
 import {userRouter} from "./routers/UserRouter";
 import {vendorRouter} from "./routers/VendorRouter";
+import {billingRouter} from "./routers/BillingRouter";
+import {webhookRouter} from "./routers/WebhookRouter";
 
 const PORT = process.env.PORT;
 
@@ -32,12 +34,13 @@ const corsOptions = {
 
 // middleware
 app.use(cors(corsOptions));
-app.use(express.json());
 app.use(cookieParser());
 
 // routers
 app.use("/users", userRouter);
 app.use("/vendors", vendorRouter);
+app.use("/billing", billingRouter);
+app.use("/webhook", webhookRouter);
 
 app.get( "/", async ( req: Request, res: Response, next: NextFunction ) => {
     try {
