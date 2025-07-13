@@ -28,6 +28,12 @@ Object.defineProperty(window, 'location', {
     }
 );
 
+const mockNavigate = jest.fn();
+jest.mock("react-router-dom", () => ({
+    ...jest.requireActual("react-router-dom"),
+    useNavigate: () => mockNavigate,
+}));
+
 beforeEach(() => {
     mockLoginStatus.mockReturnValue(true);
 });
@@ -35,11 +41,6 @@ beforeEach(() => {
 afterEach(() => {
     jest.clearAllMocks();
 });
-const mockNavigate = jest.fn();
-jest.mock("react-router-dom", () => ({
-    ...jest.requireActual("react-router-dom"),
-    useNavigate: () => mockNavigate,
-}));
 
 describe("Subscribe Route Tests", () => {
     const user = userEvent.setup();
