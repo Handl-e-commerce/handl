@@ -230,6 +230,7 @@ class UserController {
                             sameSite: "none",
                             secure: true,
                             httpOnly: false,
+                            domain: ".thehandl.com",
                         }
                     )
                     .cookie(
@@ -240,6 +241,7 @@ class UserController {
                             sameSite: "none",
                             secure: true,
                             httpOnly: false,
+                            domain: ".thehandl.com",
                         }
                     )
                     .cookie(
@@ -250,6 +252,7 @@ class UserController {
                             sameSite: "none",
                             secure: true,
                             httpOnly: false,
+                            domain: ".thehandl.com",
                         }
                     )
                     .json({message: "Successfully authenticated user"});
