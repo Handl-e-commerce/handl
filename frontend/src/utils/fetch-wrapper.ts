@@ -18,8 +18,6 @@ async function fetchWrapper(route: string, method: string, body?: any): Promise<
         credentials: "include",
         headers: {
             "Content-Type": "application/json",
-            "Access-Control-Origin": window.location.origin,
-            "Access-Control-Allow-Origin": window.location.origin,
             "Accept": "application/json",
         },
         redirect: "follow",
