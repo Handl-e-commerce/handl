@@ -31,6 +31,7 @@ class VendorController {
                 cookies.validator,
                 cookies.userId
             );
+
             const category = req.query.category ? (req.query.category as string).trim() : req.params.category;
 
             const subcategories = req.query.subcategories ?
@@ -54,6 +55,7 @@ class VendorController {
                     sameSite: "none",
                     secure: true,
                     httpOnly: false,
+                    domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
                 })
                 .json({result: vendors});
         } catch (err: unknown) {

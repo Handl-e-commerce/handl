@@ -13,15 +13,6 @@ import {Vendor} from "../db/models/Vendor";
  * @class UserController
  */
 class UserController {
-    private unathenticatedResponse = (res: Response) => res.status(401)
-        .cookie("selector", "", {maxAge: Number(new Date(1)), sameSite: "none", secure: true, httpOnly: true})
-        .cookie("validator", "", {maxAge: Number(new Date(1)), sameSite: "none", secure: true, httpOnly: true})
-        .cookie("userId", "", {maxAge: Number(new Date(1)), sameSite: "none", secure: true, httpOnly: true})
-        .cookie("planType", "", {maxAge: Number(new Date(1)), sameSite: "none", secure: true, httpOnly: false})
-        .cookie("loggedIn", "", {maxAge: Number(new Date(1)), sameSite: "none", secure: true, httpOnly: false})
-        .cookie("firstName", "", {maxAge: Number(new Date(1)), sameSite: "none", secure: true, httpOnly: false})
-        .send();
-
     /**
      * Registers a new user
      * @param {Request} req
@@ -63,7 +54,50 @@ class UserController {
                 cookies.userId
             );
             if (!verificationStatus.result) {
-                return this.unathenticatedResponse(res);
+                return res.status(401)
+                    .cookie("selector", "", {
+                        maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: true,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("validator", "", {
+                        maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: true,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("userId", "", {
+                        maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: true,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("planType", "", {
+                        maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: false,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("loggedIn", "", {
+                        maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: false,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("firstName", "", {
+                        maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: false,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .send();
             }
             const userService = new UserService();
             const user: User = await userService.GetUserByUserId(cookies.userId);
@@ -93,7 +127,44 @@ class UserController {
                 cookies.userId
             );
             if (!verificationStatus.result) {
-                return this.unathenticatedResponse(res);
+                return res.status(401)
+                    .cookie("selector", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: true,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("validator", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: true,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("userId", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: true,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("planType", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: false,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("loggedIn", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: false,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("firstName", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: false,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .send();
             }
             const userService = new UserService();
             const savedVendors: Vendor[] = await userService.GetSavedVendors(cookies.userId);
@@ -200,7 +271,7 @@ class UserController {
                             sameSite: "none",
                             secure: true,
                             httpOnly: true,
-                            domain: ".thehandl.com",
+                            domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
                         }
                     )
                     .cookie(
@@ -211,7 +282,7 @@ class UserController {
                             sameSite: "none",
                             secure: true,
                             httpOnly: true,
-                            domain: ".thehandl.com",
+                            domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
                         }
                     )
                     .cookie(
@@ -222,7 +293,7 @@ class UserController {
                             sameSite: "none",
                             secure: true,
                             httpOnly: true,
-                            domain: ".thehandl.com",
+                            domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
                         }
                     )
                     .cookie(
@@ -233,7 +304,7 @@ class UserController {
                             sameSite: "none",
                             secure: true,
                             httpOnly: false,
-                            domain: ".thehandl.com",
+                            domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
                         }
                     )
                     .cookie(
@@ -244,7 +315,7 @@ class UserController {
                             sameSite: "none",
                             secure: true,
                             httpOnly: false,
-                            domain: ".thehandl.com",
+                            domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
                         }
                     )
                     .cookie(
@@ -255,7 +326,7 @@ class UserController {
                             sameSite: "none",
                             secure: true,
                             httpOnly: false,
-                            domain: ".thehandl.com",
+                            domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
                         }
                     )
                     .json({message: "Successfully authenticated user"});
@@ -283,12 +354,42 @@ class UserController {
             const userService = new UserService();
             await userService.Logout(cookies.selector);
             return res.status(201)
-                .cookie("selector", "", {maxAge: Number(new Date(1)), sameSite: "none", secure: true, httpOnly: true, domain: ".thehandl.com"})
-                .cookie("validator", "", {maxAge: Number(new Date(1)), sameSite: "none", secure: true, httpOnly: true, domain: ".thehandl.com"})
-                .cookie("userId", "", {maxAge: Number(new Date(1)), sameSite: "none", secure: true, httpOnly: true, domain: ".thehandl.com"})
-                .cookie("planType", "", {maxAge: Number(new Date(1)), sameSite: "none", secure: true, httpOnly: false, domain: ".thehandl.com"})
-                .cookie("loggedIn", "", {maxAge: Number(new Date(1)), sameSite: "none", secure: true, httpOnly: false, domain: ".thehandl.com"})
-                .cookie("firstName", "", {maxAge: Number(new Date(1)), sameSite: "none", secure: true, httpOnly: false, domain: ".thehandl.com"})
+                .cookie("selector", "", {maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                    domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                })
+                .cookie("validator", "", {maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                    domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                })
+                .cookie("userId", "", {maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true,
+                    domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                })
+                .cookie("planType", "", {maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                    domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                })
+                .cookie("loggedIn", "", {maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                    domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                })
+                .cookie("firstName", "", {maxAge: Number(new Date(1)),
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: false,
+                    domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                })
                 .send();
         } catch (err: unknown) {
             return next(err as Error);
@@ -362,7 +463,44 @@ class UserController {
                 cookies.userId
             );
             if (verificationStatus.result) {
-                return this.unathenticatedResponse(res);
+                return res.status(401)
+                    .cookie("selector", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: true,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("validator", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: true,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("userId", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: true,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("planType", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: false,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("loggedIn", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: false,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("firstName", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: false,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .send();
             }
             const userId: string = req.params.id;
             const userService = new UserService();
@@ -438,7 +576,44 @@ class UserController {
                 cookies.userId
             );
             if (!verificationStatus.result) {
-                return this.unathenticatedResponse(res);
+                return res.status(401)
+                    .cookie("selector", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: true,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("validator", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: true,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("userId", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: true,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("planType", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: false,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("loggedIn", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: false,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .cookie("firstName", "", {maxAge: Number(new Date(1)),
+                        sameSite: "none",
+                        secure: true,
+                        httpOnly: false,
+                        domain: process.env.NODE_ENV === "local_dev" ? undefined : ".thehandl.com",
+                    })
+                    .send();
             }
             const vendorIds: string[] = req.body.vendorIds;
             const userService = new UserService();
