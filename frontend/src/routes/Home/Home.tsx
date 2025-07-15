@@ -154,8 +154,8 @@ function Home(): JSX.Element {
         <Box sx={{minHeight: '60rem', textAlign: isMobile ? 'center' : 'left', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Banner />
             <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                {createHomePageCategories("Most Viewed Categories")}
                 {createHomePageCategories("Featured Categories")}
+                {/* TODO: (HIGH) Add Marketing pitches here */}
                 {createCategoriesList()}
             </Container>
         </Box>
