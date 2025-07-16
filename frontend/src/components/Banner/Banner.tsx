@@ -1,13 +1,17 @@
 import { useMobile } from "../../hooks/useMobile";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import BannerSquare from '../../static/Banner_Square.png';
 import ManufacturerSingle from '../../static/Manufacturer_Single.png';
 import DistributorSingle from '../../static/Distributor_Single.png';
 import WholesalerSingle from '../../static/Wholesaler_Single.png';
 import RetailerSingle from '../../static/Retailer_Single.png';
+import { cookieParser } from '../../utils/cookie-util';
+import { useLoginStatus } from '../../hooks/useLoggedInStatus';
 
 function Banner(): JSX.Element {
     let isMobile: boolean = useMobile();
+    const isLoggedIn = useLoginStatus();
+    const cookieObject = cookieParser();
 
     const singleBannerImages = [
         ManufacturerSingle,
@@ -58,11 +62,26 @@ function Banner(): JSX.Element {
             justifyContent: 'center',
             height: '50%',
             width: isMobile ? '100%' : '50%',
+        },
+        button: {
+            marginTop: isMobile ? '0px' : '7px',
+            marginBottom: isMobile ? '20px' : '0px',
+            background: '#2D7FF9',
         }
     };
 
     const mobileBanner = () => (
         <>
+            {cookieObject.planType !== "Premium" && isLoggedIn && 
+                    <Button variant={"contained"} sx={styles.button}>
+                        Upgrade to Premium
+                    </Button>
+            }
+            {!isLoggedIn && 
+                <Button variant={"contained"} sx={styles.button}>
+                    Sign Up For Free
+                </Button>
+            }
             <Box sx={styles.bannerInfo} aria-roledescription="Home Screen Banner Content">
                 <Typography fontSize={'1.5rem'} fontWeight={600}>
                     Source faster with the best B2B directory
@@ -84,6 +103,16 @@ function Banner(): JSX.Element {
                     Source faster with the best B2B directory
                 </Typography>
                 <Typography>Connect with Manufactuers, Distributors, Wholesalers, and Retailers</Typography>
+                {cookieObject.planType !== "Premium" && isLoggedIn && 
+                    <Button variant={"contained"} sx={styles.button}>
+                        Upgrade to Premium
+                    </Button>
+                }
+                {!isLoggedIn && 
+                    <Button variant={"contained"} sx={styles.button}>
+                        Sign Up For Free
+                    </Button>
+                }
             </Box>
             <Box sx={styles.imageBox}>
                 <img src={singleBannerImages[Math.floor(Math.random() * 4)]} alt="Handl Banner" width={'70%'} style={{ padding: '10px', paddingBottom: '23px' }}/>

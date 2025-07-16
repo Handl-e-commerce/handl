@@ -22,7 +22,7 @@ function Footer(): JSX.Element {
     return (
         <footer style={{
             bottom: 0,
-            marginTop: '1rem',
+            // marginTop: '1rem',
             padding: '10px',
             background: "#001E42",
             color: '#F2E5D1'
