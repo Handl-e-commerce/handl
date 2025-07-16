@@ -3,13 +3,13 @@ import fba from '../../static/FBA.jpg';
 import clothing from '../../static/Clothing.jpg';
 import health from '../../static/Health & Beauty.jpg';
 import electronics from '../../static/Electronics.jpg';
-import { Box, Button, Container, Grid, Link, List, Typography, TypographyOwnProps } from "@mui/material";
+import { Box, Container, Grid, Link, List, Typography, TypographyOwnProps } from "@mui/material";
 import { useMobile } from "../../hooks/useMobile";
 import { Banner } from "../../components/Banner/Banner";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { iconMapper } from "../../utils/icon-mapper";
-import { SalesBanner } from "../../components/SalesBanner/SalesBanner";
-import { useLoginStatus } from "../../hooks/useLoggedInStatus";
+import { SalesBanner } from "../../components/Banner/SalesBanner";
+import { ClosingBanner } from "../../components/Banner/ClosingBanner";
 import { cookieParser } from "../../utils/cookie-util";
 
 function Home(): JSX.Element {
@@ -17,7 +17,6 @@ function Home(): JSX.Element {
     let location = window.location;
     let isMobile: boolean = useMobile();
     const cookieObject = cookieParser();
-    const isLoggedIn = useLoginStatus();
 
     const styles = {
         grid: {
@@ -38,13 +37,8 @@ function Home(): JSX.Element {
         },
         gridContainer: { 
             // borderTop: '1.5px solid #E5E5EA',
-            marginTop: '10px'
-        },
-        button: {
             marginTop: '2rem',
-            marginBottom: isMobile ? '20px' : '0px',
-            background: '#2D7FF9',
-            width: 'fit-content',
+            marginBottom: '2rem'
         }
     };
 
@@ -171,31 +165,7 @@ function Home(): JSX.Element {
             <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 {createCategoriesList()}
             </Container>
-            <Box sx={{
-                width: '100%',
-                padding: '2rem 0',
-                background: 'linear-gradient(0deg, #001E42, #022648, #00152d)',
-                color: '#F2E5D1',
-                marginTop: '1rem',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                <Typography variant={'h4'} component={'h4'} fontSize={'32px'} fontWeight={600} sx={{ alignSelf: 'center'}}>
-                    Get started on sourcing deals today
-                </Typography>
-                {cookieObject.planType !== "Premium" && isLoggedIn && 
-                    <Button variant={"contained"} sx={styles.button}>
-                        Upgrade to Premium
-                    </Button>
-                }
-                {!isLoggedIn && 
-                    <Button variant={"contained"} sx={styles.button}>
-                        Sign Up For Free
-                    </Button>
-                }
-            </Box>
+            {cookieObject.planType !== 'Premium' && <ClosingBanner />}
         </Box>
     )
 };

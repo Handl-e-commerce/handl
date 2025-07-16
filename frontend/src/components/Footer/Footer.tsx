@@ -3,6 +3,7 @@ import goldLogoTransparent from '../../static/Gold_Logo_Transparent_Image.png';
 import { LinkedIn, Reddit } from "@mui/icons-material";
 import { Box, Link, SxProps, Typography } from "@mui/material";
 import { PrivacyPolicy } from "../PrivacyPolicy/PrivacyPolicy";
+import { ReturnPolicy } from "../ReturnPolicy/ReturnPolicy";
 
 const iconSx: SxProps = {
     width: '36px', 
@@ -45,6 +46,7 @@ function Footer(): JSX.Element {
                     Privacy Policy
                 </Typography>
                 <PrivacyPolicy open={open} onClose={handleClose}/>
+                <ReturnPolicy />
             </Box>
             <Box aria-label="social-icons-container">
                 <Link href="https://www.linkedin.com/company/handl-technologies/" underline="none" target="_blank" rel="noreferrer" color='#F2E5D1'>
