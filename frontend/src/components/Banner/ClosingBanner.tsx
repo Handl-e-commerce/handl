@@ -3,7 +3,6 @@ import { Box, Button, Typography } from "@mui/material";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { cookieParser } from "../../utils/cookie-util";
 import { useNavigate } from "react-router-dom";
-import { redirectToStripeCheckout } from "../../utils/stripe-checkout";
 import { useMobile } from "../../hooks/useMobile";
 
 function ClosingBanner(): JSX.Element {
@@ -80,7 +79,7 @@ function ClosingBanner(): JSX.Element {
             </Box>
             <Box aria-label="buttons">
                 {cookieObject.planType !== "Premium" && isLoggedIn && 
-                    <Button variant={"contained"} sx={styles.button} onClick={redirectToStripeCheckout}>
+                    <Button variant={"contained"} sx={styles.button} onClick={() => navigate("/pricing")}>
                         Upgrade to Premium
                     </Button>
                 }
