@@ -3,6 +3,7 @@ import { render, screen, act, waitFor } from '@testing-library/react';
 import { Header } from './Header';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import { MemoryRouter } from 'react-router-dom';
 
 let replaceMock = jest.fn();
 Object.defineProperty(window, 'location', {
@@ -43,7 +44,11 @@ describe("Header Test", function() {
             writable: true,
             value: "firstName=MockFirstName",
         });
-        await act(async () => render(<Header />));
+        await act(async () => render(
+            <MemoryRouter>
+                <Header />
+            </MemoryRouter>
+        ));
         
         await waitFor(async () => {
             let navBar = screen.getByTestId("header");
@@ -55,7 +60,11 @@ describe("Header Test", function() {
     });
 
     it("Should render the logged out header because there are no cookies and user", async function() {
-        await act(async () => render(<Header />));
+        await act(async () => render(
+            <MemoryRouter>
+                <Header />
+            </MemoryRouter>
+        ));
 
         await waitFor(() => {
             let header = screen.getByTestId("header");
@@ -68,7 +77,11 @@ describe("Header Test", function() {
     });
 
     it("Should redirect to signup because sign up tab is clicked", async function() {
-        await act(async () => render(<Header />));
+        await act(async () => render(
+            <MemoryRouter>
+                <Header />
+            </MemoryRouter>
+        ));
         
         let signUpButton = screen.getByText("Sign Up");
         await user.click(signUpButton);
@@ -78,7 +91,11 @@ describe("Header Test", function() {
     });
 
     it("Should redirect to login because login tab is clicked", async function() {
-        await act(async () => render(<Header />));
+        await act(async () => render(
+            <MemoryRouter>
+                <Header />
+            </MemoryRouter>
+        ));
 
         let loginTab = screen.getByTestId("header").children[0];
         await user.click(loginTab);
@@ -88,7 +105,11 @@ describe("Header Test", function() {
     });
 
     it("Should delete long term login cookies because server returns 401 status code", async function() {
-        await act(async () => render(<Header />));
+        await act(async () => render(
+            <MemoryRouter>
+                <Header />
+            </MemoryRouter>
+        ));
 
         waitFor(() => {
             let navBar = screen.getByTestId("header");
@@ -103,7 +124,11 @@ describe("Header Test", function() {
             writable: true,
             value: "firstName=MockFirstName; planType=Free;",
         });
-        await act(async () => render(<Header />));
+        await act(async () => render(
+            <MemoryRouter>
+                <Header />
+            </MemoryRouter>
+        ));
         await user.click(screen.getByText(/hi, mockfirstname/i));
         await waitFor(() => {
             expect(screen.getByText("Upgrade to Premium!")).toBeInTheDocument();
