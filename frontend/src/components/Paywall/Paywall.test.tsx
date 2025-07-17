@@ -69,7 +69,7 @@ describe("Paywall tests", () => {
         expect(screen.getByText("Go Premium Now")).toBeInTheDocument();
         await user.click(screen.getByText("Go Premium Now"));
         await waitFor(() => {
-            expect(window.location.href).toEqual("https://stripe-checkout-url.com");
+            expect(mockNavigate).toHaveBeenCalledWith("/pricing");
         });
     })
 });

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
-import { addCookie, cookieParser } from "../../utils/cookie-util";
+import { cookieParser } from "../../utils/cookie-util";
 import { Box, Button, Container, InputAdornment, SxProps, TextField, Typography, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import ReCAPTCHA from "react-google-recaptcha";

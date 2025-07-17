@@ -3,7 +3,7 @@ import {UserService} from "../services/UserService";
 import {IUserDetails} from "../interfaces/IUserDetails";
 import {User} from "../db/models/User";
 import {AuthToken} from "../db/models/AuthToken";
-
+import {PlanType} from "../enums/PlanType";
 const sendMailMock = jest.fn().mockReturnValue("Sent mock email!");
 
 jest.mock("nodemailer");
@@ -48,6 +48,13 @@ describe("UserService Tests", function() {
     expect(result).toBeDefined();
     expect(result.id).toBeDefined();
     expect(result.message).toBe(`Created new user with id: ${result.id}`);
+    const user = await User.findOne({
+      where: {
+        email: userDetails.email
+      }
+    });
+    expect(user?.planType).toBe(PlanType[0]);
+    expect(user?.subscriptionExpiresAt).toBeNull();
   });
 
   it("Should thorw an error if username already exists when creating new user", async () => {

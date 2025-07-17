@@ -28,7 +28,7 @@ function SavedVendors(): JSX.Element {
         if (loggedIn) {
             getSavedVendors();
         }
-    }, []);
+    }, [loggedIn]);
 
     return (
         <Container sx={{ minHeight: '100vh'}}>

@@ -8,11 +8,15 @@ import { useMobile } from "../../hooks/useMobile";
 import { Banner } from "../../components/Banner/Banner";
 import { fetchWrapper } from "../../utils/fetch-wrapper";
 import { iconMapper } from "../../utils/icon-mapper";
+import { SalesBanner } from "../../components/Banner/SalesBanner";
+import { ClosingBanner } from "../../components/Banner/ClosingBanner";
+import { cookieParser } from "../../utils/cookie-util";
 
 function Home(): JSX.Element {
     const [categories, setCategories] = useState<JSX.Element[][]>();
     let location = window.location;
     let isMobile: boolean = useMobile();
+    const cookieObject = cookieParser();
 
     const styles = {
         grid: {
@@ -32,9 +36,10 @@ function Home(): JSX.Element {
             },
         },
         gridContainer: { 
-            borderTop: '1.5px solid #E5E5EA',
-            marginTop: '10px'
-        },
+            // borderTop: '1.5px solid #E5E5EA',
+            marginTop: '2rem',
+            marginBottom: '2rem'
+        }
     };
 
     async function getCategories(): Promise<void> {
@@ -154,10 +159,13 @@ function Home(): JSX.Element {
         <Box sx={{minHeight: '60rem', textAlign: isMobile ? 'center' : 'left', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Banner />
             <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                {createHomePageCategories("Most Viewed Categories")}
                 {createHomePageCategories("Featured Categories")}
+            </Container>
+            <SalesBanner />
+            <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 {createCategoriesList()}
             </Container>
+            {cookieObject.planType !== 'Premium' && <ClosingBanner />}
         </Box>
     )
 };

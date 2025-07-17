@@ -1,6 +1,4 @@
-import React from "react";
 import { Box, Button } from "@mui/material";
-import { redirectToStripeCheckout } from "../../utils/stripe-checkout";
 import { useNavigate } from "react-router-dom";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 
@@ -40,7 +38,7 @@ function Paywall(): JSX.Element {
                         backgroundColor: "primary.main",
                     },
                 }}
-                onClick={loggedIn ? redirectToStripeCheckout : () => navigate("/sign-up")}
+                onClick={loggedIn ? () => navigate("/pricing") : () => navigate("/sign-up")}
             >
                 {loggedIn ? "Go Premium Now" : "Sign Up Today"}
             </Button>
