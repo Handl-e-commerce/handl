@@ -5,7 +5,7 @@ import { useLoginStatus } from '../../hooks/useLoggedInStatus';
 import { cookieParser, deleteCookie } from '../../utils/cookie-util';
 import { fetchWrapper } from '../../utils/fetch-wrapper';
 import { useState } from 'react';
-import { redirectToStripeCheckout } from '../../utils/stripe-checkout';
+import { useNavigate } from 'react-router-dom';
 
 interface IUserHeaderMenuProps {
     sx?: SxProps;
@@ -32,6 +32,7 @@ function UserHeaderMenu({ sx }: IUserHeaderMenuProps): JSX.Element {
     const isMobile: boolean = useMobile();
     const location = window.location;
     const loggedIn = useLoginStatus();
+    const navigate = useNavigate();
 
     let isLoginOrSignUpPage: boolean = location.pathname === "/login" || location.pathname === "/sign-up";
     
@@ -89,7 +90,7 @@ function UserHeaderMenu({ sx }: IUserHeaderMenuProps): JSX.Element {
                         Logout
                     </MenuItem>
                     {cookieObject.planType !== 'Premium' && 
-                        <MenuItem onClick={redirectToStripeCheckout}>
+                        <MenuItem onClick={() => navigate('/pricing')}>
                             <ListItemIcon>
                                 <EmojiEvents />
                             </ListItemIcon>

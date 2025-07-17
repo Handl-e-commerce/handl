@@ -3,7 +3,6 @@ import { redirectToStripeCheckout } from "../../utils/stripe-checkout";
 import { cookieParser } from "../../utils/cookie-util";
 import { useLoginStatus } from "../../hooks/useLoggedInStatus";
 import { useNavigate } from "react-router-dom";
-import { ReturnPolicy } from "../../components/ReturnPolicy/ReturnPolicy";
 import { Paid, Bolt, LockOpen, ConnectWithoutContact } from "@mui/icons-material";
 import { BenefitCard } from "../../components/BenefitCard/BenefitCard";
 
@@ -12,7 +11,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        color: '#fff',
+        color: '#F2E5D1',
         background: 'linear-gradient(to bottom, #022648,#00152d)',
         position: 'relative',
         width: '100%',
@@ -150,11 +149,10 @@ function Pricing(): JSX.Element {
                         Go Premium Now
                     </Button>
                     <Typography variant="body2" color="text.secondary" mt={2} sx={{ fontSize: "0.75rem" }}>
-                        By clicking "Go Premium Now", you agree to our return policy.
+                        By clicking "Go Premium Now", you agree to our return policy, privacy policy, and our terms of service.
                     </Typography>
                 </Box>
                 }
-                <ReturnPolicy sx={{ mt: 3 }}/>
             </Box>
         </Box>
     );

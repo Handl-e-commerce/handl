@@ -7,7 +7,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        color: '#fff',
+        color: '#F2E5D1',
         // background: 'linear-gradient(180deg, #022648 60%, #00509e 100%)',
         background: 'linear-gradient(to bottom, #022648,#00152d)',
         position: 'relative',
