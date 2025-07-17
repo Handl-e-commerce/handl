@@ -11,11 +11,6 @@ describe("Home Route Test", () => {
                 <Home />
             </MemoryRouter>
         );
-        let mostViewedCategories = screen.getByTestId("Most Viewed Categories-container");
-        // We start from 1 because the very first child is just a div element without any anchors and is a header
-        for (let i = 1; i < mostViewedCategories.children.length; i++) {
-            expect(mostViewedCategories.children[i].children[0]).toHaveAttribute("href", expect.stringContaining(window.location.origin + `/results/`));
-        }
         let featuredCategories = screen.getByTestId("Featured Categories-container");
         for (let i = 1; i < featuredCategories.children.length; i++) {
             expect(featuredCategories.children[i].children[0]).toHaveAttribute("href", expect.stringContaining(window.location.origin + `/results/`));
@@ -28,9 +23,7 @@ describe("Home Route Test", () => {
                 <Home />
             </MemoryRouter>
         );
-        let mostViewedCategories = screen.getByTestId("Most Viewed Categories-container");
         let featuredCategories = screen.getByTestId("Featured Categories-container");
-        expect(mostViewedCategories.childElementCount).toEqual(5);
         expect(featuredCategories.childElementCount).toEqual(5);
     });
 

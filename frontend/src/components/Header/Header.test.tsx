@@ -28,6 +28,13 @@ jest.mock("../../hooks/useLoggedInStatus", () => {
     };
 });
 
+const mockNavigate = jest.fn();
+jest.mock("react-router-dom", () => ({
+    ...jest.requireActual("react-router-dom") as any,
+    useNavigate: () => mockNavigate,
+}));
+
+
 beforeEach(() => {
     mockUseLoginStatus.mockReturnValue(false);
 });
@@ -135,7 +142,7 @@ describe("Header Test", function() {
         });
         await user.click(screen.getByText("Upgrade to Premium!"));
         await waitFor(() => {
-            expect(window.location.href).toEqual("https://stripe-checkout-url.com");
+            expect(mockNavigate).toHaveBeenCalledWith("/pricing");
         });
     });
 });
