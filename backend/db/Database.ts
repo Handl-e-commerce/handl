@@ -28,7 +28,7 @@ class Database implements IDatabase {
             logging = console.log;
             database = process.env.SQL_DATABASE_PROD as string;
         } else if (environment === "development") {
-            host = `/cloudsql/${process.env.SQL_HOST_DEV}`;
+            host = process.env.SQL_HOST_DEV as string;
             port = Number(process.env.SQL_PORT);
             logging = console.log;
             database = process.env.SQL_DATABASE_DEV as string;

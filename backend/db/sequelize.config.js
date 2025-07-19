@@ -19,9 +19,9 @@ module.exports = {
     },
     "development": {
         "username": process.env.SQL_USERNAME,
-        "password": process.env.SQL_PASSWORD,
+        "password": process.env.SQL_PASSWORD_DEV,
         "database": process.env.SQL_DATABASE_DEV,
-        "host": `/cloudsql/${process.env.SQL_HOST_DEV}`,
+        "host": process.env.SQL_HOST_DEV,
         "port": process.env.SQL_PORT,
         "dialect": "postgres",
     },
