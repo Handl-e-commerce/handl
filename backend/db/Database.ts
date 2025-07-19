@@ -15,7 +15,7 @@ class Database implements IDatabase {
     private constructor() {
         const environment: string = process.env.NODE_ENV as string;
         const username: string = process.env.SQL_USERNAME as string;
-        const password: string = process.env.SQL_PASSWORD as string;
+        let password: string = process.env.SQL_PASSWORD as string;
         // default will be local values
         let host: string = process.env.SQL_HOST_LOCAL as string;
         let port = Number(process.env.SQL_PORT_LOCAL);
@@ -30,6 +30,7 @@ class Database implements IDatabase {
         } else if (environment === "development") {
             host = process.env.SQL_HOST_DEV as string;
             port = Number(process.env.SQL_PORT);
+            password = process.env.SQL_PASSWORD_DEV as string;
             logging = console.log;
             database = process.env.SQL_DATABASE_DEV as string;
         } else if (environment === "test") {
