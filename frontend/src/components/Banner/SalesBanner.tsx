@@ -59,7 +59,7 @@ function SalesBanner(): JSX.Element {
                     {/* Column 1 */}
                     <Box sx={styles.column}>
                         <Typography sx={styles.icon}>📋</Typography>
-                        <Typography sx={styles.title}>Get Key personal details</Typography>
+                        <Typography sx={styles.title}>Get key personal details</Typography>
                         <Typography sx={styles.description}>
                             Access comprehensive profiles with essential information to make informed business decisions.
                         </Typography>
@@ -70,7 +70,7 @@ function SalesBanner(): JSX.Element {
                     {/* Column 2 */}
                     <Box sx={styles.column}>
                         <Typography sx={styles.icon}>🤝</Typography>
-                        <Typography sx={styles.title}>Get contact information for the largest distributors & wholesalers</Typography>
+                        <Typography sx={styles.title}>Link with the largest distributors & wholesalers</Typography>
                         <Typography sx={styles.description}>
                             Connect directly with industry leaders and expand your network of suppliers and partners.
                         </Typography>
