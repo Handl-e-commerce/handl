@@ -11,9 +11,14 @@ if (process.env.NODE_ENV === "local_dev") {
     dotenv.config({path: ".env.local", override: true});
 }
 const stripeSecretKey = process.env.STRIPE_API_SECRET_KEY;
+const priceId = process.env.STRIPE_ANNUAL_SUBSCRIPTION_PRICE_ID;
 
 if (!stripeSecretKey) {
     throw new Error("Stripe API secret key is not defined in environment variables.");
+}
+
+if (!priceId) {
+    throw new Error("Stripe annual subscription price ID is not defined in environment variables.");
 }
 
 const stripe = require("stripe")(stripeSecretKey);
@@ -47,8 +52,6 @@ billingRouter.post("/subscribe", async (req: Request, res: Response, next: NextF
             return res.status(400).json({error: "User is already subscribed"});
         }
 
-        const priceId = process.env.NODE_ENV === "production" ?
-            "price_1RgdI403qEXOPJPaGa0Ij5Qq" : "price_1Rf1iS03jjb671QdjNefc4UB";
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ["card"],
             line_items: [
