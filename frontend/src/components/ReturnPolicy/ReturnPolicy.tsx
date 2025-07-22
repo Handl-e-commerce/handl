@@ -51,17 +51,19 @@ function ReturnPolicy({ sx }: { sx?: SxProps }): JSX.Element {
             Return, Refund & Cancellation Policy
           </Typography>
           <Typography id="return-policy-description" variant="body1" sx={{ mb: 2 }}>
-            <strong>All Sales Are Final:</strong> Due to the proprietary and digital nature of the information and services we provide, 
-            <u>all purchases are non-refundable, non-cancellable, and non-returnable</u>. By proceeding with your purchase, you acknowledge and agree that you have been clearly informed of this policy prior to completing your transaction.
+            <strong>All Sales Final:</strong> Due to the proprietary and digital nature of our product, all purchases are strictly non-refundable, non-cancellable, and non-returnable. By completing your purchase, you explicitly acknowledge and accept this policy.
             <br />
             <br />
-            <strong>No Refunds, Cancellations, or Returns:</strong> Once an order is placed and payment is processed, you will not be eligible for any refund, return, or cancellation, in whole or in part, for any reason, including but not limited to dissatisfaction with the product or service, accidental purchase, or change of mind.
+            <strong>No Refunds, Returns, or Cancellations:</strong> Once your order is processed, you forfeit eligibility for refunds, returns, cancellations, or exchanges under any circumstances. This includes, but is not limited to, dissatisfaction with the content, accidental purchase, changes in your sourcing needs, or technical compatibility issues.
             <br />
             <br />
-            <strong>Legal Notice:</strong> This policy is provided in accordance with applicable law and is intended to be fully binding and enforceable. By making a purchase, you expressly waive any right to dispute charges, request a refund, or initiate a chargeback for any reason. If you do not agree with this policy, please do not proceed with your purchase. 
+            <strong>Chargeback Policy:</strong> By purchasing our digital product, you expressly waive your right to dispute charges or initiate chargebacks with your financial institution. Any attempt to circumvent this policy via a chargeback will be considered a breach of our terms of service, and we reserve the right to seek legal recourse and reimbursement for all associated expenses.
             <br />
             <br />
-            If you have any questions regarding this policy, please contact us before making a purchase.
+            <strong>Legal Agreement:</strong> Your purchase constitutes a legally binding agreement that you fully understand and accept the terms outlined above. If you disagree with any part of this policy, do not complete your transaction.
+            <br />
+            <br />
+            For questions or clarifications regarding this policy, please contact our support team before finalizing your purchase.
           </Typography>
         </Box>
       </Modal>

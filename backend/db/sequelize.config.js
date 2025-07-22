@@ -32,5 +32,7 @@ module.exports = {
         "host": process.env.SQL_HOST_PROD,
         "port": process.env.SQL_PORT,
         "dialect": "postgres",
-    },h
+    },
+
+
 };
